@@ -1,0 +1,28 @@
+# Source code
+*.c             text diff=cpp whitespace=blank-at-eol,tabwidth=3
+*.h             text diff=cpp whitespace=blank-at-eol,tabwidth=3
+Doxyfile        text
+Makefile        text
+
+# Shell scripts should always end in LF only
+*.sh            text eol=lf
+
+# Windows batch/command files end in CRLF
+*.bat           text eol=crlf
+*.cmd           text eol=crlf
+
+# Other text files
+*.txt           text
+*.md            text
+*.ini           text
+
+# OpenWatcom (Windows-hosted DOS compiler) project/target files
+*.wpj           text eol=crlf
+*.tgt           text eol=crlf
+
+# CodeWarrior (Freescale HCS08 compiler)
+*.abs.s19       text eol=crlf
+*.bbl           text eol=crlf
+*.hwl           text eol=crlf
+*.prm           text eol=crlf
+*.mcp           text eol=crlf

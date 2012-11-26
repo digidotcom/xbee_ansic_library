@@ -1,0 +1,1783 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<?codewarrior exportversion="2.0" ideversion="5.9.0" ?>
+
+<!DOCTYPE PROJECT [
+<!ELEMENT PROJECT (TARGETLIST, TARGETORDER, GROUPLIST, DESIGNLIST?, PLUGINDATALIST?)>
+<!ELEMENT TARGETLIST (TARGET+)>
+<!ELEMENT TARGET (NAME, SETTINGLIST, FILELIST, LINKORDER?, SEGMENTLIST?, OVERLAYGROUPLIST?, SUBTARGETLIST?, SUBPROJECTLIST?, FRAMEWORKLIST?, PACKAGEACTIONSLIST?)>
+<!ELEMENT PACKAGEACTIONSLIST (PACKAGEACTION+)>
+<!ELEMENT PACKAGEACTION (#PCDATA)>
+<!ATTLIST PACKAGEACTION PACKAGEACTIONTYPE CDATA #REQUIRED>
+<!ELEMENT NAME (#PCDATA)>
+<!ELEMENT PATH (#PCDATA)>
+<!ELEMENT FILELIST (FILE*)>
+<!ELEMENT FILE (PATHTYPE, PATHROOT?, ACCESSPATH?, PATH, PATHFORMAT, ROOTFILEREF?, FILEKIND, FILEFLAGS)>
+<!ELEMENT PATHTYPE (#PCDATA)>
+<!ELEMENT PATHROOT (#PCDATA)>
+<!ELEMENT ACCESSPATH (#PCDATA)>
+<!ELEMENT PATHFORMAT (#PCDATA)>
+<!ELEMENT ROOTFILEREF (PATHTYPE, PATHROOT?, ACCESSPATH?, PATH, PATHFORMAT)>
+<!ELEMENT FILEKIND (#PCDATA)>
+<!ELEMENT FILEFLAGS (#PCDATA)>
+<!ELEMENT FILEREF (TARGETNAME?, PATHTYPE, PATHROOT?, ACCESSPATH?, PATH, PATHFORMAT)>
+<!ELEMENT TARGETNAME (#PCDATA)>
+<!ELEMENT SETTINGLIST ((SETTING|PANELDATA)*)>
+<!ELEMENT SETTING (NAME?, (VALUE|(SETTING+)))>
+<!ELEMENT PANELDATA (NAME, VALUE)>
+<!ELEMENT VALUE (#PCDATA)>
+<!ELEMENT LINKORDER (FILEREF*)>
+<!ELEMENT SEGMENTLIST (SEGMENT+)>
+<!ELEMENT SEGMENT (NAME?, ATTRIBUTES?, FILEREF*)>
+<!ELEMENT ATTRIBUTES (#PCDATA)>
+<!ELEMENT OVERLAYGROUPLIST (OVERLAYGROUP+)>
+<!ELEMENT OVERLAYGROUP (NAME, BASEADDRESS, OVERLAY*)>
+<!ELEMENT BASEADDRESS (#PCDATA)>
+<!ELEMENT OVERLAY (NAME, FILEREF*)>
+<!ELEMENT SUBTARGETLIST (SUBTARGET+)>
+<!ELEMENT TARGETOUTPUTNAME (#PCDATA)>
+<!ELEMENT TARGETOUTPUTDISPLAYNAME (#PCDATA)>
+<!ELEMENT TARGETOUTPUTPATHFORMAT (#PCDATA)>
+<!ELEMENT TARGETOUTPUTACCESSTYPE (#PCDATA)>
+<!ELEMENT SUBTARGET (TARGETNAME, ATTRIBUTES?, TARGETOUTPUTNAME?, TARGETOUTPUTDISPLAYNAME?, TARGETOUTPUTPATHFORMAT?, TARGETOUTPUTACCESSTYPE?, FILEREF?)>
+<!ELEMENT SUBPROJECTLIST (SUBPROJECT+)>
+<!ELEMENT SUBPROJECT (FILEREF, SUBPROJECTTARGETLIST)>
+<!ELEMENT SUBPROJECTTARGETLIST (SUBPROJECTTARGET*)>
+<!ELEMENT SUBPROJECTTARGET (TARGETNAME, ATTRIBUTES?, FILEREF?)>
+<!ELEMENT FRAMEWORKLIST (FRAMEWORK+)>
+<!ELEMENT FRAMEWORK (FILEREF, VERSION?, DYNAMICLIBRARY?)>
+<!ELEMENT DYNAMICLIBRARY (#PCDATA)>
+<!ELEMENT VERSION (#PCDATA)>
+<!ELEMENT TARGETORDER (ORDEREDTARGET|ORDEREDDESIGN)*>
+<!ELEMENT ORDEREDTARGET (NAME)>
+<!ELEMENT ORDEREDDESIGN (NAME, ORDEREDTARGET+)>
+<!ELEMENT GROUPLIST (GROUP|FILEREF)*>
+<!ELEMENT GROUP (NAME, (GROUP|FILEREF)*)>
+<!ELEMENT DESIGNLIST (DESIGN+)>
+<!ELEMENT DESIGN (NAME, DESIGNDATA)>
+<!ELEMENT DESIGNDATA (#PCDATA)>
+<!ELEMENT PLUGINDATALIST (PLUGINDATA+)>
+<!ELEMENT PLUGINDATA (NAME, VALUE)>
+]>
+
+<PROJECT>
+    <TARGETLIST>
+        <TARGET>
+            <NAME>Standard</NAME>
+            <SETTINGLIST>
+
+                <!-- Settings for "Source Trees" panel -->
+                <SETTING><NAME>UserSourceTrees</NAME><VALUE></VALUE></SETTING>
+
+                <!-- Settings for "Access Paths" panel -->
+                <SETTING><NAME>AlwaysSearchUserPaths</NAME><VALUE>false</VALUE></SETTING>
+                <SETTING><NAME>InterpretDOSAndUnixPaths</NAME><VALUE>false</VALUE></SETTING>
+                <SETTING><NAME>RequireFrameworkStyleIncludes</NAME><VALUE>false</VALUE></SETTING>
+                <SETTING><NAME>SourceRelativeIncludes</NAME><VALUE>false</VALUE></SETTING>
+                <SETTING><NAME>UserSearchPaths</NAME>
+                    <SETTING>
+                        <SETTING><NAME>SearchPath</NAME>
+                            <SETTING><NAME>Path</NAME><VALUE></VALUE></SETTING>
+                            <SETTING><NAME>PathFormat</NAME><VALUE>Windows</VALUE></SETTING>
+                            <SETTING><NAME>PathRoot</NAME><VALUE>Project</VALUE></SETTING>
+                        </SETTING>
+                        <SETTING><NAME>Recursive</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>FrameworkPath</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>HostFlags</NAME><VALUE>All</VALUE></SETTING>
+                    </SETTING>
+                    <SETTING>
+                        <SETTING><NAME>SearchPath</NAME>
+                            <SETTING><NAME>Path</NAME><VALUE>bin</VALUE></SETTING>
+                            <SETTING><NAME>PathFormat</NAME><VALUE>Windows</VALUE></SETTING>
+                            <SETTING><NAME>PathRoot</NAME><VALUE>Project</VALUE></SETTING>
+                        </SETTING>
+                        <SETTING><NAME>Recursive</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>FrameworkPath</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>HostFlags</NAME><VALUE>All</VALUE></SETTING>
+                    </SETTING>
+                    <SETTING>
+                        <SETTING><NAME>SearchPath</NAME>
+                            <SETTING><NAME>Path</NAME><VALUE>prm</VALUE></SETTING>
+                            <SETTING><NAME>PathFormat</NAME><VALUE>Windows</VALUE></SETTING>
+                            <SETTING><NAME>PathRoot</NAME><VALUE>Project</VALUE></SETTING>
+                        </SETTING>
+                        <SETTING><NAME>Recursive</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>FrameworkPath</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>HostFlags</NAME><VALUE>All</VALUE></SETTING>
+                    </SETTING>
+                    <SETTING>
+                        <SETTING><NAME>SearchPath</NAME>
+                            <SETTING><NAME>Path</NAME><VALUE>Sources</VALUE></SETTING>
+                            <SETTING><NAME>PathFormat</NAME><VALUE>Windows</VALUE></SETTING>
+                            <SETTING><NAME>PathRoot</NAME><VALUE>Project</VALUE></SETTING>
+                        </SETTING>
+                        <SETTING><NAME>Recursive</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>FrameworkPath</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>HostFlags</NAME><VALUE>All</VALUE></SETTING>
+                    </SETTING>
+                    <SETTING>
+                        <SETTING><NAME>SearchPath</NAME>
+                            <SETTING><NAME>Path</NAME><VALUE>lib\hc08c\device\src</VALUE></SETTING>
+                            <SETTING><NAME>PathFormat</NAME><VALUE>Windows</VALUE></SETTING>
+                            <SETTING><NAME>PathRoot</NAME><VALUE>CodeWarrior</VALUE></SETTING>
+                        </SETTING>
+                        <SETTING><NAME>Recursive</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>FrameworkPath</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>HostFlags</NAME><VALUE>All</VALUE></SETTING>
+                    </SETTING>
+                    <SETTING>
+                        <SETTING><NAME>SearchPath</NAME>
+                            <SETTING><NAME>Path</NAME><VALUE>lib\hc08c\lib</VALUE></SETTING>
+                            <SETTING><NAME>PathFormat</NAME><VALUE>Windows</VALUE></SETTING>
+                            <SETTING><NAME>PathRoot</NAME><VALUE>CodeWarrior</VALUE></SETTING>
+                        </SETTING>
+                        <SETTING><NAME>Recursive</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>FrameworkPath</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>HostFlags</NAME><VALUE>All</VALUE></SETTING>
+                    </SETTING>
+                    <SETTING>
+                        <SETTING><NAME>SearchPath</NAME>
+                            <SETTING><NAME>Path</NAME><VALUE>lib\hc08c\src</VALUE></SETTING>
+                            <SETTING><NAME>PathFormat</NAME><VALUE>Windows</VALUE></SETTING>
+                            <SETTING><NAME>PathRoot</NAME><VALUE>CodeWarrior</VALUE></SETTING>
+                        </SETTING>
+                        <SETTING><NAME>Recursive</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>FrameworkPath</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>HostFlags</NAME><VALUE>All</VALUE></SETTING>
+                    </SETTING>
+                    <SETTING>
+                        <SETTING><NAME>SearchPath</NAME>
+                            <SETTING><NAME>Path</NAME><VALUE>defines\BL32</VALUE></SETTING>
+                            <SETTING><NAME>PathFormat</NAME><VALUE>Windows</VALUE></SETTING>
+                            <SETTING><NAME>PathRoot</NAME><VALUE>Project</VALUE></SETTING>
+                        </SETTING>
+                        <SETTING><NAME>Recursive</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>FrameworkPath</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>HostFlags</NAME><VALUE>All</VALUE></SETTING>
+                    </SETTING>
+                    <SETTING>
+                        <SETTING><NAME>SearchPath</NAME>
+                            <SETTING><NAME>Path</NAME><VALUE>..\..\..\src\xbee</VALUE></SETTING>
+                            <SETTING><NAME>PathFormat</NAME><VALUE>Windows</VALUE></SETTING>
+                            <SETTING><NAME>PathRoot</NAME><VALUE>Project</VALUE></SETTING>
+                        </SETTING>
+                        <SETTING><NAME>Recursive</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>FrameworkPath</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>HostFlags</NAME><VALUE>All</VALUE></SETTING>
+                    </SETTING>
+                    <SETTING>
+                        <SETTING><NAME>SearchPath</NAME>
+                            <SETTING><NAME>Path</NAME><VALUE>..\..\..\src\hcs08</VALUE></SETTING>
+                            <SETTING><NAME>PathFormat</NAME><VALUE>Windows</VALUE></SETTING>
+                            <SETTING><NAME>PathRoot</NAME><VALUE>Project</VALUE></SETTING>
+                        </SETTING>
+                        <SETTING><NAME>Recursive</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>FrameworkPath</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>HostFlags</NAME><VALUE>All</VALUE></SETTING>
+                    </SETTING>
+                    <SETTING>
+                        <SETTING><NAME>SearchPath</NAME>
+                            <SETTING><NAME>Path</NAME><VALUE>..\..\..\src\wpan</VALUE></SETTING>
+                            <SETTING><NAME>PathFormat</NAME><VALUE>Windows</VALUE></SETTING>
+                            <SETTING><NAME>PathRoot</NAME><VALUE>Project</VALUE></SETTING>
+                        </SETTING>
+                        <SETTING><NAME>Recursive</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>FrameworkPath</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>HostFlags</NAME><VALUE>All</VALUE></SETTING>
+                    </SETTING>
+                    <SETTING>
+                        <SETTING><NAME>SearchPath</NAME>
+                            <SETTING><NAME>Path</NAME><VALUE>..\..\..\src\zigbee</VALUE></SETTING>
+                            <SETTING><NAME>PathFormat</NAME><VALUE>Windows</VALUE></SETTING>
+                            <SETTING><NAME>PathRoot</NAME><VALUE>Project</VALUE></SETTING>
+                        </SETTING>
+                        <SETTING><NAME>Recursive</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>FrameworkPath</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>HostFlags</NAME><VALUE>All</VALUE></SETTING>
+                    </SETTING>
+                    <SETTING>
+                        <SETTING><NAME>SearchPath</NAME>
+                            <SETTING><NAME>Path</NAME><VALUE>..\..\..\src\util</VALUE></SETTING>
+                            <SETTING><NAME>PathFormat</NAME><VALUE>Windows</VALUE></SETTING>
+                            <SETTING><NAME>PathRoot</NAME><VALUE>Project</VALUE></SETTING>
+                        </SETTING>
+                        <SETTING><NAME>Recursive</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>FrameworkPath</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>HostFlags</NAME><VALUE>All</VALUE></SETTING>
+                    </SETTING>
+                    <SETTING>
+                        <SETTING><NAME>SearchPath</NAME>
+                            <SETTING><NAME>Path</NAME><VALUE>..\..\..\samples\hcs08</VALUE></SETTING>
+                            <SETTING><NAME>PathFormat</NAME><VALUE>Windows</VALUE></SETTING>
+                            <SETTING><NAME>PathRoot</NAME><VALUE>Project</VALUE></SETTING>
+                        </SETTING>
+                        <SETTING><NAME>Recursive</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>FrameworkPath</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>HostFlags</NAME><VALUE>All</VALUE></SETTING>
+                    </SETTING>
+                    <SETTING>
+                        <SETTING><NAME>SearchPath</NAME>
+                            <SETTING><NAME>Path</NAME><VALUE>..\..\..\include</VALUE></SETTING>
+                            <SETTING><NAME>PathFormat</NAME><VALUE>Windows</VALUE></SETTING>
+                            <SETTING><NAME>PathRoot</NAME><VALUE>Project</VALUE></SETTING>
+                        </SETTING>
+                        <SETTING><NAME>Recursive</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>FrameworkPath</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>HostFlags</NAME><VALUE>All</VALUE></SETTING>
+                    </SETTING>
+                    <SETTING>
+                        <SETTING><NAME>SearchPath</NAME>
+                            <SETTING><NAME>Path</NAME><VALUE>..\..\..</VALUE></SETTING>
+                            <SETTING><NAME>PathFormat</NAME><VALUE>Windows</VALUE></SETTING>
+                            <SETTING><NAME>PathRoot</NAME><VALUE>Project</VALUE></SETTING>
+                        </SETTING>
+                        <SETTING><NAME>Recursive</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>FrameworkPath</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>HostFlags</NAME><VALUE>All</VALUE></SETTING>
+                    </SETTING>
+                    <SETTING>
+                        <SETTING><NAME>SearchPath</NAME>
+                            <SETTING><NAME>Path</NAME><VALUE>..\..\..\include\xbee</VALUE></SETTING>
+                            <SETTING><NAME>PathFormat</NAME><VALUE>Windows</VALUE></SETTING>
+                            <SETTING><NAME>PathRoot</NAME><VALUE>Project</VALUE></SETTING>
+                        </SETTING>
+                        <SETTING><NAME>Recursive</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>FrameworkPath</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>HostFlags</NAME><VALUE>All</VALUE></SETTING>
+                    </SETTING>
+                    <SETTING>
+                        <SETTING><NAME>SearchPath</NAME>
+                            <SETTING><NAME>Path</NAME><VALUE>..\..\..\include\zigbee</VALUE></SETTING>
+                            <SETTING><NAME>PathFormat</NAME><VALUE>Windows</VALUE></SETTING>
+                            <SETTING><NAME>PathRoot</NAME><VALUE>Project</VALUE></SETTING>
+                        </SETTING>
+                        <SETTING><NAME>Recursive</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>FrameworkPath</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>HostFlags</NAME><VALUE>All</VALUE></SETTING>
+                    </SETTING>
+                    <SETTING>
+                        <SETTING><NAME>SearchPath</NAME>
+                            <SETTING><NAME>Path</NAME><VALUE>..\..\..\include\wpan</VALUE></SETTING>
+                            <SETTING><NAME>PathFormat</NAME><VALUE>Windows</VALUE></SETTING>
+                            <SETTING><NAME>PathRoot</NAME><VALUE>Project</VALUE></SETTING>
+                        </SETTING>
+                        <SETTING><NAME>Recursive</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>FrameworkPath</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>HostFlags</NAME><VALUE>All</VALUE></SETTING>
+                    </SETTING>
+                    <SETTING>
+                        <SETTING><NAME>SearchPath</NAME>
+                            <SETTING><NAME>Path</NAME><VALUE>..\..\..\doxygen</VALUE></SETTING>
+                            <SETTING><NAME>PathFormat</NAME><VALUE>Windows</VALUE></SETTING>
+                            <SETTING><NAME>PathRoot</NAME><VALUE>Project</VALUE></SETTING>
+                        </SETTING>
+                        <SETTING><NAME>Recursive</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>FrameworkPath</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>HostFlags</NAME><VALUE>All</VALUE></SETTING>
+                    </SETTING>
+                    <SETTING>
+                        <SETTING><NAME>SearchPath</NAME>
+                            <SETTING><NAME>Path</NAME><VALUE>..\..\..\samples\common</VALUE></SETTING>
+                            <SETTING><NAME>PathFormat</NAME><VALUE>Windows</VALUE></SETTING>
+                            <SETTING><NAME>PathRoot</NAME><VALUE>Project</VALUE></SETTING>
+                        </SETTING>
+                        <SETTING><NAME>Recursive</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>FrameworkPath</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>HostFlags</NAME><VALUE>All</VALUE></SETTING>
+                    </SETTING>
+                    <SETTING>
+                        <SETTING><NAME>SearchPath</NAME>
+                            <SETTING><NAME>Path</NAME><VALUE>..\Shared</VALUE></SETTING>
+                            <SETTING><NAME>PathFormat</NAME><VALUE>Windows</VALUE></SETTING>
+                            <SETTING><NAME>PathRoot</NAME><VALUE>Project</VALUE></SETTING>
+                        </SETTING>
+                        <SETTING><NAME>Recursive</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>FrameworkPath</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>HostFlags</NAME><VALUE>All</VALUE></SETTING>
+                    </SETTING>
+                    <SETTING>
+                        <SETTING><NAME>SearchPath</NAME>
+                            <SETTING><NAME>Path</NAME><VALUE>..\..\util</VALUE></SETTING>
+                            <SETTING><NAME>PathFormat</NAME><VALUE>Windows</VALUE></SETTING>
+                            <SETTING><NAME>PathRoot</NAME><VALUE>Project</VALUE></SETTING>
+                        </SETTING>
+                        <SETTING><NAME>Recursive</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>FrameworkPath</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>HostFlags</NAME><VALUE>All</VALUE></SETTING>
+                    </SETTING>
+                    <SETTING>
+                        <SETTING><NAME>SearchPath</NAME>
+                            <SETTING><NAME>Path</NAME><VALUE>..\..</VALUE></SETTING>
+                            <SETTING><NAME>PathFormat</NAME><VALUE>Windows</VALUE></SETTING>
+                            <SETTING><NAME>PathRoot</NAME><VALUE>Project</VALUE></SETTING>
+                        </SETTING>
+                        <SETTING><NAME>Recursive</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>FrameworkPath</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>HostFlags</NAME><VALUE>All</VALUE></SETTING>
+                    </SETTING>
+                </SETTING>
+                <SETTING><NAME>SystemSearchPaths</NAME>
+                    <SETTING>
+                        <SETTING><NAME>SearchPath</NAME>
+                            <SETTING><NAME>Path</NAME><VALUE>lib\hc08c\device\include</VALUE></SETTING>
+                            <SETTING><NAME>PathFormat</NAME><VALUE>Windows</VALUE></SETTING>
+                            <SETTING><NAME>PathRoot</NAME><VALUE>CodeWarrior</VALUE></SETTING>
+                        </SETTING>
+                        <SETTING><NAME>Recursive</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>FrameworkPath</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>HostFlags</NAME><VALUE>All</VALUE></SETTING>
+                    </SETTING>
+                    <SETTING>
+                        <SETTING><NAME>SearchPath</NAME>
+                            <SETTING><NAME>Path</NAME><VALUE>lib\hc08c\device\asm_include</VALUE></SETTING>
+                            <SETTING><NAME>PathFormat</NAME><VALUE>Windows</VALUE></SETTING>
+                            <SETTING><NAME>PathRoot</NAME><VALUE>CodeWarrior</VALUE></SETTING>
+                        </SETTING>
+                        <SETTING><NAME>Recursive</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>FrameworkPath</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>HostFlags</NAME><VALUE>All</VALUE></SETTING>
+                    </SETTING>
+                    <SETTING>
+                        <SETTING><NAME>SearchPath</NAME>
+                            <SETTING><NAME>Path</NAME><VALUE>lib\HC08c\include</VALUE></SETTING>
+                            <SETTING><NAME>PathFormat</NAME><VALUE>Windows</VALUE></SETTING>
+                            <SETTING><NAME>PathRoot</NAME><VALUE>CodeWarrior</VALUE></SETTING>
+                        </SETTING>
+                        <SETTING><NAME>Recursive</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>FrameworkPath</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>HostFlags</NAME><VALUE>All</VALUE></SETTING>
+                    </SETTING>
+                </SETTING>
+
+                <!-- Settings for "Target Settings" panel -->
+                <SETTING><NAME>Linker</NAME><VALUE>Linker for HC08</VALUE></SETTING>
+                <SETTING><NAME>PreLinker</NAME><VALUE></VALUE></SETTING>
+                <SETTING><NAME>PostLinker</NAME><VALUE></VALUE></SETTING>
+                <SETTING><NAME>Targetname</NAME><VALUE>Standard</VALUE></SETTING>
+                <SETTING><NAME>OutputDirectory</NAME>
+                    <SETTING><NAME>Path</NAME><VALUE>bin</VALUE></SETTING>
+                    <SETTING><NAME>PathFormat</NAME><VALUE>Windows</VALUE></SETTING>
+                    <SETTING><NAME>PathRoot</NAME><VALUE>Project</VALUE></SETTING>
+                </SETTING>
+                <SETTING><NAME>SaveEntriesUsingRelativePaths</NAME><VALUE>false</VALUE></SETTING>
+
+                <!-- Settings for "File Mappings" panel -->
+                <SETTING><NAME>FileMappings</NAME>
+                    <SETTING>
+                        <SETTING><NAME>FileType</NAME><VALUE>TEXT</VALUE></SETTING>
+                        <SETTING><NAME>FileExtension</NAME><VALUE>.a08</VALUE></SETTING>
+                        <SETTING><NAME>Compiler</NAME><VALUE>Assembler for HC08</VALUE></SETTING>
+                        <SETTING><NAME>EditLanguage</NAME><VALUE>mwe_asm_HC08</VALUE></SETTING>
+                        <SETTING><NAME>Precompile</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>Launchable</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>ResourceFile</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>IgnoredByMake</NAME><VALUE>false</VALUE></SETTING>
+                    </SETTING>
+                    <SETTING>
+                        <SETTING><NAME>FileType</NAME><VALUE>TEXT</VALUE></SETTING>
+                        <SETTING><NAME>FileExtension</NAME><VALUE>.asm</VALUE></SETTING>
+                        <SETTING><NAME>Compiler</NAME><VALUE>Assembler for HC08</VALUE></SETTING>
+                        <SETTING><NAME>EditLanguage</NAME><VALUE>mwe_asm_HC08</VALUE></SETTING>
+                        <SETTING><NAME>Precompile</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>Launchable</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>ResourceFile</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>IgnoredByMake</NAME><VALUE>false</VALUE></SETTING>
+                    </SETTING>
+                    <SETTING>
+                        <SETTING><NAME>FileType</NAME><VALUE>TEXT</VALUE></SETTING>
+                        <SETTING><NAME>FileExtension</NAME><VALUE>.bbl</VALUE></SETTING>
+                        <SETTING><NAME>Compiler</NAME><VALUE></VALUE></SETTING>
+                        <SETTING><NAME>EditLanguage</NAME><VALUE>mwe_bbl</VALUE></SETTING>
+                        <SETTING><NAME>Precompile</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>Launchable</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>ResourceFile</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>IgnoredByMake</NAME><VALUE>false</VALUE></SETTING>
+                    </SETTING>
+                    <SETTING>
+                        <SETTING><NAME>FileType</NAME><VALUE>TEXT</VALUE></SETTING>
+                        <SETTING><NAME>FileExtension</NAME><VALUE>.c</VALUE></SETTING>
+                        <SETTING><NAME>Compiler</NAME><VALUE>Compiler for HC08</VALUE></SETTING>
+                        <SETTING><NAME>EditLanguage</NAME><VALUE>mwe_cpp_HC08</VALUE></SETTING>
+                        <SETTING><NAME>Precompile</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>Launchable</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>ResourceFile</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>IgnoredByMake</NAME><VALUE>false</VALUE></SETTING>
+                    </SETTING>
+                    <SETTING>
+                        <SETTING><NAME>FileType</NAME><VALUE>TEXT</VALUE></SETTING>
+                        <SETTING><NAME>FileExtension</NAME><VALUE>.c08</VALUE></SETTING>
+                        <SETTING><NAME>Compiler</NAME><VALUE>Compiler for HC08</VALUE></SETTING>
+                        <SETTING><NAME>EditLanguage</NAME><VALUE>mwe_cpp_HC08</VALUE></SETTING>
+                        <SETTING><NAME>Precompile</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>Launchable</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>ResourceFile</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>IgnoredByMake</NAME><VALUE>false</VALUE></SETTING>
+                    </SETTING>
+                    <SETTING>
+                        <SETTING><NAME>FileType</NAME><VALUE>TEXT</VALUE></SETTING>
+                        <SETTING><NAME>FileExtension</NAME><VALUE>.cc</VALUE></SETTING>
+                        <SETTING><NAME>Compiler</NAME><VALUE>Compiler for HC08</VALUE></SETTING>
+                        <SETTING><NAME>EditLanguage</NAME><VALUE>mwe_cpp_HC08</VALUE></SETTING>
+                        <SETTING><NAME>Precompile</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>Launchable</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>ResourceFile</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>IgnoredByMake</NAME><VALUE>false</VALUE></SETTING>
+                    </SETTING>
+                    <SETTING>
+                        <SETTING><NAME>FileType</NAME><VALUE>TEXT</VALUE></SETTING>
+                        <SETTING><NAME>FileExtension</NAME><VALUE>.cmd</VALUE></SETTING>
+                        <SETTING><NAME>Compiler</NAME><VALUE></VALUE></SETTING>
+                        <SETTING><NAME>EditLanguage</NAME><VALUE></VALUE></SETTING>
+                        <SETTING><NAME>Precompile</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>Launchable</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>ResourceFile</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>IgnoredByMake</NAME><VALUE>true</VALUE></SETTING>
+                    </SETTING>
+                    <SETTING>
+                        <SETTING><NAME>FileType</NAME><VALUE>TEXT</VALUE></SETTING>
+                        <SETTING><NAME>FileExtension</NAME><VALUE>.cp</VALUE></SETTING>
+                        <SETTING><NAME>Compiler</NAME><VALUE>Compiler for HC08</VALUE></SETTING>
+                        <SETTING><NAME>EditLanguage</NAME><VALUE>mwe_cpp_HC08</VALUE></SETTING>
+                        <SETTING><NAME>Precompile</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>Launchable</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>ResourceFile</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>IgnoredByMake</NAME><VALUE>false</VALUE></SETTING>
+                    </SETTING>
+                    <SETTING>
+                        <SETTING><NAME>FileType</NAME><VALUE>TEXT</VALUE></SETTING>
+                        <SETTING><NAME>FileExtension</NAME><VALUE>.cpp</VALUE></SETTING>
+                        <SETTING><NAME>Compiler</NAME><VALUE>Compiler for HC08</VALUE></SETTING>
+                        <SETTING><NAME>EditLanguage</NAME><VALUE>mwe_cpp_HC08</VALUE></SETTING>
+                        <SETTING><NAME>Precompile</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>Launchable</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>ResourceFile</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>IgnoredByMake</NAME><VALUE>false</VALUE></SETTING>
+                    </SETTING>
+                    <SETTING>
+                        <SETTING><NAME>FileType</NAME><VALUE>TEXT</VALUE></SETTING>
+                        <SETTING><NAME>FileExtension</NAME><VALUE>.cxx</VALUE></SETTING>
+                        <SETTING><NAME>Compiler</NAME><VALUE>Compiler for HC08</VALUE></SETTING>
+                        <SETTING><NAME>EditLanguage</NAME><VALUE>mwe_cpp_HC08</VALUE></SETTING>
+                        <SETTING><NAME>Precompile</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>Launchable</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>ResourceFile</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>IgnoredByMake</NAME><VALUE>false</VALUE></SETTING>
+                    </SETTING>
+                    <SETTING>
+                        <SETTING><NAME>FileType</NAME><VALUE>TEXT</VALUE></SETTING>
+                        <SETTING><NAME>FileExtension</NAME><VALUE>.dbg</VALUE></SETTING>
+                        <SETTING><NAME>Compiler</NAME><VALUE>Assembler for HC08</VALUE></SETTING>
+                        <SETTING><NAME>EditLanguage</NAME><VALUE>mwe_asm_HC08</VALUE></SETTING>
+                        <SETTING><NAME>Precompile</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>Launchable</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>ResourceFile</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>IgnoredByMake</NAME><VALUE>true</VALUE></SETTING>
+                    </SETTING>
+                    <SETTING>
+                        <SETTING><NAME>FileType</NAME><VALUE>TEXT</VALUE></SETTING>
+                        <SETTING><NAME>FileExtension</NAME><VALUE>.equ</VALUE></SETTING>
+                        <SETTING><NAME>Compiler</NAME><VALUE>Assembler for HC08</VALUE></SETTING>
+                        <SETTING><NAME>EditLanguage</NAME><VALUE>mwe_asm_HC08</VALUE></SETTING>
+                        <SETTING><NAME>Precompile</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>Launchable</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>ResourceFile</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>IgnoredByMake</NAME><VALUE>true</VALUE></SETTING>
+                    </SETTING>
+                    <SETTING>
+                        <SETTING><NAME>FileType</NAME><VALUE>TEXT</VALUE></SETTING>
+                        <SETTING><NAME>FileExtension</NAME><VALUE>.h</VALUE></SETTING>
+                        <SETTING><NAME>Compiler</NAME><VALUE>Compiler for HC08</VALUE></SETTING>
+                        <SETTING><NAME>EditLanguage</NAME><VALUE>mwe_cpp_HC08</VALUE></SETTING>
+                        <SETTING><NAME>Precompile</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>Launchable</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>ResourceFile</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>IgnoredByMake</NAME><VALUE>true</VALUE></SETTING>
+                    </SETTING>
+                    <SETTING>
+                        <SETTING><NAME>FileType</NAME><VALUE>TEXT</VALUE></SETTING>
+                        <SETTING><NAME>FileExtension</NAME><VALUE>.hpp</VALUE></SETTING>
+                        <SETTING><NAME>Compiler</NAME><VALUE>Compiler for HC08</VALUE></SETTING>
+                        <SETTING><NAME>EditLanguage</NAME><VALUE>mwe_cpp_HC08</VALUE></SETTING>
+                        <SETTING><NAME>Precompile</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>Launchable</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>ResourceFile</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>IgnoredByMake</NAME><VALUE>true</VALUE></SETTING>
+                    </SETTING>
+                    <SETTING>
+                        <SETTING><NAME>FileType</NAME><VALUE>TEXT</VALUE></SETTING>
+                        <SETTING><NAME>FileExtension</NAME><VALUE>.hxx</VALUE></SETTING>
+                        <SETTING><NAME>Compiler</NAME><VALUE>Compiler for HC08</VALUE></SETTING>
+                        <SETTING><NAME>EditLanguage</NAME><VALUE>mwe_cpp_HC08</VALUE></SETTING>
+                        <SETTING><NAME>Precompile</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>Launchable</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>ResourceFile</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>IgnoredByMake</NAME><VALUE>true</VALUE></SETTING>
+                    </SETTING>
+                    <SETTING>
+                        <SETTING><NAME>FileType</NAME><VALUE>TEXT</VALUE></SETTING>
+                        <SETTING><NAME>FileExtension</NAME><VALUE>.inc</VALUE></SETTING>
+                        <SETTING><NAME>Compiler</NAME><VALUE>Assembler for HC08</VALUE></SETTING>
+                        <SETTING><NAME>EditLanguage</NAME><VALUE>mwe_asm_HC08</VALUE></SETTING>
+                        <SETTING><NAME>Precompile</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>Launchable</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>ResourceFile</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>IgnoredByMake</NAME><VALUE>true</VALUE></SETTING>
+                    </SETTING>
+                    <SETTING>
+                        <SETTING><NAME>FileType</NAME><VALUE>TEXT</VALUE></SETTING>
+                        <SETTING><NAME>FileExtension</NAME><VALUE>.ini</VALUE></SETTING>
+                        <SETTING><NAME>Compiler</NAME><VALUE></VALUE></SETTING>
+                        <SETTING><NAME>EditLanguage</NAME><VALUE></VALUE></SETTING>
+                        <SETTING><NAME>Precompile</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>Launchable</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>ResourceFile</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>IgnoredByMake</NAME><VALUE>true</VALUE></SETTING>
+                    </SETTING>
+                    <SETTING>
+                        <SETTING><NAME>FileType</NAME><VALUE>TEXT</VALUE></SETTING>
+                        <SETTING><NAME>FileExtension</NAME><VALUE>.lst</VALUE></SETTING>
+                        <SETTING><NAME>Compiler</NAME><VALUE></VALUE></SETTING>
+                        <SETTING><NAME>EditLanguage</NAME><VALUE>mwe_imp_HC08</VALUE></SETTING>
+                        <SETTING><NAME>Precompile</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>Launchable</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>ResourceFile</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>IgnoredByMake</NAME><VALUE>true</VALUE></SETTING>
+                    </SETTING>
+                    <SETTING>
+                        <SETTING><NAME>FileType</NAME><VALUE>TEXT</VALUE></SETTING>
+                        <SETTING><NAME>FileExtension</NAME><VALUE>.map</VALUE></SETTING>
+                        <SETTING><NAME>Compiler</NAME><VALUE></VALUE></SETTING>
+                        <SETTING><NAME>EditLanguage</NAME><VALUE></VALUE></SETTING>
+                        <SETTING><NAME>Precompile</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>Launchable</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>ResourceFile</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>IgnoredByMake</NAME><VALUE>true</VALUE></SETTING>
+                    </SETTING>
+                    <SETTING>
+                        <SETTING><NAME>FileType</NAME><VALUE>TEXT</VALUE></SETTING>
+                        <SETTING><NAME>FileExtension</NAME><VALUE>.oil</VALUE></SETTING>
+                        <SETTING><NAME>Compiler</NAME><VALUE>OSEK Sysgen</VALUE></SETTING>
+                        <SETTING><NAME>EditLanguage</NAME><VALUE></VALUE></SETTING>
+                        <SETTING><NAME>Precompile</NAME><VALUE>true</VALUE></SETTING>
+                        <SETTING><NAME>Launchable</NAME><VALUE>true</VALUE></SETTING>
+                        <SETTING><NAME>ResourceFile</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>IgnoredByMake</NAME><VALUE>false</VALUE></SETTING>
+                    </SETTING>
+                    <SETTING>
+                        <SETTING><NAME>FileType</NAME><VALUE>TEXT</VALUE></SETTING>
+                        <SETTING><NAME>FileExtension</NAME><VALUE>.pre</VALUE></SETTING>
+                        <SETTING><NAME>Compiler</NAME><VALUE></VALUE></SETTING>
+                        <SETTING><NAME>EditLanguage</NAME><VALUE>mwe_cpp_HC08</VALUE></SETTING>
+                        <SETTING><NAME>Precompile</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>Launchable</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>ResourceFile</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>IgnoredByMake</NAME><VALUE>true</VALUE></SETTING>
+                    </SETTING>
+                    <SETTING>
+                        <SETTING><NAME>FileType</NAME><VALUE>TEXT</VALUE></SETTING>
+                        <SETTING><NAME>FileExtension</NAME><VALUE>.prm</VALUE></SETTING>
+                        <SETTING><NAME>Compiler</NAME><VALUE></VALUE></SETTING>
+                        <SETTING><NAME>EditLanguage</NAME><VALUE>mwe_prm</VALUE></SETTING>
+                        <SETTING><NAME>Precompile</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>Launchable</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>ResourceFile</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>IgnoredByMake</NAME><VALUE>false</VALUE></SETTING>
+                    </SETTING>
+                    <SETTING>
+                        <SETTING><NAME>FileType</NAME><VALUE>TEXT</VALUE></SETTING>
+                        <SETTING><NAME>FileExtension</NAME><VALUE>.s</VALUE></SETTING>
+                        <SETTING><NAME>Compiler</NAME><VALUE>Assembler for HC08</VALUE></SETTING>
+                        <SETTING><NAME>EditLanguage</NAME><VALUE>mwe_asm_HC08</VALUE></SETTING>
+                        <SETTING><NAME>Precompile</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>Launchable</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>ResourceFile</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>IgnoredByMake</NAME><VALUE>false</VALUE></SETTING>
+                    </SETTING>
+                    <SETTING>
+                        <SETTING><NAME>FileType</NAME><VALUE>TEXT</VALUE></SETTING>
+                        <SETTING><NAME>FileExtension</NAME><VALUE>.s1</VALUE></SETTING>
+                        <SETTING><NAME>Compiler</NAME><VALUE></VALUE></SETTING>
+                        <SETTING><NAME>EditLanguage</NAME><VALUE></VALUE></SETTING>
+                        <SETTING><NAME>Precompile</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>Launchable</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>ResourceFile</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>IgnoredByMake</NAME><VALUE>true</VALUE></SETTING>
+                    </SETTING>
+                    <SETTING>
+                        <SETTING><NAME>FileType</NAME><VALUE>TEXT</VALUE></SETTING>
+                        <SETTING><NAME>FileExtension</NAME><VALUE>.s19</VALUE></SETTING>
+                        <SETTING><NAME>Compiler</NAME><VALUE></VALUE></SETTING>
+                        <SETTING><NAME>EditLanguage</NAME><VALUE></VALUE></SETTING>
+                        <SETTING><NAME>Precompile</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>Launchable</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>ResourceFile</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>IgnoredByMake</NAME><VALUE>true</VALUE></SETTING>
+                    </SETTING>
+                    <SETTING>
+                        <SETTING><NAME>FileType</NAME><VALUE>TEXT</VALUE></SETTING>
+                        <SETTING><NAME>FileExtension</NAME><VALUE>.sgm</VALUE></SETTING>
+                        <SETTING><NAME>Compiler</NAME><VALUE>Compiler for HC08</VALUE></SETTING>
+                        <SETTING><NAME>EditLanguage</NAME><VALUE>mwe_cpp_HC08</VALUE></SETTING>
+                        <SETTING><NAME>Precompile</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>Launchable</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>ResourceFile</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>IgnoredByMake</NAME><VALUE>true</VALUE></SETTING>
+                    </SETTING>
+                    <SETTING>
+                        <SETTING><NAME>FileType</NAME><VALUE>TEXT</VALUE></SETTING>
+                        <SETTING><NAME>FileExtension</NAME><VALUE>.sx</VALUE></SETTING>
+                        <SETTING><NAME>Compiler</NAME><VALUE></VALUE></SETTING>
+                        <SETTING><NAME>EditLanguage</NAME><VALUE></VALUE></SETTING>
+                        <SETTING><NAME>Precompile</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>Launchable</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>ResourceFile</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>IgnoredByMake</NAME><VALUE>true</VALUE></SETTING>
+                    </SETTING>
+                    <SETTING>
+                        <SETTING><NAME>FileType</NAME><VALUE>TEXT</VALUE></SETTING>
+                        <SETTING><NAME>FileExtension</NAME><VALUE>.txt</VALUE></SETTING>
+                        <SETTING><NAME>Compiler</NAME><VALUE></VALUE></SETTING>
+                        <SETTING><NAME>EditLanguage</NAME><VALUE></VALUE></SETTING>
+                        <SETTING><NAME>Precompile</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>Launchable</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>ResourceFile</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>IgnoredByMake</NAME><VALUE>true</VALUE></SETTING>
+                    </SETTING>
+                    <SETTING>
+                        <SETTING><NAME>FileExtension</NAME><VALUE>.a</VALUE></SETTING>
+                        <SETTING><NAME>Compiler</NAME><VALUE>Importer for HC08</VALUE></SETTING>
+                        <SETTING><NAME>EditLanguage</NAME><VALUE></VALUE></SETTING>
+                        <SETTING><NAME>Precompile</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>Launchable</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>ResourceFile</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>IgnoredByMake</NAME><VALUE>false</VALUE></SETTING>
+                    </SETTING>
+                    <SETTING>
+                        <SETTING><NAME>FileExtension</NAME><VALUE>.abs</VALUE></SETTING>
+                        <SETTING><NAME>Compiler</NAME><VALUE>Importer for HC08</VALUE></SETTING>
+                        <SETTING><NAME>EditLanguage</NAME><VALUE></VALUE></SETTING>
+                        <SETTING><NAME>Precompile</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>Launchable</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>ResourceFile</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>IgnoredByMake</NAME><VALUE>false</VALUE></SETTING>
+                    </SETTING>
+                    <SETTING>
+                        <SETTING><NAME>FileExtension</NAME><VALUE>.elf</VALUE></SETTING>
+                        <SETTING><NAME>Compiler</NAME><VALUE>Importer for HC08</VALUE></SETTING>
+                        <SETTING><NAME>EditLanguage</NAME><VALUE></VALUE></SETTING>
+                        <SETTING><NAME>Precompile</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>Launchable</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>ResourceFile</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>IgnoredByMake</NAME><VALUE>false</VALUE></SETTING>
+                    </SETTING>
+                    <SETTING>
+                        <SETTING><NAME>FileExtension</NAME><VALUE>.lib</VALUE></SETTING>
+                        <SETTING><NAME>Compiler</NAME><VALUE>Importer for HC08</VALUE></SETTING>
+                        <SETTING><NAME>EditLanguage</NAME><VALUE></VALUE></SETTING>
+                        <SETTING><NAME>Precompile</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>Launchable</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>ResourceFile</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>IgnoredByMake</NAME><VALUE>false</VALUE></SETTING>
+                    </SETTING>
+                    <SETTING>
+                        <SETTING><NAME>FileExtension</NAME><VALUE>.o</VALUE></SETTING>
+                        <SETTING><NAME>Compiler</NAME><VALUE>Importer for HC08</VALUE></SETTING>
+                        <SETTING><NAME>EditLanguage</NAME><VALUE></VALUE></SETTING>
+                        <SETTING><NAME>Precompile</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>Launchable</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>ResourceFile</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>IgnoredByMake</NAME><VALUE>false</VALUE></SETTING>
+                    </SETTING>
+                    <SETTING>
+                        <SETTING><NAME>FileExtension</NAME><VALUE>.obj</VALUE></SETTING>
+                        <SETTING><NAME>Compiler</NAME><VALUE>Importer for HC08</VALUE></SETTING>
+                        <SETTING><NAME>EditLanguage</NAME><VALUE></VALUE></SETTING>
+                        <SETTING><NAME>Precompile</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>Launchable</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>ResourceFile</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>IgnoredByMake</NAME><VALUE>false</VALUE></SETTING>
+                    </SETTING>
+                    <SETTING>
+                        <SETTING><NAME>FileExtension</NAME><VALUE>.pdf</VALUE></SETTING>
+                        <SETTING><NAME>Compiler</NAME><VALUE></VALUE></SETTING>
+                        <SETTING><NAME>EditLanguage</NAME><VALUE></VALUE></SETTING>
+                        <SETTING><NAME>Precompile</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>Launchable</NAME><VALUE>true</VALUE></SETTING>
+                        <SETTING><NAME>ResourceFile</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>IgnoredByMake</NAME><VALUE>true</VALUE></SETTING>
+                    </SETTING>
+                    <SETTING>
+                        <SETTING><NAME>FileExtension</NAME><VALUE>.sym</VALUE></SETTING>
+                        <SETTING><NAME>Compiler</NAME><VALUE></VALUE></SETTING>
+                        <SETTING><NAME>EditLanguage</NAME><VALUE></VALUE></SETTING>
+                        <SETTING><NAME>Precompile</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>Launchable</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>ResourceFile</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>IgnoredByMake</NAME><VALUE>false</VALUE></SETTING>
+                    </SETTING>
+                    <SETTING>
+                        <SETTING><NAME>FileExtension</NAME><VALUE></VALUE></SETTING>
+                        <SETTING><NAME>Compiler</NAME><VALUE></VALUE></SETTING>
+                        <SETTING><NAME>EditLanguage</NAME><VALUE></VALUE></SETTING>
+                        <SETTING><NAME>Precompile</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>Launchable</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>ResourceFile</NAME><VALUE>false</VALUE></SETTING>
+                        <SETTING><NAME>IgnoredByMake</NAME><VALUE>true</VALUE></SETTING>
+                    </SETTING>
+                </SETTING>
+
+                <!-- Settings for "Build Extras" panel -->
+                <SETTING><NAME>CacheModDates</NAME><VALUE>true</VALUE></SETTING>
+                <SETTING><NAME>DumpBrowserInfo</NAME><VALUE>false</VALUE></SETTING>
+                <SETTING><NAME>CacheSubprojects</NAME><VALUE>true</VALUE></SETTING>
+                <SETTING><NAME>UseThirdPartyDebugger</NAME><VALUE>true</VALUE></SETTING>
+                <SETTING><NAME>BrowserGenerator</NAME><VALUE>1</VALUE></SETTING>
+                <SETTING><NAME>DebuggerAppPath</NAME>
+                    <SETTING><NAME>Path</NAME><VALUE>prog\hiwave.exe</VALUE></SETTING>
+                    <SETTING><NAME>PathFormat</NAME><VALUE>Windows</VALUE></SETTING>
+                    <SETTING><NAME>PathRoot</NAME><VALUE>CodeWarrior</VALUE></SETTING>
+                </SETTING>
+                <SETTING><NAME>DebuggerCmdLineArgs</NAME><VALUE>%targetFilePath -Prod=%projectFileDir\BDM_P&amp;E_Multilink_CyclonePro.ini -instance=p&amp;ebdm</VALUE></SETTING>
+                <SETTING><NAME>DebuggerWorkingDir</NAME>
+                    <SETTING><NAME>Path</NAME><VALUE></VALUE></SETTING>
+                    <SETTING><NAME>PathFormat</NAME><VALUE>Windows</VALUE></SETTING>
+                    <SETTING><NAME>PathRoot</NAME><VALUE>Project</VALUE></SETTING>
+                </SETTING>
+                <SETTING><NAME>CodeCompletionPrefixFileName</NAME><VALUE></VALUE></SETTING>
+                <SETTING><NAME>CodeCompletionMacroFileName</NAME><VALUE></VALUE></SETTING>
+
+                <!-- Settings for "Custom Keywords" panel -->
+                <SETTING><NAME>CustomColor1</NAME>
+                    <SETTING><NAME>Red</NAME><VALUE>0</VALUE></SETTING>
+                    <SETTING><NAME>Green</NAME><VALUE>32767</VALUE></SETTING>
+                    <SETTING><NAME>Blue</NAME><VALUE>0</VALUE></SETTING>
+                </SETTING>
+                <SETTING><NAME>CustomColor2</NAME>
+                    <SETTING><NAME>Red</NAME><VALUE>0</VALUE></SETTING>
+                    <SETTING><NAME>Green</NAME><VALUE>32767</VALUE></SETTING>
+                    <SETTING><NAME>Blue</NAME><VALUE>0</VALUE></SETTING>
+                </SETTING>
+                <SETTING><NAME>CustomColor3</NAME>
+                    <SETTING><NAME>Red</NAME><VALUE>0</VALUE></SETTING>
+                    <SETTING><NAME>Green</NAME><VALUE>32767</VALUE></SETTING>
+                    <SETTING><NAME>Blue</NAME><VALUE>0</VALUE></SETTING>
+                </SETTING>
+                <SETTING><NAME>CustomColor4</NAME>
+                    <SETTING><NAME>Red</NAME><VALUE>0</VALUE></SETTING>
+                    <SETTING><NAME>Green</NAME><VALUE>32767</VALUE></SETTING>
+                    <SETTING><NAME>Blue</NAME><VALUE>0</VALUE></SETTING>
+                </SETTING>
+                <PANELDATA><NAME>PEOptions</NAME><VALUE>
+                    0100
+                </VALUE></PANELDATA>
+
+                <!-- Settings for "Panel for Assembler for HC08" panel -->
+                <SETTING><NAME>Panel for Assembler for HC08</NAME>
+                    <SETTING><NAME>Options</NAME><VALUE>-Cs08 -Ms </VALUE></SETTING>
+                    <SETTING><NAME>UseDecoder</NAME><VALUE>0</VALUE></SETTING>
+                    <SETTING><NAME>EchoCommandLine</NAME><VALUE>0</VALUE></SETTING>
+                </SETTING>
+
+                <!-- Settings for "Panel for Burner for HC08" panel -->
+                <SETTING><NAME>Panel for Burner for HC08</NAME>
+                    <SETTING><NAME>Options</NAME><VALUE></VALUE></SETTING>
+                    <SETTING><NAME>EchoCommandLine</NAME><VALUE>0</VALUE></SETTING>
+                    <SETTING><NAME>BurnerDialogdata</NAME><VALUE></VALUE></SETTING>
+                </SETTING>
+
+                <!-- Settings for "Panel for Compiler for HC08" panel -->
+                <SETTING><NAME>Panel for Compiler for HC08</NAME>
+                    <SETTING><NAME>Options</NAME><VALUE>-AddInclbuild_defines.h -Cs08 -D__NO_FLOAT__ -Ms -WmsgSd1420 -WmsgSd3303 -WmsgSd4000 -WmsgSd4001</VALUE></SETTING>
+                    <SETTING><NAME>UseDecoder</NAME><VALUE>0</VALUE></SETTING>
+                    <SETTING><NAME>EchoCommandLine</NAME><VALUE>0</VALUE></SETTING>
+                </SETTING>
+
+                <!-- Settings for "Panel for Importer for HC08" panel -->
+                <SETTING><NAME>Panel for Importer for HC08</NAME>
+                    <SETTING><NAME>Options</NAME><VALUE></VALUE></SETTING>
+                    <SETTING><NAME>EchoCommandLine</NAME><VALUE>0</VALUE></SETTING>
+                </SETTING>
+
+                <!-- Settings for "Panel for Libmaker for HC08" panel -->
+                <SETTING><NAME>Panel for Libmaker for HC08</NAME>
+                    <SETTING><NAME>Options</NAME><VALUE></VALUE></SETTING>
+                    <SETTING><NAME>EchoCommandLine</NAME><VALUE>0</VALUE></SETTING>
+                    <SETTING><NAME>OutputFilename</NAME><VALUE>out.lib</VALUE></SETTING>
+                    <SETTING><NAME>LibGenObjFile</NAME><VALUE>0</VALUE></SETTING>
+                </SETTING>
+
+                <!-- Settings for "Panel for Linker for HC08" panel -->
+                <SETTING><NAME>Panel for Linker for HC08</NAME>
+                    <SETTING><NAME>Options</NAME><VALUE>-COCC=D -WmsgSd1100 -WmsgSd1107 -WmsgSd1912</VALUE></SETTING>
+                    <SETTING><NAME>LinkParameterFilename</NAME><VALUE>Project.prm</VALUE></SETTING>
+                    <SETTING><NAME>EchoCommandLine</NAME><VALUE>0</VALUE></SETTING>
+                    <SETTING><NAME>OutputFilename</NAME><VALUE>t_jslong.abs</VALUE></SETTING>
+                    <SETTING><NAME>UseTemplate</NAME><VALUE>2</VALUE></SETTING>
+                    <SETTING><NAME>PrmTemplateName</NAME><VALUE>mc9s08qe32.prm</VALUE></SETTING>
+                    <SETTING><NAME>RunPreprocessor</NAME><VALUE>0</VALUE></SETTING>
+                </SETTING>
+
+                <!-- Settings for "Panel for Assembler for RS08" panel -->
+                <SETTING><NAME>Panel for Assembler for RS08</NAME>
+                    <SETTING><NAME>Options</NAME><VALUE></VALUE></SETTING>
+                    <SETTING><NAME>UseDecoder</NAME><VALUE>0</VALUE></SETTING>
+                    <SETTING><NAME>EchoCommandLine</NAME><VALUE>0</VALUE></SETTING>
+                </SETTING>
+
+                <!-- Settings for "Panel for Burner for RS08" panel -->
+                <SETTING><NAME>Panel for Burner for RS08</NAME>
+                    <SETTING><NAME>Options</NAME><VALUE></VALUE></SETTING>
+                    <SETTING><NAME>EchoCommandLine</NAME><VALUE>0</VALUE></SETTING>
+                    <SETTING><NAME>BurnerDialogdata</NAME><VALUE></VALUE></SETTING>
+                </SETTING>
+
+                <!-- Settings for "Panel for Compiler for RS08" panel -->
+                <SETTING><NAME>Panel for Compiler for RS08</NAME>
+                    <SETTING><NAME>Options</NAME><VALUE>-D__ONLY_INIT_SP </VALUE></SETTING>
+                    <SETTING><NAME>UseDecoder</NAME><VALUE>0</VALUE></SETTING>
+                    <SETTING><NAME>EchoCommandLine</NAME><VALUE>0</VALUE></SETTING>
+                </SETTING>
+
+                <!-- Settings for "Panel for Importer for RS08" panel -->
+                <SETTING><NAME>Panel for Importer for RS08</NAME>
+                    <SETTING><NAME>Options</NAME><VALUE></VALUE></SETTING>
+                    <SETTING><NAME>EchoCommandLine</NAME><VALUE>0</VALUE></SETTING>
+                </SETTING>
+
+                <!-- Settings for "Panel for Libmaker for RS08" panel -->
+                <SETTING><NAME>Panel for Libmaker for RS08</NAME>
+                    <SETTING><NAME>Options</NAME><VALUE></VALUE></SETTING>
+                    <SETTING><NAME>EchoCommandLine</NAME><VALUE>0</VALUE></SETTING>
+                    <SETTING><NAME>OutputFilename</NAME><VALUE>out.lib</VALUE></SETTING>
+                    <SETTING><NAME>LibGenObjFile</NAME><VALUE>0</VALUE></SETTING>
+                </SETTING>
+
+                <!-- Settings for "Panel for Linker for RS08" panel -->
+                <SETTING><NAME>Panel for Linker for RS08</NAME>
+                    <SETTING><NAME>Options</NAME><VALUE>-WmsgSd1107 </VALUE></SETTING>
+                    <SETTING><NAME>LinkParameterFilename</NAME><VALUE>out.prm</VALUE></SETTING>
+                    <SETTING><NAME>EchoCommandLine</NAME><VALUE>0</VALUE></SETTING>
+                    <SETTING><NAME>OutputFilename</NAME><VALUE>out.abs</VALUE></SETTING>
+                    <SETTING><NAME>UseTemplate</NAME><VALUE>2</VALUE></SETTING>
+                    <SETTING><NAME>PrmTemplateName</NAME><VALUE>default.prm</VALUE></SETTING>
+                    <SETTING><NAME>RunPreprocessor</NAME><VALUE>0</VALUE></SETTING>
+                </SETTING>
+
+                <!-- Settings for "OSEK Sysgen Panel" panel -->
+                <SETTING><NAME>OSEKCompilerPref_PropertyFileName</NAME><VALUE>{Project}gen\osprop.h</VALUE></SETTING>
+                <SETTING><NAME>OSEKCompilerPref_IncludeFileName</NAME><VALUE>{Project}gen\cfg.h</VALUE></SETTING>
+                <SETTING><NAME>OSEKCompilerPref_SourceFileName</NAME><VALUE>{Project}gen\cfg.c</VALUE></SETTING>
+                <SETTING><NAME>OSEKCompilerPref_StkLabelFileName</NAME><VALUE>{Project}gen\stklabel.s</VALUE></SETTING>
+                <SETTING><NAME>OSEKCompilerPref_ORTIFileName</NAME><VALUE>{TargetFile}.ort</VALUE></SETTING>
+                <SETTING><NAME>OSEKCompilerPref_SysGenFileName</NAME><VALUE>{Compiler}osek\shared\bin\sysgen.exe</VALUE></SETTING>
+                <SETTING><NAME>OSEKCompilerPref_OptionFileName</NAME><VALUE></VALUE></SETTING>
+                <SETTING><NAME>OSEKCompilerPref_UserTypesFileName</NAME><VALUE>{Project}Sources\usertypes.h</VALUE></SETTING>
+                <SETTING><NAME>OSEKCompilerPref_PrefixFilePathName</NAME><VALUE>{Project}gen</VALUE></SETTING>
+                <SETTING><NAME>OSEKCompilerPref_IncludePaths</NAME><VALUE></VALUE></SETTING>
+                <SETTING><NAME>OSEKCompilerPref_DisabledMsgs</NAME><VALUE></VALUE></SETTING>
+                <SETTING><NAME>OSEKCompilerPref_OptionLine</NAME><VALUE> -p "{Project}gen\osprop.h" -h "{Project}gen\cfg.h" -c "{Project}gen\cfg.c" -s "{Project}gen\stklabel.s" -o "{TargetFile}.ort" -O "2.1"</VALUE></SETTING>
+                <SETTING><NAME>OSEKCompilerPref_OrtiVersion</NAME><VALUE>2.1</VALUE></SETTING>
+                <SETTING><NAME>OSEKCompilerPref_SuppressWarning</NAME><VALUE>false</VALUE></SETTING>
+                <SETTING><NAME>OSEKCompilerPref_AbsolutePathes</NAME><VALUE>false</VALUE></SETTING>
+                <SETTING><NAME>OSEKCompilerPref_GenerateSingleBackslash</NAME><VALUE>false</VALUE></SETTING>
+
+                <!-- Settings for "M68K Assembler Panel" panel -->
+                <SETTING><NAME>MWAssembler_generate_listing_file</NAME><VALUE>0</VALUE></SETTING>
+                <SETTING><NAME>MWAssembler_bra_l_16</NAME><VALUE>0</VALUE></SETTING>
+                <SETTING><NAME>MWAssembler_prefix</NAME><VALUE></VALUE></SETTING>
+                <SETTING><NAME>MWAssembler_colon</NAME><VALUE>1</VALUE></SETTING>
+                <SETTING><NAME>MWAssembler_period</NAME><VALUE>1</VALUE></SETTING>
+                <SETTING><NAME>MWAssembler_space</NAME><VALUE>1</VALUE></SETTING>
+                <SETTING><NAME>MWAssembler_case_sensitive</NAME><VALUE>1</VALUE></SETTING>
+                <SETTING><NAME>MWAssembler_processor_name</NAME><VALUE>generic</VALUE></SETTING>
+                <SETTING><NAME>MWAssembler_big_endian</NAME><VALUE>0</VALUE></SETTING>
+                <SETTING><NAME>MWAssembler_allow_64_bit</NAME><VALUE>0</VALUE></SETTING>
+                <SETTING><NAME>MWAssembler_perform_C_preprocessing</NAME><VALUE>0</VALUE></SETTING>
+                <SETTING><NAME>MWAssembler_expand_trigraph_sequences</NAME><VALUE>0</VALUE></SETTING>
+                <SETTING><NAME>MWAssembler_embedded_pic</NAME><VALUE>0</VALUE></SETTING>
+                <SETTING><NAME>MWAssembler_gnu_mode</NAME><VALUE>0</VALUE></SETTING>
+                <SETTING><NAME>MWAssembler_debug</NAME><VALUE>0</VALUE></SETTING>
+                <SETTING><NAME>MWAssembler_preprocess</NAME><VALUE>0</VALUE></SETTING>
+                <SETTING><NAME>MWAssembler_source</NAME><VALUE></VALUE></SETTING>
+                <SETTING><NAME>MWAssembler_dest</NAME><VALUE></VALUE></SETTING>
+                <SETTING><NAME>MWAssembler_list</NAME><VALUE></VALUE></SETTING>
+                <SETTING><NAME>MWAssembler_include_path</NAME><VALUE></VALUE></SETTING>
+                <SETTING><NAME>MWAssembler_define</NAME><VALUE></VALUE></SETTING>
+                <SETTING><NAME>MWAssembler_progress</NAME><VALUE>0</VALUE></SETTING>
+                <SETTING><NAME>MWAssembler_warnings</NAME><VALUE>0</VALUE></SETTING>
+                <SETTING><NAME>MWAssembler_code</NAME><VALUE>0</VALUE></SETTING>
+
+                <!-- Settings for "ColdFire V1 CodeGen" panel -->
+                <SETTING><NAME>MWCodeGen_E68K_targetproc</NAME><VALUE>generic</VALUE></SETTING>
+                <SETTING><NAME>MWCodeGen_E68K_codemodel</NAME><VALUE>Near Rel (16 pc)</VALUE></SETTING>
+                <SETTING><NAME>MWCodeGen_E68K_datamodel</NAME><VALUE>Far (32 bit)</VALUE></SETTING>
+                <SETTING><NAME>MWCodeGen_E68K_structalignment</NAME><VALUE>word/long</VALUE></SETTING>
+                <SETTING><NAME>MWCodeGen_E68K_fp_mode</NAME><VALUE>Software</VALUE></SETTING>
+                <SETTING><NAME>MWCodeGen_E68K_abi</NAME><VALUE>Register</VALUE></SETTING>
+                <SETTING><NAME>MWCodeGen_E68K_PIC</NAME><VALUE>0</VALUE></SETTING>
+                <SETTING><NAME>MWCodeGen_E68K_PID</NAME><VALUE>0</VALUE></SETTING>
+                <SETTING><NAME>MWCodeGen_E68K_registercoloring</NAME><VALUE>1</VALUE></SETTING>
+                <SETTING><NAME>MWCodeGen_E68K_usesmallerdata</NAME><VALUE>1</VALUE></SETTING>
+                <SETTING><NAME>MWCodeGen_E68K_fourbyteints</NAME><VALUE>1</VALUE></SETTING>
+                <SETTING><NAME>MWCodeGen_E68K_a6stackframes</NAME><VALUE>0</VALUE></SETTING>
+                <SETTING><NAME>MWCodeGen_E68K_datasize</NAME><VALUE>0</VALUE></SETTING>
+                <SETTING><NAME>MWCodeGen_E68K_profiler</NAME><VALUE>0</VALUE></SETTING>
+                <SETTING><NAME>MWCodeGen_E68K_poolsection</NAME><VALUE>0</VALUE></SETTING>
+                <SETTING><NAME>MWCodeGen_E68K_scheduling</NAME><VALUE>1</VALUE></SETTING>
+                <SETTING><NAME>MWCodeGen_E68K_peephole</NAME><VALUE>1</VALUE></SETTING>
+
+                <!-- Settings for "BatchRunner Panel" panel -->
+                <SETTING><NAME>MWBatchRunnerPostLinker_BatchPath</NAME>
+                    <SETTING><NAME>Path</NAME><VALUE></VALUE></SETTING>
+                    <SETTING><NAME>PathFormat</NAME><VALUE>Windows</VALUE></SETTING>
+                    <SETTING><NAME>PathRoot</NAME><VALUE>Absolute</VALUE></SETTING>
+                </SETTING>
+                <SETTING><NAME>MWBatchRunnerPostLinker_SendParam</NAME><VALUE>false</VALUE></SETTING>
+
+                <!-- Settings for "BatchRunner PreLinker Panel" panel -->
+                <SETTING><NAME>MWBatchRunnerPreLinker_BatchPath</NAME>
+                    <SETTING><NAME>Path</NAME><VALUE></VALUE></SETTING>
+                    <SETTING><NAME>PathFormat</NAME><VALUE>Windows</VALUE></SETTING>
+                    <SETTING><NAME>PathRoot</NAME><VALUE>Absolute</VALUE></SETTING>
+                </SETTING>
+
+                <!-- Settings for "E68K Global Optimizer" panel -->
+                <SETTING><NAME>GlobalOptimizer_E68K_optimizationlevel</NAME><VALUE>Level0</VALUE></SETTING>
+                <SETTING><NAME>GlobalOptimizer_E68K_optfor</NAME><VALUE>Speed</VALUE></SETTING>
+
+                <!-- Settings for "PCLint Options" panel -->
+                <SETTING><NAME>useMeyers</NAME><VALUE>0</VALUE></SETTING>
+                <SETTING><NAME>useSaks</NAME><VALUE>0</VALUE></SETTING>
+                <SETTING><NAME>useMisra</NAME><VALUE>0</VALUE></SETTING>
+                <SETTING><NAME>useATL</NAME><VALUE>0</VALUE></SETTING>
+                <SETTING><NAME>useSTL</NAME><VALUE>0</VALUE></SETTING>
+                <SETTING><NAME>useOIL</NAME><VALUE>0</VALUE></SETTING>
+                <SETTING><NAME>useWIN16</NAME><VALUE>0</VALUE></SETTING>
+                <SETTING><NAME>useWIN32</NAME><VALUE>0</VALUE></SETTING>
+                <SETTING><NAME>useWINNT</NAME><VALUE>0</VALUE></SETTING>
+                <SETTING><NAME>useMFC</NAME><VALUE>0</VALUE></SETTING>
+                <SETTING><NAME>useCORBA</NAME><VALUE>0</VALUE></SETTING>
+                <SETTING><NAME>wLevel</NAME><VALUE>3</VALUE></SETTING>
+                <SETTING><NAME>wlibLevel</NAME><VALUE>3</VALUE></SETTING>
+                <SETTING><NAME>addOptions</NAME><VALUE></VALUE></SETTING>
+
+                <!-- Settings for "PCLint Main Settings" panel -->
+                <SETTING><NAME>exePath</NAME><VALUE>{Compiler}Lint\Lint-nt.exe</VALUE></SETTING>
+                <SETTING><NAME>configPath</NAME><VALUE>{Compiler}Lint\lnt\CodeWarrior</VALUE></SETTING>
+                <SETTING><NAME>showCmdLine</NAME><VALUE>0</VALUE></SETTING>
+                <SETTING><NAME>cofile</NAME><VALUE></VALUE></SETTING>
+                <SETTING><NAME>showDefCoFiles</NAME><VALUE>0</VALUE></SETTING>
+                <SETTING><NAME>prefixFile</NAME><VALUE></VALUE></SETTING>
+                <SETTING><NAME>noLink</NAME><VALUE>1</VALUE></SETTING>
+
+                <!-- Settings for "CRC Post-Linker Panel" panel -->
+                <SETTING><NAME>MWCRC_PostLinker_crcpath</NAME>
+                    <SETTING><NAME>Path</NAME><VALUE></VALUE></SETTING>
+                    <SETTING><NAME>PathFormat</NAME><VALUE>Windows</VALUE></SETTING>
+                    <SETTING><NAME>PathRoot</NAME><VALUE>Absolute</VALUE></SETTING>
+                </SETTING>
+                <SETTING><NAME>MWCRC_PostLinker_srec</NAME><VALUE>false</VALUE></SETTING>
+                <SETTING><NAME>MWCRC_PostLinker_bin</NAME><VALUE>false</VALUE></SETTING>
+
+                <!-- Settings for "x86 Exceptions Panel" panel -->
+                <SETTING><NAME>MWDebugger_X86_Exceptions</NAME>
+                    <SETTING><VALUE>0</VALUE></SETTING>
+                    <SETTING><VALUE>0</VALUE></SETTING>
+                    <SETTING><VALUE>0</VALUE></SETTING>
+                    <SETTING><VALUE>0</VALUE></SETTING>
+                    <SETTING><VALUE>0</VALUE></SETTING>
+                    <SETTING><VALUE>0</VALUE></SETTING>
+                    <SETTING><VALUE>0</VALUE></SETTING>
+                    <SETTING><VALUE>0</VALUE></SETTING>
+                    <SETTING><VALUE>0</VALUE></SETTING>
+                    <SETTING><VALUE>0</VALUE></SETTING>
+                    <SETTING><VALUE>0</VALUE></SETTING>
+                    <SETTING><VALUE>0</VALUE></SETTING>
+                    <SETTING><VALUE>0</VALUE></SETTING>
+                    <SETTING><VALUE>0</VALUE></SETTING>
+                    <SETTING><VALUE>0</VALUE></SETTING>
+                    <SETTING><VALUE>0</VALUE></SETTING>
+                    <SETTING><VALUE>0</VALUE></SETTING>
+                    <SETTING><VALUE>0</VALUE></SETTING>
+                    <SETTING><VALUE>0</VALUE></SETTING>
+                    <SETTING><VALUE>0</VALUE></SETTING>
+                    <SETTING><VALUE>0</VALUE></SETTING>
+                    <SETTING><VALUE>0</VALUE></SETTING>
+                    <SETTING><VALUE>0</VALUE></SETTING>
+                    <SETTING><VALUE>0</VALUE></SETTING>
+                </SETTING>
+
+                <!-- Settings for "ELF Disassembler Panel" panel -->
+                <SETTING><NAME>Show_Headers</NAME><VALUE>true</VALUE></SETTING>
+                <SETTING><NAME>Show_Symbol_Table</NAME><VALUE>true</VALUE></SETTING>
+                <SETTING><NAME>Show_Verbose_Info</NAME><VALUE>false</VALUE></SETTING>
+                <SETTING><NAME>Show_Relocation</NAME><VALUE>true</VALUE></SETTING>
+                <SETTING><NAME>Show_Code_Modules</NAME><VALUE>true</VALUE></SETTING>
+                <SETTING><NAME>Show_Extended_Mnemonics</NAME><VALUE>true</VALUE></SETTING>
+                <SETTING><NAME>Show_Source_Code</NAME><VALUE>true</VALUE></SETTING>
+                <SETTING><NAME>Show_Address_and_Object_Code</NAME><VALUE>true</VALUE></SETTING>
+                <SETTING><NAME>Show_Comments</NAME><VALUE>true</VALUE></SETTING>
+                <SETTING><NAME>Show_Data_Modules</NAME><VALUE>true</VALUE></SETTING>
+                <SETTING><NAME>Show_Exception_Tables</NAME><VALUE>false</VALUE></SETTING>
+                <SETTING><NAME>Show_Debug_Info</NAME><VALUE>true</VALUE></SETTING>
+
+                <!-- Settings for "External Build Panel" panel -->
+                <SETTING><NAME>MWExternalBuild_buildCommand</NAME><VALUE></VALUE></SETTING>
+                <SETTING><NAME>MWExternalBuild_executableFile</NAME><VALUE></VALUE></SETTING>
+                <SETTING><NAME>MWExternalBuild_symbolicsFile</NAME><VALUE></VALUE></SETTING>
+                <SETTING><NAME>MWExternalBuild_buildDirectory</NAME>
+                    <SETTING><NAME>Path</NAME><VALUE></VALUE></SETTING>
+                    <SETTING><NAME>PathFormat</NAME><VALUE>Generic</VALUE></SETTING>
+                    <SETTING><NAME>PathRoot</NAME><VALUE>Project</VALUE></SETTING>
+                </SETTING>
+                <SETTING><NAME>MWExternalBuild_targetOS</NAME><VALUE></VALUE></SETTING>
+                <SETTING><NAME>MWExternalBuild_targetCPU</NAME><VALUE></VALUE></SETTING>
+                <SETTING><NAME>MWExternalBuild_targetName</NAME><VALUE></VALUE></SETTING>
+
+                <!-- Settings for "C/C++ Compiler" panel -->
+                <SETTING><NAME>MWFrontEnd_C_cplusplus</NAME><VALUE>0</VALUE></SETTING>
+                <SETTING><NAME>MWFrontEnd_C_checkprotos</NAME><VALUE>0</VALUE></SETTING>
+                <SETTING><NAME>MWFrontEnd_C_arm</NAME><VALUE>0</VALUE></SETTING>
+                <SETTING><NAME>MWFrontEnd_C_trigraphs</NAME><VALUE>0</VALUE></SETTING>
+                <SETTING><NAME>MWFrontEnd_C_onlystdkeywords</NAME><VALUE>0</VALUE></SETTING>
+                <SETTING><NAME>MWFrontEnd_C_enumsalwaysint</NAME><VALUE>0</VALUE></SETTING>
+                <SETTING><NAME>MWFrontEnd_C_ansistrict</NAME><VALUE>0</VALUE></SETTING>
+                <SETTING><NAME>MWFrontEnd_C_wchar_type</NAME><VALUE>1</VALUE></SETTING>
+                <SETTING><NAME>MWFrontEnd_C_enableexceptions</NAME><VALUE>1</VALUE></SETTING>
+                <SETTING><NAME>MWFrontEnd_C_dontreusestrings</NAME><VALUE>0</VALUE></SETTING>
+                <SETTING><NAME>MWFrontEnd_C_poolstrings</NAME><VALUE>0</VALUE></SETTING>
+                <SETTING><NAME>MWFrontEnd_C_dontinline</NAME><VALUE>0</VALUE></SETTING>
+                <SETTING><NAME>MWFrontEnd_C_useRTTI</NAME><VALUE>1</VALUE></SETTING>
+                <SETTING><NAME>MWFrontEnd_C_unsignedchars</NAME><VALUE>0</VALUE></SETTING>
+                <SETTING><NAME>MWFrontEnd_C_autoinline</NAME><VALUE>0</VALUE></SETTING>
+                <SETTING><NAME>MWFrontEnd_C_booltruefalse</NAME><VALUE>1</VALUE></SETTING>
+                <SETTING><NAME>MWFrontEnd_C_inlinelevel</NAME><VALUE>0</VALUE></SETTING>
+                <SETTING><NAME>MWFrontEnd_C_ecplusplus</NAME><VALUE>0</VALUE></SETTING>
+                <SETTING><NAME>MWFrontEnd_C_templateparser</NAME><VALUE>1</VALUE></SETTING>
+                <SETTING><NAME>MWFrontEnd_C_c99</NAME><VALUE>0</VALUE></SETTING>
+                <SETTING><NAME>MWFrontEnd_C_bottomupinline</NAME><VALUE>1</VALUE></SETTING>
+                <SETTING><NAME>MWFrontEnd_C_gcc_extensions</NAME><VALUE>0</VALUE></SETTING>
+                <SETTING><NAME>MWFrontEnd_C_instance_manager</NAME><VALUE>0</VALUE></SETTING>
+                <SETTING><NAME>MWFrontEnd_C_ipa_mode</NAME><VALUE>0</VALUE></SETTING>
+
+                <!-- Settings for "Librarian Panel" panel -->
+                <SETTING><NAME>MWLib_rebuildlibs</NAME><VALUE>0</VALUE></SETTING>
+                <SETTING><NAME>MWLib_autolibs</NAME><VALUE>1</VALUE></SETTING>
+                <SETTING><NAME>MWLib_print</NAME><VALUE>___pformatter=___pformatterFP,___pformatter_s=___pformatter_sFP</VALUE></SETTING>
+                <SETTING><NAME>MWLib_scan</NAME><VALUE>___sformatter=___sformatterFP,___sformatter_s=___sformatter_sFP</VALUE></SETTING>
+                <SETTING><NAME>MWLib_console</NAME><VALUE>___FileWrite=___FileWrite,___FileRead=___FileRead</VALUE></SETTING>
+                <SETTING><NAME>MWLib_libmodel</NAME><VALUE>ewl</VALUE></SETTING>
+                <SETTING><NAME>MWLib_libprefix</NAME><VALUE>#include &lt;lib_ewl.prefix&gt;</VALUE></SETTING>
+                <SETTING><NAME>MWLib_libfiles</NAME><VALUE>%libm.a:%libc.a:%librt.a:&amp;fp_coldfire.a</VALUE></SETTING>
+
+                <!-- Settings for "Embedded 68K Linker Panel" panel -->
+                <SETTING><NAME>MWLinker_E68K_linkdwarf</NAME><VALUE>1</VALUE></SETTING>
+                <SETTING><NAME>MWLinker_E68K_dwarffullpath</NAME><VALUE>1</VALUE></SETTING>
+                <SETTING><NAME>MWLinker_E68K_generateElfSymbols</NAME><VALUE>1</VALUE></SETTING>
+                <SETTING><NAME>MWLinker_E68K_linkmap</NAME><VALUE>0</VALUE></SETTING>
+                <SETTING><NAME>MWLinker_E68K_linkunused</NAME><VALUE>0</VALUE></SETTING>
+                <SETTING><NAME>MWLinker_E68K_transclosure</NAME><VALUE>0</VALUE></SETTING>
+                <SETTING><NAME>MWLinker_E68K_nolinkwarnings</NAME><VALUE>1</VALUE></SETTING>
+                <SETTING><NAME>MWLinker_E68K_redefwarnings</NAME><VALUE>0</VALUE></SETTING>
+                <SETTING><NAME>MWLinker_E68K_mainname</NAME><VALUE>__start</VALUE></SETTING>
+                <SETTING><NAME>MWLinker_E68K_disableDead</NAME><VALUE>0</VALUE></SETTING>
+                <SETTING><NAME>MWLinker_E68K_force_active_symbols</NAME><VALUE></VALUE></SETTING>
+                <SETTING><NAME>MWLinker_E68K_genSrecFile</NAME><VALUE>0</VALUE></SETTING>
+                <SETTING><NAME>MWLinker_E68K_srecLength</NAME><VALUE>252</VALUE></SETTING>
+                <SETTING><NAME>MWLinker_E68K_srecEOL</NAME><VALUE>DOS</VALUE></SETTING>
+                <SETTING><NAME>MWLinker_E68K_genBinFile</NAME><VALUE>0</VALUE></SETTING>
+                <SETTING><NAME>MWLinker_E68K_brecLength</NAME><VALUE>252</VALUE></SETTING>
+                <SETTING><NAME>MWLinker_E68K_keepmapfile</NAME><VALUE>0</VALUE></SETTING>
+                <SETTING><NAME>MWLinker_E68K_generatelisting</NAME><VALUE>0</VALUE></SETTING>
+
+                <!-- Settings for "C/C++ Preprocessor" panel -->
+                <SETTING><NAME>C_CPP_Preprocessor_EmitFile</NAME><VALUE>true</VALUE></SETTING>
+                <SETTING><NAME>C_CPP_Preprocessor_EmitLine</NAME><VALUE>false</VALUE></SETTING>
+                <SETTING><NAME>C_CPP_Preprocessor_EmitFullPath</NAME><VALUE>false</VALUE></SETTING>
+                <SETTING><NAME>C_CPP_Preprocessor_KeepComments</NAME><VALUE>false</VALUE></SETTING>
+                <SETTING><NAME>C_CPP_Preprocessor_PCHUsesPrefixText</NAME><VALUE>false</VALUE></SETTING>
+                <SETTING><NAME>C_CPP_Preprocessor_EmitPragmas</NAME><VALUE>true</VALUE></SETTING>
+                <SETTING><NAME>C_CPP_Preprocessor_KeepWhiteSpace</NAME><VALUE>false</VALUE></SETTING>
+                <SETTING><NAME>C_CPP_Preprocessor_MultiByteEncoding</NAME><VALUE>encASCII_Unicode</VALUE></SETTING>
+                <SETTING><NAME>C_CPP_Preprocessor_PrefixText</NAME><VALUE></VALUE></SETTING>
+
+                <!-- Settings for "Embedded 68K Project" panel -->
+                <SETTING><NAME>MWProject_E68K_projtype</NAME><VALUE>Application</VALUE></SETTING>
+                <SETTING><NAME>MWProject_E68K_outfile</NAME><VALUE>app.elf</VALUE></SETTING>
+
+                <!-- Settings for "C/C++ Warnings" panel -->
+                <SETTING><NAME>MWWarning_C_warn_illpragma</NAME><VALUE>0</VALUE></SETTING>
+                <SETTING><NAME>MWWarning_C_warn_emptydecl</NAME><VALUE>0</VALUE></SETTING>
+                <SETTING><NAME>MWWarning_C_warn_possunwant</NAME><VALUE>0</VALUE></SETTING>
+                <SETTING><NAME>MWWarning_C_warn_unusedvar</NAME><VALUE>0</VALUE></SETTING>
+                <SETTING><NAME>MWWarning_C_warn_unusedarg</NAME><VALUE>0</VALUE></SETTING>
+                <SETTING><NAME>MWWarning_C_warn_extracomma</NAME><VALUE>0</VALUE></SETTING>
+                <SETTING><NAME>MWWarning_C_pedantic</NAME><VALUE>0</VALUE></SETTING>
+                <SETTING><NAME>MWWarning_C_warningerrors</NAME><VALUE>0</VALUE></SETTING>
+                <SETTING><NAME>MWWarning_C_warn_hidevirtual</NAME><VALUE>0</VALUE></SETTING>
+                <SETTING><NAME>MWWarning_C_warn_implicitconv</NAME><VALUE>0</VALUE></SETTING>
+                <SETTING><NAME>MWWarning_C_warn_notinlined</NAME><VALUE>0</VALUE></SETTING>
+                <SETTING><NAME>MWWarning_C_warn_structclass</NAME><VALUE>0</VALUE></SETTING>
+                <SETTING><NAME>MWWarning_C_warn_missingreturn</NAME><VALUE>0</VALUE></SETTING>
+                <SETTING><NAME>MWWarning_C_warn_no_side_effect</NAME><VALUE>0</VALUE></SETTING>
+                <SETTING><NAME>MWWarning_C_warn_resultnotused</NAME><VALUE>0</VALUE></SETTING>
+                <SETTING><NAME>MWWarning_C_warn_padding</NAME><VALUE>0</VALUE></SETTING>
+                <SETTING><NAME>MWWarning_C_warn_impl_i2f_conv</NAME><VALUE>0</VALUE></SETTING>
+                <SETTING><NAME>MWWarning_C_warn_impl_f2i_conv</NAME><VALUE>0</VALUE></SETTING>
+                <SETTING><NAME>MWWarning_C_warn_impl_s2u_conv</NAME><VALUE>0</VALUE></SETTING>
+                <SETTING><NAME>MWWarning_C_warn_illtokenpasting</NAME><VALUE>0</VALUE></SETTING>
+                <SETTING><NAME>MWWarning_C_warn_filenamecaps</NAME><VALUE>0</VALUE></SETTING>
+                <SETTING><NAME>MWWarning_C_warn_filenamecapssystem</NAME><VALUE>0</VALUE></SETTING>
+                <SETTING><NAME>MWWarning_C_warn_undefmacro</NAME><VALUE>0</VALUE></SETTING>
+                <SETTING><NAME>MWWarning_C_warn_ptrintconv</NAME><VALUE>0</VALUE></SETTING>
+            </SETTINGLIST>
+            <FILELIST>
+                <FILE>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>main.c</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                    <FILEKIND>Text</FILEKIND>
+                    <FILEFLAGS>Debug</FILEFLAGS>
+                </FILE>
+                <FILE>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>derivative.h</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                    <FILEKIND>Text</FILEKIND>
+                    <FILEFLAGS>Debug</FILEFLAGS>
+                </FILE>
+                <FILE>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>MC9S08QE32.h</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                    <FILEKIND>Text</FILEKIND>
+                    <FILEFLAGS>Debug</FILEFLAGS>
+                </FILE>
+                <FILE>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>ansiis.lib</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                    <FILEKIND>Unknown</FILEKIND>
+                    <FILEFLAGS>Debug</FILEFLAGS>
+                </FILE>
+                <FILE>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>MC9S08QE32.C</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                    <FILEKIND>Text</FILEKIND>
+                    <FILEFLAGS>Debug</FILEFLAGS>
+                </FILE>
+                <FILE>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>Start08.c</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                    <FILEKIND>Text</FILEKIND>
+                    <FILEFLAGS>Debug</FILEFLAGS>
+                </FILE>
+                <FILE>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>burner.bbl</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                    <FILEKIND>Text</FILEKIND>
+                    <FILEFLAGS>Debug</FILEFLAGS>
+                </FILE>
+                <FILE>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>Project.prm</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                    <FILEKIND>Text</FILEKIND>
+                    <FILEFLAGS>Debug</FILEFLAGS>
+                </FILE>
+                <FILE>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>ExampleFuncs.c</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                    <FILEKIND>Text</FILEKIND>
+                    <FILEFLAGS>Debug</FILEFLAGS>
+                </FILE>
+                <FILE>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>ExampleFuncs.h</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                    <FILEKIND>Text</FILEKIND>
+                    <FILEFLAGS></FILEFLAGS>
+                </FILE>
+                <FILE>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>pin_mapping.h</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                    <FILEKIND>Text</FILEKIND>
+                    <FILEFLAGS></FILEFLAGS>
+                </FILE>
+                <FILE>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>serial.c</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                    <FILEKIND>Text</FILEKIND>
+                    <FILEFLAGS>Debug</FILEFLAGS>
+                </FILE>
+                <FILE>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>serial.h</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                    <FILEKIND>Text</FILEKIND>
+                    <FILEFLAGS></FILEFLAGS>
+                </FILE>
+                <FILE>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>System.h</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                    <FILEKIND>Text</FILEKIND>
+                    <FILEFLAGS></FILEFLAGS>
+                </FILE>
+                <FILE>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>vector_table.c</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                    <FILEKIND>Text</FILEKIND>
+                    <FILEFLAGS>Debug</FILEFLAGS>
+                </FILE>
+                <FILE>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>vector_table.h</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                    <FILEKIND>Text</FILEKIND>
+                    <FILEFLAGS></FILEFLAGS>
+                </FILE>
+                <FILE>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>common.h</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                    <FILEKIND>Text</FILEKIND>
+                    <FILEFLAGS></FILEFLAGS>
+                </FILE>
+                <FILE>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>build_defines.h</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                    <FILEKIND>Text</FILEKIND>
+                    <FILEFLAGS></FILEFLAGS>
+                </FILE>
+                <FILE>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>xbee_platform_hcs08.c</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                    <FILEKIND>Text</FILEKIND>
+                    <FILEFLAGS>Debug</FILEFLAGS>
+                </FILE>
+                <FILE>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>swapcpy.c</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                    <FILEKIND>Text</FILEKIND>
+                    <FILEFLAGS>Debug</FILEFLAGS>
+                </FILE>
+                <FILE>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>hexdump.c</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                    <FILEKIND>Text</FILEKIND>
+                    <FILEFLAGS>Debug</FILEFLAGS>
+                </FILE>
+                <FILE>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>hexstrtobyte.c</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                    <FILEKIND>Text</FILEKIND>
+                    <FILEFLAGS>Debug</FILEFLAGS>
+                </FILE>
+                <FILE>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>XBee Driver Readme.txt</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                    <FILEKIND>Text</FILEKIND>
+                    <FILEFLAGS></FILEFLAGS>
+                </FILE>
+                <FILE>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>overview.dox</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                    <FILEKIND>Text</FILEKIND>
+                    <FILEFLAGS></FILEFLAGS>
+                </FILE>
+                <FILE>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>rtc.h</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                    <FILEKIND>Text</FILEKIND>
+                    <FILEFLAGS></FILEFLAGS>
+                </FILE>
+                <FILE>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>stdio_SCI1.c</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                    <FILEKIND>Text</FILEKIND>
+                    <FILEFLAGS>Debug</FILEFLAGS>
+                </FILE>
+                <FILE>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>t_jslong.map</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                    <FILEKIND>Text</FILEKIND>
+                    <FILEFLAGS></FILEFLAGS>
+                </FILE>
+                <FILE>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>rtc.c</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                    <FILEKIND>Text</FILEKIND>
+                    <FILEFLAGS>Debug</FILEFLAGS>
+                </FILE>
+                <FILE>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>t_jslong.c</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                    <FILEKIND>Text</FILEKIND>
+                    <FILEFLAGS>Debug</FILEFLAGS>
+                </FILE>
+                <FILE>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>jsll_vectors.h</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                    <FILEKIND>Text</FILEKIND>
+                    <FILEFLAGS></FILEFLAGS>
+                </FILE>
+                <FILE>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>unittest.c</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                    <FILEKIND>Text</FILEKIND>
+                    <FILEFLAGS>Debug</FILEFLAGS>
+                </FILE>
+            </FILELIST>
+            <LINKORDER>
+                <FILEREF>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>main.c</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                </FILEREF>
+                <FILEREF>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>derivative.h</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                </FILEREF>
+                <FILEREF>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>MC9S08QE32.h</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                </FILEREF>
+                <FILEREF>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>ansiis.lib</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                </FILEREF>
+                <FILEREF>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>MC9S08QE32.C</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                </FILEREF>
+                <FILEREF>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>Start08.c</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                </FILEREF>
+                <FILEREF>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>burner.bbl</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                </FILEREF>
+                <FILEREF>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>Project.prm</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                </FILEREF>
+                <FILEREF>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>ExampleFuncs.c</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                </FILEREF>
+                <FILEREF>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>ExampleFuncs.h</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                </FILEREF>
+                <FILEREF>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>pin_mapping.h</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                </FILEREF>
+                <FILEREF>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>serial.c</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                </FILEREF>
+                <FILEREF>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>serial.h</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                </FILEREF>
+                <FILEREF>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>System.h</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                </FILEREF>
+                <FILEREF>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>vector_table.c</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                </FILEREF>
+                <FILEREF>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>vector_table.h</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                </FILEREF>
+                <FILEREF>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>common.h</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                </FILEREF>
+                <FILEREF>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>build_defines.h</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                </FILEREF>
+                <FILEREF>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>XBee Driver Readme.txt</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                </FILEREF>
+                <FILEREF>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>xbee_platform_hcs08.c</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                </FILEREF>
+                <FILEREF>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>swapcpy.c</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                </FILEREF>
+                <FILEREF>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>hexdump.c</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                </FILEREF>
+                <FILEREF>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>hexstrtobyte.c</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                </FILEREF>
+                <FILEREF>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>XBee Driver Readme.txt</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                </FILEREF>
+                <FILEREF>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>overview.dox</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                </FILEREF>
+                <FILEREF>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>rtc.h</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                </FILEREF>
+                <FILEREF>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>stdio_SCI1.c</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                </FILEREF>
+                <FILEREF>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>t_jslong.map</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                </FILEREF>
+                <FILEREF>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>rtc.c</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                </FILEREF>
+                <FILEREF>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>t_jslong.c</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                </FILEREF>
+                <FILEREF>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>jsll_vectors.h</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                </FILEREF>
+                <FILEREF>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>unittest.c</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                </FILEREF>
+            </LINKORDER>
+        </TARGET>
+    </TARGETLIST>
+
+    <TARGETORDER>
+        <ORDEREDTARGET><NAME>Standard</NAME></ORDEREDTARGET>
+    </TARGETORDER>
+
+    <GROUPLIST>
+        <FILEREF>
+            <TARGETNAME>Standard</TARGETNAME>
+            <PATHTYPE>Name</PATHTYPE>
+            <PATH>overview.dox</PATH>
+            <PATHFORMAT>Windows</PATHFORMAT>
+        </FILEREF>
+        <FILEREF>
+            <TARGETNAME>Standard</TARGETNAME>
+            <PATHTYPE>Name</PATHTYPE>
+            <PATH>XBee Driver Readme.txt</PATH>
+            <PATHFORMAT>Windows</PATHFORMAT>
+        </FILEREF>
+        <GROUP><NAME>Sources</NAME>
+            <FILEREF>
+                <TARGETNAME>Standard</TARGETNAME>
+                <PATHTYPE>Name</PATHTYPE>
+                <PATH>ExampleFuncs.c</PATH>
+                <PATHFORMAT>Windows</PATHFORMAT>
+            </FILEREF>
+            <FILEREF>
+                <TARGETNAME>Standard</TARGETNAME>
+                <PATHTYPE>Name</PATHTYPE>
+                <PATH>serial.c</PATH>
+                <PATHFORMAT>Windows</PATHFORMAT>
+            </FILEREF>
+            <FILEREF>
+                <TARGETNAME>Standard</TARGETNAME>
+                <PATHTYPE>Name</PATHTYPE>
+                <PATH>vector_table.c</PATH>
+                <PATHFORMAT>Windows</PATHFORMAT>
+            </FILEREF>
+            <FILEREF>
+                <TARGETNAME>Standard</TARGETNAME>
+                <PATHTYPE>Name</PATHTYPE>
+                <PATH>stdio_SCI1.c</PATH>
+                <PATHFORMAT>Windows</PATHFORMAT>
+            </FILEREF>
+            <FILEREF>
+                <TARGETNAME>Standard</TARGETNAME>
+                <PATHTYPE>Name</PATHTYPE>
+                <PATH>main.c</PATH>
+                <PATHFORMAT>Windows</PATHFORMAT>
+            </FILEREF>
+            <FILEREF>
+                <TARGETNAME>Standard</TARGETNAME>
+                <PATHTYPE>Name</PATHTYPE>
+                <PATH>unittest.c</PATH>
+                <PATHFORMAT>Windows</PATHFORMAT>
+            </FILEREF>
+            <FILEREF>
+                <TARGETNAME>Standard</TARGETNAME>
+                <PATHTYPE>Name</PATHTYPE>
+                <PATH>t_jslong.c</PATH>
+                <PATHFORMAT>Windows</PATHFORMAT>
+            </FILEREF>
+            <FILEREF>
+                <TARGETNAME>Standard</TARGETNAME>
+                <PATHTYPE>Name</PATHTYPE>
+                <PATH>rtc.c</PATH>
+                <PATHFORMAT>Windows</PATHFORMAT>
+            </FILEREF>
+            <GROUP><NAME>xbee</NAME>
+                <FILEREF>
+                    <TARGETNAME>Standard</TARGETNAME>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>xbee_platform_hcs08.c</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                </FILEREF>
+            </GROUP>
+            <GROUP><NAME>util</NAME>
+                <FILEREF>
+                    <TARGETNAME>Standard</TARGETNAME>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>swapcpy.c</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                </FILEREF>
+                <FILEREF>
+                    <TARGETNAME>Standard</TARGETNAME>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>hexdump.c</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                </FILEREF>
+                <FILEREF>
+                    <TARGETNAME>Standard</TARGETNAME>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>hexstrtobyte.c</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                </FILEREF>
+            </GROUP>
+        </GROUP>
+        <GROUP><NAME>Includes</NAME>
+            <FILEREF>
+                <TARGETNAME>Standard</TARGETNAME>
+                <PATHTYPE>Name</PATHTYPE>
+                <PATH>ExampleFuncs.h</PATH>
+                <PATHFORMAT>Windows</PATHFORMAT>
+            </FILEREF>
+            <FILEREF>
+                <TARGETNAME>Standard</TARGETNAME>
+                <PATHTYPE>Name</PATHTYPE>
+                <PATH>pin_mapping.h</PATH>
+                <PATHFORMAT>Windows</PATHFORMAT>
+            </FILEREF>
+            <FILEREF>
+                <TARGETNAME>Standard</TARGETNAME>
+                <PATHTYPE>Name</PATHTYPE>
+                <PATH>System.h</PATH>
+                <PATHFORMAT>Windows</PATHFORMAT>
+            </FILEREF>
+            <FILEREF>
+                <TARGETNAME>Standard</TARGETNAME>
+                <PATHTYPE>Name</PATHTYPE>
+                <PATH>vector_table.h</PATH>
+                <PATHFORMAT>Windows</PATHFORMAT>
+            </FILEREF>
+            <FILEREF>
+                <TARGETNAME>Standard</TARGETNAME>
+                <PATHTYPE>Name</PATHTYPE>
+                <PATH>derivative.h</PATH>
+                <PATHFORMAT>Windows</PATHFORMAT>
+            </FILEREF>
+            <FILEREF>
+                <TARGETNAME>Standard</TARGETNAME>
+                <PATHTYPE>Name</PATHTYPE>
+                <PATH>serial.h</PATH>
+                <PATHFORMAT>Windows</PATHFORMAT>
+            </FILEREF>
+            <FILEREF>
+                <TARGETNAME>Standard</TARGETNAME>
+                <PATHTYPE>Name</PATHTYPE>
+                <PATH>MC9S08QE32.h</PATH>
+                <PATHFORMAT>Windows</PATHFORMAT>
+            </FILEREF>
+            <FILEREF>
+                <TARGETNAME>Standard</TARGETNAME>
+                <PATHTYPE>Name</PATHTYPE>
+                <PATH>common.h</PATH>
+                <PATHFORMAT>Windows</PATHFORMAT>
+            </FILEREF>
+            <FILEREF>
+                <TARGETNAME>Standard</TARGETNAME>
+                <PATHTYPE>Name</PATHTYPE>
+                <PATH>build_defines.h</PATH>
+                <PATHFORMAT>Windows</PATHFORMAT>
+            </FILEREF>
+            <FILEREF>
+                <TARGETNAME>Standard</TARGETNAME>
+                <PATHTYPE>Name</PATHTYPE>
+                <PATH>rtc.h</PATH>
+                <PATHFORMAT>Windows</PATHFORMAT>
+            </FILEREF>
+            <FILEREF>
+                <TARGETNAME>Standard</TARGETNAME>
+                <PATHTYPE>Name</PATHTYPE>
+                <PATH>jsll_vectors.h</PATH>
+                <PATHFORMAT>Windows</PATHFORMAT>
+            </FILEREF>
+        </GROUP>
+        <GROUP><NAME>Libs</NAME>
+            <FILEREF>
+                <TARGETNAME>Standard</TARGETNAME>
+                <PATHTYPE>Name</PATHTYPE>
+                <PATH>ansiis.lib</PATH>
+                <PATHFORMAT>Windows</PATHFORMAT>
+            </FILEREF>
+            <FILEREF>
+                <TARGETNAME>Standard</TARGETNAME>
+                <PATHTYPE>Name</PATHTYPE>
+                <PATH>MC9S08QE32.C</PATH>
+                <PATHFORMAT>Windows</PATHFORMAT>
+            </FILEREF>
+        </GROUP>
+        <GROUP><NAME>Project Settings</NAME>
+            <GROUP><NAME>Startup Code</NAME>
+                <FILEREF>
+                    <TARGETNAME>Standard</TARGETNAME>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>Start08.c</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                </FILEREF>
+            </GROUP>
+            <GROUP><NAME>Linker Files</NAME>
+                <FILEREF>
+                    <TARGETNAME>Standard</TARGETNAME>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>burner.bbl</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                </FILEREF>
+                <FILEREF>
+                    <TARGETNAME>Standard</TARGETNAME>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>Project.prm</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                </FILEREF>
+                <FILEREF>
+                    <TARGETNAME>Standard</TARGETNAME>
+                    <PATHTYPE>Name</PATHTYPE>
+                    <PATH>t_jslong.map</PATH>
+                    <PATHFORMAT>Windows</PATHFORMAT>
+                </FILEREF>
+            </GROUP>
+        </GROUP>
+    </GROUPLIST>
+
+    <PLUGINDATALIST>
+        <PLUGINDATA>
+            <NAME>HC(S)08 Wizard Configuration</NAME>
+            <VALUE>
+                3C3F786D6C2076657273696F6E3D22312E30223F3E0A3C57697A617264436F6E
+                66696775726174696F6E2076657273696F6E3D22312E33223E0A20203C53656C
+                656374656457697A617264456C656D656E74206E616D653D2250524D5F416461
+                70746174696F6E7322207465726D3D2250524D5F41646170746174696F6E7322
+                2069643D2249445F50524D5F41444150544154494F4E5322206964726566733D
+                2249445F50524D5F41444150544154494F4E53222068696464656E3D22596573
+                222F3E0A20203C53656C656374656457697A617264456C656D656E74206E616D
+                653D225374616E6461726422207465726D3D225374616E64617264222069643D
+                2249445F5354414E4441524422206964726566733D2249445F5354414E444152
+                44222068696464656E3D22596573222F3E0A20203C53656C656374656457697A
+                617264456C656D656E74206E616D653D22507263457870496E7374616C6C6174
+                696F6E22207465726D3D22507263457870496E7374616C6C6174696F6E436865
+                636B222069643D2249445F494E53545F5052435F45585022206964726566733D
+                2249445F494E53545F5052435F455850222068696464656E3D22596573222F3E
+                0A20203C53656C656374656457697A617264456C656D656E74206E616D653D22
+                50434C696E74496E7374616C6C6174696F6E22207465726D3D2250434C696E74
+                496E7374616C6C6174696F6E436865636B222069643D2249445F494E53545F50
+                435F4C494E5422206964726566733D2249445F494E53545F50435F4C494E5422
+                2068696464656E3D22596573222F3E0A20203C53656C656374656457697A6172
+                64456C656D656E74206E616D653D224368697022207465726D3D224D43395330
+                3851453332222069643D2249445F434849505F5145333222206964726566733D
+                2249445F434849505F4C4953542049445F434849505F46414D494C595F686373
+                30382049445F434849505F68637330385F53554246414D494C595F512049445F
+                434849505F51453332222F3E0A20203C53656C656374656457697A617264456C
+                656D656E74206E616D653D2254617267657422207465726D3D225026616D703B
+                45204D756C74696C696E6B2F4379636C6F6E652050726F222069643D2249445F
+                434F4E4E5F504542444D4D554C43594349434422206964726566733D2249445F
+                434F4E4E454354494F4E5F4C4953542049445F434F4E4E5F504542444D4D554C
+                435943494344222F3E0A20203C53656C656374656457697A617264456C656D65
+                6E74206E616D653D224C616E677561676522207465726D3D2243222069643D22
+                49445F4C414E475F4322206964726566733D2249445F4C414E475F4C49535420
+                49445F4C414E475F43222F3E0A20203C53656C656374656457697A617264456C
+                656D656E74206E616D653D2250726345787022207465726D3D224E6F6E652220
+                69643D2249445F5052435F4558505F4E4F22206964726566733D2249445F5052
+                435F4558502049445F5052435F4558505F4E4F222F3E0A20203C53656C656374
+                656457697A617264456C656D656E74206E616D653D2253746172747570436F64
+                6522207465726D3D226D696E696D616C207374617274757020636F6465222069
+                643D2249445F535441525455505F434F44455F4D494E494D414C222069647265
+                66733D2249445F535441525455505F434F44452049445F535441525455505F43
+                4F44455F4D494E494D414C222F3E0A20203C53656C656374656457697A617264
+                456C656D656E74206E616D653D22464C506F696E7422207465726D3D224E6F6E
+                65222069643D2249445F464C5F504F494E545F4E4F4E4522206964726566733D
+                2249445F464C5F504F494E542049445F464C5F504F494E545F4E4F4E45222F3E
+                0A20203C53656C656374656457697A617264456C656D656E74206E616D653D22
+                4D656D4D6F64656C22207465726D3D22536D616C6C222069643D2249445F4D45
+                4D5F4D444C5F5322206964726566733D2249445F4D454D5F4D444C2049445F4D
+                454D5F4D444C5F53222F3E0A20203C53656C656374656457697A617264456C65
+                6D656E74206E616D653D2250434C696E7422207465726D3D224E6F222069643D
+                2249445F50435F4C494E545F4E4F22206964726566733D2249445F50435F4C49
+                4E542049445F50435F4C494E545F4E4F222F3E0A3C2F57697A617264436F6E66
+                696775726174696F6E3E0A
+            </VALUE></PLUGINDATA>
+    </PLUGINDATALIST>
+</PROJECT>

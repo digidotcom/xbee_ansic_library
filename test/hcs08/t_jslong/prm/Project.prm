@@ -1,0 +1,149 @@
+/*-------------------------------------------------------
+* Copyright (C) 2009 Digi International, All Rights Reserved.
+*
+* $Id: Application32.prm,v 1.1 2010/04/26 15:39:09 DIGI\pmillett Exp $
+*
+* This software is provided as instructional material without charge 
+* by Digi International for use by its employees and customers
+* subject to the following terms.
+*
+* PERMISSION
+* Permission is hereby granted, free of charge, to any person obtaining 
+* a copy of this software, to deal with it without restriction, 
+* including without limitation the rights to use, copy,  modify, merge, publish, 
+* distribute, sublicense, and/or sell copies of it, and to permit persons to 
+* whom it is furnished to do so, provided the above copyright notice 
+* and this permission notice are included in all derived works
+* and the use of this software is restricted to Digi products.
+*
+* WARRANTY
+* THIS SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+* FITNESS FOR A PARTICULAR PURPOSE, OR NONINFRINGEMENT.  
+*
+* LIABILITY
+* IN NO EVENT SHALL DIGI INTERNATIONAL BE LIABLE FOR ANY CLAIM, DAMAGES, 
+* OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT, OR OTHERWISE, 
+* ARISING FROM, OUT OF, OR IN CONNECTION WITH THE SOFTWARE, OR THE USE 
+* OR OTHER DEALINGS WITH THE SOFTWARE.
+*
+* REQUEST FOR IMPROVEMENTS
+* If you have suggestions for improvements, or source code which corrects,
+* enhances, or extends the functionality of this software, please forward
+* them to the Tech Support group in the Lindon, Utah office 
+* of Digi International addressed to the attention of 'Linus'.
+*-------------------------------------------------------*/
+
+
+NAMES END /* CodeWarrior will pass all the needed files to the linker by command line. But here you may add your own files too. */
+
+SEGMENTS /* Here all RAM/ROM areas of the device are listed. Used in PLACEMENT below. */
+    Z_RAM                    =  READ_WRITE   0x0080 TO 0x00FF;
+    FLASH_RAM                =  READ_WRITE   0x0100 TO 0x01FF;        /* Reserved for flash code that executes in RAM */
+    SHARED_RAM               =  NO_INIT      0x0200 TO 0x0215;        /* Used to send data between bootloader and application */
+    RAM                      =  READ_WRITE   0x0216 TO 0x087F;        /* The rest of RAM */
+
+    /* Application areas */
+    APP_RESERVED             =  READ_ONLY    0x8000 TO 0x83FF;        /* 1KB storage for app - never touched by BL */
+    APP_FLASH_ROM            =  READ_ONLY    0x8400 TO 0x84FF RELOCATE_TO 0x100;
+    APP_ROM                  =  READ_ONLY    0x8500 TO 0xF1BB;
+    APP_VERSION              =  READ_ONLY    0xF1BC TO 0xF1BF;        /* 4 byte pointer to app version string */
+    APP_IVT                  =  READ_ONLY    0xF1C0 TO 0xF1FD;        /* Application Interrupt Vector Table */
+    APP_START                =  READ_ONLY    0xF1FE TO 0xF1FF;        /* Application start address */
+
+
+    /* Bootloader (BL) areas */
+    FLASH_ROM                =  READ_ONLY    0xF200 TO 0xF2EF RELOCATE_TO 0x100;  /* Flash routines that get copied to RAM */
+    BOOTLOADER               =  READ_ONLY    0xF2F0 TO 0xFFA9;                    /* Bootloader ROM area */
+    BL_VERSION               =  READ_ONLY    0xFFAA TO 0xFFAD;                    /* 4 byte pointer to BL version number */
+    // BL's interrupt vector table @ 0xFFC0-0xFFFD
+    // Startup Vector @ 0xFFFE-0xFFFF, is starting address of bootloader
+END
+
+PLACEMENT 
+    SHARED_DATA            INTO SHARED_RAM;
+
+    _DATA_ZEROPAGE,                                 /* zero page variables */
+    MY_ZEROPAGE            INTO Z_RAM;
+
+    FAR_RAM,                                        /* non-zero page variables */                       
+    DEFAULT_RAM            INTO RAM;
+
+    FLASH_ROUTINES         INTO APP_FLASH_ROM;
+    
+    _PRESTART,                                
+    STARTUP,                   /* startup data structures */    
+    ROM_VAR,                   /* constant variables */
+    STRINGS,                   /* string literals */      
+    VIRTUAL_TABLE_SEGMENT,     /* C++ virtual table segment */
+    DEFAULT_ROM,
+    COPY                   INTO APP_ROM;            /* copy down information: how to initialize variables */
+  
+
+END
+
+// import the bootloader, comes in at address 0xF200 to 0xFFFF
+// use "BL032.abs.s19" for production builds -- disables debug interface
+HEXFILE BL032_Debug.abs.s19
+
+STACKSIZE 0x200
+
+/* Reset vector: this is the default entry point for an application. */
+//VECTOR 0 _Startup     
+
+/**************** interrupt vector table ****************/
+/* The memory from 0xF200-0xFFFF is protected and can't */
+/* be written to by SW.  The interrupt vector table     */
+/* located at 0xFFC0-0xFFFD has been redirected in the  */
+/* Bootloader to 0xF1C0-0xF1FD.
+/* 
+/* Here is where the user can link in their ISR routine */
+/* for their custom application.  Uncomment the desired */
+/* vectors and make the appropriate updates in          */
+/* vector_table.c                                       */
+ 
+
+                           
+/* note that RESET is not redirected and*/
+/* remains at 0x0000FFFE - Bootloader   */
+/* shall jump to Sample Application     */
+/* _Startup location specified @ 0xF1FE */
+//****************************************************
+//Newly Remapped ISR Vector Table w/OTA Bootloader
+//*****************************************************
+  VECTOR ADDRESS 0x0000F1C0  vDummyIsr      /*VECTOR ADDRESS 0x0000F1C0  vTpm3Ovf   */                        
+    VECTOR ADDRESS 0x0000F1C2  vDummyIsr   /*VECTOR ADDRESS 0x0000F1C2  vTpm3Ch5   */                        
+    VECTOR ADDRESS 0x0000F1C4  vDummyIsr   /*VECTOR ADDRESS 0x0000F1C4  vTpm3Ch4   */                        
+    VECTOR ADDRESS 0x0000F1C6  vDummyIsr   /*VECTOR ADDRESS 0x0000F1C6  vTpm3Ch3   */
+    VECTOR ADDRESS 0x0000F1C8  vDummyIsr   /*VECTOR ADDRESS 0x0000F1C8  vTpm3Ch2   */
+    VECTOR ADDRESS 0x0000F1CA  vDummyIsr   /*VECTOR ADDRESS 0x0000F1CA  vTpm3Ch1   */
+    VECTOR ADDRESS 0x0000F1CC  vDummyIsr   /*VECTOR ADDRESS 0x0000F1CC  vTpm3Ch0   */
+  VECTOR ADDRESS 0x0000F1CE  vRTC          /*VECTOR ADDRESS 0x0000F1CE  vRtc       */
+    VECTOR ADDRESS 0x0000F1D0  vDummyIsr   /*VECTOR ADDRESS 0x0000F1D0  vSci2Tx    */
+  VECTOR ADDRESS 0x0000F1D2  vDummyIsr		/* Receive byte from EM250 */
+    VECTOR ADDRESS 0x0000F1D4  vDummyIsr   /*VECTOR ADDRESS 0x0000F1D4  vSci2Err   */
+    VECTOR ADDRESS 0x0000F1D6  vDummyIsr   /*VECTOR ADDRESS 0x0000F1D6  vAcmpX     */
+  VECTOR ADDRESS 0x0000F1D8  vAdc                                   
+  VECTOR ADDRESS 0x0000F1DA  vDummyIsr   /*VECTOR ADDRESS 0x0000F1DA  vKeyboard  */
+    VECTOR ADDRESS 0x0000F1DC  vDummyIsr   /*VECTOR ADDRESS 0x0000F1DC  vIic       */
+    VECTOR ADDRESS 0x0000F1DE  vDummyIsr   /*VECTOR ADDRESS 0x0000F1DE  vSci1Tx    */
+  VECTOR ADDRESS 0x0000F1E0  vDummyIsr     /* disable if using polled ISR */                             
+    VECTOR ADDRESS 0x0000F1E2  vDummyIsr   /*VECTOR ADDRESS 0x0000F1E2  vSci1Err   */
+    VECTOR ADDRESS 0x0000F1E4  vDummyIsr   /*VECTOR ADDRESS 0x0000F1E4  vSpi       */
+    VECTOR ADDRESS 0x0000F1E6  vDummyIsr   /*VECTOR ADDRESS 0x0000F1E6  vReserved12*/
+  VECTOR ADDRESS 0x0000F1E8  vDummyIsr                         
+    VECTOR ADDRESS 0x0000F1EA  vDummyIsr   /*VECTOR ADDRESS 0x0000F1EA  vTpm2Ch2   */
+    VECTOR ADDRESS 0x0000F1EC  vDummyIsr   /*VECTOR ADDRESS 0x0000F1EC  vTpm2Ch1   */
+    VECTOR ADDRESS 0x0000F1EE  vDummyIsr   /*VECTOR ADDRESS 0x0000F1EE  vTpm2Ch0   */
+  VECTOR ADDRESS 0x0000F1F0  vDummyIsr                        
+    VECTOR ADDRESS 0x0000F1F2  vDummyIsr   /*VECTOR ADDRESS 0x0000F1F2  vTpm1Ch2   */
+    VECTOR ADDRESS 0x0000F1F4  vDummyIsr   /*VECTOR ADDRESS 0x0000F1F4  vTpm1Ch1   */
+    VECTOR ADDRESS 0x0000F1F6  vDummyIsr   /*VECTOR ADDRESS 0x0000F1F6  vTpm1Ch0   */
+    VECTOR ADDRESS 0x0000F1F8  vDummyIsr   /*VECTOR ADDRESS 0x0000F1F8  vLvd       */
+    VECTOR ADDRESS 0x0000F1FA  vDummyIsr   /*VECTOR ADDRESS 0x0000F1FA  vIrq       */
+    VECTOR ADDRESS 0x0000F1FC  vDummyIsr   /*VECTOR ADDRESS 0x0000F1FC  vSwi       */
+  VECTOR ADDRESS 0x0000F1FE  _Startup                            
+  
+
+
+  
