@@ -160,59 +160,13 @@ int receive_handler( xbee_dev_t *xbee, const void FAR *raw,
 	return 0;
 }
 
-
-/*
-	Depending on the setting of ATAO, node discovery messages may come in on
-	cluster 0x0095 of the Digi Data Endpoint or as a 0x95 XBee frames.  They
-	can also come in as responses to the ATND command.
-*/
-int parse_and_add( const void FAR *node_data)
+void node_discovered( xbee_dev_t *xbee, const xbee_node_id_t *rec)
 {
-	int retval;
-	xbee_node_id_t node_id;
-
-	retval = xbee_disc_nd_parse( &node_id, node_data);
-	if (retval == 0)
+	if (rec != NULL)
 	{
-		node_add( &node_id);
-		xbee_disc_node_id_dump( &node_id);
+		node_add( rec);
+		xbee_disc_node_id_dump( rec);
 	}
-
-	return retval;
-}
-
-// messages to DIGI_CLUST_NODEID_MESSAGE cluster on Digi Data endpoint
-int discovery_cluster_handler( const wpan_envelope_t FAR *envelope,
-	void FAR *context)
-{
-	return parse_and_add( envelope->payload);
-}
-
-// process ATND responses
-int atnd_cmd_response_handler( xbee_dev_t *xbee, const void FAR *raw,
-	uint16_t length, void FAR *context)
-{
-	static const xbee_at_cmd_t nd = {{'N', 'D'}};
-	const xbee_frame_local_at_resp_t FAR *resp = raw;
-
-	if (resp->header.command.w == nd.w &&
-		XBEE_AT_RESP_STATUS( resp->header.status) == XBEE_AT_RESP_SUCCESS)
-	{
-		// this is a successful ATND response, parse the response
-		// and add the discovered node to our node table
-		return parse_and_add( resp->value);
-	}
-
-	return 0;
-}
-
-// Node Identification Indicator (0x95) frame handler
-int node_identification_handler(xbee_dev_t *xbee, const void FAR *raw,
-									 uint16_t length, void FAR *context)
-{
-	const xbee_frame_node_id_t FAR *frame = raw;
-
-	return parse_and_add( &frame->node_data);
 }
 
 int send_data( const xbee_node_id_t *node_id, void FAR *data, uint16_t length)
@@ -241,9 +195,8 @@ const wpan_cluster_table_entry_t digi_data_clusters[] =
 	{ DIGI_CLUST_SERIAL, transparent_rx, NULL,
 		WPAN_CLUST_FLAG_INOUT | WPAN_CLUST_FLAG_NOT_ZCL },
 
-	// handle join notifications (cluster 0x0095)
-	{ DIGI_CLUST_NODEID_MESSAGE, discovery_cluster_handler, NULL,
-		WPAN_CLUST_FLAG_INPUT | WPAN_CLUST_FLAG_NOT_ZCL},
+	// handle join notifications (cluster 0x0095) when ATAO is not 0
+	XBEE_DISC_DIGI_DATA_CLUSTER_ENTRY,
 
 	WPAN_CLUST_ENTRY_LIST_END
 };
@@ -268,17 +221,20 @@ const wpan_endpoint_table_entry_t sample_endpoints[] = {
 	{ WPAN_ENDPOINT_END_OF_LIST }
 };
 
-////////// end of endpoint table
+////////// end of endpoint table, only necessary if ATAO is not 0
 
 const xbee_dispatch_table_entry_t xbee_frame_handlers[] =
 {
 	XBEE_FRAME_HANDLE_LOCAL_AT,
-	// watch AT responses for ATND responses
-	{ XBEE_FRAME_LOCAL_AT_RESPONSE, 0, atnd_cmd_response_handler, NULL },
-	// process frame type 0x95
-	{ XBEE_FRAME_NODE_ID, 0, node_identification_handler, NULL },
-	XBEE_FRAME_HANDLE_RX_EXPLICIT,		// use endpoint table (ATAO=1)
-	{ XBEE_FRAME_RECEIVE, 0, receive_handler, NULL },		// inbound data, ATAO=0
+
+	XBEE_FRAME_HANDLE_ATND_RESPONSE,		// for processing ATND responses
+
+	// this entry is for when ATAO is not 0
+	XBEE_FRAME_HANDLE_RX_EXPLICIT,		// rx messages via endpoint table
+
+	// next two entries are used when ATAO is 0
+	XBEE_FRAME_HANDLE_AO0_NODEID,			// for processing NODEID messages
+	{ XBEE_FRAME_RECEIVE, 0, receive_handler, NULL },		// rx messages direct
 	XBEE_FRAME_TABLE_END
 };
 
@@ -286,6 +242,7 @@ void print_menu( void)
 {
 	puts( "help                 This list of options.");
 	puts( "nd                   Initiate node discovery.");
+	puts( "nd <node id string>  Search for a specific node ID.");
 	puts( "atXX[=YY]            AT command to get/set an XBee parameter.");
 	puts( "    Optional value can be decimal (YYY), hex (0xYYYY)"
 																" or string \"YYY\"");
@@ -294,12 +251,6 @@ void print_menu( void)
 	puts( "");
 	puts( "   All other commands are sent to the current target.");
 	puts( "");
-}
-
-void node_discovery( void)
-{
-	puts( "Initiating node discovery...");
-	xbee_cmd_execute( &my_xbee, "ND", NULL, 0);
 }
 
 /*
@@ -327,6 +278,9 @@ int main( void)
 	// endpoints and clusters, and is required for all ZigBee layers.
 	xbee_wpan_init( &my_xbee, sample_endpoints);
 
+	// Register handler to receive Node ID messages
+	xbee_disc_add_node_id_handler( &my_xbee, &node_discovered);
+
 	// Initialize the AT Command layer for this XBee device and have the
 	// driver query it for basic information (hardware version, firmware version,
 	// serial number, IEEE address, etc.)
@@ -345,7 +299,7 @@ int main( void)
 	xbee_dev_dump_settings( &my_xbee, XBEE_DEV_DUMP_FLAG_DEFAULT);
 
 	print_menu();
-	node_discovery();
+	xbee_disc_discover_nodes( &my_xbee, NULL);
 
    while (1)
    {
@@ -359,9 +313,20 @@ int main( void)
 		{
 			print_menu();
 		}
-		else if (! strcmpi( cmdstr, "nd"))
+		else if (! strncmpi( cmdstr, "nd", 2))
       {
-      	node_discovery();
+			// Initiate discovery for a specified node id (as parameter in command
+			// or all node IDs.
+			if (cmdstr[2] == ' ')
+			{
+				printf( "Looking for node [%s]...\n", &cmdstr[3]);
+				xbee_disc_discover_nodes( &my_xbee, &cmdstr[3]);
+			}
+			else
+			{
+				puts( "Discovering nodes...");
+				xbee_disc_discover_nodes( &my_xbee, NULL);
+			}
       }
       else if (! strcmpi( cmdstr, "quit"))
       {
