@@ -326,7 +326,7 @@ int _sxa_disc_process_node_data( xbee_dev_t *xbee, const void FAR *raw,
 		return -EINVAL;
 	}
 
-	if (xbee_disc_nd_parse( &node_id, raw) == 0)
+	if (xbee_disc_nd_parse( &node_id, raw, length) == 0)
 	{
 		sxa = sxa_node_add( xbee, &node_id);
 	#ifdef XBEE_DISCOVERY_VERBOSE

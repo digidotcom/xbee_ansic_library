@@ -165,7 +165,7 @@ int xbee_discovery_cluster_handler(const wpan_envelope_t FAR *envelope,
 
    printf("Discovery cluster handler\n");
 
-	if (xbee_disc_nd_parse(&node_id, envelope->payload) == 0) {
+	if (xbee_disc_nd_parse(&node_id, envelope->payload, envelope->length) == 0) {
 		node_add(&node_id);
 		xbee_disc_node_id_dump(&node_id);
 	}
@@ -408,7 +408,8 @@ int xbee_nd_cmd_response_handler(xbee_dev_t *xbee, const void FAR *raw,
       {
          /* this is a successful ATND response, parse the response
           * and add the discovered node to our node table */
-         if (xbee_disc_nd_parse(&node_id, resp->value) == 0)
+         if (xbee_disc_nd_parse(&node_id, resp->value,
+         		length - offsetof( xbee_frame_local_at_resp_t, value)) == 0)
          {
             tab_node = node_add(&node_id);
             if (tab_node)
