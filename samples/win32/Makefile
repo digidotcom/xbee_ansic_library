@@ -10,7 +10,7 @@
 # extra defines (in addition to those in platform_win32.h)
 DEFINE = -DZCL_ENABLE_TIME_SERVER \
 	-DXBEE_DEVICE_ENABLE_ATMODE \
-	-DXBEE_XMODEM_TESTING
+	-DXBEE_XMODEM_TESTING -DXBEE_MAX_RFPAYLOAD=256
 
 # directory for driver
 DRIVER = ../..
