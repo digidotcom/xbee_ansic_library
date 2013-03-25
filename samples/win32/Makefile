@@ -115,6 +115,9 @@ atinter_OBJECTS = _atinter.o
 atinter.exe : $(xbee_OBJECTS) $(atinter_OBJECTS) atinter.o
 	$(COMPILE) -o $@ $^
 
+gpm.exe : $(zigbee_OBJECTS) $(atinter_OBJECTS) xbee_gpm.o gpm.o
+	$(COMPILE) -o $@ $^
+
 apply_profile.exe : $(xbee_OBJECTS) apply_profile.o
 	$(COMPILE) -o $@ $^
 
