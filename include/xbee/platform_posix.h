@@ -47,6 +47,11 @@
 	// inttypes.h for PRIx16, PRIx32, etc. macros
 	#include <inttypes.h>
 
+	// enable the Wi-Fi code by default
+	#ifndef XBEE_WIFI_DISABLE
+		#define XBEE_WIFI_ENABLE
+	#endif
+
 	// compiler natively supports 64-bit integers
 	#define XBEE_NATIVE_64BIT
 

@@ -197,6 +197,19 @@
 	@def XBEE_MS_TIMER_RESOLUTION
 	The maximum number of milliseconds between consecutive calls to
 	xbee_millisecond_timer().
+
+	@def XBEE_WIFI_ENABLE
+	Define in the project or platform header file to enable support for XBee
+	Wi-Fi modules.  Platforms with limited code/data space (like the Freescale
+	HCS08) can't handle the larger 1400-byte payloads of this hardware.
+
+	@def XBEE_WIFI_DISABLE
+	Define in the project to disable Wi-Fi support on platforms that include it
+	by default (Win32, POSIX).
+
+	@def XBEE_WIFI_ENABLED
+	Defined by the platform as either 0 or 1, depending on whether code for
+	the Wi-Fi XBee Module should be compiled in or not.
 @}
 
 	@name platform_endian
@@ -347,6 +360,12 @@
 
 #ifndef INTERRUPT_DISABLE
 	#define INTERRUPT_DISABLE
+#endif
+
+#ifdef XBEE_WIFI_ENABLE
+	#define XBEE_WIFI_ENABLED 1
+#else
+	#define XBEE_WIFI_ENABLED 0
 #endif
 
 // legacy macro -- applications should remove conditional compilation

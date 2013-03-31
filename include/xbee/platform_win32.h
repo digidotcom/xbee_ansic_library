@@ -32,18 +32,6 @@
 		#include <endian.h>
 	#endif
 
-	// debugging defines
-//	#define XBEE_SERIAL_VERBOSE
-//	#define XBEE_DEVICE_VERBOSE
-//	#define XBEE_ATCMD_VERBOSE
-//	#define XBEE_SERIAL_DEBUG
-//	#define XBEE_XMODEM_VERBOSE
-//	#define XBEE_FIRMWARE_VERBOSE
-//	#define XBEE_APS_VERBOSE
-//	#define XBEE_ZDO_VERBOSE
-//	#define XBEE_ZCL_VERBOSE
-//	#define ZCL_TIME_VERBOSE
-
 	// macro used to declare a packed structure (no alignment of elements)
 	// "__gcc_struct__" added to fix problems with gcc 4.7.0 in MinGW/MSYS
 	#define PACKED_STRUCT	struct __attribute__ ((__packed__, __gcc_struct__))
@@ -61,6 +49,11 @@
 
 	// for HANDLE type used in xbee_serial_t
 	#include <wtypes.h>
+
+	// enable the Wi-Fi code by default
+	#ifndef XBEE_WIFI_DISABLE
+		#define XBEE_WIFI_ENABLE
+	#endif
 
 	// compiler natively supports 64-bit integers
 	#define XBEE_NATIVE_64BIT
