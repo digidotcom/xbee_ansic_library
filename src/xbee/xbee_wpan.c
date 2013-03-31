@@ -203,26 +203,34 @@ xbee_wpan_debug
 int _xbee_handle_transmit_status( xbee_dev_t *xbee,
 	const void FAR *payload, uint16_t length, void FAR *context)
 {
-	#ifdef XBEE_DEVICE_VERBOSE
-		const xbee_frame_transmit_status_t FAR *frame = payload;
-	#else
-		XBEE_UNUSED_PARAMETER( payload);
-	#endif
-
 	// standard XBee frame handler; stub isn't using any parameters yet
 	XBEE_UNUSED_PARAMETER( xbee);
+	XBEE_UNUSED_PARAMETER( payload);
 	XBEE_UNUSED_PARAMETER( length);
 	XBEE_UNUSED_PARAMETER( context);
 
 	// it may be necessary to push information up to user code so they know when
 	// a packet has been received or if it didn't make it out
-	#ifdef XBEE_DEVICE_VERBOSE
-		printf( "%s: id 0x%02x to 0x%04x retries=%d del=0x%02x disc=0x%02x\n",
-			__FUNCTION__, frame->frame_id,
-			be16toh( frame->network_address_be), frame->retries, frame->delivery,
-			frame->discovery);
-	#endif
 
 	return 0;
 }
 
+/*** BeginHeader xbee_frame_dump_transmit_status */
+/*** EndHeader */
+int xbee_frame_dump_transmit_status( xbee_dev_t *xbee,
+	const void FAR *payload, uint16_t length, void FAR *context)
+{
+	const xbee_frame_transmit_status_t FAR *frame = payload;
+
+	// standard XBee frame handler; doesn't use all parameters
+	XBEE_UNUSED_PARAMETER( xbee);
+	XBEE_UNUSED_PARAMETER( length);
+	XBEE_UNUSED_PARAMETER( context);
+
+	printf( "%s: id 0x%02x to 0x%04x retries=%d del=0x%02x disc=0x%02x\n",
+		__FUNCTION__, frame->frame_id,
+		be16toh( frame->network_address_be), frame->retries, frame->delivery,
+		frame->discovery);
+
+	return 0;
+}

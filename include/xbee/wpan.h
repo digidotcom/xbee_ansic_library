@@ -228,6 +228,26 @@ int _xbee_handle_transmit_status( xbee_dev_t *xbee,
 #define XBEE_FRAME_HANDLE_TX_STATUS	\
 	{ XBEE_FRAME_TRANSMIT_STATUS, 0, _xbee_handle_transmit_status, NULL }
 
+/**
+	@brief
+	Frame handler for 0x8B (XBEE_FRAME_TRANSMIT_STATUS) frames -- dumps transmit
+	status to STDOUT for debugging purposes.
+
+	View the documentation of xbee_frame_handler_fn() for this function's
+	parameters and return value.
+
+	@see XBEE_FRAME_TRANSMIT_STATUS_DEBUG, xbee_frame_handler_fn()
+*/
+int xbee_frame_dump_transmit_status( xbee_dev_t *xbee,
+	const void FAR *frame, uint16_t length, void FAR *context);
+
+/**
+	Add this macro to the list of XBee frame handlers to have transmit status
+	frames dumped to STDOUT.
+*/
+#define XBEE_FRAME_TRANSMIT_STATUS_DEBUG \
+	{ XBEE_FRAME_TRANSMIT_STATUS, 0, xbee_frame_dump_transmit_status, NULL }
+
 XBEE_END_DECLS
 
 // If compiling in Dynamic C, automatically #use the appropriate C file.
