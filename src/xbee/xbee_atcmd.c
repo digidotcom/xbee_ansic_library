@@ -289,6 +289,7 @@ int _xbee_cmd_list_callback( const xbee_cmd_response_t FAR *response)
 
 	int16_t			request;
 	uint16_t			command;
+	int				count, offset;
 
 	xbee = response->device;
 
@@ -335,17 +336,17 @@ int _xbee_cmd_list_callback( const xbee_cmd_response_t FAR *response)
                // Was not a copy command.
                break;
             case XBEE_CLT_COPY:
+            case XBEE_CLT_COPY_PAD_LEFT:
+            	// Zero out the field
+            	_f_memset( devptr, 0, reg->bytes);
+
                // Copy minimum of response length and receiving field length
-               _f_memcpy( devptr, response->value_bytes,
-                  response->value_length < reg->bytes ?
-                     response->value_length : reg->bytes);
-               // Set the remainder, if any, to nulls
-               if (response->value_length < reg->bytes)
-               {
-                  _f_memset( devptr + response->value_length,
-                              0,
-                              reg->bytes - response->value_length);
-               }
+            	count = response->value_length < reg->bytes ?
+                     response->value_length : reg->bytes;
+            	// copy to start of devptr (XBEE_CLT_COPY) or end
+            	// (XBEE_CLT_COPY_PAD_LEFT)
+            	offset = reg->type == XBEE_CLT_COPY ? 0 : (reg->bytes - count);
+               _f_memcpy( devptr + offset, response->value_bytes, count);
                break;
             case XBEE_CLT_COPY_BE:
                switch (reg->bytes)
@@ -708,8 +709,8 @@ void _xbee_cmd_query_handle_end(
 const xbee_atcmd_reg_t _xbee_atcmd_query_regs[] = {
 	XBEE_ATCMD_REG( 'H', 'V', XBEE_CLT_COPY_BE, xbee_dev_t, hardware_version),
 	XBEE_ATCMD_REG( 'V', 'R', XBEE_CLT_COPY_BE, xbee_dev_t, firmware_version),
-	XBEE_ATCMD_REG( 'S', 'H', XBEE_CLT_COPY, xbee_dev_t, wpan_dev.address.ieee.l[0]),
-	XBEE_ATCMD_REG( 'S', 'L', XBEE_CLT_COPY, xbee_dev_t, wpan_dev.address.ieee.l[1]),
+	XBEE_ATCMD_REG( 'S', 'H', XBEE_CLT_COPY_PAD_LEFT, xbee_dev_t, wpan_dev.address.ieee.l[0]),
+	XBEE_ATCMD_REG( 'S', 'L', XBEE_CLT_COPY_PAD_LEFT, xbee_dev_t, wpan_dev.address.ieee.l[1]),
 #ifdef XBEE_DEVICE_ENABLE_ATMODE
 	XBEE_ATCMD_REG( 'G', 'T', XBEE_CLT_COPY_BE, xbee_dev_t, guard_time),
 	XBEE_ATCMD_REG( 'C', 'T', XBEE_CLT_COPY_BE, xbee_dev_t, idle_timeout),
