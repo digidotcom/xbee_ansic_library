@@ -376,7 +376,7 @@ typedef struct xbee_dev_t
 		#define XBEE_HARDWARE_S2B_PRO			0x1E00
 		#define XBEE_HARDWARE_S2C_PRO			0x2100
 		#define XBEE_HARDWARE_S2C				0x2200
-		#define XBEE_HARDWARE_S3B				0x2300
+		#define XBEE_HARDWARE_S3B				0x2300		// XBee 900HP
 		#define XBEE_HARDWARE_S8				0x2400
 	//@}
 
