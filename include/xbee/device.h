@@ -173,7 +173,11 @@ enum xbee_frame_type {
 /// may affect that size, and even enabling encryption can have an affect.
 /// Smart Energy and ZigBee are limited to 128 bytes, DigiMesh is 256 bytes.
 #ifndef XBEE_MAX_RFPAYLOAD
-	#define XBEE_MAX_RFPAYLOAD 128
+	#if XBEE_WIFI_ENABLED
+		#define XBEE_MAX_RFPAYLOAD 1400
+	#else
+		#define XBEE_MAX_RFPAYLOAD 128
+	#endif
 #endif
 
 /// Max Received Frame Size, including type, is for 0x91, Receive Explicit.
