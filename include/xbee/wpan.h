@@ -125,7 +125,7 @@ typedef PACKED_STRUCT xbee_frame_transmit_status_t {
 	Values for \c delivery member of xbee_frame_transmit_status_t.
 	@{
 */
-		/// XBee Transmit Delivery Status: Success [ZigBee, DigiMesh]
+		/// XBee Transmit Delivery Status: Success [ZigBee, DigiMesh, Wi-Fi]
 		#define XBEE_TX_DELIVERY_SUCCESS						0x00
 
 		/// XBee Transmit Delivery Status: MAC ACK Failure [ZigBee]
@@ -140,13 +140,19 @@ typedef PACKED_STRUCT xbee_frame_transmit_status_t {
 		/// XBee Transmit Delivery Status: No Spectrum Available [DigiMesh]
 		#define XBEE_TX_DELIVERY_NO_SPECTRUM				0x03
 
+		/// XBee Transmit Delivery Status: Transmission purged; stack not ready [Wi-Fi]
+		#define XBEE_TX_DELIVERY_STACK_NOT_READY			0x03
+
+		/// XBee Transmit Delivery Status: Physical error with transceiver [Wi-Fi]
+		#define XBEE_TX_DELIVERY_PHYSICAL_ERROR			0x04
+
 		/// XBee Transmit Delivery Status: Invalid Destination Endpoint [ZigBee, DigiMesh]
 		#define XBEE_TX_DELIVERY_BAD_DEST_EP				0x15
 
 		/// XBee Transmit Delivery Status: No Buffers [Smart Energy]
 		#define XBEE_TX_DELIVERY_NO_BUFFERS					0x18
 
-		/// XBee Transmit Delivery Status: Network ACK Failure [ZigBee, DigiMesh]
+		/// XBee Transmit Delivery Status: Network ACK Failure [ZigBee, DigiMesh, Wi-Fi]
 		#define XBEE_TX_DELIVERY_NET_ACK_FAIL				0x21
 
 		/// XBee Transmit Delivery Status: Not Joined to Network [ZigBee]
@@ -179,14 +185,17 @@ typedef PACKED_STRUCT xbee_frame_transmit_status_t {
 		#define XBEE_TX_DELIVERY_ENCRYPTION_DISABLED		0x2E
 
 		/// XBee Transmit Delivery Status: Resource error (lack of buffers,
-		/// timers, etc.) [ZigBee]
+		/// timers, etc.) [ZigBee, Wi-Fi]
 		#define XBEE_TX_DELIVERY_RESOURCE_ERROR			0x32
 
-		/// XBee Transmit Delivery Status: Data payload too large [ZigBee]
+		/// XBee Transmit Delivery Status: Data payload too large [ZigBee, Wi-Fi]
 		#define XBEE_TX_DELIVERY_PAYLOAD_TOO_BIG			0x74
 
 		/// XBee Transmit Delivery Status: Indirect message unrequested [ZigBee]
 		#define XBEE_TX_DELIVERY_INDIRECT_NOT_REQ			0x75
+
+		/// XBee Transmit Delivery Status: Failure creating client socket [Wi-Fi]
+		#define XBEE_TX_DELIVERY_SOCKET_CREATION_FAILED	0x76
 
 		/// XBee Transmit Delivery Status: Key not authorized [Smart Energy]
 		#define XBEE_TX_DELIVERY_KEY_NOT_AUTHORIZED		0xBB
