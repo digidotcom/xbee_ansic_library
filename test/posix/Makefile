@@ -91,6 +91,7 @@ SRCS = unittest.c main.c \
 	xbee_sxa.c \
 	xbee_time.c \
 	xbee_transparent_serial.c \
+	xbee_wifi.c \
 	xbee_wpan.c \
 	xbee_xmodem.c \
 	sep_key_estab.c \
@@ -173,7 +174,7 @@ zigbee_OBJECTS = $(wpan_OBJECTS) zigbee_zcl.o zigbee_zdo.o zcl_types.o
 
 atinter_OBJECTS = _atinter.o
 
-atas_OBJECTS = $(xbee_OBJECTS) atas.o _atinter.o xbee_scan.o
+atas_OBJECTS = $(xbee_OBJECTS) atas.o _atinter.o xbee_scan.o xbee_wifi.o
 atas : $(atas_OBJECTS)
 	$(COMPILE) -o atas $(atas_OBJECTS)
 

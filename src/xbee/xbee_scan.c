@@ -24,6 +24,9 @@
 #include "xbee/byteorder.h"
 #include "xbee/scan.h"
 #include "wpan/types.h"
+#if XBEE_WIFI_ENABLED
+	#include "xbee/wifi.h"
+#endif
 
 int xbee_scan_dump_response( xbee_dev_t *xbee, const void FAR *raw,
 	uint16_t length, void FAR *context)
@@ -44,8 +47,9 @@ int xbee_scan_dump_response( xbee_dev_t *xbee, const void FAR *raw,
 			{
 #if XBEE_WIFI_ENABLED
 				case XBEE_SCAN_TYPE_WIFI:
-					printf( "CH%2u ST:%2u LM:%3udBm ID:[%.*s]\n",
-						atas->wifi.channel, atas->wifi.security_type,
+					printf( "CH%2u  Enc: %-4s  LM:%3udBm  ID:[%.*s]\n",
+						atas->wifi.channel,
+						xbee_wifi_encryption_name( atas->wifi.security_type),
 						atas->wifi.link_margin,
 						scan_length - offsetof( xbee_scan_response_t, wifi.ssid),
 						atas->wifi.ssid);
