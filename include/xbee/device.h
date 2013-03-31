@@ -176,10 +176,16 @@ enum xbee_frame_type {
 	#define XBEE_MAX_RFPAYLOAD 128
 #endif
 
-/// Max Frame Size, including type, is for 0x91, Receive Explicit.  Note that
-/// this is only for received frames -- we send 0x11 frames with 20 byte header.
-#define XBEE_MAX_FRAME_LEN		(XBEE_MAX_RFPAYLOAD + 18)
+/// Max Received Frame Size, including type, is for 0x91, Receive Explicit.
+/// @sa XBEE_MAX_TX_FRAME_LEN
+#define XBEE_MAX_RX_FRAME_LEN		(XBEE_MAX_RFPAYLOAD + 18)
 
+/// Max Transmitted Frame Size, including type, is for 0x11, Transmit Explicit.
+/// @sa XBEE_MAX_RX_FRAME_LEN
+#define XBEE_MAX_TX_FRAME_LEN		(XBEE_MAX_RFPAYLOAD + 20)
+
+/// Deprecated legacy macro, use XBEE_MAX_RX_FRAME_LEN instead.
+#define XBEE_MAX_FRAME_LEN		XBEE_MAX_RX_FRAME_LEN
 
 // We need to declare struct xbee_dev_t here so the compiler doesn't treat it
 // as a local definition in the parameter lists for the function pointer

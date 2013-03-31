@@ -706,12 +706,12 @@ int _xbee_frame_load( xbee_dev_t *xbee)
 
 	   		// set LSB of frame length, make local copy for range check
 				length = (xbee->rx.bytes_in_frame += ch);
-				if (length > XBEE_MAX_FRAME_LEN || length < 2)
+				if (length > XBEE_MAX_RX_FRAME_LEN || length < 2)
 				{
 					// this isn't a valid frame, go back to looking for start marker
 					#ifdef XBEE_DEVICE_VERBOSE
 						printf( "%s: read bad frame length (%u ! [2 .. %u])\n",
-							__FUNCTION__, length, XBEE_MAX_FRAME_LEN);
+							__FUNCTION__, length, XBEE_MAX_RX_FRAME_LEN);
 					#endif
 					if (ch == 0x7E)
 					{
