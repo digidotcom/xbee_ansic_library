@@ -378,6 +378,7 @@ typedef struct xbee_dev_t
 		#define XBEE_HARDWARE_S2C				0x2200
 		#define XBEE_HARDWARE_S3B				0x2300		// XBee 900HP
 		#define XBEE_HARDWARE_S8				0x2400
+		#define XBEE_HARDWARE_S6B				0x2700		// XBee Wi-Fi
 	//@}
 
 	/// Value of XBee module's VR register (4-bytes on some devices)
