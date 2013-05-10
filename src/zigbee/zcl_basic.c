@@ -29,13 +29,10 @@
 
 /*** BeginHeader _zcl_basic_server */
 /*** EndHeader */
-#ifndef ZCL_FACTORY_RESET_FN
-// PPH, revisit and decide how to allow customers customize this function.
-// Now, we just disable the error message to build
-//	#error "Must define ZCL_FACTORY_RESET_FN to use this module."
+#ifdef ZCL_FACTORY_RESET_FN
+	void ZCL_FACTORY_RESET_FN( void);
 #endif
 
-void ZCL_FACTORY_RESET_FN( void);
 
 /**
 	@internal
@@ -64,8 +61,9 @@ int _zcl_basic_server( const wpan_envelope_t FAR *envelope,
 			#ifdef ZCL_BASIC_VERBOSE
 				printf( "%s: resetting to factory defaults\n", __FUNCTION__);
 			#endif
-			ZCL_FACTORY_RESET_FN();
-
+			#ifdef ZCL_FACTORY_RESET_FN
+				ZCL_FACTORY_RESET_FN();
+			#endif
 			return zcl_default_response( &zcl, ZCL_STATUS_SUCCESS);
 		}
 	}
