@@ -351,6 +351,20 @@
 	#define PACKED_STRUCT struct
 #endif
 
+// Most platforms don't have alignment requirements, and we can just use casts.
+#ifndef xbee_get_unaligned16
+	#define xbee_get_unaligned16( p)	(*(uint16_t FAR *)p)
+#endif
+#ifndef xbee_get_unaligned32
+	#define xbee_get_unaligned32( p)	(*(uint32_t FAR *)p)
+#endif
+#ifndef xbee_set_unaligned16
+	#define xbee_set_unaligned16( p, v)	*(uint16_t FAR *)(p) = (v)
+#endif
+#ifndef xbee_set_unaligned32
+	#define xbee_set_unaligned32( p, v)	*(uint32_t FAR *)(p) = (v)
+#endif
+
 // default is for FAR to be ignored
 #ifndef FAR
 	#define FAR

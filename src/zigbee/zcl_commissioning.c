@@ -212,7 +212,7 @@ const zcl_comm_startup_attr_t zcl_comm_startup_attributes =
 
 	// If RejoinInterval becomes writable, we need to add a write handler that
 	// ensures it does not exceed the max_rejoin_interval.
-	// Use *(uint16_t FAR *)((zcl_attribute_full_t FAR *)attr + 1)->base.value,
+	// Use xbee_get_unaligned16( ((zcl_attribute_full_t FAR *)attr + 1)->base.value),
 	// or cheat and reference zcl_comm_state.sas.max_rejoin_interval directly.
 	{	{	ZCL_COMM_ATTR_REJOIN_INTERVAL,
 			ZCL_ATTRIB_FLAG_READONLY | ZCL_ATTRIB_FLAG_FULL,

@@ -250,11 +250,11 @@ int _xbee_cmd_issue_list( xbee_dev_t *xbee,
 	            break;
 
 	         case 2:
-	            param = *(uint16_t FAR *)devptr;
+	            param = xbee_get_unaligned16( devptr);
 	            break;
 
 	         case 4:
-	            param = *(uint32_t FAR *)devptr;
+	            param = xbee_get_unaligned32( devptr);
 	            break;
 	      }
 	      xbee_cmd_set_param( request, param);
@@ -359,11 +359,11 @@ int _xbee_cmd_list_callback( const xbee_cmd_response_t FAR *response)
                      break;
 
                   case 2:
-                     *(uint16_t FAR *)devptr = (uint16_t) response->value;
+                     xbee_set_unaligned16( devptr, (uint16_t) response->value);
                      break;
 
                   case 4:
-                     *(uint32_t FAR *)devptr = (uint32_t) response->value;
+                     xbee_set_unaligned32( devptr, (uint32_t) response->value);
                      break;
                }
                break;
@@ -923,7 +923,7 @@ int16_t xbee_cmd_create( xbee_dev_t *xbee, const char FAR command[3])
 	request->device = xbee;
 	// allow 2 seconds to finish building command and successfully send it
 	request->timeout = XBEE_SET_TIMEOUT_SEC(2);
-	request->command.w = *(uint16_t FAR *)command;
+	request->command.w = xbee_get_unaligned16( command);
 
 	return handle;
 }
@@ -1015,7 +1015,7 @@ int xbee_cmd_set_command( int16_t handle, const char FAR command[3])
 		return -EINVAL;
 	}
 
-	request->command.w = *(uint16_t FAR *)command;
+	request->command.w = xbee_get_unaligned16( command);
 
 	return 0;
 }
@@ -1161,13 +1161,13 @@ uint8_t _xbee_cmd_encode_param( void FAR *buffer, uint32_t value)
 {
 	if (value & 0xFFFF0000)				// setting 32-bit value
 	{
-		*(uint32_t FAR *) buffer = htobe32( value);
+		xbee_set_unaligned32( buffer, htobe32( value));
 		return 4;
 	}
 
 	if ((uint16_t) value & 0xFF00)		// setting 16-bit value
 	{
-		*(uint16_t FAR *) buffer = htobe16( (uint16_t) value);
+		xbee_set_unaligned16( buffer, htobe16( (uint16_t) value));
 		return 2;
 	}
 
@@ -1652,11 +1652,11 @@ int _xbee_cmd_handle_response( xbee_dev_t *xbee, const void FAR *rawframe,
 					break;
 
 				case 2:
-					response.value = be16toh( *(uint16_t FAR *)value);
+					response.value = be16toh( xbee_get_unaligned16( value));
 					break;
 
 				case 4:
-					response.value = be32toh( *(uint32_t FAR *)value);
+					response.value = be32toh( xbee_get_unaligned32( value));
 					break;
 
 				default:
@@ -1774,7 +1774,7 @@ int xbee_cmd_simple( xbee_dev_t *xbee, const char FAR command[3],
 
 	request.header.frame_type = XBEE_FRAME_LOCAL_AT_CMD;
 	request.header.frame_id = 0;		// don't need a response
-	request.header.command.w = *(uint16_t FAR *)command;
+	request.header.command.w = xbee_get_unaligned16( command);
 
 	request_size = sizeof(request.header) +
 		_xbee_cmd_encode_param( request.param, value);
@@ -1829,7 +1829,7 @@ int xbee_cmd_execute( xbee_dev_t *xbee, const char FAR command[3],
 	request.frame_type = XBEE_FRAME_LOCAL_AT_CMD;
 	// If this is an ND command, we'll need a non-zero frame ID.
 	request.frame_id = (uint8_t) xbee_next_frame_id( xbee);
-	request.command.w = *(uint16_t FAR *)command;
+	request.command.w = xbee_get_unaligned16( command);
 
 	#ifdef XBEE_ATCMD_VERBOSE
 		printf( "%s: sending AT%.2s, frame ID 0x%02x\n",

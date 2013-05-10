@@ -456,7 +456,7 @@ int zcl_parse_attribute_record( const zcl_attribute_base_t FAR *entry,
 		return -EINVAL;
 	}
 
-	attribute = le16toh( *(uint16_t FAR *)write_rec->buffer);
+	attribute = le16toh( xbee_get_unaligned16( write_rec->buffer));
 	if (write_rec->flags & ZCL_ATTR_WRITE_FLAG_READ_RESP)
 	{
 		// If this is a read attribute response and the status was not success,
@@ -632,7 +632,7 @@ uint32_t zcl_convert_24bit( const void FAR *value_le, bool_t extend_sign)
 		result[3] = ((result[2] & 0x80) && extend_sign) ? 0xFF : 0x00;
 	#endif
 
-	return *(uint32_t *) result;
+	return xbee_get_unaligned32( result);
 }
 
 /*** BeginHeader zcl_decode_attribute */
@@ -699,7 +699,8 @@ int zcl_decode_attribute( const zcl_attribute_base_t FAR *entry,
 					printf( "%s: assigning 0x%06" PRIx32 " to attribute 0x%04x\n",
 						__FUNCTION__, ulong & 0x00FFFFFF, entry->id);
 				#endif
-				*(uint32_t FAR *)entry->value = ulong;
+				// cast away the const from entry->value
+				xbee_set_unaligned32( (void FAR *)entry->value, ulong);
 			}
 			retval = 3;
 			break;
@@ -884,7 +885,7 @@ int _zcl_write_attributes( zcl_command_t *cmd)
 		while (parse_record.buflen > 0)
 		{
 			// copy attribute ID to status record before advancing buffer
-			status_rec->id_le = *(uint16_t FAR *)(parse_record.buffer);
+			status_rec->id_le = xbee_get_unaligned16( parse_record.buffer);
 
 			// reset flag to do assignment
 			parse_record.flags =
@@ -1290,8 +1291,10 @@ int _zcl_read_attributes( zcl_command_t *cmd)
 			break;
 		}
 
-		// copy ID to response (still little-endian) and convert to host-order
-		attribute = le16toh( *(uint16_t *)end_response = *id_le );
+		// copy ID to response (still little-endian)...
+		xbee_set_unaligned16( end_response, *id_le);
+		// ...and convert to host-order
+		attribute = le16toh( *id_le);
 		end_response += 2;
 		bytesleft -= 2;
 		entry = zcl_find_attribute( cmd->attributes, attribute);

@@ -72,7 +72,7 @@ int xbee_io_response_parse( xbee_io_t FAR *parsed, const void FAR *source)
 		return -EINVAL;
 	}
 	++p;	// skip sample count field
-   dmask = be16toh( *(uint16_t FAR *)p);
+   dmask = be16toh( xbee_get_unaligned16( p));
 	parsed->din_enabled = dmask & ~parsed->dout_enabled;
    p += sizeof(uint16_t);
    parsed->analog_enabled = *p++;
@@ -86,7 +86,7 @@ int xbee_io_response_parse( xbee_io_t FAR *parsed, const void FAR *source)
    if (dmask)
    {
    	// Touch only the bits that were configured as digital ins/outs.
-      dsamp = be16toh( *(uint16_t FAR *)p);
+      dsamp = be16toh( xbee_get_unaligned16( p));
    	p += sizeof(uint16_t);
    	parsed->din_state &= ~parsed->din_enabled;
    	parsed->din_state |= parsed->din_enabled & dsamp;
@@ -99,7 +99,7 @@ int xbee_io_response_parse( xbee_io_t FAR *parsed, const void FAR *source)
       {
       	if (parsed->analog_enabled & amask)
          {
-         	parsed->adc_sample[asamp] = be16toh( *(uint16_t FAR *)p);
+         	parsed->adc_sample[asamp] = be16toh( xbee_get_unaligned16( p));
    			p += sizeof(uint16_t);
          }
       }
