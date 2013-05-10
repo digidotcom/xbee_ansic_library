@@ -132,6 +132,10 @@ int xbee_dev_init( xbee_dev_t *xbee, const xbee_serial_t *serport,
 		return -EINVAL;
 	}
 
+	#ifdef XBEE_PLATFORM_INIT
+		XBEE_PLATFORM_INIT();
+	#endif
+
 	// try communicating with the XBee module
 	// set xbee to all zeros, then
 	// set up serial port and attempt communications with module

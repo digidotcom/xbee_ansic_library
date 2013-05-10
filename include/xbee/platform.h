@@ -158,6 +158,11 @@
 	and automatically include the necessary file.  This macro is useful for
 	adding new platforms without having to modify platform.h.
 
+	@def XBEE_PLATFORM_INIT
+	Optional macro, defined to the name of a parameter-less function that
+	returns void.  If defined, called by xbee_dev_init() before setting up
+	the xbee_dev_t structure.
+
 	@typedef xbee_serial_t
 	Must be a structure with uint32_t member \c baudrate and any additional
 	members required by the functions in xbee/serial.h.
