@@ -105,6 +105,10 @@ atinter : $(xbee_OBJECTS) $(atinter_OBJECTS) atinter.o
 gpm : $(zigbee_OBJECTS) $(atinter_OBJECTS) xbee_gpm.o gpm.o
 	$(COMPILE) -o $@ $^
 
+network_scan_OBJECTS = $(xbee_OBJECTS) $(atinter_OBJECTS) network_scan.o _atinter.o xbee_scan.o xbee_wifi.o
+network_scan : $(network_scan_OBJECTS)
+	$(COMPILE) -o $@ $^
+
 apply_profile : $(xbee_OBJECTS) apply_profile.o
 	$(COMPILE) -o $@ $^
 

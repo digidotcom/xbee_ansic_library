@@ -33,7 +33,7 @@ const xbee_dispatch_table_entry_t xbee_frame_handlers[] =
 void print_menu( void)
 {
 	puts( "help                 This list of options.");
-	puts( "as                   Initiate active scan.");
+	puts( "scan                 Initiate active scan.");
 	puts( "");
 }
 
@@ -99,7 +99,7 @@ int main( int argc, char *argv[])
 		{
 			print_menu();
 		}
-		else if (! strcmpi( cmdstr, "as"))
+		else if (! strcmpi( cmdstr, "scan"))
       {
       	active_scan();
       }

@@ -182,10 +182,6 @@ zigbee_OBJECTS = $(wpan_OBJECTS) zigbee_zcl.o zigbee_zdo.o zcl_types.o
 
 atinter_OBJECTS = _atinter.o
 
-atas_OBJECTS = $(xbee_OBJECTS) atas.o _atinter.o xbee_scan.o xbee_wifi.o
-atas.exe : $(atas_OBJECTS)
-	$(COMPILE) -o atas.exe $(atas_OBJECTS)
-
 zcl_common_OBJECTS =	\
 	$(platform_OBJECTS)		\
 	wpan_aps.o					\
