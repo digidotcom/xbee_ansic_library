@@ -16,6 +16,7 @@
  * installation.
  */
 #include <stdio.h>
+#include <stdlib.h>
 #include "../common/_atinter.h"
 #include "parse_serial_args.h"
 

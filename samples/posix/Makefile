@@ -102,6 +102,9 @@ atinter_OBJECTS = xbee_readline.o _atinter.o
 atinter : $(xbee_OBJECTS) $(atinter_OBJECTS) atinter.o
 	$(COMPILE) -o $@ $^
 
+gpm : $(zigbee_OBJECTS) $(atinter_OBJECTS) xbee_gpm.o gpm.o
+	$(COMPILE) -o $@ $^
+
 apply_profile : $(xbee_OBJECTS) apply_profile.o
 	$(COMPILE) -o $@ $^
 
