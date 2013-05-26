@@ -10,7 +10,7 @@
 # extra defines (in addition to those in platform_win32.h)
 DEFINE = -DZCL_ENABLE_TIME_SERVER \
 	-DXBEE_DEVICE_ENABLE_ATMODE \
-	-DXBEE_XMODEM_TESTING -DXBEE_MAX_RFPAYLOAD=256
+	-DXBEE_XMODEM_TESTING -DXBEE_MAX_RFPAYLOAD=1400
 
 # directory for driver
 DRIVER = ../..
@@ -40,7 +40,8 @@ EXE = atinter.exe install_ebl.exe comports.exe \
 		pxbee_ota_update.exe zcltime.exe \
 		commissioning_client.exe commissioning_server.exe \
 		apply_profile.exe xbee_term.exe eblinfo.exe \
-		zigbee_walker.exe transparent_client.exe pxbee_update.exe
+		zigbee_walker.exe transparent_client.exe pxbee_update.exe \
+		network_scan.exe gpm.exe
 
 all : $(EXE)
 
@@ -81,11 +82,14 @@ SRCS = \
 	xbee_discovery.c \
 	xbee_ebl_file.c \
 	xbee_firmware.c \
+	xbee_gpm.c \
 	xbee_ota_client.c \
 	xbee_platform_win32.c \
+	xbee_scan.c \
 	xbee_serial_win32.c \
 	xbee_time.c \
 	xbee_transparent_serial.c \
+	xbee_wifi.c \
 	xbee_xmodem.c \
 	zcl_basic.c \
 	zcl_client.c \

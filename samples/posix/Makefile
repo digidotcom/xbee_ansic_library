@@ -28,7 +28,7 @@ COMPILE = gcc -iquote$(INCDIR) -g -MMD -MP -Wall $(DEFINE)
 
 EXE = atinter install_ebl zcltime \
 		commissioning_client commissioning_server transparent_client zigbee_walker \
-		apply_profile xbee_term eblinfo
+		apply_profile xbee_term eblinfo network_scan gpm
 
 all : $(EXE)
 
@@ -66,12 +66,15 @@ SRCS = \
 	xbee_discovery.c \
 	xbee_ebl_file.c \
 	xbee_firmware.c \
+	xbee_gpm.c \
 	xbee_ota_client.c \
 	xbee_platform_posix.c \
 	xbee_readline.c \
+	xbee_scan.c \
 	xbee_serial_posix.c \
 	xbee_time.c \
 	xbee_transparent_serial.c \
+	xbee_wifi.c \
 	xbee_xmodem.c \
 	zcl_basic.c \
 	zcl_client.c \
