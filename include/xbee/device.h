@@ -417,21 +417,6 @@ typedef struct xbee_dev_t
 	/// Multi-purpose flags for tracking information about this device.
 	enum xbee_dev_flags			flags;
 
-	/// Buffer and state variables used for receiving a frame.
-	struct rx {
-		/// current state of receiving a frame
-		enum xbee_dev_rx_state	state;
-
-		/// bytes in frame being read; does not include checksum byte
-		uint16_t						bytes_in_frame;
-
-		/// bytes read so far
-		uint16_t						bytes_read;
-
-		/// bytes received, starting with frame_type, +1 is for checksum
-		uint8_t	frame_data[XBEE_MAX_FRAME_LEN + 1];
-	} rx;
-
 	uint8_t		frame_id;				///< last frame_id used for sending
 
 	// Need some state variables here if AT mode is supported (necessary when
@@ -451,6 +436,22 @@ typedef struct xbee_dev_t
 		uint16_t			idle_timeout;	///< value of CT (default 100) * 100ms
 		char				escape_char;	///< value of CC (default '+')
 	#endif
+
+	/// Buffer and state variables used for receiving a frame.  Keep at the
+	/// end of the structure since frame_data can be large.
+	struct rx {
+		/// current state of receiving a frame
+		enum xbee_dev_rx_state	state;
+
+		/// bytes in frame being read; does not include checksum byte
+		uint16_t						bytes_in_frame;
+
+		/// bytes read so far
+		uint16_t						bytes_read;
+
+		/// bytes received, starting with frame_type, +1 is for checksum
+		uint8_t	frame_data[XBEE_MAX_FRAME_LEN + 1];
+	} rx;
 } xbee_dev_t;
 
 /**
