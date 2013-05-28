@@ -24,7 +24,90 @@
 #include "xbee/gpm.h"
 #include "xbee/wpan.h"
 
-// function receiving data on transparent serial cluster when ATAO != 0
+xbee_dev_t my_xbee;
+wpan_envelope_t envelope_self;
+
+uint16_t blocks = 0;
+uint16_t blocksize = 0;
+
+FILE *upload_file = NULL;
+uint32_t upload_offset = 0;
+uint16_t upload_pagesize = 128;
+
+int upload_next_page()
+{
+	uint16_t bytecount, maxcount, bytesread;
+	int result;
+	char buffer[XBEE_MAX_RFPAYLOAD];
+	bool_t complete;
+
+	complete = (upload_file == NULL || feof( upload_file));
+	if (! complete)
+	{
+		bytecount = blocksize - (upload_offset % blocksize);
+		maxcount = upload_pagesize == 0 ? xbee_gpm_max_write( &my_xbee.wpan_dev)
+				: upload_pagesize;
+		if (bytecount > maxcount)
+		{
+			bytecount = maxcount;
+		}
+
+		bytesread = fread( buffer, 1, bytecount, upload_file);
+		complete = (bytesread == 0 && feof( upload_file));
+	}
+
+	if (complete)
+	{
+		puts( "upload complete");
+		fclose( upload_file);
+		upload_file = NULL;
+
+		return 0;
+	}
+
+	result = xbee_gpm_write( &envelope_self, upload_offset / blocksize,
+			upload_offset % blocksize, bytesread, buffer);
+	printf( "sending %u bytes from offset %" PRIu32 " (result = %d)\n",
+			bytesread, upload_offset, result);
+	if (result == 0)
+	{
+		upload_offset += bytesread;
+	}
+
+	return result;
+}
+
+int start_upload( const char *file)
+{
+	if (blocksize == 0)
+	{
+		puts( "Can't start upload until after successful 'info' response.");
+		return -EPERM;
+	}
+
+	if (file == NULL)
+	{
+		return -EINVAL;
+	}
+
+	upload_offset = 0;
+	if (upload_file != NULL)
+	{
+		fclose( upload_file);
+	}
+	upload_file = fopen( file, "rb");
+	if (upload_file == NULL)
+	{
+		printf( "Error %d, could not open '%s'.\n", errno, file);
+		return -errno;
+	}
+
+	printf( "Uploading '%s' to GPM...\n", file);
+
+	return upload_next_page();
+}
+
+// function receiving GPM responses
 int gpm_response( const wpan_envelope_t FAR *envelope, void FAR *context)
 {
 	const xbee_gpm_frame_t FAR *frame = envelope->payload;
@@ -33,12 +116,12 @@ int gpm_response( const wpan_envelope_t FAR *envelope, void FAR *context)
 	{
 		case XBEE_GPM_CMD_PLATFORM_INFO_RESP:
 		{
-			uint16_t blocks = be16toh( frame->header.response.block_num_be);
-			uint16_t bytes = be16toh( frame->header.response.start_index_be);
+			blocks = be16toh( frame->header.response.block_num_be);
+			blocksize = be16toh( frame->header.response.start_index_be);
 
-			printf( "Platform: status 0x%02X, %u blocks, %u bytes/block = %"
+			printf( "Platform Info: status 0x%02X, %u blocks, %u bytes/block = %"
 					PRIu32 " bytes\n", frame->header.response.status,
-					blocks, bytes, (uint32_t) blocks * bytes);
+					blocks, blocksize, (uint32_t) blocks * blocksize);
 		}
 		break;
 
@@ -54,6 +137,34 @@ int gpm_response( const wpan_envelope_t FAR *envelope, void FAR *context)
 		}
 		break;
 
+		case XBEE_GPM_CMD_ERASE_RESP:
+			printf( "Erase block %u response: status 0x%02X\n",
+					be16toh( frame->header.response.block_num_be),
+					frame->header.response.status);
+			break;
+
+		case XBEE_GPM_CMD_WRITE_RESP:
+		case XBEE_GPM_CMD_ERASE_THEN_WRITE_RESP:
+			printf( "Write to offset %u of block %u response: status 0x%02X\n",
+					be16toh( frame->header.response.start_index_be),
+					be16toh( frame->header.response.block_num_be),
+					frame->header.response.status);
+			if (upload_file != NULL && frame->header.response.status == 0)
+			{
+				upload_next_page();
+			}
+			break;
+
+		case XBEE_GPM_CMD_FIRMWARE_VERIFY_RESP:
+			printf( "Verify firmware response: status 0x%02X\n",
+					frame->header.response.status);
+			break;
+
+		case XBEE_GPM_CMD_FIRMWARE_INSTALL_RESP:
+			printf( "Install firmware response: status 0x%02X\n",
+					frame->header.response.status);
+			break;
+
 		default:
 			printf( "%u-byte GPM response:\n", envelope->length);
 			hex_dump( envelope->payload, envelope->length, HEX_DUMP_FLAG_OFFSET);
@@ -62,6 +173,7 @@ int gpm_response( const wpan_envelope_t FAR *envelope, void FAR *context)
 
 	return 0;
 }
+
 /////// endpoint table
 
 // must be sorted by cluster ID
@@ -116,7 +228,23 @@ int parse_uint16( uint16_t *parsed, const char *text, int param_count)
 
 	return index;
 }
-xbee_dev_t my_xbee;
+
+void print_menu( void)
+{
+	puts( "help                           This list of options.");
+	puts( "scan                           Initiate active scan.");
+	puts( "quit                           Quit the program.");
+	puts( "info                           Send platform info request.");
+	puts( "read <block> <offset> <bytes>  Read data from GPM.");
+	puts( "erase all                      Erase all of GPM.");
+	puts( "erase <block>                  Erase a single block of GPM.");
+	puts( "upload <filename>              Upload file to GPM.");
+	puts( "verify                         Verify firmware copied to GPM.");
+	puts( "install                        Install firmware copied to GPM.");
+	puts( "pagesize                       Report on current upload page size.");
+	puts( "pagesize <bytes>               Page size for firmware uploads.");
+	puts( "");
+}
 
 /*
 	main
@@ -129,7 +257,7 @@ int main( int argc, char *argv[])
    char cmdstr[80];
 	int status;
 	xbee_serial_t XBEE_SERPORT;
-	wpan_envelope_t envelope_self;
+	uint16_t params[3];
 
 	parse_serial_arguments( argc, argv, &XBEE_SERPORT);
 
@@ -170,6 +298,9 @@ int main( int argc, char *argv[])
 		envelope_self.ieee_address.l[1] = htobe32( 0x7F000001);
 	}
 
+	// get flash info, for use by later commands
+	xbee_gpm_get_flash_info( &envelope_self);
+
    while (1)
    {
       while (xbee_readline( cmdstr, sizeof cmdstr) == -EAGAIN)
@@ -177,10 +308,10 @@ int main( int argc, char *argv[])
       	xbee_dev_tick( &my_xbee);
       }
 
-		if (! strncmpi( cmdstr, "menu", 4))
-      {
-      	printATCmds( &my_xbee);
-      }
+		if (! strcmpi( cmdstr, "help") || ! strcmp( cmdstr, "?"))
+		{
+			print_menu();
+		}
       else if (! strcmpi( cmdstr, "quit"))
       {
 			return 0;
@@ -190,10 +321,30 @@ int main( int argc, char *argv[])
       	printf( "Sending platform info request (result %d)\n",
       			xbee_gpm_get_flash_info( &envelope_self));
       }
+      else if (! strcmpi( cmdstr, "erase all"))
+      {
+   		printf( "Erasing entire GPM (result %d)\n",
+   				xbee_gpm_erase_flash( &envelope_self));
+      }
+      else if (! strncmpi( cmdstr, "erase ", 6))
+      {
+      	if (blocksize == 0)
+      	{
+      		puts( "Need to get 'info' response to learn blocksize before"
+      				"erasing a page.");
+      	}
+      	else if (parse_uint16( params, &cmdstr[6], 1) == 1)
+      	{
+      		printf( "Erasing block %u (result %d)\n", params[0],
+      				xbee_gpm_erase_block( &envelope_self, params[0], blocksize));
+      	}
+      	else
+      	{
+      		printf( "Couldn't parse block number from [%s]\n", &cmdstr[6]);
+      	}
+      }
       else if (! strncmpi( cmdstr, "read", 4))
       {
-      	uint16_t params[3];
-
       	if (parse_uint16( params, &cmdstr[5], 3) == 3)
       	{
       		printf( "Read %u bytes from offset %u of block %u (result %d)\n",
@@ -206,9 +357,51 @@ int main( int argc, char *argv[])
       		printf( "Couldn't parse three values from [%s]\n", &cmdstr[5]);
       	}
       }
-      else
+      else if (! strcmpi( cmdstr, "pagesize"))
       {
-			process_command( &my_xbee, cmdstr);
+      	printf( "upload page size is %u\n", upload_pagesize);
+      }
+      else if (! strncmpi( cmdstr, "pagesize ", 9))
+      {
+      	if (parse_uint16( params, &cmdstr[9], 1) == 1)
+			{
+				if (params[0] > xbee_gpm_max_write( &my_xbee.wpan_dev))
+				{
+					printf( "page size of %u exceeds maximum of %u\n",
+							params[0], xbee_gpm_max_write( &my_xbee.wpan_dev));
+				}
+				else
+				{
+					upload_pagesize = params[0];
+					printf( "upload page size is now %u\n", upload_pagesize);
+				}
+			}
+			else
+			{
+				printf( "Couldn't parse page size from [%s]\n", &cmdstr[9]);
+			}
+      }
+      else if (! strncmpi( cmdstr, "upload ", 7))
+      {
+      	start_upload( &cmdstr[7]);
+      }
+      else if (! strcmpi( cmdstr, "verify"))
+      {
+   		printf( "Verify firmware in GPM (result %d)\n",
+   				xbee_gpm_firmware_verify( &envelope_self));
+      }
+      else if (! strcmpi( cmdstr, "install"))
+      {
+   		printf( "Install firmware in GPM (result %d)\n",
+   				xbee_gpm_firmware_install( &envelope_self));
+      }
+		else if (! strncmpi( cmdstr, "AT", 2))
+		{
+			process_command( &my_xbee, &cmdstr[2]);
+		}
+	   else
+	   {
+	   	printf( "unknown command: '%s'\n", cmdstr);
 	   }
    }
 }
