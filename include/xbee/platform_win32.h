@@ -59,7 +59,7 @@
 	#define XBEE_NATIVE_64BIT
 
 	// size of OS-level serial buffers
-	#define XBEE_SER_TX_BUFSIZE	512
+	#define XBEE_SER_TX_BUFSIZE	2048
 	#define XBEE_SER_RX_BUFSIZE	4096
 
 // Elements needed to keep track of serial port settings.  Must have a
