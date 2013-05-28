@@ -87,6 +87,24 @@ int xbee_gpm_erase_block( const wpan_envelope_t *envelope,
 	return wpan_envelope_send( &gpm_envelope);
 }
 
+uint16_t xbee_gpm_max_write( const wpan_dev_t *dev)
+{
+	uint16_t max_bytes;
+
+	if (dev == NULL)
+	{
+		return 0;
+	}
+
+	max_bytes = dev->payload;
+	if (max_bytes > XBEE_MAX_RFPAYLOAD)
+	{
+		max_bytes = XBEE_MAX_RFPAYLOAD;
+	}
+
+	return max_bytes - sizeof(xbee_gpm_request_header_t);
+}
+
 int _xbee_gpm_write( const wpan_envelope_t *envelope, uint16_t block_num,
 		uint16_t byte_offset, uint16_t byte_count, const void FAR *data,
 		bool_t erase_first)
@@ -101,7 +119,7 @@ int _xbee_gpm_write( const wpan_envelope_t *envelope, uint16_t block_num,
 	{
 		return -EINVAL;
 	}
-	if (byte_count > envelope->dev->payload || byte_count > XBEE_MAX_RFPAYLOAD)
+	if (byte_count > xbee_gpm_max_write( envelope->dev))
 	{
 		return -EMSGSIZE;
 	}

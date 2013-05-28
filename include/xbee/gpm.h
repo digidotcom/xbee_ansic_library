@@ -95,6 +95,10 @@ int xbee_gpm_get_flash_info( const wpan_envelope_t *envelope);
 int xbee_gpm_erase_block( const wpan_envelope_t *envelope,
 		uint16_t block_num, uint16_t block_size);
 
+// Maximum number of bytes allowed per write (based on device's ATNP and size
+// of GPM header).
+uint16_t xbee_gpm_max_write( const wpan_dev_t *dev);
+
 // Command to erase entire flash is to see block num and block size to 0.
 #define xbee_gpm_erase_flash( env)	xbee_gpm_erase_block( env, 0, 0)
 
