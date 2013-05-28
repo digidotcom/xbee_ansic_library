@@ -96,7 +96,7 @@ int xbee_gpm_erase_block( const wpan_envelope_t *envelope,
 		uint16_t block_num, uint16_t block_size);
 
 // Command to erase entire flash is to see block num and block size to 0.
-#define xbee_gpm_erase_flash( env)	xbee_gpm_req_erase_block( env, 0, 0)
+#define xbee_gpm_erase_flash( env)	xbee_gpm_erase_block( env, 0, 0)
 
 int xbee_gpm_write( const wpan_envelope_t *envelope, uint16_t block_num,
 		uint16_t byte_offset, uint16_t byte_count, const void FAR *data);
