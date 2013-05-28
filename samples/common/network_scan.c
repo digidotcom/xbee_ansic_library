@@ -34,6 +34,7 @@ void print_menu( void)
 {
 	puts( "help                 This list of options.");
 	puts( "scan                 Initiate active scan.");
+	puts( "quit                 Quit the program.");
 	puts( "");
 }
 
