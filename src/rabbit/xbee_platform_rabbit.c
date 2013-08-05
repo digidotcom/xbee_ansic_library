@@ -41,7 +41,7 @@ uint32_t (xbee_millisecond_timer)( void)
 }
 
 /*** BeginHeader _xbee_checksum_inline */
-uint8_t _xbee_checksum_inline( const void __far *bytes, uint_fast8_t length,
+uint8_t _xbee_checksum_inline( const void __far *bytes, uint16_t length,
 	uint_fast8_t initial);
 /*** EndHeader */
 /**

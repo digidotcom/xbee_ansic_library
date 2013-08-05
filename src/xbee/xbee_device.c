@@ -417,10 +417,10 @@ void _xbee_dispatch_table_dump( const xbee_dev_t *xbee)
 // version as a replacement, and include a function macro to override this
 // function in their platform.h.  See Rabbit
 _xbee_device_debug
-uint8_t (_xbee_checksum)( const void FAR *bytes, uint_fast8_t length,
+uint8_t (_xbee_checksum)( const void FAR *bytes, uint16_t length,
 	uint_fast8_t initial)
 {
-	uint8_t i;
+	uint16_t i;
 	uint8_t checksum;
 	const char FAR *p;
 
@@ -582,14 +582,14 @@ int xbee_frame_write( xbee_dev_t *xbee, const void FAR *header,
 	if (headerlen)
 	{
 		xbee_ser_write( &xbee->serport, header, headerlen);
-		checksum = _xbee_checksum( header, (uint_fast8_t) headerlen, checksum);
+		checksum = _xbee_checksum( header, headerlen, checksum);
 	}
 
 	// Send <datalen> bytes from <data> if it is not NULL
 	if (datalen)
 	{
 		xbee_ser_write( &xbee->serport, data, datalen);
-		checksum = _xbee_checksum( data, (uint_fast8_t) datalen, checksum);
+		checksum = _xbee_checksum( data, datalen, checksum);
 	}
 
 	// Send 1-byte checksum of bytes in payload

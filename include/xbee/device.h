@@ -511,7 +511,7 @@ void xbee_dev_flowcontrol( xbee_dev_t *xbee, bool_t enabled);
 
 void _xbee_dispatch_table_dump( const xbee_dev_t *xbee);
 
-uint8_t _xbee_checksum( const void FAR *bytes, uint_fast8_t length,
+uint8_t _xbee_checksum( const void FAR *bytes, uint16_t length,
 	uint_fast8_t initial);
 
 int _xbee_frame_load( xbee_dev_t *xbee);
