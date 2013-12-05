@@ -991,6 +991,20 @@ int xbee_frame_dump_modem_status( xbee_dev_t *xbee,
 			status_str = "disassociated";
 			break;
 
+#if XBEE_WIFI_ENABLED
+		case XBEE_MODEM_STATUS_IP_CONFIG_ERROR:
+			status_str = "IP config error";
+			break;
+
+		case XBEE_MODEM_STATUS_CLOUD_CONNECTED:
+			status_str = "Device Cloud connected";
+			break;
+
+		case XBEE_MODEM_STATUS_CLOUD_DISCONNECTED:
+			status_str = "Device Cloud disconnected";
+			break;
+#endif
+
 		case XBEE_MODEM_STATUS_COORD_START:
 			status_str = "coordinator started";
 			break;

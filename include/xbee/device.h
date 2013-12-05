@@ -529,14 +529,16 @@ typedef PACKED_STRUCT xbee_frame_modem_status_t {
 	Values for \c status member of xbee_frame_modem_status_t.
 	@{
 */
-/// XBee Modem Status: Hardware reset [ZigBee and DigiMesh]
+/// XBee Modem Status: Hardware reset [ZigBee, DigiMesh, Wi-Fi]
 #define XBEE_MODEM_STATUS_HW_RESET					0x00
-/// XBee Modem Status: Watchdog timer reset [ZigBee and DigiMesh]
+/// XBee Modem Status: Watchdog timer reset [ZigBee, DigiMesh, Wi-fi]
 #define XBEE_MODEM_STATUS_WATCHDOG					0x01
-/// XBee Modem Status: Joined network (routers and end devices) [ZigBee]
+/// XBee Modem Status: Joined network (routers and end devices) [ZigBee, Wi-Fi]
 #define XBEE_MODEM_STATUS_JOINED						0x02
-/// XBee Modem Status: Disassociated (left network) [ZigBee]
+/// XBee Modem Status: Disassociated (left network) [ZigBee, Wi-Fi]
 #define XBEE_MODEM_STATUS_DISASSOC					0x03
+/// XBee Modem Status: IP configuration error [Wi-Fi]
+#define XBEE_MODEM_STATUS_IP_CONFIG_ERROR			0x04
 /// XBee Modem Status: Coordinator started [ZigBee]
 #define XBEE_MODEM_STATUS_COORD_START				0x06
 /// XBee Modem Status: Network security key was updated [ZigBee]
@@ -547,6 +549,10 @@ typedef PACKED_STRUCT xbee_frame_modem_status_t {
 #define XBEE_MODEM_STATUS_SLEEPING					0x0C
 /// XBee Modem Status: Voltage supply limit exceeded (XBee-PRO only) [ZigBee]
 #define XBEE_MODEM_STATUS_OVERVOLTAGE				0x0D
+/// XBee Modem Status: Device Cloud connected [Wi-Fi]
+#define XBEE_MODEM_STATUS_CLOUD_CONNECTED			0x0E
+/// XBee Modem Status: Device Cloud disconnected [Wi-Fi]
+#define XBEE_MODEM_STATUS_CLOUD_DISCONNECTED		0x0F
 /// XBee Modem Status: Key establishment complete [Smart Energy]
 #define XBEE_MODEM_STATUS_KEY_ESTABLISHED			0x10
 /// XBee Modem Status: Modem config changed while join in progress [ZigBee]
