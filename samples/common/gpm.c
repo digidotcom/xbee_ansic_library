@@ -289,13 +289,6 @@ int main( int argc, char *argv[])
 	xbee_dev_dump_settings( &my_xbee, XBEE_DEV_DUMP_FLAG_DEFAULT);
 
 	xbee_gpm_envelope_local( &envelope_self, &my_xbee.wpan_dev);
-	if (envelope_self.ieee_address.u[0] == 0x0000)
-	{
-		// We're connected to a Wi-Fi XBee and need to use an IP address
-		// (localhost, 127.0.0.1) as the target.
-		envelope_self.ieee_address.l[0] = 0;
-		envelope_self.ieee_address.l[1] = htobe32( 0x7F000001);
-	}
 	
 	upload_pagesize = xbee_gpm_max_write( &my_xbee.wpan_dev);
 
