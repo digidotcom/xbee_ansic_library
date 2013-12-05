@@ -232,7 +232,6 @@ int parse_uint16( uint16_t *parsed, const char *text, int param_count)
 void print_menu( void)
 {
 	puts( "help                           This list of options.");
-	puts( "scan                           Initiate active scan.");
 	puts( "quit                           Quit the program.");
 	puts( "info                           Send platform info request.");
 	puts( "read <block> <offset> <bytes>  Read data from GPM.");
