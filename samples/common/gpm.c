@@ -296,6 +296,8 @@ int main( int argc, char *argv[])
 		envelope_self.ieee_address.l[0] = 0;
 		envelope_self.ieee_address.l[1] = htobe32( 0x7F000001);
 	}
+	
+	upload_pagesize = xbee_gpm_max_write( &my_xbee.wpan_dev);
 
 	// get flash info, for use by later commands
 	xbee_gpm_get_flash_info( &envelope_self);
