@@ -48,6 +48,11 @@ int xbee_disc_nd_parse( xbee_node_id_t FAR *parsed, const void FAR *source,
 		return -EINVAL;
 	}
 
+	if (source_length < offsetof( xbee_node_id1_t, node_info))
+	{
+		return -EBADMSG;
+	}
+
 	id1 = source;
 	ni_len = strlen( id1->node_info);
 	if (ni_len > XBEE_DISC_MAX_NODEID_LEN)
