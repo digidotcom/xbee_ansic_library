@@ -141,6 +141,28 @@ void node_discovered( xbee_dev_t *xbee, const xbee_node_id_t *rec)
 	}
 }
 
+int node_add_manual( xbee_dev_t *xbee, const char *mac_address)
+{
+	int error;
+	xbee_node_id_t node;
+
+	memset( &node, 0x00, sizeof node);
+	error = addr64_parse( &node.ieee_addr_be, mac_address);
+	if (error != 0)
+	{
+		printf( "error %d trying to parse '%s' as 64-bit address\n",
+				error, mac_address);
+	}
+	else
+	{
+		node.network_addr = WPAN_NET_ADDR_UNDEFINED;
+		sprintf( node.node_info, "%08" PRIX32, be32toh( node.ieee_addr_be.l[1]));
+		node_discovered( xbee, &node);
+	}
+
+	return error;
+}
+
 int send_data( const xbee_node_id_t *node_id, void FAR *data, uint16_t length)
 {
 	wpan_envelope_t env;
@@ -220,6 +242,7 @@ void print_menu( void)
 																" or string \"YYY\"");
 	puts( "target               Show the list of known targets.");
 	puts( "target SOME STRING   Set target based on its NI value.");
+	puts( "mac <mac address>    Manually add target using its MAC address");
 	puts( "");
 	puts( "   All other commands are sent to the current target.");
 	puts( "");
@@ -326,6 +349,10 @@ int main( int argc, char *argv[])
 	   		printf( "target: ");
 	   		xbee_disc_node_id_dump( target);
 	   	}
+	   }
+	   else if (! strncmpi( cmdstr, "mac ", 4))
+	   {
+	   	node_add_manual( &my_xbee, &cmdstr[4]);
 	   }
 	   else
 	   {
