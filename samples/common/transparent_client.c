@@ -180,6 +180,20 @@ int send_string( const xbee_node_id_t *node_id, char FAR *str)
 	return send_data( node_id, str, strlen( str));
 }
 
+int send_test( const xbee_node_id_t *node_id, int bytes)
+{
+	char buffer[XBEE_MAX_RFPAYLOAD];
+
+	if (bytes < 0 || bytes > XBEE_MAX_RFPAYLOAD)
+	{
+		printf( "Must send between 1 and %u bytes\n", (int) XBEE_MAX_RFPAYLOAD);
+		return -EINVAL;
+	}
+
+	memset( buffer, 'X', bytes);
+	return send_data( node_id, buffer, bytes);
+}
+
 /////// use the endpoint table when AO is non-zero
 
 // must be sorted by cluster ID
@@ -229,6 +243,9 @@ const xbee_dispatch_table_entry_t xbee_frame_handlers[] =
 	// next two entries are used when ATAO is 0
 	XBEE_FRAME_HANDLE_AO0_NODEID,			// for processing NODEID messages
 	{ XBEE_FRAME_RECEIVE, 0, receive_handler, NULL },		// rx messages direct
+
+	XBEE_FRAME_TRANSMIT_STATUS_DEBUG,
+
 	XBEE_FRAME_TABLE_END
 };
 
@@ -243,6 +260,7 @@ void print_menu( void)
 	puts( "target               Show the list of known targets.");
 	puts( "target SOME STRING   Set target based on its NI value.");
 	puts( "mac <mac address>    Manually add target using its MAC address");
+	puts( "test <num>           Send a packet of <num> bytes to target")
 	puts( "");
 	puts( "   All other commands are sent to the current target.");
 	puts( "");
@@ -353,6 +371,12 @@ int main( int argc, char *argv[])
 	   else if (! strncmpi( cmdstr, "mac ", 4))
 	   {
 	   	node_add_manual( &my_xbee, &cmdstr[4]);
+	   }
+	   else if (! strncmp( cmdstr, "test ", 5))
+	   {
+	   	int i;
+	   	i = (int) strtoul( &cmdstr[5], NULL, 10);
+	   	send_test( target, i);
 	   }
 	   else
 	   {
