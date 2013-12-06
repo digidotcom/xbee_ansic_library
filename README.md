@@ -361,6 +361,18 @@ be the name of your platform header (e.g., `"xbee/platform_yyy.h"`), the
 `xbee/platform.h` file will include it automatically.
 
 
+Other Options
+-------------
+If you find that this library doesn't meet your needs, take a look at
+[libxbee], "a C/C++ library to aid the use of Digi XBee radios in API mode".
+
+For a detailed list of libraries in many languages, visit Digi's [XBee Examples]
+site..
+
+[libxbee]: https://code.google.com/p/libxbee/
+[XBee Examples]: http://examples.digi.com/quick-reference/
+
+
 License
 -------
 
