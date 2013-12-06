@@ -77,7 +77,7 @@ int upload_next_page()
 	return result;
 }
 
-int start_upload( const char *file)
+int start_upload( const char *file, uint16_t block)
 {
 	if (blocksize == 0)
 	{
@@ -90,7 +90,7 @@ int start_upload( const char *file)
 		return -EINVAL;
 	}
 
-	upload_offset = 0;
+	upload_offset = block * blocksize;
 	if (upload_file != NULL)
 	{
 		fclose( upload_file);
@@ -102,7 +102,8 @@ int start_upload( const char *file)
 		return -errno;
 	}
 
-	printf( "Uploading '%s' to GPM...\n", file);
+	printf( "Uploading '%s' to GPM starting at offset %" PRIu32 "...\n", file,
+			upload_offset);
 
 	return upload_next_page();
 }
@@ -237,7 +238,8 @@ void print_menu( void)
 	puts( "read <block> <offset> <bytes>  Read data from GPM.");
 	puts( "erase all                      Erase all of GPM.");
 	puts( "erase <block>                  Erase a single block of GPM.");
-	puts( "upload <filename>              Upload file to GPM.");
+	puts( "upload <filename>              Upload file to GPM start at block 0.");
+	puts( "upload <filename>@<block>      Upload file to GPM start at <block>.");
 	puts( "verify                         Verify firmware copied to GPM.");
 	puts( "install                        Install firmware copied to GPM.");
 	puts( "pagesize                       Report on current upload page size.");
@@ -254,6 +256,7 @@ void print_menu( void)
 int main( int argc, char *argv[])
 {
    char cmdstr[80];
+	char *p;
 	int status;
 	xbee_serial_t XBEE_SERPORT;
 	uint16_t params[3];
@@ -377,7 +380,25 @@ int main( int argc, char *argv[])
       }
       else if (! strncmpi( cmdstr, "upload ", 7))
       {
-      	start_upload( &cmdstr[7]);
+      	params[0] = 0;        // default to block 0
+      	p = strchr( &cmdstr[7], '@');
+      	if (p != NULL)
+      	{
+      		// null-terminate filename and point to block number
+      		*p++ = '\0';
+      		if (parse_uint16( params, p, 1) != 1)
+      		{
+      			printf( "Error parsing block number '%s'\n", p);
+      			continue;
+      		}
+      		if (params[0] >= blocks)
+      		{
+      			printf( "Invalid block number (%u), must be < %u.\n",
+      					params[0], blocks);
+      			continue;
+      		}
+      	}
+      	start_upload( &cmdstr[7], params[0]);
       }
       else if (! strcmpi( cmdstr, "verify"))
       {
