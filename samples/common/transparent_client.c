@@ -260,7 +260,7 @@ void print_menu( void)
 	puts( "target               Show the list of known targets.");
 	puts( "target SOME STRING   Set target based on its NI value.");
 	puts( "mac <mac address>    Manually add target using its MAC address");
-	puts( "test <num>           Send a packet of <num> bytes to target")
+	puts( "test <num>           Send a packet of <num> bytes to target");
 	puts( "");
 	puts( "   All other commands are sent to the current target.");
 	puts( "");
