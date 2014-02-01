@@ -291,8 +291,8 @@ typedef void (*xbee_disc_node_id_fn)( struct xbee_dev_t *xbee,
 //@}
 
 typedef struct xbee_dispatch_table_entry {
-	uint8_t						frame_type;	///< if 0, match all frames
-	uint8_t						frame_id;	///< if 0, match all frames of this type
+	uint8_t						frame_type;	///< if 0, match all frames of this type
+	uint8_t						frame_id;	///< if 0, match all frames of this identifier
 	xbee_frame_handler_fn	handler;
 	void 					FAR	*context;
 } xbee_dispatch_table_entry_t;
