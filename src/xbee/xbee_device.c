@@ -920,8 +920,9 @@ int _xbee_frame_dispatch( xbee_dev_t *xbee, const void FAR *frame,
 	dispatched = 0;
 	for (entry = xbee_frame_handlers; entry->frame_type != 0xFF; ++entry)
 	{
-		if (entry->frame_type == frametype)
+		if (! entry->frame_type || entry->frame_type == frametype)
 		{
+			// entry matches all frame types (0) or matches this frame's type
 			if (! entry->frame_id || entry->frame_id == frameid)
 			{
 				++dispatched;
