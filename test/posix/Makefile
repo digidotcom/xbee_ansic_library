@@ -274,7 +274,7 @@ coverity-push:
 		--host coverity.digi.com \
 		--stream host_ansic_driver
 
-# Use the depenency files created by the -MD option to gcc.
+# Use the dependency files created by the -MD option to gcc.
 -include $(SRCS:.c=.d)
 
 # to build a .o file, use the .c file in the current dir...

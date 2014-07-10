@@ -171,7 +171,7 @@ commissioning_server_OBJECTS = $(zigbee_OBJECTS) \
 commissioning_server : $(commissioning_server_OBJECTS)
 	$(COMPILE) -o $@ $^
 
-# Use the depenency files created by the -MD option to gcc.
+# Use the dependency files created by the -MD option to gcc.
 -include $(SRCS:.c=.d)
 
 # to build a .o file, use the .c file in the current dir...
