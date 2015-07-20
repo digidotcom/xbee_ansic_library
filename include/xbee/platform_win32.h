@@ -47,8 +47,8 @@
 	// inttypes.h for PRIx16, PRIx32, etc. macros
 	#include <inttypes.h>
 
-	// for HANDLE type used in xbee_serial_t
-	#include <wtypes.h>
+	// for HANDLE type used in xbee_serial_t, GetTickCount, str[n]cmpi, etc.
+	#include <windows.h>
 
 	// enable the Wi-Fi code by default
 	#ifndef XBEE_WIFI_DISABLE

@@ -22,7 +22,6 @@
 // NOTE: Documentation for these functions can be found in xbee/serial.h.
 
 #include "xbee/serial.h"
-#include <wtypes.h>
 #include <limits.h>
 #include <errno.h>
 #include <stdio.h>
