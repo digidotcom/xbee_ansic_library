@@ -353,10 +353,10 @@
 
 // Most platforms don't have alignment requirements, and we can just use casts.
 #ifndef xbee_get_unaligned16
-	#define xbee_get_unaligned16( p)	(*(uint16_t FAR *)p)
+	#define xbee_get_unaligned16( p)	(*(uint16_t FAR *)(p))
 #endif
 #ifndef xbee_get_unaligned32
-	#define xbee_get_unaligned32( p)	(*(uint32_t FAR *)p)
+	#define xbee_get_unaligned32( p)	(*(uint32_t FAR *)(p))
 #endif
 #ifndef xbee_set_unaligned16
 	#define xbee_set_unaligned16( p, v)	*(uint16_t FAR *)(p) = (v)
