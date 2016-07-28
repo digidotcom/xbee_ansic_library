@@ -277,7 +277,7 @@ typedef XBEE_PACKED(zcl_header_nomfg_t, {
 	@retval	FALSE		ZCL command is cluster-specific
 */
 #define ZCL_CMD_IS_PROFILE(p)	\
-	(ZCL_FRAME_TYPE_PROFILE == ((const uint8_t FAR *)(p) & ZCL_FRAME_TYPE_MASK))
+	(ZCL_FRAME_TYPE_PROFILE == (*(const uint8_t FAR *)(p) & ZCL_FRAME_TYPE_MASK))
 
 /**
 	@brief
@@ -306,7 +306,7 @@ typedef XBEE_PACKED(zcl_header_nomfg_t, {
 							set, or is a profile-wide command
 */
 #define ZCL_CMD_IS_CLUSTER(p)		(ZCL_FRAME_TYPE_CLUSTER ==		\
-	((const uint8_t FAR *)(p) & (ZCL_FRAME_TYPE_MASK | ZCL_FRAME_MFG_SPECIFIC)))
+	(*(const uint8_t FAR *)(p) & (ZCL_FRAME_TYPE_MASK | ZCL_FRAME_MFG_SPECIFIC)))
 
 /** @name ZCL Status Enumerations
 	Note that these defines use the exact names from the ZCL standard, with
