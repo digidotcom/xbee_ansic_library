@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2012 Digi International Inc.,
+ * Copyright (c) 2010-2013 Digi International Inc.,
  * All rights not expressly granted are reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
@@ -46,6 +46,11 @@
 
 	// inttypes.h for PRIx16, PRIx32, etc. macros
 	#include <inttypes.h>
+
+	// enable the Wi-Fi code by default
+	#ifndef XBEE_WIFI_DISABLE
+		#define XBEE_WIFI_ENABLE
+	#endif
 
 	// compiler natively supports 64-bit integers
 	#define XBEE_NATIVE_64BIT

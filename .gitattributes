@@ -1,5 +1,6 @@
 # Source code
 *.c             text diff=cpp whitespace=blank-at-eol,tabwidth=3
+*.cpp           text diff=cpp whitespace=blank-at-eol,tabwidth=3
 *.h             text diff=cpp whitespace=blank-at-eol,tabwidth=3
 Doxyfile        text
 Makefile        text

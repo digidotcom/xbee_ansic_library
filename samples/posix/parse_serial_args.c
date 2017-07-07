@@ -57,6 +57,8 @@ void parse_serial_arguments( int argc, char *argv[], xbee_serial_t *serial)
 	{
 		printf( "Connect to which device? ");
 		fgets( serial->device, sizeof serial->device, stdin);
+		// strip any trailing newline characters (CR/LF)
+		serial->device[strcspn(serial->device, "\r\n")] = '\0';
 	}
 }
 

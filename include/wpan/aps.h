@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2008-2012 Digi International Inc.,
+ * Copyright (c) 2008-2013 Digi International Inc.,
  * All rights not expressly granted are reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
@@ -108,15 +108,16 @@ typedef struct wpan_envelope_t {
 //@name List of fixed endpoints
 //@{
 /// ZigBee Device Object/Profile
-#define WPAN_ENDPOINT_ZDO			0x00
+#define WPAN_ENDPOINT_ZDO				0x00
 /// Digi Smart Energy
-#define WPAN_ENDPOINT_DIGI_SE		0x5E
+#define WPAN_ENDPOINT_DIGI_SE			0x5E
 /// Digi Device Objects
-#define WPAN_ENDPOINT_DDO			0xE6
+#define WPAN_ENDPOINT_DDO				0xE6
+#define WPAN_ENDPOINT_DIGI_DEVICE	WPAN_ENDPOINT_DDO
 /// Digi Data
-#define WPAN_ENDPOINT_DIGI_DATA	0xE8
+#define WPAN_ENDPOINT_DIGI_DATA		0xE8
 /// Broadcast Endpoint
-#define WPAN_ENDPOINT_BROADCAST	0xFF
+#define WPAN_ENDPOINT_BROADCAST		0xFF
 //@}
 
 /// Digi Data cluster IDs (endpoint #WPAN_ENDPOINT_DIGI_DATA)

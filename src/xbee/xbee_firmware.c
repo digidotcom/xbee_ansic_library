@@ -790,7 +790,8 @@ int xbee_fw_install_oem_tick( xbee_fw_source_t *source)
 		   #ifdef XBEE_FIRMWARE_VERBOSE
 		      printf( "%s: verify firmware image\n", __FUNCTION__);
 		   #endif
-			if ( (err = _xbee_oem_verify( source)) )
+			err = _xbee_oem_verify( source);
+			if (err)
 			{
 				source->state = XBEE_FW_STATE_FAILURE;
 				return err;

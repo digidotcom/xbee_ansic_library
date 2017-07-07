@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2008-2012 Digi International Inc.,
+ * Copyright (c) 2008-2013 Digi International Inc.,
  * All rights not expressly granted are reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
@@ -445,10 +445,16 @@ typedef struct xbee_command_list_context_t {
 
 enum xbee_command_list_type {
 	XBEE_CLT_NONE,		///< No default action.  Often used for callbacks.
-	XBEE_CLT_COPY,		///< Copy response data byte-for-byte to base struct.
+	XBEE_CLT_COPY,		///< Copy response data byte-for-byte to base struct,
+							///< starting at offset 0 and setting remaining bytes
+							///< to 0x00.
+	XBEE_CLT_COPY_PAD_LEFT,	///< Copy response data byte-for-byte to base struct,
+							///< padding with 0x00 bytes before the copied data, to
+							///< have last copied byte in last position of base struct.
+							///< (see ATSH/ATSL).
 	XBEE_CLT_COPY_BE,	///< Copy response, changing expected big-endian to
    						///< host byte order, and store in base struct.
-                     ///< Data must be 1,2 or 4 bytes, assumed unsigned.
+                     ///< Data must be 1, 2 or 4 bytes, assumed unsigned.
    XBEE_CLT_SET,		///< Use data in base struct as parameter for command,
    						///< with binary data copied byte-for-byte.
    XBEE_CLT_SET_STR,	///< Use data in base struct as parameter for command,
@@ -496,7 +502,10 @@ typedef struct xbee_atcmd_reg_t {
 	@param[in]	type	one of xbee_command_list_type enumerated values:
    						XBEE_CLT_NONE - no action except to issue the command.
                         'obj' and 'field' parameters are ignored.
-							XBEE_CLT_COPY - copy response data directly
+							XBEE_CLT_COPY - copy response data directly, followed by
+								0x00 to fill the target element
+							XBEE_CLT_COPY_PAD_LEFT - copy response data directly,
+								padding to the left with 0x00 to fill target element
                      XBEE_CLT_COPY_BE - copy numeric data to host byte order
                      XBEE_CLT_SET - set command parameter directly
                      XBEE_CLT_SET_STR - set command parameter as null-
@@ -547,7 +556,10 @@ typedef struct xbee_atcmd_reg_t {
 	@param[in]	type	one of xbee_command_list_type enumerated values:
    						XBEE_CLT_NONE - no action except to issue the command.
                         'obj' and 'field' parameters are ignored.
-							XBEE_CLT_COPY - copy response data directly
+							XBEE_CLT_COPY - copy response data directly, followed by
+								0x00 to fill the target element
+							XBEE_CLT_COPY_PAD_LEFT - copy response data directly,
+								padding to the left with 0x00 to fill target element
                      XBEE_CLT_COPY_BE - copy numeric data to host byte order
                      XBEE_CLT_SET - set command parameter directly
                      XBEE_CLT_SET_STR - set command parameter as null-

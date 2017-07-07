@@ -28,7 +28,7 @@ COMPILE = gcc -iquote$(INCDIR) -g -MMD -MP -Wall $(DEFINE)
 
 EXE = atinter install_ebl zcltime \
 		commissioning_client commissioning_server transparent_client zigbee_walker \
-		apply_profile xbee_term eblinfo
+		apply_profile xbee_term eblinfo network_scan gpm
 
 all : $(EXE)
 
@@ -66,12 +66,15 @@ SRCS = \
 	xbee_discovery.c \
 	xbee_ebl_file.c \
 	xbee_firmware.c \
+	xbee_gpm.c \
 	xbee_ota_client.c \
 	xbee_platform_posix.c \
 	xbee_readline.c \
+	xbee_scan.c \
 	xbee_serial_posix.c \
 	xbee_time.c \
 	xbee_transparent_serial.c \
+	xbee_wifi.c \
 	xbee_xmodem.c \
 	zcl_basic.c \
 	zcl_client.c \
@@ -100,6 +103,13 @@ zigbee_OBJECTS = $(wpan_OBJECTS) zigbee_zcl.o zigbee_zdo.o zcl_types.o
 atinter_OBJECTS = xbee_readline.o _atinter.o
 
 atinter : $(xbee_OBJECTS) $(atinter_OBJECTS) atinter.o
+	$(COMPILE) -o $@ $^
+
+gpm : $(zigbee_OBJECTS) $(atinter_OBJECTS) xbee_gpm.o gpm.o
+	$(COMPILE) -o $@ $^
+
+network_scan_OBJECTS = $(xbee_OBJECTS) $(atinter_OBJECTS) network_scan.o _atinter.o xbee_scan.o xbee_wifi.o
+network_scan : $(network_scan_OBJECTS)
 	$(COMPILE) -o $@ $^
 
 apply_profile : $(xbee_OBJECTS) apply_profile.o
@@ -161,7 +171,7 @@ commissioning_server_OBJECTS = $(zigbee_OBJECTS) \
 commissioning_server : $(commissioning_server_OBJECTS)
 	$(COMPILE) -o $@ $^
 
-# Use the depenency files created by the -MD option to gcc.
+# Use the dependency files created by the -MD option to gcc.
 -include $(SRCS:.c=.d)
 
 # to build a .o file, use the .c file in the current dir...

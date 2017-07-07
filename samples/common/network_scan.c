@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2012 Digi International Inc.,
+ * Copyright (c) 2010-2013 Digi International Inc.,
  * All rights not expressly granted are reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
@@ -18,66 +18,23 @@
 #include "xbee/byteorder.h"
 #include "xbee/device.h"
 #include "xbee/atcmd.h"
+#include "xbee/scan.h"
 #include "wpan/types.h"
 
 xbee_dev_t my_xbee;
 
-typedef PACKED_STRUCT {
-	uint8_t	as_type;
-	uint8_t	channel;
-	uint16_t	pan_be;
-	addr64	extended_pan_be;
-	uint8_t	allow_join;
-	uint8_t	stack_profile;
-	uint8_t	lqi;
-	int8_t	rssi;
-} xbee_atas_response_t;
-
-
-int xbee_disc_atas_response( xbee_dev_t *xbee, const void FAR *raw,
-	uint16_t length, void FAR *context)
-{
-	static const xbee_at_cmd_t as = { { 'A', 'S' } };
-	const xbee_frame_local_at_resp_t FAR *resp = raw;
-	const xbee_atas_response_t FAR *atas = (const void FAR *)resp->value;
-	char buffer[ADDR64_STRING_LENGTH];
-
-	if (resp->header.command.w == as.w)
-	{
-		if (XBEE_AT_RESP_STATUS( resp->header.status) == XBEE_AT_RESP_SUCCESS)
-		{
-			// this is a successful ATAS response
-			printf( "CH%2u PAN:0x%04X %" PRIsFAR " J%u SP%u LQI:%3u RSSI:%d\n",
-				atas->channel, be16toh( atas->pan_be),
-				addr64_format( buffer, &atas->extended_pan_be),
-				atas->allow_join, atas->stack_profile,
-				atas->lqi, atas->rssi);
-		}
-		else
-		{
-			printf( "ATAS status 0x%02X\n", resp->header.status);
-			hex_dump( resp->value,
-				length - offsetof( xbee_frame_local_at_resp_t, value),
-				HEX_DUMP_FLAG_OFFSET);
-		}
-	}
-
-	return 0;
-}
-
-// Since we're not using a dynamic frame dispatch table, we need to define
-// it here.
 const xbee_dispatch_table_entry_t xbee_frame_handlers[] =
 {
 	XBEE_FRAME_HANDLE_LOCAL_AT,
-	{ XBEE_FRAME_LOCAL_AT_RESPONSE, 0, xbee_disc_atas_response, NULL },
+	{ XBEE_FRAME_LOCAL_AT_RESPONSE, 0, xbee_scan_dump_response, NULL },
 	XBEE_FRAME_TABLE_END
 };
 
 void print_menu( void)
 {
 	puts( "help                 This list of options.");
-	puts( "as                   Initiate active scan.");
+	puts( "scan                 Initiate active scan.");
+	puts( "quit                 Quit the program.");
 	puts( "");
 }
 
@@ -143,7 +100,7 @@ int main( int argc, char *argv[])
 		{
 			print_menu();
 		}
-		else if (! strcmpi( cmdstr, "as"))
+		else if (! strcmpi( cmdstr, "scan"))
       {
       	active_scan();
       }

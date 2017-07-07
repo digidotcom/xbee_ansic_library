@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009-2012 Digi International Inc.,
+ * Copyright (c) 2009-2013 Digi International Inc.,
  * All rights not expressly granted are reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
@@ -49,6 +49,9 @@ const addr64 _WPAN_IEEE_ADDR_COORDINATOR =
 		Format a 64-bit address as a null-terminated, printable string
 		(e.g., "00-13-A2-01-23-45-67").
 
+		If the first two bytes are 0x00, assume a 48-bit MAC address and
+		format as 00-40-9D-01-23-45.
+
 		To change the default separator ('-'), define
 		ADDR64_FORMAT_SEPARATOR to any character.  For example:
 
@@ -73,7 +76,7 @@ const addr64 _WPAN_IEEE_ADDR_COORDINATOR =
 */
 char FAR *addr64_format( char FAR *buffer, const addr64 FAR *address)
 {
-	int i;
+	int i, start;
 	const uint8_t FAR *b;
 	char FAR *p;
 	uint_fast8_t ch;
@@ -81,7 +84,13 @@ char FAR *addr64_format( char FAR *buffer, const addr64 FAR *address)
 	// format address into buffer
 	p = buffer;
 	b = address->b;
-	for (i = 8; ; )
+	start = 8;
+	if (b[0] == 0x00 && b[1] == 0x00)		// 48-bit MAC address
+	{
+		b += 2;
+		start -= 2;
+	}
+	for (i = start; ; )
 	{
 		ch = *b++;
 		*p++ = "0123456789abcdef"[ch >> 4];

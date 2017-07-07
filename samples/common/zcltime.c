@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2012 Digi International Inc.,
+ * Copyright (c) 2010-2013 Digi International Inc.,
  * All rights not expressly granted are reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
@@ -35,7 +35,7 @@ int main( int argc, char *argv[])
 	}
 
 	rawtime = (time_t) strtoul( argv[1], &tail, 0);
-	if (! tail)
+	if (tail == argv[1])
 	{
 		printf( "Error trying to convert '%s'.\n", argv[1]);
 		return -1;

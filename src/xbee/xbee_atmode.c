@@ -29,12 +29,13 @@
 */
 
 /*** BeginHeader */
+#include "xbee/platform.h"
+
 #ifdef XBEE_DEVICE_ENABLE_ATMODE
 
 #include <errno.h>
 #include <string.h>
 
-#include "xbee/platform.h"
 #ifdef XBEE_ATMODE_VERBOSE
 	#include <stdio.h>
 #endif

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009-2012 Digi International Inc.,
+ * Copyright (c) 2009-2013 Digi International Inc.,
  * All rights not expressly granted are reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
@@ -173,13 +173,23 @@ enum xbee_frame_type {
 /// may affect that size, and even enabling encryption can have an affect.
 /// Smart Energy and ZigBee are limited to 128 bytes, DigiMesh is 256 bytes.
 #ifndef XBEE_MAX_RFPAYLOAD
-	#define XBEE_MAX_RFPAYLOAD 128
+	#if XBEE_WIFI_ENABLED
+		#define XBEE_MAX_RFPAYLOAD 1400
+	#else
+		#define XBEE_MAX_RFPAYLOAD 128
+	#endif
 #endif
 
-/// Max Frame Size, including type, is for 0x91, Receive Explicit.  Note that
-/// this is only for received frames -- we send 0x11 frames with 20 byte header.
-#define XBEE_MAX_FRAME_LEN		(XBEE_MAX_RFPAYLOAD + 18)
+/// Max Received Frame Size, including type, is for 0x91, Receive Explicit.
+/// @sa XBEE_MAX_TX_FRAME_LEN
+#define XBEE_MAX_RX_FRAME_LEN		(XBEE_MAX_RFPAYLOAD + 18)
 
+/// Max Transmitted Frame Size, including type, is for 0x11, Transmit Explicit.
+/// @sa XBEE_MAX_RX_FRAME_LEN
+#define XBEE_MAX_TX_FRAME_LEN		(XBEE_MAX_RFPAYLOAD + 20)
+
+/// Deprecated legacy macro, use XBEE_MAX_RX_FRAME_LEN instead.
+#define XBEE_MAX_FRAME_LEN		XBEE_MAX_RX_FRAME_LEN
 
 // We need to declare struct xbee_dev_t here so the compiler doesn't treat it
 // as a local definition in the parameter lists for the function pointer
@@ -281,8 +291,8 @@ typedef void (*xbee_disc_node_id_fn)( struct xbee_dev_t *xbee,
 //@}
 
 typedef struct xbee_dispatch_table_entry {
-	uint8_t						frame_type;	///< if 0, match all frames
-	uint8_t						frame_id;	///< if 0, match all frames of this type
+	uint8_t						frame_type;	///< if 0, match all frames of this type
+	uint8_t						frame_id;	///< if 0, match all frames of this identifier
 	xbee_frame_handler_fn	handler;
 	void 					FAR	*context;
 } xbee_dispatch_table_entry_t;
@@ -376,8 +386,9 @@ typedef struct xbee_dev_t
 		#define XBEE_HARDWARE_S2B_PRO			0x1E00
 		#define XBEE_HARDWARE_S2C_PRO			0x2100
 		#define XBEE_HARDWARE_S2C				0x2200
-		#define XBEE_HARDWARE_S3B				0x2300
+		#define XBEE_HARDWARE_S3B				0x2300		// XBee 900HP
 		#define XBEE_HARDWARE_S8				0x2400
+		#define XBEE_HARDWARE_S6B				0x2700		// XBee Wi-Fi
 	//@}
 
 	/// Value of XBee module's VR register (4-bytes on some devices)
@@ -406,21 +417,6 @@ typedef struct xbee_dev_t
 	/// Multi-purpose flags for tracking information about this device.
 	enum xbee_dev_flags			flags;
 
-	/// Buffer and state variables used for receiving a frame.
-	struct rx {
-		/// current state of receiving a frame
-		enum xbee_dev_rx_state	state;
-
-		/// bytes in frame being read; does not include checksum byte
-		uint16_t						bytes_in_frame;
-
-		/// bytes read so far
-		uint16_t						bytes_read;
-
-		/// bytes received, starting with frame_type, +1 is for checksum
-		uint8_t	frame_data[XBEE_MAX_FRAME_LEN + 1];
-	} rx;
-
 	uint8_t		frame_id;				///< last frame_id used for sending
 
 	// Need some state variables here if AT mode is supported (necessary when
@@ -440,6 +436,22 @@ typedef struct xbee_dev_t
 		uint16_t			idle_timeout;	///< value of CT (default 100) * 100ms
 		char				escape_char;	///< value of CC (default '+')
 	#endif
+
+	/// Buffer and state variables used for receiving a frame.  Keep at the
+	/// end of the structure since frame_data can be large.
+	struct rx {
+		/// current state of receiving a frame
+		enum xbee_dev_rx_state	state;
+
+		/// bytes in frame being read; does not include checksum byte
+		uint16_t						bytes_in_frame;
+
+		/// bytes read so far
+		uint16_t						bytes_read;
+
+		/// bytes received, starting with frame_type, +1 is for checksum
+		uint8_t	frame_data[XBEE_MAX_FRAME_LEN + 1];
+	} rx;
 } xbee_dev_t;
 
 /**
@@ -499,7 +511,7 @@ void xbee_dev_flowcontrol( xbee_dev_t *xbee, bool_t enabled);
 
 void _xbee_dispatch_table_dump( const xbee_dev_t *xbee);
 
-uint8_t _xbee_checksum( const void FAR *bytes, uint_fast8_t length,
+uint8_t _xbee_checksum( const void FAR *bytes, uint16_t length,
 	uint_fast8_t initial);
 
 int _xbee_frame_load( xbee_dev_t *xbee);
@@ -517,14 +529,16 @@ typedef PACKED_STRUCT xbee_frame_modem_status_t {
 	Values for \c status member of xbee_frame_modem_status_t.
 	@{
 */
-/// XBee Modem Status: Hardware reset [ZigBee and DigiMesh]
+/// XBee Modem Status: Hardware reset [ZigBee, DigiMesh, Wi-Fi]
 #define XBEE_MODEM_STATUS_HW_RESET					0x00
-/// XBee Modem Status: Watchdog timer reset [ZigBee and DigiMesh]
+/// XBee Modem Status: Watchdog timer reset [ZigBee, DigiMesh, Wi-fi]
 #define XBEE_MODEM_STATUS_WATCHDOG					0x01
-/// XBee Modem Status: Joined network (routers and end devices) [ZigBee]
+/// XBee Modem Status: Joined network (routers and end devices) [ZigBee, Wi-Fi]
 #define XBEE_MODEM_STATUS_JOINED						0x02
-/// XBee Modem Status: Disassociated (left network) [ZigBee]
+/// XBee Modem Status: Disassociated (left network) [ZigBee, Wi-Fi]
 #define XBEE_MODEM_STATUS_DISASSOC					0x03
+/// XBee Modem Status: IP configuration error [Wi-Fi]
+#define XBEE_MODEM_STATUS_IP_CONFIG_ERROR			0x04
 /// XBee Modem Status: Coordinator started [ZigBee]
 #define XBEE_MODEM_STATUS_COORD_START				0x06
 /// XBee Modem Status: Network security key was updated [ZigBee]
@@ -535,6 +549,10 @@ typedef PACKED_STRUCT xbee_frame_modem_status_t {
 #define XBEE_MODEM_STATUS_SLEEPING					0x0C
 /// XBee Modem Status: Voltage supply limit exceeded (XBee-PRO only) [ZigBee]
 #define XBEE_MODEM_STATUS_OVERVOLTAGE				0x0D
+/// XBee Modem Status: Device Cloud connected [Wi-Fi]
+#define XBEE_MODEM_STATUS_CLOUD_CONNECTED			0x0E
+/// XBee Modem Status: Device Cloud disconnected [Wi-Fi]
+#define XBEE_MODEM_STATUS_CLOUD_DISCONNECTED		0x0F
 /// XBee Modem Status: Key establishment complete [Smart Energy]
 #define XBEE_MODEM_STATUS_KEY_ESTABLISHED			0x10
 /// XBee Modem Status: Modem config changed while join in progress [ZigBee]

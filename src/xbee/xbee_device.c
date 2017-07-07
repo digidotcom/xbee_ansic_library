@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009-2012 Digi International Inc.,
+ * Copyright (c) 2009-2013 Digi International Inc.,
  * All rights not expressly granted are reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
@@ -131,6 +131,10 @@ int xbee_dev_init( xbee_dev_t *xbee, const xbee_serial_t *serport,
 	{
 		return -EINVAL;
 	}
+
+	#ifdef XBEE_PLATFORM_INIT
+		XBEE_PLATFORM_INIT();
+	#endif
 
 	// try communicating with the XBee module
 	// set xbee to all zeros, then
@@ -413,10 +417,10 @@ void _xbee_dispatch_table_dump( const xbee_dev_t *xbee)
 // version as a replacement, and include a function macro to override this
 // function in their platform.h.  See Rabbit
 _xbee_device_debug
-uint8_t (_xbee_checksum)( const void FAR *bytes, uint_fast8_t length,
+uint8_t (_xbee_checksum)( const void FAR *bytes, uint16_t length,
 	uint_fast8_t initial)
 {
-	uint8_t i;
+	uint16_t i;
 	uint8_t checksum;
 	const char FAR *p;
 
@@ -578,14 +582,14 @@ int xbee_frame_write( xbee_dev_t *xbee, const void FAR *header,
 	if (headerlen)
 	{
 		xbee_ser_write( &xbee->serport, header, headerlen);
-		checksum = _xbee_checksum( header, (uint_fast8_t) headerlen, checksum);
+		checksum = _xbee_checksum( header, headerlen, checksum);
 	}
 
 	// Send <datalen> bytes from <data> if it is not NULL
 	if (datalen)
 	{
 		xbee_ser_write( &xbee->serport, data, datalen);
-		checksum = _xbee_checksum( data, (uint_fast8_t) datalen, checksum);
+		checksum = _xbee_checksum( data, datalen, checksum);
 	}
 
 	// Send 1-byte checksum of bytes in payload
@@ -706,12 +710,12 @@ int _xbee_frame_load( xbee_dev_t *xbee)
 
 	   		// set LSB of frame length, make local copy for range check
 				length = (xbee->rx.bytes_in_frame += ch);
-				if (length > XBEE_MAX_FRAME_LEN || length < 2)
+				if (length > XBEE_MAX_RX_FRAME_LEN || length < 2)
 				{
 					// this isn't a valid frame, go back to looking for start marker
 					#ifdef XBEE_DEVICE_VERBOSE
 						printf( "%s: read bad frame length (%u ! [2 .. %u])\n",
-							__FUNCTION__, length, XBEE_MAX_FRAME_LEN);
+							__FUNCTION__, length, XBEE_MAX_RX_FRAME_LEN);
 					#endif
 					if (ch == 0x7E)
 					{
@@ -916,8 +920,9 @@ int _xbee_frame_dispatch( xbee_dev_t *xbee, const void FAR *frame,
 	dispatched = 0;
 	for (entry = xbee_frame_handlers; entry->frame_type != 0xFF; ++entry)
 	{
-		if (entry->frame_type == frametype)
+		if (! entry->frame_type || entry->frame_type == frametype)
 		{
+			// entry matches all frame types (0) or matches this frame's type
 			if (! entry->frame_id || entry->frame_id == frameid)
 			{
 				++dispatched;
@@ -986,6 +991,20 @@ int xbee_frame_dump_modem_status( xbee_dev_t *xbee,
 		case XBEE_MODEM_STATUS_DISASSOC:
 			status_str = "disassociated";
 			break;
+
+#if XBEE_WIFI_ENABLED
+		case XBEE_MODEM_STATUS_IP_CONFIG_ERROR:
+			status_str = "IP config error";
+			break;
+
+		case XBEE_MODEM_STATUS_CLOUD_CONNECTED:
+			status_str = "Device Cloud connected";
+			break;
+
+		case XBEE_MODEM_STATUS_CLOUD_DISCONNECTED:
+			status_str = "Device Cloud disconnected";
+			break;
+#endif
 
 		case XBEE_MODEM_STATUS_COORD_START:
 			status_str = "coordinator started";

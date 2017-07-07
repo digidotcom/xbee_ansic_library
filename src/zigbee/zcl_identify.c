@@ -209,7 +209,7 @@ int zcl_identify_command( const wpan_envelope_t FAR *envelope,
 				if (zcl.length >= 2)
 				{
 					zcl_identify_time = le16toh(
-											*(uint16_t FAR *) zcl.zcl_payload);
+											xbee_get_unaligned16( zcl.zcl_payload));
 					_zcl_identify_time_set( NULL, NULL);
 
 					return zcl_default_response( &zcl, ZCL_STATUS_SUCCESS);

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2012 Digi International Inc.,
+ * Copyright (c) 2010-2013 Digi International Inc.,
  * All rights not expressly granted are reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
@@ -32,18 +32,6 @@
 		#include <endian.h>
 	#endif
 
-	// debugging defines
-//	#define XBEE_SERIAL_VERBOSE
-//	#define XBEE_DEVICE_VERBOSE
-//	#define XBEE_ATCMD_VERBOSE
-//	#define XBEE_SERIAL_DEBUG
-//	#define XBEE_XMODEM_VERBOSE
-//	#define XBEE_FIRMWARE_VERBOSE
-//	#define XBEE_APS_VERBOSE
-//	#define XBEE_ZDO_VERBOSE
-//	#define XBEE_ZCL_VERBOSE
-//	#define ZCL_TIME_VERBOSE
-
 	// macro used to declare a packed structure (no alignment of elements)
 	// "__gcc_struct__" added to fix problems with gcc 4.7.0 in MinGW/MSYS
 	#define PACKED_STRUCT	struct __attribute__ ((__packed__, __gcc_struct__))
@@ -59,14 +47,19 @@
 	// inttypes.h for PRIx16, PRIx32, etc. macros
 	#include <inttypes.h>
 
-	// for HANDLE type used in xbee_serial_t
-	#include <wtypes.h>
+	// for HANDLE type used in xbee_serial_t, GetTickCount, str[n]cmpi, etc.
+	#include <windows.h>
+
+	// enable the Wi-Fi code by default
+	#ifndef XBEE_WIFI_DISABLE
+		#define XBEE_WIFI_ENABLE
+	#endif
 
 	// compiler natively supports 64-bit integers
 	#define XBEE_NATIVE_64BIT
 
 	// size of OS-level serial buffers
-	#define XBEE_SER_TX_BUFSIZE	512
+	#define XBEE_SER_TX_BUFSIZE	2048
 	#define XBEE_SER_RX_BUFSIZE	4096
 
 // Elements needed to keep track of serial port settings.  Must have a

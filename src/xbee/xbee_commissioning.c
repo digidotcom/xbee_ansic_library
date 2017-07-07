@@ -52,7 +52,7 @@ typedef struct xbee_comm_reg_t {
 void xbee_comm_SC( zcl_comm_startup_param_t FAR *p, const void FAR *value_be)
 {
 	// Bit 0 of ATSC is channel 11, so shift to correct position in 32-bit mask.
-	p->channel_mask = (uint32_t) be16toh( *(uint16_t FAR *)value_be) << 11;
+	p->channel_mask = (uint32_t) be16toh( xbee_get_unaligned16( value_be)) << 11;
 }
 
 void xbee_comm_OP( zcl_comm_startup_param_t FAR *p, const void FAR *value_be)
@@ -70,7 +70,7 @@ void xbee_comm_OP( zcl_comm_startup_param_t FAR *p, const void FAR *value_be)
 
 void xbee_comm_OI( zcl_comm_startup_param_t FAR *p, const void FAR *value_be)
 {
-	p->panid = be16toh( *(uint16_t FAR *) value_be);
+	p->panid = be16toh( xbee_get_unaligned16( value_be));
 }
 
 #ifdef __XBEE_PLATFORM_HCS08

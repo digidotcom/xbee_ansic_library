@@ -87,9 +87,11 @@ SRCS = unittest.c main.c \
 	xbee_ota_client.c \
 	xbee_ota_server.c \
 	xbee_reg_descr.c \
+	xbee_scan.c \
 	xbee_sxa.c \
 	xbee_time.c \
 	xbee_transparent_serial.c \
+	xbee_wifi.c \
 	xbee_wpan.c \
 	xbee_xmodem.c \
 	sep_key_estab.c \
@@ -171,10 +173,6 @@ wpan_OBJECTS = $(xbee_OBJECTS) wpan_aps.o xbee_wpan.o
 zigbee_OBJECTS = $(wpan_OBJECTS) zigbee_zcl.o zigbee_zdo.o zcl_types.o
 
 atinter_OBJECTS = _atinter.o
-
-atas_OBJECTS = $(xbee_OBJECTS) atas.o _atinter.o
-atas : $(atas_OBJECTS)
-	$(COMPILE) -o atas $(atas_OBJECTS)
 
 zcl_common_OBJECTS =	\
 	$(platform_OBJECTS)		\
@@ -276,7 +274,7 @@ coverity-push:
 		--host coverity.digi.com \
 		--stream host_ansic_driver
 
-# Use the depenency files created by the -MD option to gcc.
+# Use the dependency files created by the -MD option to gcc.
 -include $(SRCS:.c=.d)
 
 # to build a .o file, use the .c file in the current dir...

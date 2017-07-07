@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2012 Digi International Inc.,
+ * Copyright (c) 2010-2013 Digi International Inc.,
  * All rights not expressly granted are reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
@@ -158,6 +158,11 @@
 	and automatically include the necessary file.  This macro is useful for
 	adding new platforms without having to modify platform.h.
 
+	@def XBEE_PLATFORM_INIT
+	Optional macro, defined to the name of a parameter-less function that
+	returns void.  If defined, called by xbee_dev_init() before setting up
+	the xbee_dev_t structure.
+
 	@typedef xbee_serial_t
 	Must be a structure with uint32_t member \c baudrate and any additional
 	members required by the functions in xbee/serial.h.
@@ -197,6 +202,19 @@
 	@def XBEE_MS_TIMER_RESOLUTION
 	The maximum number of milliseconds between consecutive calls to
 	xbee_millisecond_timer().
+
+	@def XBEE_WIFI_ENABLE
+	Define in the project or platform header file to enable support for XBee
+	Wi-Fi modules.  Platforms with limited code/data space (like the Freescale
+	HCS08) can't handle the larger 1400-byte payloads of this hardware.
+
+	@def XBEE_WIFI_DISABLE
+	Define in the project to disable Wi-Fi support on platforms that include it
+	by default (Win32, POSIX).
+
+	@def XBEE_WIFI_ENABLED
+	Defined by the platform as either 0 or 1, depending on whether code for
+	the Wi-Fi XBee Module should be compiled in or not.
 @}
 
 	@name platform_endian
@@ -333,6 +351,20 @@
 	#define PACKED_STRUCT struct
 #endif
 
+// Most platforms don't have alignment requirements, and we can just use casts.
+#ifndef xbee_get_unaligned16
+	#define xbee_get_unaligned16( p)	(*(uint16_t FAR *)(p))
+#endif
+#ifndef xbee_get_unaligned32
+	#define xbee_get_unaligned32( p)	(*(uint32_t FAR *)(p))
+#endif
+#ifndef xbee_set_unaligned16
+	#define xbee_set_unaligned16( p, v)	*(uint16_t FAR *)(p) = (v)
+#endif
+#ifndef xbee_set_unaligned32
+	#define xbee_set_unaligned32( p, v)	*(uint32_t FAR *)(p) = (v)
+#endif
+
 // default is for FAR to be ignored
 #ifndef FAR
 	#define FAR
@@ -347,6 +379,12 @@
 
 #ifndef INTERRUPT_DISABLE
 	#define INTERRUPT_DISABLE
+#endif
+
+#ifdef XBEE_WIFI_ENABLE
+	#define XBEE_WIFI_ENABLED 1
+#else
+	#define XBEE_WIFI_ENABLED 0
 #endif
 
 // legacy macro -- applications should remove conditional compilation

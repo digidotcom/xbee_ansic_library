@@ -10,7 +10,7 @@
 # extra defines (in addition to those in platform_win32.h)
 DEFINE = -DZCL_ENABLE_TIME_SERVER \
 	-DXBEE_DEVICE_ENABLE_ATMODE \
-	-DXBEE_XMODEM_TESTING
+	-DXBEE_XMODEM_TESTING -DXBEE_MAX_RFPAYLOAD=1400
 
 # directory for driver
 DRIVER = ../..
@@ -40,7 +40,8 @@ EXE = atinter.exe install_ebl.exe comports.exe \
 		pxbee_ota_update.exe zcltime.exe \
 		commissioning_client.exe commissioning_server.exe \
 		apply_profile.exe xbee_term.exe eblinfo.exe \
-		zigbee_walker.exe transparent_client.exe pxbee_update.exe
+		zigbee_walker.exe transparent_client.exe pxbee_update.exe \
+		network_scan.exe gpm.exe
 
 all : $(EXE)
 
@@ -81,11 +82,14 @@ SRCS = \
 	xbee_discovery.c \
 	xbee_ebl_file.c \
 	xbee_firmware.c \
+	xbee_gpm.c \
 	xbee_ota_client.c \
 	xbee_platform_win32.c \
+	xbee_scan.c \
 	xbee_serial_win32.c \
 	xbee_time.c \
 	xbee_transparent_serial.c \
+	xbee_wifi.c \
 	xbee_xmodem.c \
 	zcl_basic.c \
 	zcl_client.c \
@@ -113,6 +117,13 @@ zigbee_OBJECTS = $(wpan_OBJECTS) zigbee_zcl.o zigbee_zdo.o zcl_types.o
 atinter_OBJECTS = _atinter.o
 
 atinter.exe : $(xbee_OBJECTS) $(atinter_OBJECTS) atinter.o
+	$(COMPILE) -o $@ $^
+
+gpm.exe : $(zigbee_OBJECTS) $(atinter_OBJECTS) xbee_gpm.o gpm.o
+	$(COMPILE) -o $@ $^
+
+network_scan_OBJECTS = $(xbee_OBJECTS) network_scan.o _atinter.o xbee_scan.o xbee_wifi.o
+network_scan.exe : $(network_scan_OBJECTS)
 	$(COMPILE) -o $@ $^
 
 apply_profile.exe : $(xbee_OBJECTS) apply_profile.o
@@ -180,7 +191,7 @@ commissioning_server_OBJECTS = $(zigbee_OBJECTS) \
 commissioning_server.exe : $(commissioning_server_OBJECTS)
 	$(COMPILE) -o $@ $^
 
-# Use the depenency files created by the -MD option to gcc.
+# Use the dependency files created by the -MD option to gcc.
 -include $(SRCS:.c=.d)
 
 # to build a .o file, use the .c file in the current dir...

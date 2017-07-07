@@ -2,8 +2,8 @@ Digi XBee ANSI C Library
 ========================
 
 The project is a collection of portable ANSI C code for communicating with
-Digi International's [XBee] wireless radio modules in API mode.  This source
-has been contributed by [Digi International] under the Mozilla Public
+Digi International's [XBee] wireless radio modules in API mode.  The original
+source was released by [Digi International] under the Mozilla Public
 License v2.0.
 
 This is a BETA quality software release, and has gone through a limited
@@ -16,6 +16,7 @@ It currently supports the following platforms:
 - DOS using the [OpenWatcom] compiler
 - Rabbit-brand microprocessors (using [Dynamic C] 10.70 or later)
 - Freescale HCS08 with CodeWarrior 10.x (part of [Programmable XBee Dev Kit])
+- Freescale FRDM-KL25Z with [mbed.org] compiler (limited suppport at this time)
 
 It provides an API for a host platform that communicates with an XBee radio
 serially.  Some of the features include:
@@ -32,6 +33,7 @@ serially.  Some of the features include:
 - Perform Node Discovery and manage a list of nodes.
 - Install firmware images (.EBL or .OEM files) on the XBee radio.
 - Parse and display digital/analog I/O samples.
+- Interface with the General Purpose Memory (GPM) found on some XBee modules.
 
 Contact [Tom Collins] to report bugs, request features or contribute code
 to this project.  Please read through this document before getting started
@@ -39,13 +41,13 @@ with the code.
 
 [Digi International]: http://www.digi.com/
 [XBee]: http://www.digi.com/xbee/
-[Tom Collins]: mailto:tom.collins@digi.com
+[Tom Collins]: mailto:tom@tomlogic.com
 [Cygwin]: http://www.cygwin.org/
 [MinGW]: http://www.mingw.org/
 [OpenWatcom]: http://www.openwatcom.org/
 [Dynamic C]: http://www.digi.com/support/productdetail?pid=4978
 [Programmable XBee Dev Kit]: http://www.digi.com/programmablexbeekit
-
+[mbed.org]: http://mbed.org/
 
 Requirements
 ------------
@@ -62,11 +64,14 @@ Requirements
   model) for your programs match the ones for the library.  You can probably
   compile many of the POSIX samples in OpenWatcom with minimal changes.
 
-- For Rabbit, download and install Dynamic C 10.70 and read its documentation.
+- For Rabbit, download and install Dynamic C 10.70 (or later) and read its
+  documentation.
 
 - For Freescale HCS08, download and install Digi's Programmable XBee Dev Kit
   and read its documentation.
 
+- For the Freescale FRDM-KL25Z, use the `src/mbed/build.sh` shell script to
+  build a ZIP file you can upload to mbed.org.
 
 Documentation
 -------------
@@ -137,10 +142,18 @@ Headers:
         on XBee ZB modules.  See `zigbee/zcl_commissioning.h` for the required
         networking code.
 
+-   `xbee/discovery.h`: Code related to Node Discovery (ATND).
+
 -   `xbee/firmware.h`: Code for updating radio firmware via .ebl or .oem files.
+
+-   `xbee/gpm.h`: Code related to the General Purpose Memory (GPM) present on
+        various XBee modules (e.g., S3B, S6B).
 
 -   `xbee/io.h`: Code for working with the analog and digitial I/O pins on the
         XBee module.
+
+-   `xbee/jslong.h` and `xbee/jslong_glue.h`: Code from mozilla.org used to
+        manage 64-bit integers on platforms without direct support of them.
 
 -   `xbee/ota_client.h`: Client code for sending OTA (over-the-air) firmware
         updates to Programmable XBee modules.
@@ -148,10 +161,22 @@ Headers:
 -   `xbee/ota_server.h`: Server code for advertising OTA capabilities on a
         device (typically a Programmable XBee module).
 
+-   `xbee/scan.h`: Structures describing `ATAS` (Active Scan) responses.
+
 -   `xbee/sxa.h`: A "Simplified XBee API" with support for node table
         management, configurable I/O, point-to-point data streams and a
         connectionless datagram protocol.  Used for XBee-only (not general
         ZigBee) networks.
+
+-   `xbee/time.h`: Portable time functions for embedded platforms lacking
+        full support of the Standard C Library `time.h`.  Includes a version
+        of `gmtime()` and `mktime()` using 1/1/2000 as the epoch.
+
+-   `xbee/transparent_serial.h`: Support code for the "Digi Transparent Serial"
+        cluster (cluster 0x0011 of endpoint 0xE8), to communicate with "dumb"
+        XBee modules running non-API mode firmware.
+
+-   `xbee/wifi.h`: Code specific to the XBee S6B (Wi-Fi) module.
 
 -   `xbee/wpan.h`: Glue layer between XBee device driver and WPAN/ZigBee
         network.
@@ -208,6 +233,8 @@ Source (.c) directories:
 -   `rabbit`: Files for Dynamic C/Rabbit targets.
 
 -   `hcs08`: Files for Codewarrior/Freescale HCS08 (Programmable XBee) target.
+
+-   `mbed`: Files for Freescale FRDM-KL25Z with mbed.org compiler.
 
 -   `posix`: Files for POSIX operating systems (Mac OS X, BSD, Linux, Cygwin).
 
@@ -334,10 +361,22 @@ be the name of your platform header (e.g., `"xbee/platform_yyy.h"`), the
 `xbee/platform.h` file will include it automatically.
 
 
+Other Options
+-------------
+If you find that this library doesn't meet your needs, take a look at
+[libxbee], "a C/C++ library to aid the use of Digi XBee radios in API mode".
+
+For a detailed list of libraries in many languages, visit Digi's [XBee Examples]
+site..
+
+[libxbee]: https://code.google.com/p/libxbee/
+[XBee Examples]: http://examples.digi.com/quick-reference/
+
+
 License
 -------
 
-This software is open-source software.  Copyright Digi International, 2012.
+This software is open-source software.  Copyright Digi International, 2013.
 
 This Source Code Form is subject to the terms of the Mozilla Public
 License, v. 2.0. If a copy of the MPL was not distributed with this file,

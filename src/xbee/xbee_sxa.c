@@ -979,7 +979,7 @@ void _sxa_launch_update(sxa_node_t FAR *sxa,
       // Single register update
       sxa->doing_group = NULL;
       _f_memset(sxa->misc_reg, 0, sizeof(sxa->misc_reg));
-      sxa->misc_reg[0].command.w = *(uint16_t *)xrd->alias;
+      sxa->misc_reg[0].command.w = xbee_get_unaligned16( xrd->alias);
       sxa->misc_reg[0].callback = _sxa_cmd_list_cache_cb;
       sxa->misc_reg[0].bytes = xrd->sxa_len - _SXA_CACHED_PREFIX_SIZE;
       sxa->misc_reg[0].offset = xrd->sxa_offs + _SXA_CACHED_PREFIX_SIZE;
