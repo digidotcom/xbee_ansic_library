@@ -23,18 +23,6 @@
 
 #include "../common/_xbee_term.h"
 
-int kbhit()
-{
-    struct timeval tv;
-    fd_set fds;
-    tv.tv_sec = 0;
-    tv.tv_usec = 0;
-    FD_ZERO(&fds);
-    FD_SET(STDIN_FILENO, &fds);
-    select(STDIN_FILENO+1, &fds, NULL, NULL, &tv);
-    return FD_ISSET(STDIN_FILENO, &fds);
-}
-
 struct termios _ttystate_orig;
 void xbee_term_console_restore( void)
 {
@@ -83,7 +71,7 @@ void xbee_term_set_color( enum char_source source)
 			color = "\x1B[31;1m";		// bright red
 			break;
 		default:
-			color = "\x1B[37;1m";		// bright white
+			color = "\x1B[0m";			// All attributes off
 			break;
 	}
 	
@@ -91,12 +79,19 @@ void xbee_term_set_color( enum char_source source)
 	fflush( stdout);
 }
 
-int xbee_term_getchar( void)
+int xbee_term_getchar(void)
 {
-	if (kbhit())
-	{
-		return getchar();
+	int c = getc(stdin);
+
+	if (c == EOF && feof(stdin)) {
+		clearerr(stdin);
+		usleep(500);
+		return -EAGAIN;
 	}
-	usleep( 500);
-	return -EAGAIN;
+
+	if (c == EOF && ferror(stdin)) {
+		return -EIO;
+	}
+
+	return c;
 }

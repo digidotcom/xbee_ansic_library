@@ -40,8 +40,8 @@ EXE = atinter.exe install_ebl.exe comports.exe \
 		pxbee_ota_update.exe zcltime.exe \
 		commissioning_client.exe commissioning_server.exe \
 		apply_profile.exe xbee_term.exe eblinfo.exe \
-		zigbee_walker.exe transparent_client.exe pxbee_update.exe \
-		network_scan.exe gpm.exe
+		zigbee_walker.exe ipv4_client.exe sms_client.exe \
+		transparent_client.exe pxbee_update.exe network_scan.exe gpm.exe
 
 all : $(EXE)
 
@@ -65,6 +65,7 @@ SRCS = \
 		atinter.c \
 		eblinfo.c \
 		install_ebl.c \
+		ipv4_client.c \
 		transparent_client.c \
 		pxbee_ota_update.c \
 		xbee_term.c _xbee_term.c xbee_term_win32.c \
@@ -83,12 +84,15 @@ SRCS = \
 	xbee_ebl_file.c \
 	xbee_firmware.c \
 	xbee_gpm.c \
+	xbee_ipv4.c \
 	xbee_ota_client.c \
 	xbee_platform_win32.c \
 	xbee_scan.c \
 	xbee_serial_win32.c \
+	xbee_sms.c \
 	xbee_time.c \
 	xbee_transparent_serial.c \
+	xbee_tx_status.c \
 	xbee_wifi.c \
 	xbee_xmodem.c \
 	zcl_basic.c \
@@ -133,6 +137,14 @@ xbee_term_OBJECTS = $(base_OBJECTS) xbee_term.o _xbee_term.o xbee_term_win32.o
 xbee_term.exe : $(xbee_term_OBJECTS)
 	$(COMPILE) -o $@ $^
 
+ipv4_client_OBJECTS = $(xbee_OBJECTS)  ipv4_client.o xbee_tx_status.o _xbee_term.o xbee_term_win32.o $(atinter_OBJECTS) xbee_ipv4.o
+ipv4_client.exe : $(ipv4_client_OBJECTS)
+	$(COMPILE) -o $@ $^	
+	
+sms_client_OBJECTS = $(xbee_OBJECTS) sms_client.o $(atinter_OBJECTS) xbee_sms.o 
+sms_client.exe : $(sms_client_OBJECTS)
+	$(COMPILE) -o $@ $^	
+	
 transparent_client_OBJECTS = $(zigbee_OBJECTS) transparent_client.o \
 	$(atinter_OBJECTS) _nodetable.o \
 	xbee_discovery.o \

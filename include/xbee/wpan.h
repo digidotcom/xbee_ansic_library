@@ -21,6 +21,7 @@
 
 #include "xbee/device.h"
 #include "wpan/types.h"
+#include "xbee/delivery_status.h"
 
 XBEE_BEGIN_DECLS
 
@@ -120,87 +121,7 @@ typedef PACKED_STRUCT xbee_frame_transmit_status_t {
 	uint8_t			frame_id;
 	uint16_t			network_address_be;
 	uint8_t			retries;			// # of application Tx retries
-	uint8_t			delivery;
-/** @name
-	Values for \c delivery member of xbee_frame_transmit_status_t.
-	@{
-*/
-		/// XBee Transmit Delivery Status: Success [ZigBee, DigiMesh, Wi-Fi]
-		#define XBEE_TX_DELIVERY_SUCCESS						0x00
-
-		/// XBee Transmit Delivery Status: MAC ACK Failure [ZigBee]
-		#define XBEE_TX_DELIVERY_MAC_ACK_FAIL				0x01
-
-		/// XBee Transmit Delivery Status: CCA Failure [ZigBee]
-		#define XBEE_TX_DELIVERY_CCA_FAIL					0x02
-
-		/// XBee Transmit Delivery Status: LBT Failure [DigiMesh]
-		#define XBEE_TX_DELIVERY_LBT_FAIL					0x02
-
-		/// XBee Transmit Delivery Status: No Spectrum Available [DigiMesh]
-		#define XBEE_TX_DELIVERY_NO_SPECTRUM				0x03
-
-		/// XBee Transmit Delivery Status: Transmission purged; stack not ready [Wi-Fi]
-		#define XBEE_TX_DELIVERY_STACK_NOT_READY			0x03
-
-		/// XBee Transmit Delivery Status: Physical error with transceiver [Wi-Fi]
-		#define XBEE_TX_DELIVERY_PHYSICAL_ERROR			0x04
-
-		/// XBee Transmit Delivery Status: Invalid Destination Endpoint [ZigBee, DigiMesh]
-		#define XBEE_TX_DELIVERY_BAD_DEST_EP				0x15
-
-		/// XBee Transmit Delivery Status: No Buffers [Smart Energy]
-		#define XBEE_TX_DELIVERY_NO_BUFFERS					0x18
-
-		/// XBee Transmit Delivery Status: Network ACK Failure [ZigBee, DigiMesh, Wi-Fi]
-		#define XBEE_TX_DELIVERY_NET_ACK_FAIL				0x21
-
-		/// XBee Transmit Delivery Status: Not Joined to Network [ZigBee]
-		#define XBEE_TX_DELIVERY_NOT_JOINED					0x22
-
-		/// XBee Transmit Delivery Status: Self-addressed [ZigBee]
-		#define XBEE_TX_DELIVERY_SELF_ADDRESSED			0x23
-
-		/// XBee Transmit Delivery Status: Address Not Found [ZigBee]
-		#define XBEE_TX_DELIVERY_ADDR_NOT_FOUND			0x24
-
-		/// XBee Transmit Delivery Status: Route Not Found [ZigBee, DigiMesh]
-		#define XBEE_TX_DELIVERY_ROUTE_NOT_FOUND			0x25
-
-		/// XBee Transmit Delivery Status: Relay of Broadcast not heard [ZigBee]
-		#define XBEE_TX_DELIVERY_BROADCAST_NOT_HEARD		0x26
-
-		/// XBee Transmit Delivery Status: Invalid Binding Table Index [ZigBee]
-		#define XBEE_TX_DELIVERY_INVALID_BINDING_INDEX	0x2B
-
-		/// XBee Transmit Delivery Status: Invalid Endpoint [ZigBee]
-		#define XBEE_TX_DELIVERY_INVALID_EP					0x2C
-
-		/// XBee Transmit Delivery Status: Attempted Broadcast with APS encryption
-		/// [Smart Energy]
-		#define XBEE_TX_DELIVERY_CANNOT_BROADCAST_APS	0x2D
-
-		/// XBee Transmit Delivery Status: Attempted Unicast with APS encryption
-		/// but EE=0 [Smart Energy]
-		#define XBEE_TX_DELIVERY_ENCRYPTION_DISABLED		0x2E
-
-		/// XBee Transmit Delivery Status: Resource error (lack of buffers,
-		/// timers, etc.) [ZigBee, Wi-Fi]
-		#define XBEE_TX_DELIVERY_RESOURCE_ERROR			0x32
-
-		/// XBee Transmit Delivery Status: Data payload too large [ZigBee, Wi-Fi]
-		#define XBEE_TX_DELIVERY_PAYLOAD_TOO_BIG			0x74
-
-		/// XBee Transmit Delivery Status: Indirect message unrequested [ZigBee]
-		#define XBEE_TX_DELIVERY_INDIRECT_NOT_REQ			0x75
-
-		/// XBee Transmit Delivery Status: Failure creating client socket [Wi-Fi]
-		#define XBEE_TX_DELIVERY_SOCKET_CREATION_FAILED	0x76
-
-		/// XBee Transmit Delivery Status: Key not authorized [Smart Energy]
-		#define XBEE_TX_DELIVERY_KEY_NOT_AUTHORIZED		0xBB
-//@}
-
+	uint8_t			delivery; /// See xbee/delivery_status.h
 	uint8_t			discovery;		// bitfield
 /** @name
 	Values for \c discovery member of xbee_frame_transmit_status_t.
@@ -234,7 +155,7 @@ typedef PACKED_STRUCT xbee_frame_transmit_status_t {
 int _xbee_handle_transmit_status( xbee_dev_t *xbee,
 	const void FAR *frame, uint16_t length, void FAR *context);
 
-#define XBEE_FRAME_HANDLE_TX_STATUS	\
+#define XBEE_FRAME_HANDLE_TRANSMIT_STATUS	\
 	{ XBEE_FRAME_TRANSMIT_STATUS, 0, _xbee_handle_transmit_status, NULL }
 
 /**

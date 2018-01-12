@@ -27,8 +27,9 @@ SRCDIR = $(DRIVER)/src
 COMPILE = gcc -iquote$(INCDIR) -g -MMD -MP -Wall $(DEFINE)
 
 EXE = atinter install_ebl zcltime \
-		commissioning_client commissioning_server transparent_client zigbee_walker \
-		apply_profile xbee_term eblinfo network_scan gpm
+		commissioning_client commissioning_server ipv4_client sms_client \
+		transparent_client zigbee_walker apply_profile xbee_term eblinfo \
+		network_scan gpm
 
 all : $(EXE)
 
@@ -49,6 +50,7 @@ SRCS = \
 		atinter.c \
 		eblinfo.c \
 		install_ebl.c \
+		ipv4_client.c \
 		transparent_client.c \
 		ota_test.c \
 		xbee_term.c _xbee_term.c xbee_term_posix.c \
@@ -67,13 +69,16 @@ SRCS = \
 	xbee_ebl_file.c \
 	xbee_firmware.c \
 	xbee_gpm.c \
+	xbee_ipv4.c \
 	xbee_ota_client.c \
 	xbee_platform_posix.c \
 	xbee_readline.c \
 	xbee_scan.c \
 	xbee_serial_posix.c \
+	xbee_sms.c \
 	xbee_time.c \
 	xbee_transparent_serial.c \
+	xbee_tx_status.c \
 	xbee_wifi.c \
 	xbee_xmodem.c \
 	zcl_basic.c \
@@ -115,10 +120,18 @@ network_scan : $(network_scan_OBJECTS)
 apply_profile : $(xbee_OBJECTS) apply_profile.o
 	$(COMPILE) -o $@ $^
 
-xbee_term_OBJECTS = $(base_OBJECTS) xbee_term.o _xbee_term.o xbee_term_posix.o
+xbee_term_OBJECTS = $(base_OBJECTS) xbee_term.o xbee_term_posix.o xbee_readline.o _xbee_term.o 
 xbee_term : $(xbee_term_OBJECTS)
 	$(COMPILE) -o $@ $^
 
+ipv4_client_OBJECTS = $(xbee_OBJECTS)  ipv4_client.o xbee_tx_status.o _xbee_term.o xbee_term_posix.o $(atinter_OBJECTS) xbee_ipv4.o
+ipv4_client : $(ipv4_client_OBJECTS)
+	$(COMPILE) -o $@ $^	
+	
+sms_client_OBJECTS = $(xbee_OBJECTS) sms_client.o $(atinter_OBJECTS) xbee_sms.o
+sms_client : $(sms_client_OBJECTS)
+	$(COMPILE) -o $@ $^	
+	
 transparent_client_OBJECTS = $(zigbee_OBJECTS) transparent_client.o \
 	$(atinter_OBJECTS) _nodetable.o \
 	xbee_discovery.o \

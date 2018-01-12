@@ -2,8 +2,8 @@ Digi XBee ANSI C Library
 ========================
 
 The project is a collection of portable ANSI C code for communicating with
-Digi International's [XBee] wireless radio modules in API mode.  The original
-source was released by [Digi International] under the Mozilla Public
+Digi International's [XBee] wireless radio modules in API mode.  This source
+has been contributed by [Digi International] under the Mozilla Public
 License v2.0.
 
 This is a BETA quality software release, and has gone through a limited
@@ -17,6 +17,8 @@ It currently supports the following platforms:
 - Rabbit-brand microprocessors (using [Dynamic C] 10.70 or later)
 - Freescale HCS08 with CodeWarrior 10.x (part of [Programmable XBee Dev Kit])
 - Freescale FRDM-KL25Z with [mbed.org] compiler (limited suppport at this time)
+- [Silicon Labs] SLSTK3701A Starter Kit with Gecko SDK Suite v1.1.1 or later
+  with optional Micrium OS support
 
 It provides an API for a host platform that communicates with an XBee radio
 serially.  Some of the features include:
@@ -41,13 +43,14 @@ with the code.
 
 [Digi International]: http://www.digi.com/
 [XBee]: http://www.digi.com/xbee/
-[Tom Collins]: mailto:tom@tomlogic.com
+[Tom Collins]: mailto:tom.collins@digi.com
 [Cygwin]: http://www.cygwin.org/
 [MinGW]: http://www.mingw.org/
 [OpenWatcom]: http://www.openwatcom.org/
 [Dynamic C]: http://www.digi.com/support/productdetail?pid=4978
 [Programmable XBee Dev Kit]: http://www.digi.com/programmablexbeekit
 [mbed.org]: http://mbed.org/
+[Silicon Labs]: http://www.silabs.com/
 
 Requirements
 ------------
@@ -72,6 +75,9 @@ Requirements
 
 - For the Freescale FRDM-KL25Z, use the `src/mbed/build.sh` shell script to
   build a ZIP file you can upload to mbed.org.
+  
+- For the SLSTK3701A Starter Kit, the XBee expansion board is required to
+  function properly. Use the appropriate IDE for development with this board.
 
 Documentation
 -------------
@@ -237,6 +243,8 @@ Source (.c) directories:
 -   `mbed`: Files for Freescale FRDM-KL25Z with mbed.org compiler.
 
 -   `posix`: Files for POSIX operating systems (Mac OS X, BSD, Linux, Cygwin).
+
+-   `efm32`: Files for efm32_stk3701 dev-board.
 
 
 Sample Programs

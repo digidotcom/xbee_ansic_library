@@ -21,8 +21,6 @@
 
 #ifndef __XBEE_PLATFORM_KL25_MBED
 #define __XBEE_PLATFORM_KL25_MBED
-    #define XBEE_WIFI_ENABLE
-    
     #define XBEE_DEVICE_ENABLE_ATMODE
         
     #define strcmpi         strcasecmp

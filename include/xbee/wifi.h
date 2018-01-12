@@ -19,8 +19,8 @@
 
 #include "xbee/platform.h"
 
-#if ! XBEE_WIFI_ENABLED
-	#error "You must define XBEE_WIFI_ENABLED to use this header."
+#if !XBEE_WIFI_ENABLED
+	#error "XBEE_WIFI_ENABLED must be defined as non-zero to use this header."
 #endif
 
 // Values for ATEE:

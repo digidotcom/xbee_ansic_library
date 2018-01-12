@@ -22,20 +22,20 @@
 */
 /*** BeginHeader */
 #include "xbee/cbuf.h"
+#include <string.h>
 /*** EndHeader */
 
 /*		Functions are documented in xbee/cbuf.h		*/
 
 /*** BeginHeader xbee_cbuf_init */
 /*** EndHeader */
-int xbee_cbuf_init( xbee_cbuf_t FAR *cbuf, uint_fast8_t datasize)
+int xbee_cbuf_init( xbee_cbuf_t FAR *cbuf, unsigned int datasize)
 {
 	if (! cbuf || (datasize < 3) || (datasize & (datasize + 1)))
 	{
 		return -EINVAL;
 	}
 	cbuf->mask = datasize;
-	cbuf->lock = 0;
 	cbuf->head = cbuf->tail = 0;
 
 	return 0;
@@ -45,7 +45,7 @@ int xbee_cbuf_init( xbee_cbuf_t FAR *cbuf, uint_fast8_t datasize)
 /*** EndHeader */
 int xbee_cbuf_putch( xbee_cbuf_t FAR *cbuf, uint_fast8_t ch)
 {
-	uint8_t t;
+	unsigned int t;
 
 	t = cbuf->tail;
 	cbuf->data[t] = ch;
@@ -62,7 +62,7 @@ int xbee_cbuf_putch( xbee_cbuf_t FAR *cbuf, uint_fast8_t ch)
 /*** EndHeader */
 int xbee_cbuf_getch( xbee_cbuf_t FAR *cbuf)
 {
-	uint8_t	h;
+	unsigned int	h;
 	uint8_t	retval;
 
 	h = cbuf->head;
@@ -78,14 +78,14 @@ int xbee_cbuf_getch( xbee_cbuf_t FAR *cbuf)
 
 /*** BeginHeader xbee_cbuf_used */
 /*** EndHeader */
-uint_fast8_t xbee_cbuf_used( xbee_cbuf_t FAR *cbuf)
+unsigned int xbee_cbuf_used( xbee_cbuf_t FAR *cbuf)
 {
 	return (cbuf->tail - cbuf->head) & cbuf->mask;
 }
 
 /*** BeginHeader xbee_cbuf_free */
 /*** EndHeader */
-uint_fast8_t xbee_cbuf_free( xbee_cbuf_t FAR *cbuf)
+unsigned int xbee_cbuf_free( xbee_cbuf_t FAR *cbuf)
 {
 	return (cbuf->head - cbuf->tail - 1) & cbuf->mask;
 }
@@ -99,57 +99,68 @@ void xbee_cbuf_flush( xbee_cbuf_t FAR *cbuf)
 
 /*** BeginHeader xbee_cbuf_put */
 /*** EndHeader */
-uint_fast8_t xbee_cbuf_put( xbee_cbuf_t FAR *cbuf, const void FAR *buffer,
-																			uint_fast8_t length)
+unsigned int xbee_cbuf_put( xbee_cbuf_t FAR *cbuf, const void FAR *buffer,
+																			unsigned int length)
 {
-	// TODO optimize by using two memcpy calls
-	uint_fast8_t copy;
-	uint_fast8_t stop;
-	uint_fast8_t mask = cbuf->mask;
-
-	stop = (cbuf->head - 1) & mask;
-	// when tail == stop, buffer is full
-	for (copy = length; copy && cbuf->tail != stop; --copy)
+	unsigned int copied = 0; 
+	unsigned int buf_free = xbee_cbuf_free(cbuf);
+	unsigned int end_space = cbuf->mask + 1 - cbuf->tail;
+	
+	if (length > buf_free) 
 	{
-		cbuf->data[cbuf->tail] = *(const char FAR *)buffer;
-		buffer = (const char FAR *)buffer + 1;
-		cbuf->tail = (cbuf->tail + 1) & mask;
+		length = buf_free;
 	}
-
+	
+	if (length > end_space) 
+	{
+		memcpy(cbuf->data + cbuf->tail, buffer, end_space);
+		buffer = ((char FAR *) buffer) + end_space;
+		cbuf->tail = 0;
+		length -= end_space;
+		copied += end_space;
+	}
+	
+	memcpy(cbuf->data + cbuf->tail, buffer, length);
+	cbuf->tail = cbuf->tail + length;
+	copied += length;
+	
 	#ifdef XBEE_CBUF_VERBOSE
-		if (length != copy)
-		{
-			printf( "%s: %u bytes in\n", __FUNCTION__, length - copy);
-		}
+		printf( "%s: %u bytes in\n", __FUNCTION__, copied);
 	#endif
-
-	return length - copy;
+	
+	return copied;
 }
 
 /*** BeginHeader xbee_cbuf_get */
 /*** EndHeader */
-uint_fast8_t xbee_cbuf_get( xbee_cbuf_t *cbuf, void FAR *buffer,
-																			uint_fast8_t length)
+unsigned int xbee_cbuf_get( xbee_cbuf_t *cbuf, void FAR *buffer, unsigned int length)
 {
-	// TODO optimize by using two memcpy calls
-	uint_fast8_t copy;
-	uint_fast8_t mask = cbuf->mask;
+	unsigned int copied = 0;
+	unsigned int buf_used = xbee_cbuf_used(cbuf);
+	unsigned int end_space = cbuf->mask + 1 - cbuf->head;
+	
 
-	// when head == tail, buffer is empty
-	for (copy = length; copy && cbuf->head != cbuf->tail; --copy)
+	if (length > buf_used) 
 	{
-		*(char FAR *)buffer = cbuf->data[cbuf->head];
-		buffer = (char FAR *)buffer + 1;
-		cbuf->head = (cbuf->head + 1) & mask;
+		length = buf_used;
 	}
-
+	
+	if (length > end_space) 
+	{
+		memcpy(buffer, cbuf->data + cbuf->head, end_space);
+		buffer = ((char FAR *) buffer) + end_space;
+		cbuf->head = 0;
+		length -= end_space;
+		copied += end_space;
+	}
+	
+	memcpy(buffer, cbuf->data + cbuf->head, length);
+	cbuf->head = cbuf->head + length;
+	copied += length;
+	
 	#ifdef XBEE_CBUF_VERBOSE
-		if (length != copy)
-		{
-			printf( "%s: %u bytes out\n", __FUNCTION__, length - copy);
-		}
+		printf( "%s: %u bytes out\n", __FUNCTION__, copied);
 	#endif
-
-	return length - copy;
+	
+	return copied;
 }
-

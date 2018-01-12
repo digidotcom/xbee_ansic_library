@@ -48,11 +48,11 @@ XBEE_BEGIN_DECLS
 */
 enum xbee_frame_type {
 	/// Send an AT Command to the local device (see xbee_atcmd.c,
-	/// xbee_header_at_request_t). [ZigBee, DigiMesh]
+	/// xbee_header_at_request_t). [ZigBee, DigiMesh, Wi-Fi, Cellular]
 	XBEE_FRAME_LOCAL_AT_CMD					= 0x08,
 
 	/// Queue an AT command for batch processing on the local device.
-	/// [ZigBee, DigiMesh]
+	/// [ZigBee, DigiMesh, Cellular]
 	XBEE_FRAME_LOCAL_AT_CMD_Q				= 0x09,
 
 	/// Send data to a default endpoint and cluster on a remote device.
@@ -75,10 +75,11 @@ enum xbee_frame_type {
 	XBEE_FRAME_REG_JOINING_DEV				= 0x24,
 
 	/// Response from local device to AT Command (see xbee_atcmd.c,
-	/// xbee_cmd_response_t). [ZigBee, DigiMesh]
+	/// xbee_cmd_response_t). [ZigBee, DigiMesh, Wi-Fi, Cellular]
 	XBEE_FRAME_LOCAL_AT_RESPONSE			= 0x88,
 
-	/// Current modem status (see xbee_frame_modem_status_t). [DigiMesh, ZigBee]
+	/// Current modem status (see xbee_frame_modem_status_t).
+	/// [DigiMesh, ZigBee, Wi-Fi, Cellular]
 	XBEE_FRAME_MODEM_STATUS					= 0x8A,
 
 	/// Frame sent upon completion of a Transmit Request. [DigiMesh, ZigBee]
@@ -173,7 +174,9 @@ enum xbee_frame_type {
 /// may affect that size, and even enabling encryption can have an affect.
 /// Smart Energy and ZigBee are limited to 128 bytes, DigiMesh is 256 bytes.
 #ifndef XBEE_MAX_RFPAYLOAD
-	#if XBEE_WIFI_ENABLED
+	#if XBEE_CELLULAR_ENABLED
+		#define XBEE_MAX_RFPAYLOAD 1500
+	#elif XBEE_WIFI_ENABLED
 		#define XBEE_MAX_RFPAYLOAD 1400
 	#else
 		#define XBEE_MAX_RFPAYLOAD 128
@@ -389,6 +392,8 @@ typedef struct xbee_dev_t
 		#define XBEE_HARDWARE_S3B				0x2300		// XBee 900HP
 		#define XBEE_HARDWARE_S8				0x2400
 		#define XBEE_HARDWARE_S6B				0x2700		// XBee Wi-Fi
+		#define XBEE_HARDWARE_CELL_CAT1_VZW		0x4000
+		#define XBEE_HARDWARE_CELL_3G			0x4400
 	//@}
 
 	/// Value of XBee module's VR register (4-bytes on some devices)

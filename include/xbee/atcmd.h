@@ -30,12 +30,15 @@ XBEE_BEGIN_DECLS
 	#define XBEE_CMD_REQUEST_TABLESIZE	2
 #endif
 
-/// Maximum number of bytes in the parameter sent to a command.  The NI
-/// command takes a 20-byte string.  ATZT is 48 bytes, ATZU is 22.
+/// Maximum number of bytes in the parameter sent to a command.
 /// Platforms can override this when limiting to AT commands with shorter
 /// parameters (e.g., 16 bytes when not using the certificate parameters).
 #ifndef XBEE_CMD_MAX_PARAM_LENGTH
-	#define XBEE_CMD_MAX_PARAM_LENGTH	48
+	#if XBEE_CELLULAR_ENABLED
+		#define XBEE_CMD_MAX_PARAM_LENGTH 128
+	#else
+		#define XBEE_CMD_MAX_PARAM_LENGTH 64
+	#endif
 #endif
 
 /// Timeout (in seconds) to wait for a response to a remote command.

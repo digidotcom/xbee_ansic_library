@@ -186,7 +186,7 @@ int main( int argc, char *argv[])
 }
 
 #include "xbee/atcmd.h"			// for XBEE_FRAME_HANDLE_LOCAL_AT
-#include "xbee/device.h"		// for XBEE_FRAME_HANDLE_TX_STATUS
+#include "xbee/device.h"
 #include "xbee/wpan.h"			// for XBEE_FRAME_HANDLE_RX_EXPLICIT
 const xbee_dispatch_table_entry_t xbee_frame_handlers[] =
 {

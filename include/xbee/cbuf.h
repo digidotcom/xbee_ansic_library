@@ -22,16 +22,15 @@
 #define XBEE_CBUF_H
 
 #include "xbee/platform.h"
-
+#include <stddef.h>
 XBEE_BEGIN_DECLS
 
 /// Circular buffer used by transparent serial cluster handler.  Buffer is
 /// empty when \c head == \c tail and full when \c head == \c (tail - 1).
 typedef struct xbee_cbuf_t {
-	uint8_t			lock;
-	uint8_t			head;		// front, or head index of data
-	uint8_t			tail;		// back, or tail index of data
-	uint8_t			mask;		// 2^n - 1
+	unsigned int	head;		// front, or head index of data
+	unsigned int	tail;		// back, or tail index of data
+	unsigned int	mask;		// 2^n - 1
 	uint8_t			data[1];	// variable length (<mask> bytes + 1 separator byte)
 } xbee_cbuf_t;
 
@@ -40,8 +39,8 @@ typedef struct xbee_cbuf_t {
 	For a cbuf that can hold X bytes, you need (X + CBUF_OVERHEAD) bytes of
 	memory.
 
-	XBEE_CBUF_OVERHEAD includes a 4-byte header, plus a separator byte in the
-	buffered data.
+	XBEE_CBUF_OVERHEAD includes a header,
+	plus a separator byte in the buffered data.
 
 	For example, to set up a 31-byte circular buffer:
 @code
@@ -81,13 +80,12 @@ typedef struct xbee_cbuf_t {
 
 	@param[in]		datasize
 			Maximum number of bytes to store in the circular buffer.  This
-			size must be at least 3, no more than 255, and
-			a power of 2 minus 1 (2^n - 1).
+			size must be at least 3 and a power of 2 minus 1 (2^n - 1).
 
 	@retval	0			success
 	@retval	-EINVAL	invalid parameter
 */
-int xbee_cbuf_init( xbee_cbuf_t FAR *cbuf, uint_fast8_t datasize);
+int xbee_cbuf_init( xbee_cbuf_t FAR *cbuf, unsigned int datasize);
 
 /**
 	@brief
@@ -126,8 +124,8 @@ int xbee_cbuf_getch( xbee_cbuf_t FAR *cbuf);
 
 	@param[in]	cbuf	Pointer to circular buffer.
 
-	@retval	0-255		Maximum number of bytes that can
-							be stored in the circularbuffer.
+	@return				Maximum number of bytes that can
+							be stored in the circular buffer.
 
 	@sa	xbee_cbuf_used, xbee_cbuf_free
 */
@@ -140,12 +138,12 @@ int xbee_cbuf_getch( xbee_cbuf_t FAR *cbuf);
 
 	@param[in]	cbuf	Pointer to circular buffer.
 
-	@retval	0-255	Number of bytes stored in the circular buffer.
+	@return				Number of bytes stored in the circular buffer.
 
 	@sa	xbee_cbuf_length, xbee_cbuf_free
 
 */
-uint_fast8_t xbee_cbuf_used( xbee_cbuf_t FAR *cbuf);
+unsigned int xbee_cbuf_used( xbee_cbuf_t FAR *cbuf);
 
 
 /**
@@ -155,12 +153,12 @@ uint_fast8_t xbee_cbuf_used( xbee_cbuf_t FAR *cbuf);
 
 	@param[in]	cbuf	Pointer to circular buffer.
 
-	@retval	0-255		Number of unused bytes in the circular buffer.
+	@return				Number of unused bytes in the circular buffer.
 
 	@sa	xbee_cbuf_length, xbee_cbuf_free
 
 */
-uint_fast8_t xbee_cbuf_free( xbee_cbuf_t FAR *cbuf);
+unsigned int xbee_cbuf_free( xbee_cbuf_t FAR *cbuf);
 
 
 /**
@@ -181,11 +179,11 @@ void xbee_cbuf_flush( xbee_cbuf_t FAR *cbuf);
 	@param[in]		buffer	data to copy into circular buffer
 	@param[in]		length	number of bytes to copy
 
-	@retval	0-255		number of bytes copied (may be less than length if buffer
-							is full)
+	@return					number of bytes copied (may be less than length if
+								buffer is full)
 */
-uint_fast8_t xbee_cbuf_put( xbee_cbuf_t FAR *cbuf, const void FAR *buffer,
-																		uint_fast8_t length);
+unsigned int xbee_cbuf_put( xbee_cbuf_t FAR *cbuf, const void FAR *buffer,
+																		unsigned int length);
 /**
 	@brief
 	Read (and remove) multiple bytes from circular buffer.
@@ -194,11 +192,11 @@ uint_fast8_t xbee_cbuf_put( xbee_cbuf_t FAR *cbuf, const void FAR *buffer,
 	@param[out]		buffer	destination to copy data from circular buffer
 	@param[in]		length	number of bytes to copy
 
-	@retval	0-255		number of bytes copied (may be less than length if buffer
-							is empty)
+	@return					number of bytes copied (may be less than length if 
+							buffer is empty)
 */
-uint_fast8_t xbee_cbuf_get( xbee_cbuf_t *cbuf, void FAR *buffer,
-																		uint_fast8_t length);
+unsigned int xbee_cbuf_get( xbee_cbuf_t *cbuf, void FAR *buffer,
+																		unsigned int length);
 
 XBEE_END_DECLS
 

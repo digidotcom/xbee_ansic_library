@@ -203,18 +203,17 @@
 	The maximum number of milliseconds between consecutive calls to
 	xbee_millisecond_timer().
 
-	@def XBEE_WIFI_ENABLE
-	Define in the project or platform header file to enable support for XBee
-	Wi-Fi modules.  Platforms with limited code/data space (like the Freescale
-	HCS08) can't handle the larger 1400-byte payloads of this hardware.
-
-	@def XBEE_WIFI_DISABLE
-	Define in the project to disable Wi-Fi support on platforms that include it
-	by default (Win32, POSIX).
-
 	@def XBEE_WIFI_ENABLED
-	Defined by the platform as either 0 or 1, depending on whether code for
-	the Wi-Fi XBee Module should be compiled in or not.
+	If XBEE_WIFI_ENABLED is defined as 0, Wi-Fi support will not be included.
+	If it is defined as non-zero, Wi-Fi support will be included. If it is not
+	defined, platform-specific defaults will be used: Wi-Fi support will be
+	included only on Windows and POSIX.
+
+	@def XBEE_CELLULAR_ENABLED
+	If XBEE_CELLULAR_ENABLED is defined as 0, cellular support will not be
+	included. If it is defined as non-zero, cellular support will be included.
+	If it is not defined, platform-specific defaults will be used: cellular
+	support will be included only on Windows and POSIX.
 @}
 
 	@name platform_endian
@@ -381,10 +380,9 @@
 	#define INTERRUPT_DISABLE
 #endif
 
-#ifdef XBEE_WIFI_ENABLE
-	#define XBEE_WIFI_ENABLED 1
-#else
-	#define XBEE_WIFI_ENABLED 0
+#if defined(XBEE_WIFI_ENABLE) || defined(XBEE_WIFI_DISABLE)
+	#error "The XBEE_WIFI_ENABLE and XBEE_WIFI_DISABLE macros " \
+		"are deprecated. Please use XBEE_WIFI_ENABLED instead."
 #endif
 
 // legacy macro -- applications should remove conditional compilation

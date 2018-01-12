@@ -34,6 +34,7 @@ EXE = zcl_write \
 		zdo_simple_desc_respond \
 		t_jslong \
 		xbee_timer_compare \
+		t_cbuf \
 		zcl_type_name \
 		t_memcheck \
 		atas
@@ -51,6 +52,7 @@ test : $(EXE)
 	&& ./zdo_simple_desc_respond \
 	&& ./t_jslong \
 	&& ./xbee_timer_compare \
+	&& ./t_cbuf \
 	&& ./zcl_type_name \
 	&& ./t_memcheck \
 	&& echo "ALL PASSED"
@@ -68,6 +70,7 @@ SRCS = unittest.c main.c \
 		zdo_simple_desc_respond.c \
 		zdo_tool.c \
 		xbee_timer_compare.c \
+		t_cbuf.c \
 		zcl_type_name.c \
 		t_memcheck.c \
 		atas.c \
@@ -165,6 +168,8 @@ platform_OBJECTS = \
 
 base_OBJECTS = xbee_platform_posix.o xbee_serial_posix.o $(platform_OBJECTS) \
 					parse_serial_args.o xbee_readline.o
+					
+cbuf_OBJECTS =  xbee_cbuf.o
 
 xbee_OBJECTS = $(base_OBJECTS) xbee_device.o xbee_atcmd.o wpan_types.o
 
@@ -235,6 +240,10 @@ xbee_timer_compare_OBJECTS = $(platform_OBJECTS) xbee_timer_compare.o
 xbee_timer_compare : $(xbee_timer_compare_OBJECTS)
 	$(COMPILE) -o xbee_timer_compare $(xbee_timer_compare_OBJECTS)
 
+t_cbuf_OBJECTS = $(platform_OBJECTS) $(cbuf_OBJECTS) t_cbuf.o
+t_cbuf : $(t_cbuf_OBJECTS)
+	$(COMPILE) -o t_cbuf $(t_cbuf_OBJECTS)
+	
 zcl_type_name_OBJECTS = zcl_type_name.o zcl_types.o unittest.o
 zcl_type_name: $(zcl_type_name_OBJECTS)
 	$(COMPILE) -o zcl_type_name $(zcl_type_name_OBJECTS)

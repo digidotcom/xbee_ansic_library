@@ -672,7 +672,7 @@ int _xbee_frame_load( xbee_dev_t *xbee)
 	            retval = xbee_ser_read( serport, &ch, 1);
 	            if (retval != 1)
 	            {
-	            	return dispatched;
+					goto _exit_loop;
 	            }
 	         } while (ch != 0x7E);
 	         #ifdef XBEE_DEVICE_VERBOSE
@@ -685,7 +685,7 @@ int _xbee_frame_load( xbee_dev_t *xbee)
 	   		// try to read a character from the serial port
 	   		if (xbee_ser_read( serport, &ch, 1) == 0)
 	   		{
-	   			return dispatched;
+				goto _exit_loop;
 	   		}
 				if (ch == 0x7E)
 				{
@@ -705,7 +705,7 @@ int _xbee_frame_load( xbee_dev_t *xbee)
 	   		// try to read a character from the serial port
 	   		if (xbee_ser_read( serport, &ch, 1) == 0)
 	   		{
-	   			return dispatched;
+				goto _exit_loop;
 	   		}
 
 	   		// set LSB of frame length, make local copy for range check
@@ -748,7 +748,7 @@ int _xbee_frame_load( xbee_dev_t *xbee)
 					{
 						xbee->rx.bytes_read += read;
 					}
-					return dispatched;
+					goto _exit_loop;
 				}
 
             // ready to load more frames on next pass
@@ -789,7 +789,7 @@ int _xbee_frame_load( xbee_dev_t *xbee)
 
 					if (dispatched == XBEE_DEV_MAX_DISPATCH_PER_TICK)
 					{
-						return dispatched;
+						goto _exit_loop;
 					}
 				}
 	         break;
@@ -802,6 +802,8 @@ int _xbee_frame_load( xbee_dev_t *xbee)
 				xbee->rx.state = XBEE_RX_STATE_WAITSTART;
 	   }
 	}
+	_exit_loop:
+	return dispatched;
 }
 #ifdef __XBEE_PLATFORM_HCS08
 	#pragma MESSAGE DEFAULT C5909		// restore C5909 (Assignment in condition)

@@ -51,8 +51,13 @@
 	#include <windows.h>
 
 	// enable the Wi-Fi code by default
-	#ifndef XBEE_WIFI_DISABLE
-		#define XBEE_WIFI_ENABLE
+	#ifndef XBEE_WIFI_ENABLED
+		#define XBEE_WIFI_ENABLED 1
+	#endif
+
+	// enable the cellular code by default
+	#ifndef XBEE_CELLULAR_ENABLED
+		#define XBEE_CELLULAR_ENABLED 1
 	#endif
 
 	// compiler natively supports 64-bit integers

@@ -76,7 +76,7 @@ int main()
 }
 
 #include "xbee_atcmd.h"         // for XBEE_FRAME_HANDLE_LOCAL_AT
-#include "xbee_device.h"        // for XBEE_FRAME_HANDLE_TX_STATUS
+#include "xbee_device.h"
 const xbee_dispatch_table_entry_t xbee_frame_handlers[] =
 {
     XBEE_FRAME_HANDLE_LOCAL_AT,
