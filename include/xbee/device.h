@@ -170,8 +170,6 @@ enum xbee_frame_type {
 	#define XBEE_RX_OPT_MODE_DIGIMESH				(3<<6)
 //@}
 
-/// Max payload for all supported XBee types is 256 bytes.  Actual firmware used
-/// may affect that size, and even enabling encryption can have an affect.
 /// Smart Energy and ZigBee are limited to 128 bytes, DigiMesh is 256 bytes.
 #ifndef XBEE_MAX_RFPAYLOAD
 	#if XBEE_CELLULAR_ENABLED
@@ -179,7 +177,7 @@ enum xbee_frame_type {
 	#elif XBEE_WIFI_ENABLED
 		#define XBEE_MAX_RFPAYLOAD 1400
 	#else
-		#define XBEE_MAX_RFPAYLOAD 128
+		#define XBEE_MAX_RFPAYLOAD 256
 	#endif
 #endif
 
