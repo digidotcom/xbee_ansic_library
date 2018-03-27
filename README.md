@@ -377,7 +377,7 @@ If you find that this library doesn't meet your needs, take a look at
 For a detailed list of libraries in many languages, visit Digi's [XBee Examples]
 site..
 
-[libxbee]: https://code.google.com/p/libxbee/
+[libxbee]: https://github.com/attie/libxbee3/
 [XBee Examples]: http://examples.digi.com/quick-reference/
 
 
