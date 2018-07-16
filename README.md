@@ -96,7 +96,8 @@ XBee Firmware
 -------------
 Configure your XBee radio with DigiMesh, ZigBee or Smart Energy firmware in
 "API" mode (with an API mode firmware or by setting ATAP=1).  The samples use
-a default baud rate of 115200.  Configure the radio with ATAO set to 1 to use
+a default baud rate of 115200. The library is written to make use of flow control, 
+so ATD6/ATD7 needs to be set to 1. Configure the radio with ATAO set to 1 to use
 extended transmit and receive frames.
 
 
