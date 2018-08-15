@@ -59,6 +59,14 @@ samples/posix/install_ebl
 samples/posix/transparent_client
 samples/posix/walker
 samples/posix/zcltime
+samples/posix/apply_profile
+samples/posix/eblinfo
+samples/posix/gpm
+samples/posix/ipv4_client
+samples/posix/network_scan
+samples/posix/sms_client
+samples/posix/xbee_term
+samples/posix/zigbee_walker
 t_memcheck
 zdo_simple_desc_respond
 zdo_match_desc_request
