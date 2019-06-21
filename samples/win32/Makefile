@@ -9,6 +9,7 @@
 
 # extra defines (in addition to those in platform_win32.h)
 DEFINE = -DZCL_ENABLE_TIME_SERVER \
+	-DXBEE_CELLULAR_ENABLED \
 	-DXBEE_DEVICE_ENABLE_ATMODE \
 	-DXBEE_XMODEM_TESTING
 
@@ -34,7 +35,7 @@ COMPILE_GCC4 = gcc -iquote$(INCDIR)
 # use gcc 3 in Cygwin with -mno-cygwin option to build standalone executables
 COMPILE_GCC3 = gcc-3 -mno-cygwin -I$(INCDIR)
 
-COMPILE = $(COMPILE_GCC4) -g -MMD -MP -Wall $(DEFINE)
+COMPILE = $(COMPILE_GCC4) -g -MMD -MP -Wall $(DEFINE) $(CFLAGS)
 
 EXE = atinter.exe install_ebl.exe comports.exe \
 		pxbee_ota_update.exe zcltime.exe \
