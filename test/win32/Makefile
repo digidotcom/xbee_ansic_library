@@ -5,20 +5,28 @@
 # If you get a "no rule to make target" error for some random .h file, try
 # deleting all .d files.
 
-# extra defines (in addition to those in platform_win32.h)
-DEFINE = -DXBEE_DEVICE_ENABLE_ATMODE
+# directory for driver
+DRIVER = ../..
+
+# directory for platform support
+PORTDIR = $(DRIVER)/ports/win32
+
+# path to include files
+INCDIR = $(DRIVER)/include
+
+# path to common source files
+SRCDIR = $(DRIVER)/src
+
+# extra defines (in addition to those in platform_config.h)
+DEFINE = \
+	-DXBEE_PLATFORM_HEADER='"$(PORTDIR)/platform_config.h"' \
+	-DXBEE_DEVICE_ENABLE_ATMODE \
 
 # path for Coverity temp directory
 COVERITY_TEMP = /c/tmp/coverity
 
 # if PATH isn't set correctly, it may be necessary to do this:
 # PATH="/c/Program Files/Coverity/Coverity Integrity Center/static-analysis/bin/:$PATH"
-
-# path to include files
-INCDIR = ../../include
-
-# path to common source files
-SRCDIR = ../../src
 
 # compiler parameters for building each file
 # -MMD generates dependency files automatically, omitting system files
@@ -30,7 +38,7 @@ COMPILE_GCC4 = gcc -iquote$(INCDIR)
 # use gcc 3 in Cygwin with -mno-cygwin option to build standalone executables
 COMPILE_GCC3 = gcc-3 -mno-cygwin -I$(INCDIR)
 
-COMPILE = $(COMPILE_GCC4) -g -MMD -MP -Wall $(DEFINE)
+COMPILE = $(COMPILE_GCC4) -std=gnu99 -g -MMD -MP -Wall $(DEFINE)
 
 EXE = zcl_write.exe \
 		zcl_read.exe \
@@ -45,7 +53,6 @@ EXE = zcl_write.exe \
 		t_cbuf.exe \
 		zcl_type_name.exe \
 		t_memcheck.exe \
-		atas.exe
 
 all : $(EXE)
 
@@ -310,6 +317,10 @@ coverity-push:
 %.o : ../util/%.c
 	$(COMPILE) -c $<
 
+# ...or in the port support directory...
+%.o : $(PORTDIR)/%.c
+	$(COMPILE) -c $<
+	
 # ...or in SRCDIR...
 %.o : $(SRCDIR)/%.c
 	$(COMPILE) -c $<
@@ -320,8 +331,6 @@ coverity-push:
 %.o : $(SRCDIR)/wpan/%.c
 	$(COMPILE) -c $<
 %.o : $(SRCDIR)/zigbee/%.c
-	$(COMPILE) -c $<
-%.o : $(SRCDIR)/win32/%.c
 	$(COMPILE) -c $<
 %.o : $(SRCDIR)/util/%.c
 	$(COMPILE) -c $<

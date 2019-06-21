@@ -5,24 +5,32 @@
 # If you get a "no rule to make target" error for some random .h file, try
 # deleting all .d files.
 
-# extra defines (in addition to those in platform_posix.h)
-DEFINE = -DPOSIX \
+# directory for driver
+DRIVER = ../..
+
+# directory for platform support
+PORTDIR = $(DRIVER)/ports/posix
+
+# path to include files
+INCDIR = $(DRIVER)/include
+
+# path to common source files
+SRCDIR = $(DRIVER)/src
+
+# extra defines (in addition to those in platform_config.h)
+DEFINE = \
+	-DPOSIX \
+	-DXBEE_PLATFORM_HEADER='"$(PORTDIR)/platform_config.h"' \
 	-DXBEE_DEVICE_ENABLE_ATMODE
 
 # path for Coverity temp directory
 COVERITY_TEMP = /tmp/coverity
 
-# path to include files
-INCDIR = ../../include
-
-# path to common source files
-SRCDIR = ../../src
-
 # compiler parameters for building each file
 # -MMD generates dependency files automatically, omitting system files
 # -MP creates phony targets for each prerequisite in a .d file
 
-COMPILE = gcc -iquote$(INCDIR) -g -MMD -MP -Wall $(DEFINE)
+COMPILE = gcc -std=gnu99 -iquote$(INCDIR) -g -MMD -MP -Wall $(DEFINE)
 
 EXE = zcl_write \
 		zcl_read \
@@ -37,7 +45,6 @@ EXE = zcl_write \
 		t_cbuf \
 		zcl_type_name \
 		t_memcheck \
-		atas
 
 all : $(EXE)
 
@@ -302,6 +309,10 @@ coverity-push:
 %.o : ../util/%.c
 	$(COMPILE) -c $<
 
+# ...or in the port support directory...
+%.o : $(PORTDIR)/%.c
+	$(COMPILE) -c $<
+	
 # ...or in SRCDIR...
 %.o : $(SRCDIR)/%.c
 	$(COMPILE) -c $<
@@ -312,8 +323,6 @@ coverity-push:
 %.o : $(SRCDIR)/wpan/%.c
 	$(COMPILE) -c $<
 %.o : $(SRCDIR)/zigbee/%.c
-	$(COMPILE) -c $<
-%.o : $(SRCDIR)/posix/%.c
 	$(COMPILE) -c $<
 %.o : $(SRCDIR)/util/%.c
 	$(COMPILE) -c $<
