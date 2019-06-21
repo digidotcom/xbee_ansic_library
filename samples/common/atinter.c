@@ -24,7 +24,7 @@ xbee_dev_t my_xbee;
 */
 int main( int argc, char *argv[])
 {
-   char cmdstr[80];
+   char cmdstr[256];
 	int status;
 	xbee_serial_t XBEE_SERPORT;
 
