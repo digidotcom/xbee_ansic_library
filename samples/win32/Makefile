@@ -7,14 +7,11 @@
 # If you get a "no rule to make target" error for some random .h file, try
 # deleting all .d files.
 
-# extra defines (in addition to those in platform_win32.h)
-DEFINE = -DZCL_ENABLE_TIME_SERVER \
-	-DXBEE_CELLULAR_ENABLED \
-	-DXBEE_DEVICE_ENABLE_ATMODE \
-	-DXBEE_XMODEM_TESTING
-
 # directory for driver
 DRIVER = ../..
+
+# directory for platform support
+PORTDIR = $(DRIVER)/ports/win32
 
 # path to include files
 INCDIR = $(DRIVER)/include
@@ -24,6 +21,14 @@ SRCDIR = $(DRIVER)/src
 
 # libs for samples using GetOpenFileName
 DIALOG_LIBS = -lkernel32 -lcomdlg32
+
+# extra defines (in addition to those in platform_config.h)
+DEFINE = \
+	-DXBEE_PLATFORM_HEADER='"$(PORTDIR)/platform_config.h"' \
+	-DZCL_ENABLE_TIME_SERVER \
+	-DXBEE_CELLULAR_ENABLED \
+	-DXBEE_DEVICE_ENABLE_ATMODE \
+	-DXBEE_XMODEM_TESTING
 
 # compiler parameters for building each file
 # -MMD generates dependency files automatically, omitting system files
@@ -35,7 +40,7 @@ COMPILE_GCC4 = gcc -iquote$(INCDIR)
 # use gcc 3 in Cygwin with -mno-cygwin option to build standalone executables
 COMPILE_GCC3 = gcc-3 -mno-cygwin -I$(INCDIR)
 
-COMPILE = $(COMPILE_GCC4) -g -MMD -MP -Wall $(DEFINE) $(CFLAGS)
+COMPILE = $(COMPILE_GCC4) -std=gnu99 -g -MMD -MP -Wall $(DEFINE) $(CFLAGS)
 
 EXE = atinter.exe install_ebl.exe comports.exe \
 		pxbee_ota_update.exe zcltime.exe \
@@ -211,6 +216,10 @@ commissioning_server.exe : $(commissioning_server_OBJECTS)
 .c.o :
 	$(COMPILE) -c $<
 
+# ...or in the port support directory...
+%.o : $(PORTDIR)/%.c
+	$(COMPILE) -c $<
+	
 # ...or in common samples directory...
 %.o : ../common/%.c
 	$(COMPILE) -c $<
@@ -225,8 +234,6 @@ commissioning_server.exe : $(commissioning_server_OBJECTS)
 %.o : $(SRCDIR)/wpan/%.c
 	$(COMPILE) -c $<
 %.o : $(SRCDIR)/zigbee/%.c
-	$(COMPILE) -c $<
-%.o : $(SRCDIR)/win32/%.c
 	$(COMPILE) -c $<
 %.o : $(SRCDIR)/util/%.c
 	$(COMPILE) -c $<

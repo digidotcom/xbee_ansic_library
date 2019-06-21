@@ -322,19 +322,19 @@
 #ifdef XBEE_PLATFORM_HEADER
 	#include XBEE_PLATFORM_HEADER
 #elif defined __DC__
-	#include "xbee/platform_rabbit.h"
+	#include "../ports/rabbit/platform_config.h"
 #elif defined POSIX
-	#include "xbee/platform_posix.h"
+	#include "../ports/posix/platform_config.h"
 #elif defined __DOS__
 	// Note: at present, only Open Watcom compiler supported
 	// (can test for __WATCOMC__ preprocessor symbol, or
 	// __BORLANDC__ for Borland C++)
-	#include "xbee/platform_dos.h"
+	#include "../ports/dos/platform_config.h"
 #elif defined WIN32 || defined _WIN32 || defined _WIN32_ || defined __WIN32__ \
 	|| defined __CYGWIN32__ || defined MINGW32
-	#include "xbee/platform_win32.h"
+	#include "../ports/win32/platform_config.h"
 #elif defined __MWERKS__ && defined __HC08__
-	#include "xbee/platform_hcs08.h"
+	#include "../ports/hcs08/platform_config.h"
 #else
 	#error "Unknown target"
 #endif

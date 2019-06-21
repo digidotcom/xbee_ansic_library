@@ -5,14 +5,11 @@
 # If you get a "no rule to make target" error for some random .h file, try
 # deleting all .d files.
 
-# extra defines
-DEFINE = -DPOSIX \
-	-DZCL_ENABLE_TIME_SERVER \
-	-DXBEE_DEVICE_ENABLE_ATMODE \
-	-DXBEE_XMODEM_TESTING
-
 # directory for driver
 DRIVER = ../..
+
+# directory for platform support
+PORTDIR = $(DRIVER)/ports/posix
 
 # path to include files
 INCDIR = $(DRIVER)/include
@@ -20,11 +17,20 @@ INCDIR = $(DRIVER)/include
 # path to common source files
 SRCDIR = $(DRIVER)/src
 
+# extra defines (in addition to those in platform_config.h)
+DEFINE = \
+	-DPOSIX \
+	-DXBEE_PLATFORM_HEADER='"$(PORTDIR)/platform_config.h"' \
+	-DZCL_ENABLE_TIME_SERVER \
+	-DXBEE_CELLULAR_ENABLED \
+	-DXBEE_DEVICE_ENABLE_ATMODE \
+	-DXBEE_XMODEM_TESTING
+
 # compiler parameters for building each file
 # -MMD generates dependency files automatically, omitting system files
 # -MP creates phony targets for each prerequisite in a .d file
 
-COMPILE = gcc -iquote$(INCDIR) -g -MMD -MP -Wall $(DEFINE)
+COMPILE = gcc -std=gnu99 -iquote$(INCDIR) -g -MMD -MP -Wall $(DEFINE)
 
 EXE = atinter install_ebl zcltime \
 		commissioning_client commissioning_server ipv4_client sms_client \
@@ -191,6 +197,10 @@ commissioning_server : $(commissioning_server_OBJECTS)
 .c.o :
 	$(COMPILE) -c $<
 
+# ...or in the port support directory...
+%.o : $(PORTDIR)/%.c
+	$(COMPILE) -c $<
+	
 # ...or in common samples directory...
 %.o : ../common/%.c
 	$(COMPILE) -c $<
@@ -205,8 +215,6 @@ commissioning_server : $(commissioning_server_OBJECTS)
 %.o : $(SRCDIR)/wpan/%.c
 	$(COMPILE) -c $<
 %.o : $(SRCDIR)/zigbee/%.c
-	$(COMPILE) -c $<
-%.o : $(SRCDIR)/posix/%.c
 	$(COMPILE) -c $<
 %.o : $(SRCDIR)/util/%.c
 	$(COMPILE) -c $<

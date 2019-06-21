@@ -13,7 +13,7 @@
 /**
 	@addtogroup hal_posix
 	@{
-	@file xbee/platform_posix.h
+	@file ports/posix/platform_config.h
 	Header for POSIX platforms (e.g., Linux, BSD, Mac OS X).
 
 	This file is automatically included by xbee/platform.h.
