@@ -1,12 +1,11 @@
-lib
 # Win32, POSIX
-*/win32/*.d
-*/win32/*.o
-*/posix/*.d
-*/posix/*.o
+*.d
+*.o
 samples/*/*.exe
 test/*/*.exe
+
 # DOS
+lib
 */dos/*.lib
 */dos/*.lb1
 */dos/*.lk1
@@ -15,6 +14,7 @@ test/*/*.exe
 */dos/*.mk1
 */dos/*.obj
 */dos/*.sym
+
 # Rabbit/Dynamic C
 */rabbit/*.bak
 */rabbit/*.dbg
@@ -35,15 +35,21 @@ vssver.scc
 samples/rabbit/common
 src/xbee/rabbit
 src/xbee/util
+
 # other files
 *.orig
 doc
 coverity
+
+# auto-generated files
 samples/rabbit/main-node_discovery.c
 samples/rabbit/my_config.h
+
+# POSIX executables
 test/posix/atas
 test/posix/jsll_gen
 test/posix/t_jslong
+test/posix/t_memcheck
 test/posix/xbee_timer_compare
 test/posix/zcl_24bit
 test/posix/zcl_boolean
@@ -52,6 +58,8 @@ test/posix/zcl_read
 test/posix/zcl_type_info
 test/posix/zcl_type_name
 test/posix/zcl_write
+test/posix/zdo_simple_desc_respond
+test/posix/zdo_match_desc_request
 samples/posix/atinter
 samples/posix/commissioning_client
 samples/posix/commissioning_server
@@ -67,6 +75,3 @@ samples/posix/network_scan
 samples/posix/sms_client
 samples/posix/xbee_term
 samples/posix/zigbee_walker
-t_memcheck
-zdo_simple_desc_respond
-zdo_match_desc_request
