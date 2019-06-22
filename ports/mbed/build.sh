@@ -12,7 +12,7 @@ mkdir $BUILD
 mkdir $BUILD/include
 mkdir $BUILD/src
 
-cp -a $DRIVER/src/{mbed,util,wpan,xbee,zigbee} $BUILD/src/
+cp -a $DRIVER/src/{util,wpan,xbee,zigbee} $DRIVER/ports/mbed $BUILD/src/
 
 # Copy headers while renaming to avoid naming conflicts with mbed
 # headers (like xbee/driver.h).
@@ -29,15 +29,12 @@ do
   cd -
 done
 
-# Remove headers for other platforms.
-rm $BUILD/include/xbee/xbee_platform_{dos,hcs08,posix,rabbit,win32}.h
-
 # Remove this build script from the copied files.
 rm $BUILD/src/mbed/build.sh
 
 # Create modified xbee/xbee_platform.h since we can't define XBEE_PLATFORM_HEADER
 # in a project file or Makefile.
-echo "#define XBEE_PLATFORM_HEADER \"xbee_platform_mbed.h\"" > $BUILD/include/xbee/xbee_platform.h 
+echo "#define XBEE_PLATFORM_HEADER \"../../src/mbed/platform_config.h\"" > $BUILD/include/xbee/xbee_platform.h 
 cat $DRIVER/include/xbee/platform.h >> $BUILD/include/xbee/xbee_platform.h
 
 # remove commissioning code (wants to link zcl_comm_default_sas)
