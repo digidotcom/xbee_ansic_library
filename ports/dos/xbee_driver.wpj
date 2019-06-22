@@ -6,8 +6,8 @@ VpeMain
 WRect
 0
 0
-7680
-9216
+7678
+9214
 2
 MProject
 3
@@ -28,10 +28,10 @@ WVList
 VComponent
 8
 WRect
-420
-370
-3017
-4856
+417
+362
+3013
+4854
 0
 0
 9
@@ -39,5 +39,5 @@ WFileName
 15
 xbee_driver.tgt
 0
-16
+28
 7

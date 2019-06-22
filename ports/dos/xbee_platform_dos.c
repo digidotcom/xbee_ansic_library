@@ -172,4 +172,4 @@ int xbee_readline( char *buffer, int length)
 
 
 // include support for 64-bit integers
-#include "../util/jslong.c"
+#include "../../src/util/jslong.c"

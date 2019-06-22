@@ -5,7 +5,7 @@ samples/*/*.exe
 test/*/*.exe
 
 # DOS
-lib
+*/dos/*.err
 */dos/*.lib
 */dos/*.lb1
 */dos/*.lk1
@@ -39,6 +39,7 @@ src/xbee/util
 # other files
 *.orig
 doc
+lib
 coverity
 
 # auto-generated files
