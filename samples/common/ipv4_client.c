@@ -185,7 +185,7 @@ static int tx_status_handler(xbee_dev_t *xbee, const void FAR *frame_in,
 {
 	const xbee_frame_tx_status_t FAR *frame = frame_in;
     if (frame->delivery != XBEE_TX_DELIVERY_SUCCESS) {
-        printf("Error delivering packet, delivery status 0x%.2"PRIx16"\n",
+        printf("Error delivering packet, delivery status 0x%.2x\n",
             frame->delivery);
         exit(EXIT_FAILURE);
     }

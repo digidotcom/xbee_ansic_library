@@ -73,7 +73,7 @@ void myxbee_reset( xbee_dev_t *xbee, int reset)
 int main( int argc, char *argv[])
 {
 	xbee_fw_source_t fw = { 0 };
-	FILE *ebl;
+	FILE *ebl = NULL;
 	char buffer[80];
 	uint16_t t;
 	int result;

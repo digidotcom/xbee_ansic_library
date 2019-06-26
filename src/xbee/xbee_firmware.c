@@ -902,7 +902,7 @@ int xbee_fw_install_oem_tick( xbee_fw_source_t *source)
 		   }
 
 		   // If we don't need an update, return the radio to operational mode.
-		   if (! flags & XBEE_OEM_FLAG_FORCEUPDATE)
+		   if (! (flags & XBEE_OEM_FLAG_FORCEUPDATE))
 		   {
 	         // exit command mode
 	         xbee_atmode_send_request( xbee, "CN");
@@ -927,7 +927,7 @@ int xbee_fw_install_oem_tick( xbee_fw_source_t *source)
 
 		case XBEE_FW_STATE_CMD_SL:
 		   // Munge the serial number and enter programming mode via AT command.
-		   sprintf( response, "%%P%04" PRIX16,
+		   sprintf( response, "%%P%04X",
 		      (xbee_fw_hex2word( source->buffer) + 0xDB8A) & 0x3fff);
 			_xbee_fw_send_request( source, response, XBEE_FW_STATE_CMD_PROG);
 			break;

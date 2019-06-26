@@ -300,7 +300,9 @@ int _xbee_cmd_list_callback( const xbee_cmd_response_t FAR *response)
 #endif
    	clc->status = XBEE_COMMAND_LIST_TIMEOUT;
       // Find 'end handler' callback...
-		for (reg = clc->list; XBEE_ATCMD_REG_VALID(reg); ++reg);
+		for (reg = clc->list; XBEE_ATCMD_REG_VALID(reg); ++reg) {
+			;
+		}
    	if (reg->callback)
       {
       	// A final callback was specified (via XBEE_ATCMD_REG_END_CB)
