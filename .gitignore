@@ -47,7 +47,6 @@ samples/rabbit/main-node_discovery.c
 samples/rabbit/my_config.h
 
 # POSIX executables
-test/posix/atas
 test/posix/jsll_gen
 test/posix/t_jslong
 test/posix/t_memcheck

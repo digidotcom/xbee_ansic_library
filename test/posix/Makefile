@@ -80,7 +80,6 @@ SRCS = unittest.c main.c \
 		t_cbuf.c \
 		zcl_type_name.c \
 		t_memcheck.c \
-		atas.c \
 		coverity.c \
 	wpan_aps.c \
 	wpan_types.c \
