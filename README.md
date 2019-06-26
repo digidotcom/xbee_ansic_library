@@ -37,13 +37,13 @@ serially.  Some of the features include:
 - Parse and display digital/analog I/O samples.
 - Interface with the General Purpose Memory (GPM) found on some XBee modules.
 
-Contact [Tom Collins] to report bugs, request features or contribute code
+Use [GitHub] to report bugs, request features or contribute code
 to this project.  Please read through this document before getting started
 with the code.
 
 [Digi International]: http://www.digi.com/
 [XBee]: http://www.digi.com/xbee/
-[Tom Collins]: mailto:tom.collins@digi.com
+[GitHub]: https://github.com/digidotcom/xbee_ansic_library
 [Cygwin]: http://www.cygwin.org/
 [MinGW]: http://www.mingw.org/
 [OpenWatcom]: http://www.openwatcom.org/
@@ -99,118 +99,120 @@ File Descriptions
 -----------------
 Headers:
 
--   `xbee/platform.h`: Function prototypes for hardware abstraction layer.
+- `xbee/platform.h`: Function prototypes for hardware abstraction layer.
 
--   `xbee/platform_xxx.h`: Additional headers, automatically included by
-        xbee/platform.h, based on the target device.
+- `ports/<target>/platform_config.h`: Additional headers, automatically
+  included by `xbee/platform.h`, based on the target device.
 
--   `xbee/serial.h`: Platform-specific functions for managing the serial
-        interface, reading and writing bytes, checking the XBee's CTS pin and
-        setting the host's RTS pin.
+- `xbee/serial.h`: Platform-specific functions for managing the serial
+  interface, reading and writing bytes, checking the XBee's CTS pin and
+  setting the host's RTS pin.
 
--   `xbee/device.h`: Read frames from XBee module and dispatch to frame
-        handlers, send full frames to XBee module.
+- `xbee/device.h`: Read frames from XBee module and dispatch to frame
+  handlers, send full frames to XBee module.
 
--   `xbee/atcmd.h`: Working with local and remote "AT Command" frames for
-        getting and setting XBee attributes and executing XBee commands.
+- `xbee/atcmd.h`: Working with local and remote "AT Command" frames for
+  getting and setting XBee attributes and executing XBee commands.
 
--   `xbee/atmode.h`: Interfacing with XBee module in "AT mode", currently used
-        for firmware updates on non-ZigBee modules.
+- `xbee/atmode.h`: Interfacing with XBee module in "AT mode", currently
+  used for firmware updates on non-ZigBee modules.
 
--   `xbee/byteorder.h`: Byte-order-related functions used by multiple layers of
-        the driver.
+- `xbee/byteorder.h`: Byte-order-related functions used by multiple layers
+  of the driver.
 
--   `xbee/cbuf.h`: Circular buffer used by the serial driver on some platforms,
-        and the "transparent serial" cluster used in OTA updates.  Available
-        for general use to upper layers of the stack.
+- `xbee/cbuf.h`: Circular buffer used by the serial driver on some
+  platforms, and the "transparent serial" cluster used in OTA updates.
+  Available for general use to upper layers of the stack.
 
--   `xbee/commissioning.h`: Code for supporting the ZCL Commissioning Cluster
-        on XBee ZB modules.  See `zigbee/zcl_commissioning.h` for the required
-        networking code.
+- `xbee/commissioning.h`: Code for supporting the ZCL Commissioning
+  Cluster on XBee ZB modules.  See `zigbee/zcl_commissioning.h` for the
+  required networking code.
 
--   `xbee/discovery.h`: Code related to Node Discovery (ATND).
+- `xbee/discovery.h`: Code related to Node Discovery (ATND).
 
--   `xbee/firmware.h`: Code for updating radio firmware via .ebl or .oem files.
+- `xbee/firmware.h`: Code for updating radio firmware via .ebl or .oem
+  files.
 
--   `xbee/gpm.h`: Code related to the General Purpose Memory (GPM) present on
-        various XBee modules (e.g., S3B, S6B).
+- `xbee/gpm.h`: Code related to the General Purpose Memory (GPM) present
+  on various XBee modules (e.g., S3B, S6B).
 
--   `xbee/io.h`: Code for working with the analog and digitial I/O pins on the
-        XBee module.
+- `xbee/io.h`: Code for working with the analog and digital I/O pins on
+  the XBee module.
 
--   `xbee/jslong.h` and `xbee/jslong_glue.h`: Code from mozilla.org used to
-        manage 64-bit integers on platforms without direct support of them.
+- `xbee/jslong.h` and `xbee/jslong_glue.h`: Code from mozilla.org used to
+  manage 64-bit integers on platforms without direct support of them.
 
--   `xbee/ota_client.h`: Client code for sending OTA (over-the-air) firmware
-        updates to Programmable XBee modules.
+- `xbee/ota_client.h`: Client code for sending OTA (over-the-air) firmware
+  updates to Programmable XBee modules.
 
--   `xbee/ota_server.h`: Server code for advertising OTA capabilities on a
-        device (typically a Programmable XBee module).
+- `xbee/ota_server.h`: Server code for advertising OTA capabilities on a
+  device (typically a Programmable XBee module).
 
--   `xbee/scan.h`: Structures describing `ATAS` (Active Scan) responses.
+- `xbee/scan.h`: Structures describing `ATAS` (Active Scan) responses.
 
--   `xbee/sxa.h`: A "Simplified XBee API" with support for node table
-        management, configurable I/O, point-to-point data streams and a
-        connectionless datagram protocol.  Used for XBee-only (not general
-        ZigBee) networks.
+- `xbee/sxa.h`: A "Simplified XBee API" with support for node table
+  management, configurable I/O, point-to-point data streams and a
+  connectionless datagram protocol.  Used for XBee-only (not general
+  ZigBee) networks.  (Sample code limited to Rabbit platform.)
 
--   `xbee/time.h`: Portable time functions for embedded platforms lacking
-        full support of the Standard C Library `time.h`.  Includes a version
-        of `gmtime()` and `mktime()` using 1/1/2000 as the epoch.
+- `xbee/time.h`: Portable time functions for embedded platforms lacking
+  full support of the Standard C Library `time.h`.  Includes a version
+  of `gmtime()` and `mktime()` using 1/1/2000 as the epoch.
 
--   `xbee/transparent_serial.h`: Support code for the "Digi Transparent Serial"
-        cluster (cluster 0x0011 of endpoint 0xE8), to communicate with "dumb"
-        XBee modules running non-API mode firmware.
+- `xbee/transparent_serial.h`: Support code for the "Digi Transparent
+  Serial" cluster (cluster 0x0011 of endpoint 0xE8), to communicate with
+  "dumb" XBee modules running non-API mode firmware.
 
--   `xbee/wifi.h`: Code specific to the XBee S6B (Wi-Fi) module.
+- `xbee/wifi.h`: Code specific to the XBee S6B (Wi-Fi) module.
 
--   `xbee/wpan.h`: Glue layer between XBee device driver and WPAN/ZigBee
-        network.
+- `xbee/wpan.h`: Glue layer between XBee device driver and 802.15.4/ZigBee
+  network.
 
--   `xbee/xmodem.h`: Xmodem protocol layer, on top of xbee/serial layer, for
-        sending firmware updates.
+- `xbee/xmodem.h`: XMODEM protocol layer, on top of xbee/serial layer, for
+  sending firmware updates.
 
--   `xbee/xmodem_crc16.h`: Function to calculate 16-bit Xmodem CRC.
+- `xbee/xmodem_crc16.h`: Function to calculate 16-bit XMODEM CRC.
 
--   `wpan/types.h`: Types used by Wireless Personal Area Networks, not specific
-        to the ZigBee protocol (e.g., can be used by DigiMesh).
+- `wpan/types.h`: Types used by Wireless Personal Area Networks, not
+  specific to the ZigBee protocol (e.g., 802.15.4 and DigiMesh).
 
--   `wpan/aps.h`: APS-layer of WPAN networks (endpoints/clusters).
+- `wpan/aps.h`: APS-layer of WPAN networks (endpoints/clusters).
 
--   `zigbee/zcl.h`: ZigBee Cluster Library, including general commands.
+- `zigbee/zcl.h`: ZigBee Cluster Library, including general commands.
 
--   `zigbee/zcl_basic.h`: Basic Cluster for ZCL.
+- `zigbee/zcl_basic.h`: Basic Cluster for ZCL.
 
--   `zigbee/zcl_basic_attributes.h`: Used in main program to create a data
-        structure and attribute for use in the device's endpoint table.
+- `zigbee/zcl_basic_attributes.h`: Used in main program to create a data
+  structure and attribute for use in the device's endpoint table.
 
--   `zigbee/zcl_client.h`: Helper functions for creating ZCL client clusters.
+- `zigbee/zcl_client.h`: Helper functions for creating ZCL client 
+  clusters.
 
--   `zigbee/zcl_commissioning.h`: Non-certified implementation of
-        Commissioning Cluster (server).
+- `zigbee/zcl_commissioning.h`: Non-certified implementation of
+  Commissioning Cluster (server).
 
--   `zigbee/zcl_identify.h`: ZCL Identify Cluster (server).
+- `zigbee/zcl_identify.h`: ZCL Identify Cluster (server).
 
--   `zigbee/zcl_onoff.h`: ZCL OnOff Cluster (incomplete).
+- `zigbee/zcl_onoff.h`: ZCL OnOff Cluster (incomplete).
 
--   `zigbee/zcl_time.h`: ZCL Time Cluster (client and server).
+- `zigbee/zcl_time.h`: ZCL Time Cluster (client and server).
 
--   `zigbee/zcl_types.h`: ZCL datatypes
+- `zigbee/zcl_types.h`: ZCL datatypes
 
--   `zigbee/zdo.h`: ZigBee Device Objects/ZigBee Device Profile layer.
+- `zigbee/zdo.h`: ZigBee Device Objects/ZigBee Device Profile layer.
 
 
 Source (.c) directories:
 
--   `wpan`: source files for `include/wpan/*.h`
+- `wpan`: source files for `include/wpan/*.h`
 
--   `xbee`: source files for `include/xbee/*.h`
+- `xbee`: source files for `include/xbee/*.h`
 
--   `util`: Helper functions that may not be available on a given target.  In
-        some cases (like `swapbytes.c`), it can be used until an optimized,
-        assembly-only version of the function can be written for the target.
+- `util`: Helper functions that may not be available on a given target.
+  In some cases (like `swapbytes.c`), it can be used until an optimized,
+  assembly-only version of the function can be written for the target.
 
--   `zigbee`: source files for include/zigbee/*.h
+- `zigbee`: source files for include/zigbee/*.h
 
 
 Sample Programs
