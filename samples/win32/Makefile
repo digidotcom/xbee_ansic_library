@@ -42,12 +42,12 @@ COMPILE_GCC3 = gcc-3 -mno-cygwin -I$(INCDIR)
 
 COMPILE = $(COMPILE_GCC4) -std=gnu99 -g -MMD -MP -Wall $(DEFINE) $(CFLAGS)
 
-EXE = atinter.exe install_ebl.exe comports.exe \
-		pxbee_ota_update.exe zcltime.exe \
-		commissioning_client.exe commissioning_server.exe \
-		apply_profile.exe xbee_term.exe eblinfo.exe \
-		zigbee_walker.exe ipv4_client.exe sms_client.exe \
-		transparent_client.exe pxbee_update.exe network_scan.exe gpm.exe
+EXE = atinter install_ebl comports \
+	pxbee_ota_update zcltime \
+	commissioning_client commissioning_server \
+	apply_profile xbee_term eblinfo \
+	zigbee_walker ipv4_client sms_client \
+	transparent_client pxbee_update network_scan gpm \
 
 all : $(EXE)
 
@@ -55,28 +55,28 @@ all : $(EXE)
 strip :
 	strip $(EXE)
 
-comports.exe : comports.c
+comports : comports.c
 	$(COMPILE) -o $@ $^
 
-zcltime.exe : zcltime.o
+zcltime : zcltime.o
 	$(COMPILE) -o $@ $^
 
-eblinfo.exe : eblinfo.o xbee_ebl_file.o swapbytes.o
+eblinfo : eblinfo.o xbee_ebl_file.o swapbytes.o
 	$(COMPILE) -o $@ $^
 
 clean :
-	- rm -f *.o *.d $(EXE)
+	- rm -f *.o *.d $(addsuffix .exe, $(EXE))
 
 SRCS = \
-		atinter.c \
-		eblinfo.c \
-		install_ebl.c \
-		ipv4_client.c \
-		transparent_client.c \
-		pxbee_ota_update.c \
-		xbee_term.c _xbee_term.c xbee_term_win32.c \
-		zcltime.c \
-		parse_serial_args.c \
+	atinter.c \
+	eblinfo.c \
+	install_ebl.c \
+	ipv4_client.c \
+	transparent_client.c \
+	pxbee_ota_update.c \
+	xbee_term.c _xbee_term.c xbee_term_win32.c \
+	zcltime.c \
+	parse_serial_args.c \
 	_atinter.c _pxbee_ota_update.c \
 	_commission_client.c \
 	_commission_server.c _nodetable.c _zigbee_walker.c \
@@ -126,29 +126,29 @@ zigbee_OBJECTS = $(wpan_OBJECTS) zigbee_zcl.o zigbee_zdo.o zcl_types.o
 
 atinter_OBJECTS = _atinter.o
 
-atinter.exe : $(xbee_OBJECTS) $(atinter_OBJECTS) atinter.o
+atinter : $(xbee_OBJECTS) $(atinter_OBJECTS) atinter.o
 	$(COMPILE) -o $@ $^
 
-gpm.exe : $(zigbee_OBJECTS) $(atinter_OBJECTS) xbee_gpm.o gpm.o
+gpm : $(zigbee_OBJECTS) $(atinter_OBJECTS) xbee_gpm.o gpm.o
 	$(COMPILE) -o $@ $^
 
 network_scan_OBJECTS = $(xbee_OBJECTS) network_scan.o _atinter.o xbee_scan.o xbee_wifi.o
-network_scan.exe : $(network_scan_OBJECTS)
+network_scan : $(network_scan_OBJECTS)
 	$(COMPILE) -o $@ $^
 
-apply_profile.exe : $(xbee_OBJECTS) apply_profile.o
+apply_profile : $(xbee_OBJECTS) apply_profile.o
 	$(COMPILE) -o $@ $^
 
 xbee_term_OBJECTS = $(base_OBJECTS) xbee_term.o _xbee_term.o xbee_term_win32.o
-xbee_term.exe : $(xbee_term_OBJECTS)
+xbee_term : $(xbee_term_OBJECTS)
 	$(COMPILE) -o $@ $^
 
 ipv4_client_OBJECTS = $(xbee_OBJECTS)  ipv4_client.o xbee_tx_status.o _xbee_term.o xbee_term_win32.o $(atinter_OBJECTS) xbee_ipv4.o
-ipv4_client.exe : $(ipv4_client_OBJECTS)
+ipv4_client : $(ipv4_client_OBJECTS)
 	$(COMPILE) -o $@ $^	
 	
 sms_client_OBJECTS = $(xbee_OBJECTS) sms_client.o $(atinter_OBJECTS) xbee_sms.o 
-sms_client.exe : $(sms_client_OBJECTS)
+sms_client : $(sms_client_OBJECTS)
 	$(COMPILE) -o $@ $^	
 	
 transparent_client_OBJECTS = $(zigbee_OBJECTS) transparent_client.o \
@@ -156,7 +156,7 @@ transparent_client_OBJECTS = $(zigbee_OBJECTS) transparent_client.o \
 	xbee_discovery.o \
 	xbee_transparent_serial.o
 
-transparent_client.exe : $(transparent_client_OBJECTS)
+transparent_client : $(transparent_client_OBJECTS)
 	$(COMPILE) -o $@ $^
 
 install_ebl_OBJECTS = $(xbee_OBJECTS) install_ebl.o \
@@ -164,14 +164,14 @@ install_ebl_OBJECTS = $(xbee_OBJECTS) install_ebl.o \
 	xbee_firmware.o \
 	xbee_xmodem.o xmodem_crc16.o
 
-install_ebl.exe: $(install_ebl_OBJECTS)
+install_ebl: $(install_ebl_OBJECTS)
 	$(COMPILE) -o $@ $^ $(DIALOG_LIBS)
 
 pxbee_update_OBJECTS = $(xbee_OBJECTS) pxbee_update.o \
 	xbee_atmode.o \
 	xbee_firmware.o \
 	xbee_xmodem.o xmodem_crc16.o
-pxbee_update.exe: $(pxbee_update_OBJECTS)
+pxbee_update: $(pxbee_update_OBJECTS)
 	$(COMPILE) -o $@ $^ $(DIALOG_LIBS)
 
 pxbee_ota_update_OBJECTS = $(zigbee_OBJECTS) \
@@ -183,12 +183,12 @@ pxbee_ota_update_OBJECTS = $(zigbee_OBJECTS) \
 	xbee_xmodem.o xmodem_crc16.o \
 	zcl_client.o zcl_identify.o xbee_time.o
 
-pxbee_ota_update.exe : $(pxbee_ota_update_OBJECTS)
+pxbee_ota_update : $(pxbee_ota_update_OBJECTS)
 	$(COMPILE) -o $@ $^ $(DIALOG_LIBS)
 
 zigbee_walker_OBJECTS = $(zigbee_OBJECTS) \
 	_zigbee_walker.o zigbee_walker.o xbee_time.o zcl_client.o
-zigbee_walker.exe : $(zigbee_walker_OBJECTS)
+zigbee_walker : $(zigbee_walker_OBJECTS)
 	$(COMPILE) -o $@ $^
 
 commissioning_client_OBJECTS = $(zigbee_OBJECTS) \
@@ -197,7 +197,7 @@ commissioning_client_OBJECTS = $(zigbee_OBJECTS) \
 	zcl_commissioning.o \
 	zcl_client.o zcl_identify.o xbee_time.o
 
-commissioning_client.exe : $(commissioning_client_OBJECTS)
+commissioning_client : $(commissioning_client_OBJECTS)
 	$(COMPILE) -o $@ $^
 
 commissioning_server_OBJECTS = $(zigbee_OBJECTS) \
@@ -206,7 +206,7 @@ commissioning_server_OBJECTS = $(zigbee_OBJECTS) \
 	zcl_commissioning.o xbee_commissioning.o \
 	zcl_client.o zcl_identify.o xbee_time.o
 
-commissioning_server.exe : $(commissioning_server_OBJECTS)
+commissioning_server : $(commissioning_server_OBJECTS)
 	$(COMPILE) -o $@ $^
 
 # Use the dependency files created by the -MD option to gcc.
