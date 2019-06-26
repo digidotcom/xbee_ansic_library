@@ -54,30 +54,9 @@ with the code.
 
 Requirements
 ------------
+Look at the `README.md` file in the appropriate `ports/` sub-directory
+for information on setting up the build environment.
 
-- For POSIX, navigate to the `samples/posix` directory and run `make all`.
-  (You'll need to have a standard gcc toolchain, with `make`, installed.)
-
-- For Windows, view `samples/win32/readme.txt` for instructions on setting up
-  MinGW and MSYS.
-
-- For DOS, open `src/dos/xbee_driver.wpj` in OpenWatcom and build it to create
-  `lib/dos/xbee_driver.lib` and `lib/dos/xbee_driver.lb1` which you can link
-  into your programs.  Be sure the compilation options (processor and memory
-  model) for your programs match the ones for the library.  You can probably
-  compile many of the POSIX samples in OpenWatcom with minimal changes.
-
-- For Rabbit, download and install Dynamic C 10.70 (or later) and read its
-  documentation.
-
-- For Freescale HCS08, download and install Digi's Programmable XBee Dev Kit
-  and read its documentation.
-
-- For the Freescale FRDM-KL25Z, use the `src/mbed/build.sh` shell script to
-  build a ZIP file you can upload to mbed.org.
-  
-- For the SLSTK3701A Starter Kit, the XBee expansion board is required to
-  function properly. Use the appropriate IDE for development with this board.
 
 Documentation
 -------------
@@ -233,24 +212,10 @@ Source (.c) directories:
 
 -   `zigbee`: source files for include/zigbee/*.h
 
--   `dos`: Files for OpenWatcom/DOS targets.
-
--   `win32`: Files for gcc/Windows (MinGW, not Cygwin) targets.
-
--   `rabbit`: Files for Dynamic C/Rabbit targets.
-
--   `hcs08`: Files for Codewarrior/Freescale HCS08 (Programmable XBee) target.
-
--   `mbed`: Files for Freescale FRDM-KL25Z with mbed.org compiler.
-
--   `posix`: Files for POSIX operating systems (Mac OS X, BSD, Linux, Cygwin).
-
--   `efm32`: Files for efm32_stk3701 dev-board.
-
 
 Sample Programs
 ---------------
-[Provide details on the supplied sample programs here.]
+See `samples/README.md` for descriptions.
 
 
 Adding to the Library
@@ -336,38 +301,6 @@ important to keep the following in mind while working with the driver:
     ZigBee layers (and above) separate from the XBee layers to allow for possible
     gateway applications (ZigBee to Ethernet, for example), and to limit the
     public release of ZigBee and Smart Energy code.
-
-
-Adding New Platforms
---------------------
-
-Supporting a new hardware platform should be relatively straightforward.  Start
-by looking at the `xbee/platform.h` file and the `xbee/platform_xxx.h` file for
-a similar platform.  You'll need to create a `xbee/platform_yyy.h` for your new
-YYY platform.
-
-Next you'll need to create two .C files with support functions:
-
--   `xbee_platform_yyy.c`: Must have `xbee_seconds_timer` and
-        `xbee_millisecond_timer` functions to report elapsed time.  May also
-        have an `xbee_readline` function if porting the interactive sample
-        programs.
-
--   `xbee_serial_yyy.c`: Needs to implement all of the functions defined in
-        `xbee/serial.h`.  During development, you can probably stub out the
-        following functions (which are only used by `xbee_firmware.c` and
-        `xbee_atmode.c` at the moment) and implement them in a second phase of
-        development:
-   - `xbee_ser_tx_free` and `xbee_ser_rx_free` -- always return `MAX_INT`
-   - `xbee_ser_tx_used` and `xbee_ser_rx_used` -- always return 0
-   - `xbee_ser_tx_flush`, `xbee_ser_rx_flush`, `xbee_ser_break`,
-     `xbee_ser_flowcontrol` and `xbee_ser_set_rts` -- do nothing
-   - `xbee_ser_get_cts` -- always return 1
-
-Then set up your build system with the correct include paths, and .C files to
-link into your application.  If you define the macro `XBEE_PLATFORM_HEADER` to
-be the name of your platform header (e.g., `"xbee/platform_yyy.h"`), the
-`xbee/platform.h` file will include it automatically.
 
 
 Other Options
