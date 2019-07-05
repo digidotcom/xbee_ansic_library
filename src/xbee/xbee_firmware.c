@@ -50,7 +50,7 @@ enum {
 	XBEE_FW_STATE_TOGGLE,			// hold reset line for 50ms
 	XBEE_FW_STATE_BREAK,				// end serial break after 150ms
 
-	// states for .EBL files (e.g., ZNet, ZigBee)
+	// states for .EBL (e.g., ZNet, ZigBee) and .GBL (XBee3) files
 	XBEE_FW_STATE_PROMPT,			// waiting for '>' prompt
 	XBEE_FW_STATE_XMODEM_WAIT,		// waiting for 'C' to start Xmodem send
 	XBEE_FW_STATE_XMODEM_SEND,		// sending firmware via Xmodem
@@ -165,7 +165,7 @@ int xbee_fw_install_init( xbee_dev_t *xbee, const wpan_address_t FAR *target,
 /*** EndHeader */
 /**
 	@brief
-	Returns a unique value indicating the state of the .EBL install process.
+	Returns a unique value indicating the state of the .EBL/.GBL install process.
 
 	@param[in]	source	object used to track state of transfer
 
@@ -230,8 +230,8 @@ int xbee_fw_install_hcs08_tick( xbee_fw_source_t *source)
 #define _TIME_ELAPSED(x)  (xbee_millisecond_timer() - source->timer > (x))
 /**
 	@brief
-	Drive the firmware update process for boards that use .EBL files to store
-	their firmware.
+	Drive the firmware update process for boards that use .EBL/.GBL files to
+	store their firmware.
 
 	@param[in,out]	source	object used to track state of transfer
 
@@ -309,6 +309,9 @@ int xbee_fw_install_ebl_tick( xbee_fw_source_t *source)
 	         xbee_ser_flowcontrol( serport, 1);
 	         xbee_ser_set_rts( serport, 1);
 
+	         // Flush any buffered data from serial port
+	         xbee_ser_rx_flush(serport);
+
 	         // Send CR to radio and wait for a prompt to come back
 	         xbee_ser_putchar( serport, '\r');
 
@@ -318,7 +321,13 @@ int xbee_fw_install_ebl_tick( xbee_fw_source_t *source)
 			break;
 
 		case XBEE_FW_STATE_PROMPT:
-			if (xbee_ser_getchar( serport) == '>')
+			result = xbee_ser_getchar(serport);
+			#ifdef XBEE_FIRMWARE_VERBOSE
+				if (result > 0) {
+					putchar(result);
+				}
+			#endif
+			if (result == '>')
 			{
 	         #ifdef XBEE_FIRMWARE_VERBOSE
 	            printf( "%s: entered bootloader, initiate upload\n",
@@ -361,8 +370,9 @@ int xbee_fw_install_ebl_tick( xbee_fw_source_t *source)
 			}
 			else if (result)
 			{
-				// error during xmodem, abort transfer
+				// error during xmodem, abort transfer and clear tx buffer
 				source->state = XBEE_FW_STATE_FAILURE;
+				xbee_ser_tx_flush(serport);
 			}
 			return result;
 
