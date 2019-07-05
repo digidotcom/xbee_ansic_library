@@ -1,13 +1,13 @@
 /*
- * Copyright (c) 2010-2012 Digi International Inc.,
+ * Copyright (c) 2010-2019 Digi International Inc.,
  * All rights not expressly granted are reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * Digi International Inc. 11001 Bren Road East, Minnetonka, MN 55343
- * =======================================================================
+ * Digi International Inc., 9350 Excelsior Blvd., Suite 700, Hopkins, MN 55343
+ * ===========================================================================
  */
 
 /*
@@ -21,19 +21,10 @@
 		--aps: Use APS encryption for sending update.
 */
 
-// version information
-#define BUILD "20110525"
-
-// Requires Win2K or newer for GetConsoleWindow() function
-#define WINVER 0x0500
-
-#include <windows.h>
-#include <wincon.h>
-#include <commdlg.h>
 #include <stdio.h>
 
 #include "xbee/platform.h"
-#include "zigbee/zcl_bacnet.h"
+#include "xbee/byteorder.h"
 #include "zigbee/zdo.h"
 #include "xbee/device.h"
 #include "xbee/wpan.h"
@@ -42,6 +33,7 @@
 #include "../common/_pxbee_ota_update.h"
 #include "../common/_atinter.h"
 #include "parse_serial_args.h"
+#include "win32_select_file.h"
 
 supported_profile_t dynamic_profile = { 0, WPAN_CLUST_FLAG_NONE };
 const supported_profile_t *current_profile = &dynamic_profile;
@@ -52,107 +44,44 @@ int fw_read( void FAR *context, void FAR *buffer, int16_t bytes)
 	return fread( buffer, 1, bytes, (FILE FAR *)context);
 }
 
-// hook for GetOpenFileName to move window to foreground
-UINT APIENTRY OFNHookProc(HWND h, UINT msg, WPARAM wParam, LPARAM lParam)
-{
-	HWND hwndDlg, hwndOwner;
-	RECT rc, rcDlg, rcOwner;
-
-	// This function follows the standard API for an OPENFILENAME lpfnHook,
-	// but we aren't using all of its parameters.  Since we set the OFN_EXPLORER
-	// flag, this is an OFNHookProc.
-	XBEE_UNUSED_PARAMETER( wParam);
-	XBEE_UNUSED_PARAMETER( lParam);
-
-	// Code to center window over console based on code from
-	// http://msdn.microsoft.com/en-us/library/ms644996(v=VS.85).aspx#init_box
-	if (msg == WM_INITDIALOG)
-	{
-		hwndDlg = GetParent(h);
-		hwndOwner = GetConsoleWindow();
-
-		GetWindowRect(hwndOwner, &rcOwner);
-		GetWindowRect(hwndDlg, &rcDlg);
-		CopyRect(&rc, &rcOwner);
-
-		// Offset the owner and dialog box rectangles so that right and bottom
-		// values represent the width and height, and then offset the owner again
-		// to discard space taken up by the dialog box.
-
-		OffsetRect(&rcDlg, -rcDlg.left, -rcDlg.top);
-		OffsetRect(&rc, -rc.left, -rc.top);
-		OffsetRect(&rc, -rcDlg.right, -rcDlg.bottom);
-
-		// The new position is the sum of half the remaining space and the owner's
-		// original position.
-
-		SetWindowPos(hwndDlg,
-							HWND_TOPMOST,
-							rcOwner.left + (rc.right / 2),
-							rcOwner.top + (rc.bottom / 2),
-							0, 0,          // Ignores size arguments.
-							SWP_NOSIZE | SWP_SHOWWINDOW);
-		return TRUE;
-	}
-
-	return FALSE;
-}
-
 // Prompt user to select a .abs.bin file.
 // Returns file selected or NULL on Cancel/error.
 char *get_file()
 {
-	OPENFILENAME ofn;
-	static char file[256] = "";
-	FILE *f;
-	char appname[60];
-	uint32_t appname_offset;
-	int result;
+	char *file;
+   FILE *f;
+   char appname[60];
+   uint32_t appname_offset;
+   
+   printf( "Select firmware image (*.abs.bin) from file dialog box.\n");         
+   file = win32_select_file("Select Firmware Image",
+      "Firmware Images (*.abs.bin)\0*.abs.bin\0All Files (*.*)\0*.*\0");
+   if (file != NULL)
+   {
+      printf( "Firmware set to\n  %s\n", file);
 
-	printf( "Select firmware image (*.abs.bin) from file dialog box.\n");
-	ZeroMemory( &ofn, sizeof ofn);
-	ofn.lStructSize = sizeof ofn;
-	ofn.nMaxFile = sizeof file;
-	ofn.lpstrFile = file;
-	ofn.lpstrFilter = "Firmware Images (*.abs.bin)\0*.abs.bin\0"
-							"All Files (*.*)\0*.*\0";
-	ofn.lpstrTitle = "Select Firmware Image";
-	ofn.lpfnHook = OFNHookProc;
-	ofn.Flags = OFN_FILEMUSTEXIST
-				| OFN_HIDEREADONLY
-				| OFN_ENABLEHOOK
-				| OFN_EXPLORER;
-
-	result = GetOpenFileName( &ofn);
-
-	if (! result)
-	{
-		return NULL;
-	}
-
-	printf( "Firmware set to\n  %s\n", file);
-
-	#define PXBEE_BASE_ADDR 0x8400
-	f = fopen( file, "rb");
-	if (f)
-	{
-		if (! fseek( f, 0xF1BC - PXBEE_BASE_ADDR, SEEK_SET))
-		{
-			fread( &appname_offset, 1, 4, f);
-			appname_offset = be32toh( appname_offset) - PXBEE_BASE_ADDR;
-			if (appname_offset < 0xF200 - PXBEE_BASE_ADDR)
-			{
-				if (! fseek( f, appname_offset, SEEK_SET))
-				{
-					fread( &appname, 1, sizeof appname, f);
-					printf( "App Name: %-60s\n", appname);
-				}
-			}
-		}
-		fclose( f);
-	}
-
-	return file;
+      #define PXBEE_BASE_ADDR 0x8400
+      f = fopen( file, "rb");
+      if (f)
+      {
+         if (! fseek( f, 0xF1BC - PXBEE_BASE_ADDR, SEEK_SET))
+         {
+            fread( &appname_offset, 1, 4, f);
+            appname_offset = be32toh( appname_offset) - PXBEE_BASE_ADDR;
+            if (appname_offset < 0xF200 - PXBEE_BASE_ADDR)
+            {
+               if (! fseek( f, appname_offset, SEEK_SET))
+               {
+                  fread( &appname, 1, sizeof appname, f);
+                  printf( "App Name: %-60s\n", appname);
+               }
+            }
+         }
+         fclose( f);
+      }
+   }
+   
+   return file;
 }
 
 void print_help( void)
@@ -488,7 +417,7 @@ int main( int argc, char *argv[])
 				last_state = last_packet = 0;
 			#endif
 
-			// main loop will tick the xmodem transfre until fw_file == NULL
+			// main loop will tick the xmodem transfer until fw_file == NULL
 		}
 #ifdef XBEE_XMODEM_TESTING
 		else if (! strcmpi( cmdstr, "ACK"))

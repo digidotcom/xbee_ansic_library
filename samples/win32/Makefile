@@ -22,6 +22,9 @@ COMPILE_GCC3 = gcc-3 -mno-cygwin -I$(INCDIR)
 
 COMPILE = $(COMPILE_GCC4) -std=gnu99 -g -MMD -MP -Wall $(DEFINE) $(CFLAGS)
 
+# extra objects for some samples
+install_ebl_OBJECTS = win32_select_file.o
+
 include ../common/common.mk
 
 clean :
@@ -32,6 +35,7 @@ comports : comports.c
 	$(COMPILE) -o $@ $^
 
 pxbee_update_OBJECTS = $(xbee_OBJECTS) pxbee_update.o \
+	win32_select_file.o \
 	xbee_atmode.o \
 	xbee_firmware.o \
 	xbee_xmodem.o xmodem_crc16.o
@@ -39,8 +43,9 @@ pxbee_update: $(pxbee_update_OBJECTS)
 	$(COMPILE) -o $@ $^ $(DIALOG_LIBS)
 
 pxbee_ota_update_OBJECTS = $(zigbee_OBJECTS) \
-		pxbee_ota_update.o \
-		$(atinter_OBJECTS) _pxbee_ota_update.o \
+	win32_select_file.o \
+	pxbee_ota_update.o \
+	$(atinter_OBJECTS) _pxbee_ota_update.o \
 	xbee_cbuf.o \
 	xbee_ota_client.o \
 	xbee_transparent_serial.o \

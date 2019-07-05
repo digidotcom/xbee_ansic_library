@@ -144,7 +144,7 @@ transparent_client_OBJECTS = $(zigbee_OBJECTS) transparent_client.o \
 transparent_client : $(transparent_client_OBJECTS)
 	$(COMPILE) -o $@ $^
 
-install_ebl_OBJECTS = $(xbee_OBJECTS) install_ebl.o \
+install_ebl_OBJECTS += $(xbee_OBJECTS) install_ebl.o \
 	xbee_atmode.o \
 	xbee_firmware.o \
 	xbee_xmodem.o xmodem_crc16.o
