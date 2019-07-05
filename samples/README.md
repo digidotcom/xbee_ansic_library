@@ -28,8 +28,10 @@ with platform-specific support code in each `samples/<target>` directory.
   installation.
 
 - **install ebl**:
-  Sends firmware updates (.ebl files) to XBee modules with Ember processors
-  (e.g., ZigBee and Smart Energy firmware to XBee S2, S2B and S2C).
+  Sends firmware updates (.ebl and .gbl files) to XBee modules with 
+  Ember processors (e.g., ZigBee and Smart Energy firmware to XBee S2, 
+  S2B and S2C) and EFR32 processors (e.g., XBee3 Cellular, 802.15.4, 
+  DigiMesh, and Zigbee).
 
 - **network scan**:
   Perform an `ATAS` "active scan" and report the results.  Intended for

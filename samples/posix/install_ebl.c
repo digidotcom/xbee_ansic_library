@@ -11,7 +11,7 @@
  */
 
 /*
-	Install firmware updates on XBee modules that use .EBL firmware files.
+	Install firmware updates on XBee modules that use .EBL/.GBL firmware files.
 */
 
 #include <stdio.h>
@@ -30,7 +30,7 @@ const xbee_dispatch_table_entry_t xbee_frame_handlers[] =
 #include "parse_serial_args.h"
 
 /*
-	Sample code to read firmware from an .ebl firmware file, used to demonstrate
+	Sample code to read firmware from a file, used to demonstrate
 	new non-blocking firmware update API.
 
 	Note that the S2 doesn't actually need a seek function.  Maybe that should
@@ -73,24 +73,24 @@ void myxbee_reset( xbee_dev_t *xbee, int reset)
 int main( int argc, char *argv[])
 {
 	xbee_fw_source_t fw = { 0 };
-	FILE *ebl = NULL;
+	FILE *file = NULL;
 	char buffer[80];
-	uint16_t t;
+	uint32_t t;
 	int result;
 	unsigned int last_state;
 	xbee_serial_t XBEE_SERPORT;
 
 	if (argc > 1)
 	{
-		ebl = fopen( argv[1], "rb");
+		file = fopen( argv[1], "rb");
 	}
-	if (! ebl)
+	if (! file)
 	{
 		printf( "Error: pass path to .EBL file as first parameter\n");
 		exit( -1);
 	}
 
-	fw.context = ebl;
+	fw.context = file;
 	fw.seek = fw_seek;
 	fw.read = fw_read;
 
@@ -131,9 +131,19 @@ int main( int argc, char *argv[])
 	else
 	{
 		printf( "firmware update failed with error %d\n", result);
+		// dump possible error message from bootloader
+		printf("Remaining output from serial port:\n");
+		t = xbee_millisecond_timer();
+		do {
+			result = xbee_ser_getchar(&my_xbee.serport);
+			if (result > 0) {
+				putchar(result);
+			}
+		} while (result != '>' && xbee_millisecond_timer() - t < 2000);
+		putchar('\n');
 	}
 
-	fclose( ebl);
+	fclose( file);
 
 	xbee_ser_close( &my_xbee.serport);
 
@@ -142,3 +152,4 @@ int main( int argc, char *argv[])
 
 	return 0;
 }
+

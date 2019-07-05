@@ -11,7 +11,7 @@
  */
 
 /*
-	Install firmware updates on XBee modules that use .EBL firmware files.
+	Install firmware updates on XBee modules that use .EBL/.GBL firmware files.
 */
 
 // Requires Win2K or newer for GetConsoleWindow() function
@@ -36,7 +36,7 @@ const xbee_dispatch_table_entry_t xbee_frame_handlers[] =
 #include "parse_serial_args.h"
 
 /*
-	Sample code to read firmware from an .ebl firmware file, used to demonstrate
+	Sample code to read firmware from a file, used to demonstrate
 	new non-blocking firmware update API.
 
 	Note that the S2 doesn't actually need a seek function.  Maybe that should
@@ -103,7 +103,7 @@ UINT APIENTRY OFNHookProc(HWND h, UINT msg, WPARAM wParam, LPARAM lParam)
 	return FALSE;
 }
 
-// Prompt user to select a .ebl file.
+// Prompt user to select a .ebl/.gbl file.
 // Returns file selected or NULL on Cancel/error.
 char *get_file()
 {
@@ -111,12 +111,12 @@ char *get_file()
 	static char file[256] = "";
 	int result;
 
-	printf( "Select firmware image (*.ebl) from file dialog box.\n");
+	printf( "Select firmware image (*.ebl or *.gbl) from file dialog box.\n");
 	ZeroMemory( &ofn, sizeof ofn);
 	ofn.lStructSize = sizeof ofn;
 	ofn.nMaxFile = sizeof file;
 	ofn.lpstrFile = file;
-	ofn.lpstrFilter = "Firmware Images (*.ebl)\0*.ebl\0"
+	ofn.lpstrFilter = "XBee Firmware (*.ebl, *.gbl)\0*.ebl;*.gbl\0"
 							"All Files (*.*)\0*.*\0";
 	ofn.lpstrTitle = "Select Firmware Image";
 	ofn.lpfnHook = OFNHookProc;
@@ -160,9 +160,9 @@ int main( int argc, char *argv[])
 {
 	xbee_fw_source_t fw = { 0 };
 	char *firmware;
-	FILE *ebl = NULL;
+	FILE *file = NULL;
 	char buffer[80];
-	uint16_t t;
+	uint32_t t;
 	int result;
 	unsigned int last_state;
 	xbee_serial_t XBEE_SERPORT;
@@ -171,9 +171,9 @@ int main( int argc, char *argv[])
 
 	if (argc > 1 && memcmp( argv[argc - 1], "COM", 3) != 0)
 	{
-		ebl = fopen( argv[argc - 1], "rb");
+		file = fopen( argv[argc - 1], "rb");
 	}
-	if (! ebl)
+	if (! file)
 	{
 		firmware = get_file();
 		if (firmware == NULL)
@@ -181,15 +181,15 @@ int main( int argc, char *argv[])
 			// user canceled file/open dialog
 			exit( 0);
 		}
-		ebl = fopen( firmware, "rb");
-		if (! ebl)
+		file = fopen( firmware, "rb");
+		if (! file)
 		{
 			printf( "Error: couldn't open %s\n", firmware);
 			exit( -1);
 		}
 	}
 
-	fw.context = ebl;
+	fw.context = file;
 	fw.seek = fw_seek;
 	fw.read = fw_read;
 
@@ -227,10 +227,20 @@ int main( int argc, char *argv[])
 	}
 	else
 	{
-		printf( "firmware update failed with error %d\n", result);
+		printf("firmware update failed with error %d\n", result);
+		// dump possible error message from bootloader
+		printf("Remaining output from serial port:\n");
+		t = xbee_millisecond_timer();
+		do {
+			result = xbee_ser_getchar(&my_xbee.serport);
+			if (result > 0) {
+				putchar(result);
+			}
+		} while (result != '>' && xbee_millisecond_timer() - t < 2000);
+		putchar('\n');
 	}
 
-	fclose( ebl);
+	fclose( file);
 
 	xbee_ser_close( &my_xbee.serport);
 
@@ -239,3 +249,4 @@ int main( int argc, char *argv[])
 
 	return 0;
 }
+
