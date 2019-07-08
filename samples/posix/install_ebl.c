@@ -86,7 +86,7 @@ int main( int argc, char *argv[])
 	}
 	if (! file)
 	{
-		printf( "Error: pass path to .EBL file as first parameter\n");
+		printf( "Error: pass path to .EBL or .GBL file as first parameter\n");
 		exit( -1);
 	}
 
