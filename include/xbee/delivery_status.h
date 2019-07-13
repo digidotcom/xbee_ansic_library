@@ -1,13 +1,13 @@
 /*
- * Copyright (c) 2017 Digi International Inc.,
+ * Copyright (c) 2017-2019 Digi International Inc.,
  * All rights not expressly granted are reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * Digi International Inc. 11001 Bren Road East, Minnetonka, MN 55343
- * =======================================================================
+ * Digi International Inc., 9350 Excelsior Blvd., Suite 700, Hopkins, MN 55343
+ * ===========================================================================
  */
 
 /**
@@ -77,6 +77,12 @@ XBEE_BEGIN_DECLS
 
         /// XBee Transmit Delivery Status: Invalid data mode [Cellular]
         #define XBEE_TX_DELIVERY_INVALID_DATA_MODE          0x7B
+
+        /// XBee Transmit Delivery Status: Invalid interface [Cellular, XBee3]
+        #define XBEE_TX_DELIVERY_INVALID_INTERFACE          0x7C
+
+        /// XBee Transmit Delivery Status: Interface blocked [Cellular, XBee3]
+        #define XBEE_TX_DELIVERY_INTERFACE_BLOCKED          0x7D
 
         /// XBee Transmit Delivery Status: Connection refused [Cellular]
         #define XBEE_TX_DELIVERY_CONNECTION_REFUSED         0x80

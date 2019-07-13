@@ -37,6 +37,7 @@ EXE += \
 	network_scan \
 	sms_client \
 	transparent_client \
+	user_data_relay \
 	xbee_term \
 	zcltime \
 	zigbee_walker \
@@ -84,6 +85,7 @@ SRCS = \
 	xbee_time.c \
 	xbee_transparent_serial.c \
 	xbee_tx_status.c \
+	xbee_user_data.c \
 	xbee_wifi.c \
 	xbee_xmodem.c \
 	zcl_basic.c \
@@ -132,6 +134,11 @@ ipv4_client_OBJECTS = $(xbee_OBJECTS)  ipv4_client.o xbee_tx_status.o _xbee_term
 ipv4_client : $(ipv4_client_OBJECTS)
 	$(COMPILE) -o $@ $^	
 	
+user_data_relay_OBJECTS = $(xbee_OBJECTS) xbee_readline.o xbee_user_data.o \
+		user_data_relay.o
+user_data_relay : $(user_data_relay_OBJECTS)
+	$(COMPILE) -o $@ $^
+
 sms_client_OBJECTS = $(xbee_OBJECTS) sms_client.o $(atinter_OBJECTS) xbee_sms.o 
 sms_client : $(sms_client_OBJECTS)
 	$(COMPILE) -o $@ $^	
