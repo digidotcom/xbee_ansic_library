@@ -2,12 +2,14 @@ Digi XBee ANSI C Library
 ========================
 
 The project is a collection of portable ANSI C code for communicating with
-Digi International's [XBee] wireless radio modules in API mode.  This source
-has been contributed by [Digi International] under the Mozilla Public
-License v2.0.
+Digi International's [XBee] wireless radio modules in API mode. You will
+typically compile/link the files directly into your application, instead
+of compiling them into a shared/dynamic-link library.  Because of this
+design, most of the library configuration takes place at compile time.
 
-This is a BETA quality software release, and has gone through a limited
-QA cycle.
+This source has been contributed by [Digi International] under the Mozilla
+Public License v2.0.  It is a BETA quality software release, and has gone
+through a limited QA cycle.
 
 It currently supports the following platforms:
 
@@ -16,7 +18,7 @@ It currently supports the following platforms:
 - DOS using the [OpenWatcom] compiler
 - Rabbit-brand microprocessors (using [Dynamic C] 10.70 or later)
 - Freescale HCS08 with CodeWarrior 10.x (part of [Programmable XBee Dev Kit])
-- Freescale FRDM-KL25Z with [mbed.org] compiler (limited suppport at this time)
+- Freescale FRDM-KL25Z with [mbed.org] compiler (limited support at this time)
 - [Silicon Labs] SLSTK3701A Starter Kit with Gecko SDK Suite v1.1.1 or later
   with optional Micrium OS support
 
@@ -33,7 +35,7 @@ serially.  Some of the features include:
   a received message.
 - Interface for sending "AT Command" frames.
 - Perform Node Discovery and manage a list of nodes.
-- Install firmware images (.EBL or .OEM files) on the XBee radio.
+- Install firmware images (.EBL/.GBL or .OEM files) on the XBee radio.
 - Parse and display digital/analog I/O samples.
 - Interface with the General Purpose Memory (GPM) found on some XBee modules.
 
