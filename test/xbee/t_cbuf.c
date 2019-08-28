@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <string.h>
+
 #include "xbee/platform.h"
 #include "../unittest.h"
 #include "xbee/cbuf.h"
