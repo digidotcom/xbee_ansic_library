@@ -40,19 +40,19 @@ COMPILE_GCC3 = gcc-3 -mno-cygwin -I$(INCDIR)
 
 COMPILE = $(COMPILE_GCC4) -std=gnu99 -g -MMD -MP -Wall $(DEFINE)
 
-EXE = zcl_write.exe \
-		zcl_read.exe \
-		zcl_24bit.exe \
-		zcl_boolean.exe \
-		zcl_type_info.exe \
-		zcl_encode_structured_values.exe \
-		zdo_match_desc_request.exe \
-		zdo_simple_desc_respond.exe \
-		t_jslong.exe \
-		xbee_timer_compare.exe \
-		t_cbuf.exe \
-		zcl_type_name.exe \
-		t_memcheck.exe \
+EXE = zcl_write \
+		zcl_read \
+		zcl_24bit \
+		zcl_boolean \
+		zcl_type_info \
+		zcl_encode_structured_values \
+		zdo_match_desc_request \
+		zdo_simple_desc_respond \
+		t_jslong \
+		xbee_timer_compare \
+		t_cbuf \
+		zcl_type_name \
+		t_memcheck \
 
 all : $(EXE)
 
@@ -65,15 +65,15 @@ test : $(EXE)
 	&& ./zcl_encode_structured_values \
 	&& ./zdo_match_desc_request \
 	&& ./zdo_simple_desc_respond \
-	&& ./t_jslong.exe \
-	&& ./xbee_timer_compare.exe \
-	&& ./t_cbuf.exe \
+	&& ./t_jslong \
+	&& ./xbee_timer_compare \
+	&& ./t_cbuf \
 	&& ./zcl_type_name \
 	&& ./t_memcheck \
 	&& echo "ALL PASSED"
 
 clean :
-	- rm *.o *.d $(EXE) jsll_gen.exe
+	- rm *.o *.d $(addsuffix .exe, $(EXE)) jsll_gen.exe
 
 SRCS = unittest.c main.c \
 		zcl_test_common.c \
@@ -173,19 +173,18 @@ all_OBJECTS = \
 	swapcpy.o \
 	xmodem_crc16.o
 
-platform_OBJECTS = \
+platform_OBJECTS = xbee_platform_win32.o xbee_serial_win32.o \
 	hexdump.o					\
 	swapbytes.o					\
 	swapcpy.o					\
 	hexstrtobyte.o				\
 	unittest.o
 
-base_OBJECTS = xbee_platform_win32.o xbee_serial_win32.o $(platform_OBJECTS) \
-					parse_serial_args.o
-
-xbee_OBJECTS = $(base_OBJECTS) xbee_device.o xbee_atcmd.o wpan_types.o
+base_OBJECTS = $(platform_OBJECTS) parse_serial_args.o
 
 cbuf_OBJECTS =  xbee_cbuf.o
+
+xbee_OBJECTS = $(base_OBJECTS) xbee_device.o xbee_atcmd.o wpan_types.o
 
 wpan_OBJECTS = $(xbee_OBJECTS) wpan_aps.o xbee_wpan.o
 
@@ -197,7 +196,6 @@ zcl_common_OBJECTS =	\
 	$(platform_OBJECTS)		\
 	wpan_aps.o					\
 	wpan_types.o				\
-	xbee_platform_win32.o	\
 	zcl_types.o					\
 	zigbee_zcl.o				\
 	zigbee_zdo.o
@@ -205,73 +203,73 @@ zcl_common_OBJECTS =	\
 zcl_test_OBJECTS = $(zcl_common_OBJECTS) zcl_test_common.o
 
 zcl_type_info_OBJECTS = unittest.o zcl_types.o zcl_type_info.o
-zcl_type_info.exe : $(zcl_type_info_OBJECTS)
-	$(COMPILE) -o zcl_type_info.exe $(zcl_type_info_OBJECTS)
+zcl_type_info : $(zcl_type_info_OBJECTS)
+	$(COMPILE) -o $@ $(zcl_type_info_OBJECTS)
 
 zcl_write_OBJECTS = $(zcl_test_OBJECTS) zcl_write.o
-zcl_write.exe : $(zcl_write_OBJECTS)
-	$(COMPILE) -o zcl_write.exe $(zcl_write_OBJECTS)
+zcl_write : $(zcl_write_OBJECTS)
+	$(COMPILE) -o $@ $(zcl_write_OBJECTS)
 
 zcl_read_OBJECTS = $(zcl_test_OBJECTS) zcl_read.o
-zcl_read.exe : $(zcl_read_OBJECTS)
-	$(COMPILE) -o zcl_read.exe $(zcl_read_OBJECTS)
+zcl_read : $(zcl_read_OBJECTS)
+	$(COMPILE) -o $@ $(zcl_read_OBJECTS)
 
 zcl_24bit_OBJECTS = $(zcl_test_OBJECTS) zcl_24bit.o
-zcl_24bit.exe : $(zcl_24bit_OBJECTS)
-	$(COMPILE) -o zcl_24bit.exe $(zcl_24bit_OBJECTS)
+zcl_24bit : $(zcl_24bit_OBJECTS)
+	$(COMPILE) -o $@ $(zcl_24bit_OBJECTS)
 
 zcl_boolean_OBJECTS = $(zcl_test_OBJECTS) zcl_boolean.o
-zcl_boolean.exe : $(zcl_boolean_OBJECTS)
-	$(COMPILE) -o zcl_boolean.exe $(zcl_boolean_OBJECTS)
+zcl_boolean : $(zcl_boolean_OBJECTS)
+	$(COMPILE) -o $@ $(zcl_boolean_OBJECTS)
 
 zcl_encode_structured_values_OBJECTS = $(zcl_common_OBJECTS) \
 	zcl_encode_structured_values.o
-zcl_encode_structured_values.exe : $(zcl_encode_structured_values_OBJECTS)
-	$(COMPILE) -o zcl_encode_structured_values.exe $(zcl_encode_structured_values_OBJECTS)
+zcl_encode_structured_values : $(zcl_encode_structured_values_OBJECTS)
+	$(COMPILE) -o $@ $(zcl_encode_structured_values_OBJECTS)
 
 zdo_match_desc_request_OBJECTS = $(zcl_test_OBJECTS) zdo_match_desc_request.o
-zdo_match_desc_request.exe : $(zdo_match_desc_request_OBJECTS)
-	$(COMPILE) -o zdo_match_desc_request.exe $(zdo_match_desc_request_OBJECTS)
+zdo_match_desc_request : $(zdo_match_desc_request_OBJECTS)
+	$(COMPILE) -o $@ $(zdo_match_desc_request_OBJECTS)
 
 zdo_simple_desc_respond_OBJECTS = $(zcl_test_OBJECTS) \
 	zdo_simple_desc_respond.o
-zdo_simple_desc_respond.exe : $(zdo_simple_desc_respond_OBJECTS)
-	$(COMPILE) -o zdo_simple_desc_respond.exe $(zdo_simple_desc_respond_OBJECTS)
+zdo_simple_desc_respond : $(zdo_simple_desc_respond_OBJECTS)
+	$(COMPILE) -o $@ $(zdo_simple_desc_respond_OBJECTS)
 
 # testing for jslong
-jsll_gen.exe : ../util/jsll_gen.c
-	gcc -o jsll_gen.exe ../util/jsll_gen.c
-../util/jsll_vectors.h : jsll_gen.exe
+jsll_gen : ../util/jsll_gen.c
+	gcc -o $@ ../util/jsll_gen.c
+../util/jsll_vectors.h : jsll_gen
 	./jsll_gen > ../util/jsll_vectors.h
-t_jslong.exe : ../util/jsll_vectors.h $(platform_OBJECTS) t_jslong.o main.o
-	$(COMPILE) -o t_jslong.exe $(platform_OBJECTS) t_jslong.o main.o
+t_jslong : ../util/jsll_vectors.h $(platform_OBJECTS) t_jslong.o main.o
+	$(COMPILE) -o $@ $(platform_OBJECTS) t_jslong.o main.o
 
 t_memcheck_OBJECTS = $(platform_OBJECTS) t_memcheck.o memcheck.o
-t_memcheck.exe : $(t_memcheck_OBJECTS)
-	$(COMPILE) -o t_memcheck.exe $(t_memcheck_OBJECTS)
+t_memcheck : $(t_memcheck_OBJECTS)
+	$(COMPILE) -o $@ $(t_memcheck_OBJECTS)
 
 xbee_timer_compare_OBJECTS = $(platform_OBJECTS) xbee_timer_compare.o
-xbee_timer_compare.exe : $(xbee_timer_compare_OBJECTS)
-	$(COMPILE) -o xbee_timer_compare.exe $(xbee_timer_compare_OBJECTS)
+xbee_timer_compare : $(xbee_timer_compare_OBJECTS)
+	$(COMPILE) -o $@ $(xbee_timer_compare_OBJECTS)
 
 t_cbuf_OBJECTS = $(platform_OBJECTS) $(cbuf_OBJECTS) t_cbuf.o
-t_cbuf.exe : $(t_cbuf_OBJECTS)
-	$(COMPILE) -o t_cbuf.exe $(t_cbuf_OBJECTS)
-	
+t_cbuf : $(t_cbuf_OBJECTS)
+	$(COMPILE) -o $@ $(t_cbuf_OBJECTS)
+
 zcl_type_name_OBJECTS = zcl_type_name.o zcl_types.o unittest.o
-zcl_type_name.exe: $(zcl_type_name_OBJECTS)
-	$(COMPILE) -o zcl_type_name.exe $(zcl_type_name_OBJECTS)
+zcl_type_name: $(zcl_type_name_OBJECTS)
+	$(COMPILE) -o $@ $(zcl_type_name_OBJECTS)
 
 zdo_tool_OBJECTS = $(zigbee_OBJECTS) $(atinter_OBJECTS) zdo_tool.o
-zdo_tool.exe : $(zdo_tool_OBJECTS)
-	$(COMPILE) -o zdo_tool.exe $(zdo_tool_OBJECTS)
+zdo_tool : $(zdo_tool_OBJECTS)
+	$(COMPILE) -o $@ $(zdo_tool_OBJECTS)
 
-serial-passthru.exe: serial-passthru.o $(base_OBJECTS)
-	$(COMPILE) -o serial-passthru.exe serial-passthru.o $(base_OBJECTS)
+serial-passthru: serial-passthru.o $(base_OBJECTS)
+	$(COMPILE) -o $@ serial-passthru.o $(base_OBJECTS)
 
 coverity_OBJECTS = $(all_OBJECTS) coverity.o
-coverity.exe : $(coverity_OBJECTS)
-	$(COMPILE) -o coverity.exe $(coverity_OBJECTS)
+coverity : $(coverity_OBJECTS)
+	$(COMPILE) -o $@ $(coverity_OBJECTS)
 
 coverity-clean :
 	- rm *.o *.d coverity.exe
@@ -319,7 +317,7 @@ coverity-push:
 # ...or in the port support directory...
 %.o : $(PORTDIR)/%.c
 	$(COMPILE) -c $<
-	
+
 # ...or in SRCDIR...
 %.o : $(SRCDIR)/%.c
 	$(COMPILE) -c $<
