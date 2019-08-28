@@ -27,18 +27,18 @@ XBEE_BEGIN_DECLS
 
 /// Format of XBee API frame type 0x90 (#XBEE_FRAME_RECEIVE);
 /// received from XBee by host.
-typedef PACKED_STRUCT xbee_frame_receive_t {
+typedef XBEE_PACKED(xbee_frame_receive_t, {
 	uint8_t			frame_type;				///< XBEE_FRAME_RECEIVE (0x90)
 	addr64			ieee_address;
 	uint16_t			network_address_be;
 	uint8_t			options;					///< bitfield, see XBEE_RX_OPT_xxx macros
 	uint8_t			payload[1];				///< multi-byte payload
-} xbee_frame_receive_t;
+}) xbee_frame_receive_t;
 
 
 /// Format of XBee API frame type 0x91 (#XBEE_FRAME_RECEIVE_EXPLICIT);
 /// received from XBee by host.
-typedef PACKED_STRUCT xbee_frame_receive_explicit_t {
+typedef XBEE_PACKED(xbee_frame_receive_explicit_t, {
 	uint8_t			frame_type;				///< XBEE_FRAME_RECEIVE_EXPLICIT (0x91)
 	addr64			ieee_address;
 	uint16_t			network_address_be;
@@ -48,7 +48,7 @@ typedef PACKED_STRUCT xbee_frame_receive_explicit_t {
 	uint16_t			profile_id_be;
 	uint8_t			options;					///< bitfield, see XBEE_RX_OPT_xxx macros
 	uint8_t			payload[1];				///< multi-byte payload
-} xbee_frame_receive_explicit_t;
+}) xbee_frame_receive_explicit_t;
 
 int xbee_wpan_init( xbee_dev_t *xbee,
 	const wpan_endpoint_table_entry_t *ep_table);
@@ -67,18 +67,18 @@ int _xbee_handle_receive_explicit( xbee_dev_t *xbee, const void FAR *raw,
 /// WPAN_PROFILE_DIGI as the profile ID.  Or, use the xbee_transparent_serial()
 /// function from xbee_transparent_serial.c to fill in those fields and
 /// send the data.
-typedef PACKED_STRUCT xbee_header_transmit_t {
+typedef XBEE_PACKED(xbee_header_transmit_t, {
 	uint8_t			frame_type;				///< XBEE_FRAME_TRANSMIT (0x10)
 	uint8_t			frame_id;
 	addr64			ieee_address;
 	uint16_t			network_address_be;
 	uint8_t			broadcast_radius;		///< set to 0 for maximum hop value
 	uint8_t			options;					///< combination of XBEE_TX_OPT_* macros
-} xbee_header_transmit_t;
+}) xbee_header_transmit_t;
 
 /// Format of XBee API frame type 0x11 (#XBEE_FRAME_TRANSMIT_EXPLICIT); sent
 /// from host to XBee.
-typedef PACKED_STRUCT xbee_header_transmit_explicit_t {
+typedef XBEE_PACKED(xbee_header_transmit_explicit_t, {
 	uint8_t			frame_type;				///< XBEE_FRAME_TRANSMIT_EXPLICIT (0x11)
 	uint8_t			frame_id;
 	addr64			ieee_address;
@@ -89,7 +89,7 @@ typedef PACKED_STRUCT xbee_header_transmit_explicit_t {
 	uint16_t			profile_id_be;
 	uint8_t			broadcast_radius;		///< set to 0 for maximum hop value
 	uint8_t			options;					///< combination of XBEE_TX_OPT_* macros
-} xbee_header_transmit_explicit_t;
+}) xbee_header_transmit_explicit_t;
 
 /*	@name
 	Options for \c options field of xbee_header_transmit_t and
@@ -116,7 +116,7 @@ typedef PACKED_STRUCT xbee_header_transmit_explicit_t {
 #define XBEE_TX_OPT_MODE_DIGIMESH			(3<<6)
 //@}
 
-typedef PACKED_STRUCT xbee_frame_transmit_status_t {
+typedef XBEE_PACKED(xbee_frame_transmit_status_t, {
 	uint8_t			frame_type;			//< XBEE_FRAME_TRANSMIT_STATUS (0x8B)
 	uint8_t			frame_id;
 	uint16_t			network_address_be;
@@ -140,7 +140,7 @@ typedef PACKED_STRUCT xbee_frame_transmit_status_t {
 		#define XBEE_TX_DISCOVERY_EXTENDED_TIMEOUT 0x40
 //@}
 
-} xbee_frame_transmit_status_t;
+}) xbee_frame_transmit_status_t;
 
 /**
 	@internal

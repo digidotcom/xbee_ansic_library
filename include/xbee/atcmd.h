@@ -238,7 +238,7 @@ typedef struct xbee_cmd_request {
 } xbee_cmd_request_t;
 
 /// Header for AT Commands sent to the local (serially-attached) XBee.
-typedef PACKED_STRUCT xbee_header_local_at_req {
+typedef XBEE_PACKED(xbee_header_local_at_req, {
 	/// #XBEE_FRAME_LOCAL_AT_CMD (0x08) or #XBEE_FRAME_LOCAL_AT_CMD_Q (0x09)
 	uint8_t				frame_type;
 
@@ -247,10 +247,10 @@ typedef PACKED_STRUCT xbee_header_local_at_req {
 
 	/// two-character AT Command
 	xbee_at_cmd_t		command;
-} xbee_header_local_at_req_t;
+}) xbee_header_local_at_req_t;
 
 /// Header to AT Commands sent to a remote XBee on the network.
-typedef PACKED_STRUCT xbee_header_remote_at_req {
+typedef XBEE_PACKED(xbee_header_remote_at_req, {
 	/// #XBEE_FRAME_REMOTE_AT_CMD (0x17)
 	uint8_t				frame_type;
 
@@ -277,7 +277,7 @@ typedef PACKED_STRUCT xbee_header_remote_at_req {
 		#define XBEE_REMOTE_AT_OPT_IMMEDIATE	0x02
 		//@}
 	xbee_at_cmd_t		command;
-} xbee_header_remote_at_req_t;
+}) xbee_header_remote_at_req_t;
 
 
 /// Useful typedef to create either a local or remote request frame.
@@ -317,7 +317,7 @@ enum xbee_at_resp_status {
 #endif
 
 
-typedef PACKED_STRUCT xbee_header_local_at_resp {
+typedef XBEE_PACKED(xbee_header_local_at_resp, {
    /// #XBEE_FRAME_LOCAL_AT_RESPONSE (0x88)
 	uint8_t				frame_type;
 
@@ -330,9 +330,9 @@ typedef PACKED_STRUCT xbee_header_local_at_resp {
 	/// comparing this field to the xbee_at_resp_status enum.
 	uint8_t				status;
 
-} xbee_header_local_at_resp_t;
+}) xbee_header_local_at_resp_t;
 
-typedef PACKED_STRUCT xbee_header_remote_at_resp {
+typedef XBEE_PACKED(xbee_header_remote_at_resp, {
    /// #XBEE_FRAME_REMOTE_AT_RESPONSE (0x97)
 	uint8_t				frame_type;
 
@@ -352,24 +352,24 @@ typedef PACKED_STRUCT xbee_header_remote_at_resp {
 	/// nibble for additional flags -- use XBEE_AT_RESP_STATUS() macro when
 	/// comparing this field to the xbee_at_resp_status enum.
 	uint8_t				status;
-} xbee_header_remote_at_resp_t;
+}) xbee_header_remote_at_resp_t;
 
 
 /// Response to an AT Command sent to the local serially-connected XBee.
-typedef PACKED_STRUCT xbee_frame_local_at_resp {
+typedef XBEE_PACKED(xbee_frame_local_at_resp, {
 
    xbee_header_local_at_resp_t header;
 	/// First byte of multi-byte value.
 	uint8_t				value[1];
-} xbee_frame_local_at_resp_t;
+}) xbee_frame_local_at_resp_t;
 
 /// Response to an AT Command sent to a remote XBee.
-typedef PACKED_STRUCT xbee_frame_remote_at_resp {
+typedef XBEE_PACKED(xbee_frame_remote_at_resp, {
    xbee_header_remote_at_resp_t header;
 
 	/// First byte of multi-byte value.
 	uint8_t				value[1];
-} xbee_frame_remote_at_resp_t;
+}) xbee_frame_remote_at_resp_t;
 
 /// Useful typedef for casting either a local or remote response frame.
 typedef union xbee_frame_at_response {

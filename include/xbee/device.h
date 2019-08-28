@@ -523,10 +523,10 @@ int _xbee_frame_dispatch( xbee_dev_t *xbee, const void FAR *frame,
 	uint16_t length);
 
 
-typedef PACKED_STRUCT xbee_frame_modem_status_t {
+typedef XBEE_PACKED(xbee_frame_modem_status_t, {
 	uint8_t			frame_type;				//< XBEE_FRAME_MODEM_STATUS (0x8A)
 	uint8_t			status;
-} xbee_frame_modem_status_t;
+}) xbee_frame_modem_status_t;
 
 /** @name
 	Values for \c status member of xbee_frame_modem_status_t.

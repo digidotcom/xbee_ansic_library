@@ -184,11 +184,14 @@
 	with the name of the current function.
 
 	@def PACKED_STRUCT
-	A replacement for [struct] when defining a packed structure where the
-	elements are not aligned based on type.  The offsetof any given element
-	will always be the offsetof plus sizeof the previous element.  On
-	platforms with gcc, it's defined as [struct __attribute__ ((__packed__))].
-	Defaults to just [struct]
+	Deprecated macro, replaced by XBEE_PACKED().  Defaults to just [struct].
+
+	@def XBEE_PACKED(name, decl)
+	Macro to define packed structures where the elements are not aligned
+	based on type.  The offset of any given element will always be the
+	[offsetof()] plus [sizeof()] the previous element.  On platforms with
+	gcc, it's defined as [struct __attribute__ ((__packed__)) name decl].
+	Defaults to just [struct name decl].  Replaces macro PACKED_STRUCT.
 
 	@def INTERRUPT_DISABLE
 	Disable CPU interrupts (at the level of the serial port driver, at least).
@@ -348,6 +351,9 @@
 
 #ifndef PACKED_STRUCT
 	#define PACKED_STRUCT struct
+#endif
+#ifndef XBEE_PACKED
+	#define XBEE_PACKED(name, decl)		PACKED_STRUCT name decl
 #endif
 
 // Most platforms don't have alignment requirements, and we can just use casts.

@@ -1768,10 +1768,10 @@ _xbee_atcmd_debug
 int xbee_cmd_simple( xbee_dev_t *xbee, const char FAR command[3],
 	uint32_t value)
 {
-	PACKED_STRUCT {
+	XBEE_PACKED(, {
 		xbee_header_local_at_req_t	header;
 		uint8_t							param[4];
-	} request;
+	}) request;
 	uint16_t request_size;
 
 	request.header.frame_type = XBEE_FRAME_LOCAL_AT_CMD;

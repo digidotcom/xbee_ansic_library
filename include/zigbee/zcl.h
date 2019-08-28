@@ -150,62 +150,62 @@ XBEE_BEGIN_DECLS
 //
 
 /// Common portion of ZCL header (appears after optional Manufacturer Code)
-typedef PACKED_STRUCT zcl_header_common_t {
+typedef XBEE_PACKED(zcl_header_common_t, {
 	uint8_t	sequence;
 	uint8_t	command;
 	uint8_t	payload[1];		///< first byte of variable-length field
-} zcl_header_common_t;
+}) zcl_header_common_t;
 
 /// General header for casting onto an incoming frame.  Reference .type.mfg
 /// if (.frame_control & ZCL_FRAME_MFG_SPECIFIC != 0).  Reference .type.std
 /// otherwise.
-typedef PACKED_STRUCT zcl_header_t {
+typedef XBEE_PACKED(zcl_header_t, {
 	uint8_t	frame_control;
 	union {
-		PACKED_STRUCT {
+		XBEE_PACKED(, {
 	      uint16_t					mfg_code_le;
 	      zcl_header_common_t	common;
-	   } mfg;					///< manufacturer-specific extension
-		PACKED_STRUCT {
+	   }) mfg;					///< manufacturer-specific extension
+		XBEE_PACKED(, {
 	      zcl_header_common_t	common;
-	   } std;					///< standard
+	   }) std;					///< standard
 	} type;
-} zcl_header_t;
+}) zcl_header_t;
 
 /// ZCL header structure used for building response frames that may or may not
 /// be manufacturer-specific.  Frame is sent starting with element
 /// .u.mfg.frame_control or .u.std.frame_control.
-typedef PACKED_STRUCT zcl_header_response_t {
+typedef XBEE_PACKED(zcl_header_response_t, {
 	union {
-		PACKED_STRUCT {
+		XBEE_PACKED(, {
 			uint8_t		frame_control;
 			uint16_t		mfg_code_le;
-		} mfg;
-		PACKED_STRUCT {
+		}) mfg;
+		XBEE_PACKED(, {
 			uint16_t		dummy;
 			uint8_t		frame_control;
-		} std;
+		}) std;
 	} u;
 	uint8_t						sequence;
 	uint8_t						command;
-} zcl_header_response_t;
+}) zcl_header_response_t;
 
 /// ZLC header structure used when building a manufacturer-specific response
 /// frame.
-typedef PACKED_STRUCT zcl_header_withmfg_t {
+typedef XBEE_PACKED(zcl_header_withmfg_t, {
 	uint8_t	frame_control;
 	uint16_t	mfg_code_le;
 	uint8_t	sequence;
 	uint8_t	command;
-} zcl_header_withmfg_t;
+}) zcl_header_withmfg_t;
 
 /// ZLC header structure used when building a normal (non-manufacturer-specific
 /// response frame.
-typedef PACKED_STRUCT zcl_header_nomfg_t {
+typedef XBEE_PACKED(zcl_header_nomfg_t, {
 	uint8_t	frame_control;
 	uint8_t	sequence;
 	uint8_t	command;
-} zcl_header_nomfg_t;
+}) zcl_header_nomfg_t;
 
 /** @name
 	Bit masks for the frame_control field of a ZCL header (zcl_header_t,
@@ -411,47 +411,47 @@ const char *zcl_status_text( uint_fast8_t status);
 
 /// General format for an attribute, used for Write Attributes and Report
 /// Attributes commands.
-typedef PACKED_STRUCT zcl_attrib_t {
+typedef XBEE_PACKED(zcl_attrib_t, {
 	uint16_t	id_le;
 	uint8_t	type;			///< see zigbee/zcl_types.h
 	uint8_t	value[1];	///< variable length, depending on type
-} zcl_attrib_t;
+}) zcl_attrib_t;
 
 /// Used for #ZCL_CMD_READ_ATTRIB_RESP.
-typedef PACKED_STRUCT zcl_rec_read_attrib_resp_t {
+typedef XBEE_PACKED(zcl_rec_read_attrib_resp_t, {
 	uint16_t	id_le;
 	uint8_t	status;
 	uint8_t	type;			///< only included if status == ZCL_STATUS_SUCCESS
 	uint8_t	value[1];	///< variable length, only if ZCL_STATUS_SUCCESS
-} zcl_rec_read_attrib_resp_t;
+}) zcl_rec_read_attrib_resp_t;
 
-typedef PACKED_STRUCT zcl_rec_read_attrib_error_resp_t {
+typedef XBEE_PACKED(zcl_rec_read_attrib_error_resp_t, {
 	uint16_t	id_le;
 	uint8_t	status;
-} zcl_rec_read_attrib_error_resp_t;
+}) zcl_rec_read_attrib_error_resp_t;
 
-typedef PACKED_STRUCT zcl_rec_read_attrib_array_resp_t {
+typedef XBEE_PACKED(zcl_rec_read_attrib_array_resp_t, {
 	uint16_t	id_le;
 	uint8_t	status;
 	uint8_t	type;			///< one of ZCL_TYPE_ARRAY, ZCL_TYPE_SET, ZCL_TYPE_BAG
 	uint8_t	element_type;
 	uint16_t	count_le;
 	uint8_t	value[1];	///< variable length, only if ZCL_STATUS_SUCCESS
-} zcl_rec_read_attrib_array_resp_t;
+}) zcl_rec_read_attrib_array_resp_t;
 
-typedef PACKED_STRUCT zcl_rec_read_attrib_struct_resp_t {
+typedef XBEE_PACKED(zcl_rec_read_attrib_struct_resp_t, {
 	uint16_t	id_le;
 	uint8_t	status;
 	uint8_t	type;				///< always ZCL_TYPE_STRUCT
 	uint16_t	count_le;		///< number of elements to follow
 	uint8_t	elements[1];	///< mult. uint8_t type and variable-length value
-} zcl_rec_read_attrib_struct_resp_t;
+}) zcl_rec_read_attrib_struct_resp_t;
 
 /// Used for #ZCL_CMD_WRITE_ATTRIB_RESP.
-typedef PACKED_STRUCT zcl_rec_write_attrib_status_t {
+typedef XBEE_PACKED(zcl_rec_write_attrib_status_t, {
 	uint8_t	status;
 	uint16_t	id_le;
-} zcl_rec_write_attrib_status_t;
+}) zcl_rec_write_attrib_status_t;
 
 
 // Configure Reporting Command (ZCL_CMD_CONFIGURE_REPORT)
@@ -460,7 +460,7 @@ typedef PACKED_STRUCT zcl_rec_write_attrib_status_t {
 // or RECEIVE.
 #define ZCL_DIRECTION_SEND		0x00		// attributes sent (or reported)
 #define ZCL_DIRECTION_RECEIVE	0x01		// attributes received
-typedef PACKED_STRUCT zcl_rec_report_send_t {
+typedef XBEE_PACKED(zcl_rec_report_send_t, {
 	uint8_t	direction;		// 0x00 (ZCL_DIRECTION_SEND)
 	uint16_t	attrib_id_le;
 	uint8_t	attrib_type;
@@ -468,19 +468,19 @@ typedef PACKED_STRUCT zcl_rec_report_send_t {
 	uint16_t	max_interval_le;			// maximum reporting interval (in seconds)
 	         // Note:  If max_interval is 0xffff, device shall not issue reports
 	         // for the specified attribute.
-} zcl_rec_report_send_t;
+}) zcl_rec_report_send_t;
 
-typedef PACKED_STRUCT zcl_rec_report_receive_t {
+typedef XBEE_PACKED(zcl_rec_report_receive_t, {
 	uint8_t	direction;		// 0x01 (ZCL_DIRECTION_RECEIVE)
 	uint16_t	attrib_id_le;
 	uint16_t	timeout_period_le;		// number of seconds, or 0 for no timeout
-} zcl_rec_report_receive_t;
+}) zcl_rec_report_receive_t;
 
 typedef union zcl_rec_report_t {
-	PACKED_STRUCT {
+	XBEE_PACKED(, {
 		uint8_t	direction;		// ZCL_DIRECTION_SEND or ZCL_DIRECTION_RECEIVE
 		uint16_t	attrib_id_le;
-	} common;
+	}) common;
 	zcl_rec_report_send_t		send;
 	zcl_rec_report_receive_t	receive;
 } zcl_rec_reporting_config_t;
@@ -491,18 +491,18 @@ typedef union zcl_rec_report_t {
 // write that failed
 // Note: this structure is identical to the one for Read Reporting Configuration
 // Command (ZCL_CMD_READ_REPORT_CFG), with the addition of a 1-byte status.
-typedef PACKED_STRUCT zcl_rec_reporting_status_t {
+typedef XBEE_PACKED(zcl_rec_reporting_status_t, {
 	uint8_t	status;
 	uint8_t	direction;		// ZCL_DIRECTION_SEND or ZCL_DIRECTION_RECEIVE
 	uint16_t	attrib_id_le;
-} zcl_rec_reporting_status_t;
+}) zcl_rec_reporting_status_t;
 
 // Read Reporting Configuration Command (ZCL_CMD_READ_REPORT_CFG)
 // payload is 1 to n 3-byte Attribute Records
-typedef PACKED_STRUCT zcl_rec_read_report_cfg_t {
+typedef XBEE_PACKED(zcl_rec_read_report_cfg_t, {
 	uint8_t	direction;		// ZCL_DIRECTION_SEND or ZCL_DIRECTION_RECEIVE
 	uint16_t	attrib_id_le;
-} zcl_rec_read_report_cfg_t;
+}) zcl_rec_read_report_cfg_t;
 
 // Read Reporting Configuration Response Command (ZCL_CMD_READ_REPORT_CFG_RESP)
 // payload is 1 to n variable-length records as follows:
@@ -512,34 +512,34 @@ typedef PACKED_STRUCT zcl_rec_read_report_cfg_t {
 //    record (if direction is ZCL_DIRECTION_SEND) or a zcl_rec_report_receive_t
 //    record (if direction is ZCL_DIRECTION_RECEIVE)
 /* combined typedef?
-typedef PACKED_STRUCT zcl_rec_report_resp_t {
+typedef XBEE_PACKED(zcl_rec_report_resp_t, {
 	uint8_t	status;
 	union {
-		PACKED_STRUCT {
+		struct {
 			uint8_t	direction;
 			uint16_t	attrib_id_le;
 		} error;				// .status != ZCL_STATUS_SUCCESS
 		zcl_rec_report_send_t		send_cfg;
 		zcl_rec_report_receive_t	receive_cfg;
 	} u;
-} zcl_rec_report_resp_t;
+}) zcl_rec_report_resp_t;
 */
 
-typedef PACKED_STRUCT zcl_rec_report_error_resp_t {
+typedef XBEE_PACKED(zcl_rec_report_error_resp_t, {
 	uint8_t	status;			// Set to anything except ZCL_STATUS_SUCCESS (0x00)
 	uint8_t	direction;
 	uint16_t	attrib_id_le;
-} zcl_rec_report_error_resp_t;
-typedef PACKED_STRUCT zcl_rec_report_send_resp_t {
+}) zcl_rec_report_error_resp_t;
+typedef XBEE_PACKED(zcl_rec_report_send_resp_t, {
 	uint8_t							status;		// Set to ZCL_STATUS_SUCCESS (0x00)
 	zcl_rec_report_send_t		report_cfg;
 		// report_cfg.direction set to 0x00 (ZCL_DIRECTION_SEND)
-} zcl_rec_report_send_resp_t;
-typedef PACKED_STRUCT zcl_rec_report_receive_resp_t {
+}) zcl_rec_report_send_resp_t;
+typedef XBEE_PACKED(zcl_rec_report_receive_resp_t, {
 	uint8_t							status;		// Set to ZCL_STATUS_SUCCESS (0x00)
 	zcl_rec_report_receive_t	report_cfg;
 		// report_cfg.direction set to 0x01 (ZCL_DIRECTION_RECEIVE)
-} zcl_rec_report_receive_resp_t;
+}) zcl_rec_report_receive_resp_t;
 
 
 /*
@@ -573,33 +573,33 @@ typedef PACKED_STRUCT zcl_rec_report_receive_resp_t {
 // use zcl_attrib_t
 
 /// Used for #ZCL_CMD_DEFAULT_RESP.
-typedef PACKED_STRUCT zcl_default_response_t {
+typedef XBEE_PACKED(zcl_default_response_t, {
 	uint8_t	command;
 	uint8_t	status;
-} zcl_default_response_t;
+}) zcl_default_response_t;
 
 /// Used for #ZCL_CMD_DISCOVER_ATTRIB.
-typedef PACKED_STRUCT zcl_discover_attrib_t {
+typedef XBEE_PACKED(zcl_discover_attrib_t, {
 	uint16_t	start_attrib_id_le;
 	uint8_t	max_return_count;
-} zcl_discover_attrib_t;
+}) zcl_discover_attrib_t;
 
 /// Used for #ZCL_CMD_DISCOVER_ATTRIB_RESP.
-typedef PACKED_STRUCT zcl_rec_attrib_report_t {
+typedef XBEE_PACKED(zcl_rec_attrib_report_t, {
 	uint16_t	id_le;
 	uint8_t	type;
-} zcl_rec_attrib_report_t;
+}) zcl_rec_attrib_report_t;
 /// Used for #ZCL_CMD_DISCOVER_ATTRIB_RESP.
-typedef PACKED_STRUCT zcl_discover_attrib_resp_t {
+typedef XBEE_PACKED(zcl_discover_attrib_resp_t, {
 	/// Set to ZCL_BOOL_FALSE if there are more attributes than contained
 	/// in the response.  Set to ZCL_BOOL_TRUE if discovery is complete.
 	uint8_t							discovery_complete;
 	zcl_rec_attrib_report_t		attrib[1];
-} zcl_discover_attrib_resp_t;
+}) zcl_discover_attrib_resp_t;
 
 // Read Attributes Structured Command (ZCL_CMD_READ_STRUCT_ATTRIB)
 // payload is 1 to n variable-byte Attribute ID and Selector fields
-typedef PACKED_STRUCT zcl_selector_t {
+typedef XBEE_PACKED(zcl_selector_t, {
 	uint8_t	indicator;
 		#define ZCL_INDICATOR_INDICES_MASK		0x0F
 
@@ -609,30 +609,30 @@ typedef PACKED_STRUCT zcl_selector_t {
 		#define ZCL_INDICATOR_REMOVE_ELEMENT	0x20
 		// indicator actions 0x30 to 0xF0 are reserved
 	uint16_t	index_le[15];
-} zcl_selector_t;
-typedef PACKED_STRUCT zcl_read_struct_attrib_t {
+}) zcl_selector_t;
+typedef XBEE_PACKED(zcl_read_struct_attrib_t, {
 	uint16_t			attrib_id_le;
 	zcl_selector_t	selector;
-} zcl_read_struct_attrib_t;
+}) zcl_read_struct_attrib_t;
 
 
 // Write Attributes Structured Command (ZCL_CMD_WRITE_STRUCT_ATTRIB)
 // payload is 1 to n variable-length Write Structured Attribute Record fields.
-typedef PACKED_STRUCT zcl_rec_write_struct_attrib_t {
+typedef XBEE_PACKED(zcl_rec_write_struct_attrib_t, {
 	uint16_t			id_le;
 	zcl_selector_t	selector;
 	uint8_t			type;
 	uint8_t			value[1];		// variable length, depending on type
-} zcl_rec_write_struct_attrib_t;
+}) zcl_rec_write_struct_attrib_t;
 
 // Write Attributes Structured Response Cmd (ZCL_CMD_WRITE_STRUCT_ATTRIB_RESP)
 // payload is 1 to n variable-length Write Structure Attribute Status Record
 // fields.
-typedef PACKED_STRUCT zcl_rec_write_struct_attrib_resp_t {
+typedef XBEE_PACKED(zcl_rec_write_struct_attrib_resp_t, {
 	uint8_t			status;
 	uint16_t			id;
 	zcl_selector_t	selector;
-} zcl_rec_write_struct_attrib_resp_t;
+}) zcl_rec_write_struct_attrib_resp_t;
 
 
 

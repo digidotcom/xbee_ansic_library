@@ -42,7 +42,7 @@ XBEE_BEGIN_DECLS
 
 /// Format of XBee API frame type 0x1F (#XBEE_FRAME_TRANSMIT_SMS);
 /// sent from host to XBee.
-typedef PACKED_STRUCT xbee_frame_transmit_sms_t {
+typedef XBEE_PACKED(xbee_frame_transmit_sms_t, {
 	uint8_t			frame_type;				///< XBEE_FRAME_TRANSMIT_SMS (0x1F)
 	uint8_t			frame_id;
 	uint8_t			options;					///< reserved for future use
@@ -51,26 +51,26 @@ typedef PACKED_STRUCT xbee_frame_transmit_sms_t {
 	
 	/// unterminated, variable-length message, length derived from frame length
 	char			message[XBEE_SMS_MAX_MESSAGE_LENGTH];
-} xbee_frame_transmit_sms_t;
+}) xbee_frame_transmit_sms_t;
 
 /// Format of XBee API frame type 0x9F (#XBEE_FRAME_RECEIVE_SMS);
 /// received from XBee by host.
-typedef PACKED_STRUCT xbee_frame_receive_sms_t {
+typedef XBEE_PACKED(xbee_frame_receive_sms_t, {
 	uint8_t			frame_type;				///< XBEE_FRAME_RECEIVE_SMS (0x9F)
 	/// fixed 20 bytes, unused bytes are null
 	char				phone[XBEE_SMS_MAX_PHONE_LENGTH];
 
 	/// unterminated, variable-length message, length derived from frame length
 	char			message[1];
-} xbee_frame_receive_sms_t;
+}) xbee_frame_receive_sms_t;
 
-typedef PACKED_STRUCT xbee_header_transmit_sms_t {
+typedef XBEE_PACKED(xbee_header_transmit_sms_t, {
 	uint8_t			frame_type;				///< XBEE_FRAME_TRANSMIT_SMS (0x1F)
 	uint8_t			frame_id;
 	uint8_t			options;					///< reserved for future use
 	/// fixed 20 bytes, unused bytes are null
 	char			phone[XBEE_SMS_MAX_PHONE_LENGTH];
-} xbee_header_transmit_sms_t;
+}) xbee_header_transmit_sms_t;
 
 /**
 	@brief Send an SMS message.

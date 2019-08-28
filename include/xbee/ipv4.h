@@ -58,7 +58,7 @@ XBEE_BEGIN_DECLS
 
 /// Header of XBee API frame type 0x20 (#XBEE_FRAME_TRANSMIT_IPV4);
 /// sent from host to XBee.
-typedef PACKED_STRUCT xbee_header_transmit_ipv4_t {
+typedef XBEE_PACKED(xbee_header_transmit_ipv4_t, {
 	uint8_t			frame_type;				///< XBEE_FRAME_TRANSMIT_IPV4 (0x20)
 	uint8_t			frame_id;
 	uint32_t			remote_addr_be;
@@ -66,11 +66,11 @@ typedef PACKED_STRUCT xbee_header_transmit_ipv4_t {
 	uint16_t			local_port_be;
 	uint8_t			protocol;
 	uint8_t			options;					///< see XBEE_IPV4_TX_OPT_xxx
-} xbee_header_transmit_ipv4_t;
+}) xbee_header_transmit_ipv4_t;
 
 /// Format of XBee API frame type 0xB0 (#XBEE_FRAME_RECEIVE_IPV4);
 /// received from XBee by host.
-typedef PACKED_STRUCT xbee_frame_receive_ipv4_t {
+typedef XBEE_PACKED(xbee_frame_receive_ipv4_t, {
 	uint8_t			frame_type;				///< XBEE_FRAME_RECEIVE_IPV4 (0xB0)
 	uint32_t			remote_addr_be;
 	uint16_t			local_port_be;
@@ -78,7 +78,7 @@ typedef PACKED_STRUCT xbee_frame_receive_ipv4_t {
 	uint8_t			protocol;
 	uint8_t			status;
 	uint8_t			payload[1];				///< multi-byte payload
-} xbee_frame_receive_ipv4_t;
+}) xbee_frame_receive_ipv4_t;
 
 /*
 	Dev notes:

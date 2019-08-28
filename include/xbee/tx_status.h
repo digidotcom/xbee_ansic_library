@@ -32,11 +32,11 @@
 
 XBEE_BEGIN_DECLS
 
-typedef PACKED_STRUCT xbee_frame_tx_status_t {
+typedef XBEE_PACKED(xbee_frame_tx_status_t, {
 	uint8_t			frame_type;			//< XBEE_FRAME_TX_STATUS (0x89)
 	uint8_t			frame_id;
 	uint8_t			delivery; /// See xbee/delivery_status.h
-} xbee_frame_tx_status_t;
+}) xbee_frame_tx_status_t;
 
 
 

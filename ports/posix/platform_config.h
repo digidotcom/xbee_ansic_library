@@ -33,8 +33,10 @@
 	// Load platform's endian header to learn whether we're big or little.
 	#include <sys/types.h>
 
-	// macro used to declare a packed structure (no alignment of elements)
+	// macros used to declare a packed structure (no alignment of elements)
+    // The more-flexible XBEE_PACKED() replaced PACKED_STRUCT in 2019.
 	#define PACKED_STRUCT		struct __attribute__ ((__packed__))
+	#define XBEE_PACKED(name, decl)	PACKED_STRUCT name decl
 
 	#define _f_memcpy		memcpy
 	#define _f_memset		memset

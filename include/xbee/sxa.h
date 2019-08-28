@@ -31,7 +31,7 @@ XBEE_BEGIN_DECLS
 /** @internal Flag data for register value cache status
 
 For this library to work, structure packing must be enabled (accomplished
-using the PACKED_STRUCT macro).  This is because the size of the actual
+using the XBEE_PACKED macro).  This is because the size of the actual
 data must be derivable from the size of the containing structure, minus
 the size of the following flags field.
 
@@ -66,46 +66,46 @@ enum
 /**
 	Cached generic register value (no data)
 */
-typedef PACKED_STRUCT
+typedef XBEE_PACKED(,
 {
 	sxa_cache_flags_t	flags;	///< Cache status flags (#_SXA_CACHED_OK etc.)
-} sxa_cached_t;
+}) sxa_cached_t;
 
 /**
 	Cached uint8_t register value
 */
-typedef PACKED_STRUCT
+typedef XBEE_PACKED(,
 {
 	sxa_cache_flags_t	flags;	///< Cache status flags (#_SXA_CACHED_OK etc.)
    uint8_t	value;	///< Cached value
-} sxa_cached_uint8_t;
+}) sxa_cached_uint8_t;
 
 /**
 	Cached uint16_t register value
 */
-typedef PACKED_STRUCT
+typedef XBEE_PACKED(,
 {
 	sxa_cache_flags_t	flags;	///< Cache status flags (#_SXA_CACHED_OK etc.)
    uint16_t	value;	///< Cached value
-} sxa_cached_uint16_t;
+}) sxa_cached_uint16_t;
 
 /**
 	Cached uint32_t register value
 */
-typedef PACKED_STRUCT
+typedef XBEE_PACKED(,
 {
 	sxa_cache_flags_t	flags;	///< Cache status flags (#_SXA_CACHED_OK etc.)
    uint32_t	value;	///< Cached value
-} sxa_cached_uint32_t;
+}) sxa_cached_uint32_t;
 
 /**
 	Cached extended address register value
 */
-typedef PACKED_STRUCT
+typedef XBEE_PACKED(,
 {
 	sxa_cache_flags_t	flags;	///< Cache status flags (#_SXA_CACHED_OK etc.)
    addr64	value;	///< Cached value
-} sxa_cached_addr64;
+}) sxa_cached_addr64;
 
 /**
 	Cached string register value.  This is in the form of a macro which
@@ -115,7 +115,7 @@ typedef PACKED_STRUCT
    One extra char is automatically added, for the null terminator.
 */
 #define _SXA_CACHED_STRING(name, len) \
-	PACKED_STRUCT { sxa_cache_flags_t flags; uint8_t value[len+1]; } name
+	XBEE_PACKED(, { sxa_cache_flags_t flags; uint8_t value[len+1]; }) name
 
 /**
 	Cached binary register value.  This is in the form of a macro which
@@ -123,7 +123,7 @@ typedef PACKED_STRUCT
    with generally different maximum lengths.
 */
 #define _SXA_CACHED_BIN(name, len) \
-	PACKED_STRUCT { sxa_cache_flags_t flags; uint8_t value[len]; } name
+	XBEE_PACKED(, { sxa_cache_flags_t flags; uint8_t value[len]; }) name
 
 
 struct sxa_cached_group_t;

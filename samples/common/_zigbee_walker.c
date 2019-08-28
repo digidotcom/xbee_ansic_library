@@ -153,11 +153,11 @@ int walker_init( wpan_dev_t *dev, addr64 *target, uint16_t flags)
 int walker_active_ep_resp( wpan_conversation_t FAR *conversation,
 	const wpan_envelope_t FAR *envelope)
 {
-	const PACKED_STRUCT {
+	const XBEE_PACKED(, {
 		uint8_t								transaction;
 		zdo_active_ep_rsp_header_t		header;
 		uint8_t								endpoints[255];
-	} FAR *response;
+	}) FAR *response;
 	const uint8_t FAR *ep;
 	uint_fast8_t i;
 
@@ -213,12 +213,12 @@ void walker_dump_cluster_list( void)
 int walker_simple_desc_resp( wpan_conversation_t FAR *conversation,
 	const wpan_envelope_t FAR *envelope)
 {
-	const PACKED_STRUCT {
+	const XBEE_PACKED(, {
 		uint8_t								transaction;
 		zdo_simple_desc_resp_header_t	header;
 		zdo_simple_desc_header_t		descriptor;
 		uint8_t								clusters[255];
-	} FAR *response;
+	}) FAR *response;
 
 	ptrdiff_t overparse;
 
@@ -426,10 +426,10 @@ void walker_zcl_init( wpan_envelope_t *envelope,
 enum walker_status_t walker_send_discover_attr_req( void)
 {
 	wpan_envelope_t envelope;
-	PACKED_STRUCT {
+	XBEE_PACKED(, {
 		zcl_header_nomfg_t		header;
 		zcl_discover_attrib_t	req;
-	} zcl;
+	}) zcl;
 	int trans;
 
 	if (walker.profile_id == WPAN_PROFILE_DIGI)
@@ -555,10 +555,10 @@ int walker_process_read_attr_resp( wpan_conversation_t FAR *conversation,
 int walker_send_read_attr( zcl_rec_attrib_report_t *attr)
 {
 	wpan_envelope_t envelope;
-	PACKED_STRUCT {
+	XBEE_PACKED(, {
 		zcl_header_nomfg_t		header;
 		uint16_t						attr_id_le;
-	} zcl;
+	}) zcl;
 	int trans;
 	int retval;
 

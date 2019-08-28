@@ -48,7 +48,10 @@
 	#define BIG_ENDIAN 1234    
 	#define BYTE_ORDER LITTLE_ENDIAN //This is hard-coded, but can be checked
 
-	#define PACKED_STRUCT 	struct __attribute__((packed))
+	// macros used to declare a packed structure (no alignment of elements)
+    // The more-flexible XBEE_PACKED() replaced PACKED_STRUCT in 2019.
+	#define PACKED_STRUCT		struct __attribute__ ((__packed__))
+	#define XBEE_PACKED(name, decl)	PACKED_STRUCT name decl
 
 	typedef uint8_t bool_t; // could instead use <stdbool.h>
 	

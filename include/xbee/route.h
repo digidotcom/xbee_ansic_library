@@ -29,7 +29,7 @@ XBEE_BEGIN_DECLS
 #define XBEE_ROUTE_MAX_ADDRESS_COUNT			11
 
 #define XBEE_FRAME_CREATE_SOURCE_ROUTE			0x21
-typedef PACKED_STRUCT xbee_frame_create_source_route_t
+typedef XBEE_PACKED(xbee_frame_create_source_route_t,
 {
 	/// #XBEE_FRAME_CREATE_SOURCE_ROUTE (0x21)
 	uint8_t				frame_type;
@@ -54,11 +54,11 @@ typedef PACKED_STRUCT xbee_frame_create_source_route_t
 	/// Network addresses of nodes in route, starting next to destination
 	/// and ending with node next to source (us).
 	uint16_t				route_address_be[XBEE_ROUTE_MAX_ADDRESS_COUNT];
-} xbee_frame_create_source_route_t;
+}) xbee_frame_create_source_route_t;
 
 
 #define XBEE_FRAME_ROUTE_RECORD_INDICATOR		0xA1
-typedef PACKED_STRUCT xbee_frame_route_record_indicator_t
+typedef XBEE_PACKED(xbee_frame_route_record_indicator_t,
 {
 	/// #XBEE_FRAME_ROUTE_RECORD_INDICATOR (0xA1)
 	uint8_t				frame_type;
@@ -79,7 +79,7 @@ typedef PACKED_STRUCT xbee_frame_route_record_indicator_t
 	/// Network addresses of nodes in route, starting next to destination
 	/// and ending with node next to source (us).
 	uint16_t				route_address_be[XBEE_ROUTE_MAX_ADDRESS_COUNT];
-} xbee_frame_route_record_indicator_t;
+}) xbee_frame_route_record_indicator_t;
 
 int xbee_route_dump_record_indicator( xbee_dev_t *xbee,
 	const void FAR *frame, uint16_t length, void FAR *context);
@@ -96,7 +96,7 @@ int xbee_route_dump_record_indicator( xbee_dev_t *xbee,
 #define XBEE_FRAME_ROUTE_MANY_TO_ONE_REQ		0xA3
 /// The many-to-one route request indicator frame is sent out the serial port
 /// whenever a many-to-one route request is received
-typedef PACKED_STRUCT xbee_frame_route_many_to_one_req_t
+typedef XBEE_PACKED(xbee_frame_route_many_to_one_req_t,
 {
 	/// #XBEE_FRAME_ROUTE_MANY_TO_ONE_REQ (0xA3)
 	uint8_t				frame_type;
@@ -109,7 +109,7 @@ typedef PACKED_STRUCT xbee_frame_route_many_to_one_req_t
 
 	/// Reserved field always set to 0.
 	uint8_t				reserved;
-} xbee_frame_route_many_to_one_req_t;
+}) xbee_frame_route_many_to_one_req_t;
 
 int xbee_route_dump_many_to_one_req( xbee_dev_t *xbee,
 	const void FAR *frame, uint16_t length, void FAR *context);

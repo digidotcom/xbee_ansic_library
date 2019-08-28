@@ -21,7 +21,7 @@
 #include "xbee/device.h"
 #include "wpan/types.h"
 
-typedef PACKED_STRUCT {
+typedef XBEE_PACKED(, {
 	uint8_t	as_type;
 	uint8_t	channel;
 	uint16_t	pan_be;
@@ -30,16 +30,16 @@ typedef PACKED_STRUCT {
 	uint8_t	stack_profile;
 	uint8_t	lqi;
 	int8_t	rssi;
-} xbee_scan_zigbee_response_t;
+}) xbee_scan_zigbee_response_t;
 
 #if XBEE_WIFI_ENABLED
-typedef PACKED_STRUCT {
+typedef XBEE_PACKED(, {
 	uint8_t	as_type;
 	uint8_t	channel;
 	uint8_t	security_type;
 	uint8_t	link_margin;
 	uint8_t	ssid[31];				// variable length, not null-terminated
-} xbee_scan_wifi_response_t;
+}) xbee_scan_wifi_response_t;
 #endif
 
 typedef union {

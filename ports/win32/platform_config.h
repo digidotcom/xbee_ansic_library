@@ -32,9 +32,11 @@
 		#include <endian.h>
 	#endif
 
-	// macro used to declare a packed structure (no alignment of elements)
+	// macros used to declare a packed structure (no alignment of elements)
 	// "__gcc_struct__" added to fix problems with gcc 4.7.0 in MinGW/MSYS
+    // The more-flexible XBEE_PACKED() replaced PACKED_STRUCT in 2019.
 	#define PACKED_STRUCT	struct __attribute__ ((__packed__, __gcc_struct__))
+	#define XBEE_PACKED(name, decl)	PACKED_STRUCT name decl
 
 	#define _f_memcpy		memcpy
 	#define _f_memset		memset

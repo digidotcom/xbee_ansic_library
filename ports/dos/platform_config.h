@@ -22,8 +22,10 @@
 #ifndef __XBEE_PLATFORM_DOS
 #define __XBEE_PLATFORM_DOS
 
-	// macro used to declare a packed structure (no alignment of elements)
+	// macros used to declare a packed structure (no alignment of elements)
+    // The more-flexible XBEE_PACKED() replaced PACKED_STRUCT in 2019.
 	#define PACKED_STRUCT		_Packed struct
+	#define XBEE_PACKED(name, decl)	PACKED_STRUCT name decl
 
 	#define _f_memcpy		memcpy
 	#define _f_memset		memset

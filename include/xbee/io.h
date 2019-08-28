@@ -108,7 +108,7 @@ typedef struct xbee_io_t {
 //@}
 
 
-typedef PACKED_STRUCT xbee_frame_io_response_t {
+typedef XBEE_PACKED(xbee_frame_io_response_t, {
 	uint8_t				frame_type;			///< XBEE_FRAME_IO_RESPONSE (0x92)
 	addr64				ieee_address_be;			///< ATSH and ATSL of sender
 	uint16_t				network_address_be;		///< ATMY value of sender
@@ -116,7 +116,7 @@ typedef PACKED_STRUCT xbee_frame_io_response_t {
    uint8_t				num_samples;		///< Currently always 1
    uint16_t				data[1];				///< First of variable amount of data
                                        ///< Parse using xbee_io_response_parse()
-} xbee_frame_io_response_t;
+}) xbee_frame_io_response_t;
 
 /**
 	@brief Configuration type for XBee built-in I/Os.

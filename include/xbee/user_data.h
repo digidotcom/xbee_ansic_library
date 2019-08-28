@@ -39,19 +39,19 @@ XBEE_BEGIN_DECLS
 
 /// Header of XBee API frame type 0x2D (#XBEE_FRAME_USER_DATA_RELAY_TX);
 /// sent from host to XBee.
-typedef PACKED_STRUCT xbee_header_user_data_tx_t {
+typedef XBEE_PACKED(xbee_header_user_data_tx_t, {
     uint8_t     frame_type;             ///< XBEE_FRAME_USER_DATA_TX (0x2D)
     uint8_t     frame_id;               ///< in TX Status frame on error
     uint8_t     destination;            ///< see XBEE_USER_DATA_IF_xxx
-} xbee_header_user_data_tx_t;
+}) xbee_header_user_data_tx_t;
 
 /// Format of XBee API frame type 0xAD (#XBEE_FRAME_USER_DATA_RELAY_RX);
 /// received from XBee by host.
-typedef PACKED_STRUCT xbee_frame_user_data_rx_t {
+typedef XBEE_PACKED(xbee_frame_user_data_rx_t, {
     uint8_t     frame_type;             ///< XBEE_FRAME_USER_DATA_RX (0xAD)
     uint8_t     source;                 ///< see XBEE_USER_DATA_IF_xxx
     uint8_t     payload[1];             ///< multi-byte payload
-} xbee_frame_user_data_rx_t;
+}) xbee_frame_user_data_rx_t;
 
 // See src/xbee/xbee_user_data.c for function documentation.
 
