@@ -41,6 +41,7 @@ EXE = zcl_write \
 		zdo_match_desc_request \
 		zdo_simple_desc_respond \
 		t_jslong \
+		t_packed_struct \
 		xbee_timer_compare \
 		t_cbuf \
 		zcl_type_name \
@@ -58,6 +59,7 @@ test : $(EXE)
 	&& ./zdo_match_desc_request \
 	&& ./zdo_simple_desc_respond \
 	&& ./t_jslong \
+	&& ./t_packed_struct \
 	&& ./xbee_timer_compare \
 	&& ./t_cbuf \
 	&& ./zcl_type_name \
@@ -239,6 +241,9 @@ t_jslong : ../util/jsll_vectors.h $(platform_OBJECTS) t_jslong.o main.o
 t_memcheck_OBJECTS = $(platform_OBJECTS) t_memcheck.o memcheck.o
 t_memcheck : $(t_memcheck_OBJECTS)
 	$(COMPILE) -o $@ $(t_memcheck_OBJECTS)
+
+t_packed_struct : t_packed_struct.o
+	$(COMPILE) -o $@ $^
 
 xbee_timer_compare_OBJECTS = $(platform_OBJECTS) xbee_timer_compare.o
 xbee_timer_compare : $(xbee_timer_compare_OBJECTS)
