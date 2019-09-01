@@ -167,6 +167,11 @@
 	Must be a structure with uint32_t member \c baudrate and any additional
 	members required by the functions in xbee/serial.h.
 
+	@def XBEE_SERIAL_MAX_BAUDRATE
+	Maximum baud rate supported by serial ports.  Gen3 bootloader interface
+	(xbee_bl_gen3.c) will switch up to 921600 if supported.  Defaults to
+	[115200].
+
 	@def XBEE_UNUSED_PARAMETER(p)
 	Functions with unused parameters (common due to the use of function
 	pointers) can use this macro to dismiss compiler warnings about unused
@@ -394,6 +399,11 @@
 // legacy macro -- applications should remove conditional compilation
 // tests that use this macro
 #define XBEE_SERIAL_POLLED
+
+// assume platforms support up to 115200bps
+#ifndef XBEE_SERIAL_MAX_BAUDRATE
+	#define XBEE_SERIAL_MAX_BAUDRATE 115200
+#endif
 
 // Default method for specifying an unused parameter (to avoid compiler
 // warnings) is to cast it to void.  If this method doesn't work for a platform

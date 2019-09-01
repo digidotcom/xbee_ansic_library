@@ -24,6 +24,7 @@ COMPILE = $(COMPILE_GCC4) -std=gnu99 -g -MMD -MP -Wall $(DEFINE) $(CFLAGS)
 
 # extra objects for some samples
 install_ebl_OBJECTS = win32_select_file.o
+install_ebin_OBJECTS = win32_select_file.o
 
 include ../common/common.mk
 

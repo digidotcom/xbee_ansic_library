@@ -32,6 +32,7 @@ EXE += \
 	commissioning_server \
 	eblinfo \
 	gpm \
+	install_ebin \
 	install_ebl \
 	ipv4_client \
 	network_scan \
@@ -69,6 +70,7 @@ SRCS = \
 	_commission_server.c _nodetable.c _zigbee_walker.c \
 	xbee_atcmd.c \
 	xbee_atmode.c \
+	xbee_bl_gen3.c \
 	xbee_cbuf.c \
 	xbee_device.c \
 	xbee_discovery.c \
@@ -126,23 +128,23 @@ network_scan : $(network_scan_OBJECTS)
 apply_profile : $(xbee_OBJECTS) apply_profile.o
 	$(COMPILE) -o $@ $^
 
-xbee_term_OBJECTS = $(base_OBJECTS) xbee_term.o xbee_term_$(PORT).o xbee_readline.o _xbee_term.o 
+xbee_term_OBJECTS = $(base_OBJECTS) xbee_term.o xbee_term_$(PORT).o xbee_readline.o _xbee_term.o
 xbee_term : $(xbee_term_OBJECTS)
 	$(COMPILE) -o $@ $^
 
 ipv4_client_OBJECTS = $(xbee_OBJECTS)  ipv4_client.o xbee_tx_status.o _xbee_term.o xbee_term_$(PORT).o $(atinter_OBJECTS) xbee_ipv4.o
 ipv4_client : $(ipv4_client_OBJECTS)
-	$(COMPILE) -o $@ $^	
-	
+	$(COMPILE) -o $@ $^
+
 user_data_relay_OBJECTS = $(xbee_OBJECTS) xbee_readline.o xbee_user_data.o \
 		user_data_relay.o
 user_data_relay : $(user_data_relay_OBJECTS)
 	$(COMPILE) -o $@ $^
 
-sms_client_OBJECTS = $(xbee_OBJECTS) sms_client.o $(atinter_OBJECTS) xbee_sms.o 
+sms_client_OBJECTS = $(xbee_OBJECTS) sms_client.o $(atinter_OBJECTS) xbee_sms.o
 sms_client : $(sms_client_OBJECTS)
-	$(COMPILE) -o $@ $^	
-	
+	$(COMPILE) -o $@ $^
+
 transparent_client_OBJECTS = $(zigbee_OBJECTS) transparent_client.o \
 	$(atinter_OBJECTS) _nodetable.o \
 	xbee_discovery.o \
@@ -150,6 +152,13 @@ transparent_client_OBJECTS = $(zigbee_OBJECTS) transparent_client.o \
 
 transparent_client : $(transparent_client_OBJECTS)
 	$(COMPILE) -o $@ $^
+
+install_ebin_OBJECTS += $(xbee_OBJECTS) install_ebin.o \
+	xbee_bl_gen3.o \
+	crc16buypass.o
+
+install_ebin: $(install_ebin_OBJECTS)
+	$(COMPILE) -o $@ $^ $(DIALOG_LIBS)
 
 install_ebl_OBJECTS += $(xbee_OBJECTS) install_ebl.o \
 	xbee_atmode.o \
@@ -192,7 +201,7 @@ commissioning_server : $(commissioning_server_OBJECTS)
 # ...or in the port support directory...
 %.o : $(PORTDIR)/%.c
 	$(COMPILE) -c $<
-	
+
 # ...or in common samples directory...
 %.o : ../common/%.c
 	$(COMPILE) -c $<

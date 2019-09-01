@@ -34,7 +34,7 @@
 
 	// macros used to declare a packed structure (no alignment of elements)
 	// "__gcc_struct__" added to fix problems with gcc 4.7.0 in MinGW/MSYS
-    // The more-flexible XBEE_PACKED() replaced PACKED_STRUCT in 2019.
+	// The more-flexible XBEE_PACKED() replaced PACKED_STRUCT in 2019.
 	#define PACKED_STRUCT	struct __attribute__ ((__packed__, __gcc_struct__))
 	#define XBEE_PACKED(name, decl)	PACKED_STRUCT name decl
 
@@ -76,6 +76,11 @@ typedef struct xbee_serial_t {
 	int			comport;		// COMx:
 	HANDLE		hCom;
 } xbee_serial_t;
+
+// assume serial support for 921600bps by default
+#ifndef XBEE_SERIAL_MAX_BAUDRATE
+	#define XBEE_SERIAL_MAX_BAUDRATE 921600
+#endif
 
 // Win32 epoch is 1/1/1970
 #define ZCL_TIME_EPOCH_DELTA	ZCL_TIME_EPOCH_DELTA_1970

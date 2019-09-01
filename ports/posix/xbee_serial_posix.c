@@ -258,6 +258,15 @@ int xbee_ser_baudrate( xbee_serial_t *serial, uint32_t baudrate)
 		_BAUDCASE(38400);
 		_BAUDCASE(57600);
 		_BAUDCASE(115200);
+#ifdef B230400
+		_BAUDCASE(230400);
+#endif
+#ifdef B460800
+		_BAUDCASE(460800);
+#endif
+#ifdef B921600
+		_BAUDCASE(921600);
+#endif
 		default:
 			return -EINVAL;
 	}
@@ -266,7 +275,8 @@ int xbee_ser_baudrate( xbee_serial_t *serial, uint32_t baudrate)
 	if (tcgetattr( serial->fd, &options) == -1)
 	{
 		#ifdef XBEE_SERIAL_VERBOSE
-			printf( "%s: %s failed (%d)\n", __FUNCTION__, "tcgetattr", errno);
+			printf( "%s: %s failed (%d) for %" PRIu32 "\n",
+				__FUNCTION__, "tcgetattr", errno, baudrate);
 		#endif
 		return -errno;
 	}
@@ -291,14 +301,13 @@ int xbee_ser_baudrate( xbee_serial_t *serial, uint32_t baudrate)
 		return -errno;
 	}
 
+	serial->baudrate = baudrate;
 	return 0;
 }
 
 
 int xbee_ser_open( xbee_serial_t *serial, uint32_t baudrate)
 {
-	int err;
-
 	if (serial == NULL)
 	{
 		#ifdef XBEE_SERIAL_VERBOSE
@@ -327,14 +336,7 @@ int xbee_ser_open( xbee_serial_t *serial, uint32_t baudrate)
 	// reset port before setting actual baudrate
 	xbee_ser_baudrate( serial, 0);
 
-	err = xbee_ser_baudrate( serial, baudrate);
-
-	if (err)
-	{
-		return err;
-	}
-
-	return 0;
+	return xbee_ser_baudrate( serial, baudrate);
 }
 
 

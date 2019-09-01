@@ -34,7 +34,7 @@
 	#include <sys/types.h>
 
 	// macros used to declare a packed structure (no alignment of elements)
-    // The more-flexible XBEE_PACKED() replaced PACKED_STRUCT in 2019.
+	// The more-flexible XBEE_PACKED() replaced PACKED_STRUCT in 2019.
 	#define PACKED_STRUCT		struct __attribute__ ((__packed__))
 	#define XBEE_PACKED(name, decl)	PACKED_STRUCT name decl
 
@@ -69,6 +69,19 @@ typedef struct xbee_serial_t {
 	int			fd;
 	char			device[40];		// /dev/ttySxx
 } xbee_serial_t;
+
+#ifndef XBEE_SERIAL_MAX_BAUDRATE
+	#include <termios.h>
+	#if defined B921600
+		#define XBEE_SERIAL_MAX_BAUDRATE 921600
+	#elif defined B460800
+		#define XBEE_SERIAL_MAX_BAUDRATE 460800
+	#elif defined B230400
+		#define XBEE_SERIAL_MAX_BAUDRATE 230400
+	#else
+		#define XBEE_SERIAL_MAX_BAUDRATE 115200
+	#endif
+#endif // def XBEE_SERIAL_MAX_BAUDRATE
 
 // Unix epoch is 1/1/1970
 #define ZCL_TIME_EPOCH_DELTA	ZCL_TIME_EPOCH_DELTA_1970

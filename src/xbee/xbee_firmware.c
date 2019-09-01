@@ -25,6 +25,8 @@
 
 	Define XBEE_FIRMWARE_DEBUG to make the functions in this file debuggable.
 
+	See xbee_bl_gen3.c and xbee/bl_gen3.h for "Gen3" bootloader support
+	(using .ebin files).
 */
 
 /*** BeginHeader */
