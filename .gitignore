@@ -47,31 +47,7 @@ samples/rabbit/main-node_discovery.c
 samples/rabbit/my_config.h
 
 # POSIX executables
-test/posix/jsll_gen
-test/posix/t_jslong
-test/posix/t_memcheck
-test/posix/xbee_timer_compare
-test/posix/zcl_24bit
-test/posix/zcl_boolean
-test/posix/zcl_encode_structured_values
-test/posix/zcl_read
-test/posix/zcl_type_info
-test/posix/zcl_type_name
-test/posix/zcl_write
-test/posix/zdo_simple_desc_respond
-test/posix/zdo_match_desc_request
-samples/posix/atinter
-samples/posix/commissioning_client
-samples/posix/commissioning_server
-samples/posix/install_ebl
-samples/posix/transparent_client
-samples/posix/walker
-samples/posix/zcltime
-samples/posix/apply_profile
-samples/posix/eblinfo
-samples/posix/gpm
-samples/posix/ipv4_client
-samples/posix/network_scan
-samples/posix/sms_client
-samples/posix/xbee_term
-samples/posix/zigbee_walker
+test/posix/*.
+samples/posix/*.
+!test/posix/Makefile
+!samples/posix/Makefile
