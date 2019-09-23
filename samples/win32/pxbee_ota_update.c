@@ -223,8 +223,9 @@ int main( int argc, char *argv[])
 
 	while (1)
    {
-      while (xbee_readline( cmdstr, sizeof cmdstr) == -EAGAIN)
-      {
+      int linelen;
+      do {
+      	linelen = xbee_readline(cmdstr, sizeof cmdstr);
       	wpan_tick( &my_xbee.wpan_dev);
 
 			if (fw_file != NULL)
@@ -263,9 +264,9 @@ int main( int argc, char *argv[])
 					last_packet = xbee_ota.xbxm.packet_num;
 				}
 			}
-      }
+      } while (linelen == -EAGAIN);
 
-		if (! strcmpi( cmdstr, "quit"))
+		if (linelen == -ENODATA || ! strcmpi( cmdstr, "quit"))
       {
 			return 0;
 		}

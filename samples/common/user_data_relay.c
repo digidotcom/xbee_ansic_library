@@ -138,14 +138,19 @@ int main(int argc, char *argv[])
     // report on the settings
     xbee_dev_dump_settings(&my_xbee, XBEE_DEV_DUMP_FLAG_DEFAULT);
 
-    printf("Enter a blank line to change interface.  CTRL-C to exit.\n");
+    printf("Enter a blank line to change interface.  CTRL-D to exit.\n");
     printf("Enter messages for %s interface:\n",
            xbee_user_data_interface(iface));
 
     while (1) {
-        while (xbee_readline(cmdstr, sizeof cmdstr) == -EAGAIN) {
+        int linelen;
+        do {
+            linelen = xbee_readline(cmdstr, sizeof cmdstr);
+            if (linelen == -ENODATA) {
+                return 0;
+            }
             xbee_dev_tick(&my_xbee);
-        }
+        } while (linelen < 0);
 
         // blank line changes to next interface
         if (*cmdstr == '\0') {

@@ -531,6 +531,7 @@ int hexstrtobyte( const char FAR *p);
 							number of bytes written.
 	@retval	-EAGAIN	User has not completed a line.
 	@retval	-EINVAL	NULL buffer or length is less than 1.
+	@retval	-ENODATA	User entered CTRL-D to end input.
 */
 int xbee_readline( char *buffer, int length);
 

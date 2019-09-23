@@ -319,11 +319,15 @@ int main( int argc, char *argv[])
 
    while (1)
    {
-      while (xbee_readline( cmdstr, sizeof cmdstr) == -EAGAIN)
-      {
+      int linelen;
+      do {
+         linelen = xbee_readline(cmdstr, sizeof cmdstr);
+         if (linelen == -ENODATA) {
+            return 0;
+         }
       	wpan_tick( &my_xbee.wpan_dev);
       	xbee_cmd_tick();
-      }
+      } while (linelen < 0);
 
 		if (! strcmpi( cmdstr, "help") || ! strcmp( cmdstr, "?"))
 		{

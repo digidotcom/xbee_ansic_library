@@ -58,10 +58,14 @@ int main( int argc, char *argv[])
 
    while (1)
    {
-      while (xbee_readline( cmdstr, sizeof cmdstr) == -EAGAIN)
-      {
-      	xbee_dev_tick( &my_xbee);
-      }
+      int linelen;
+      do {
+         linelen = xbee_readline(cmdstr, sizeof cmdstr);
+         if (linelen == -ENODATA) {
+            return 0;
+         }
+         xbee_dev_tick( &my_xbee);
+      } while (linelen < 0);
 
 		if (! strncmpi( cmdstr, "menu", 4))
       {

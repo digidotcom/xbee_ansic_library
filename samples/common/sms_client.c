@@ -113,11 +113,7 @@ int main( int argc, char *argv[])
 			xbee_dev_tick(&my_xbee);
 			xbee_cmd_tick();
 		}
-		// Checks for EOF
-		if (status == -ENODATA) {
-			return 0;
-		}
-		if (! strcmpi(term_str, "quit")){
+		if (status == -ENODATA || ! strcmpi(term_str, "quit")){
 			return 0;
 		}
 		else if (! strncmpi(term_str, "AT", 2)) {

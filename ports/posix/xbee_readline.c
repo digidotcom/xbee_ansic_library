@@ -86,6 +86,7 @@ void nonblock(int state)
 #define XBEE_READLINE_STATE_INIT				0
 #define XBEE_READLINE_STATE_START_LINE		1
 #define XBEE_READLINE_STATE_CONTINUE_LINE	2
+#define XBEE_READLINE_STATE_EOF				-1
 
 // See xbee/platform.h for function documentation.
 int xbee_readline( char *buffer, int length)
@@ -101,6 +102,13 @@ int xbee_readline( char *buffer, int length)
 
 	switch (state)
 	{
+		case XBEE_READLINE_STATE_EOF:
+			usleep( 1000);	// sleep 1ms to reduce CPU usage
+			while (kbhit()) {
+				getchar();      // drain any additional input
+			}
+			return -ENODATA;
+
 		default:
 		case XBEE_READLINE_STATE_INIT:		// first time through, init terminal
 			nonblock(NB_ENABLE);
@@ -130,6 +138,11 @@ int xbee_readline( char *buffer, int length)
 						cursor--;
 					}
 					break;
+
+				case 0x04:				// treat CTRL-D as EOF
+					putchar('\n');
+					state = XBEE_READLINE_STATE_EOF;
+					return cursor == buffer ? -ENODATA : cursor - buffer;
 
 				case '\n':
 				case '\r':

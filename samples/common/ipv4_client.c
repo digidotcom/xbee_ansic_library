@@ -137,7 +137,7 @@ int main(int argc, char **argv)
             err = xbee_readline(payload, sizeof(payload));
             xbee_term_set_color(SOURCE_UNKNOWN);
         } while (!termflag && err == -EAGAIN);
-        if (termflag)
+        if (termflag || err == -ENODATA)
             return EXIT_SUCCESS;
         if (err < 0) {
             printf("Error reading input: %"PRIsFAR"\n", strerror(-err));

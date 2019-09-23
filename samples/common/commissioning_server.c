@@ -131,8 +131,12 @@ int main( int argc, char *argv[])
 
 	while (1)
    {
-      while (xbee_readline( cmdstr, sizeof cmdstr) == -EAGAIN)
-      {
+      int linelen;
+      do {
+         linelen = xbee_readline(cmdstr, sizeof cmdstr);
+         if (linelen == -ENODATA) {
+            return 0;
+         }
 			// tick function for ZCL Commissioning Server
 			xbee_commissioning_tick( &my_xbee, &zcl_comm_state);
 
@@ -140,7 +144,7 @@ int main( int argc, char *argv[])
 			xbee_zcl_identify( &my_xbee);
 
       	wpan_tick( &my_xbee.wpan_dev);
-      }
+      } while (linelen < 0);
 
 		if (! strcmpi( cmdstr, "quit"))
       {
