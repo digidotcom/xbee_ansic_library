@@ -25,6 +25,13 @@ files written to handle them.
 | 0x2B | Cellular Firmware Update    |
 | 0x2C | BLE Unlock Request          |
 | 0x2D | User Data Relay Tx          | xbee/user_data.h, xbee_user_data.c
+| 0x40 | Socket Create               | xbee/socket.h, xbee_socket.c
+| 0x41 | Socket Option               | xbee/socket.h, xbee_socket.c
+| 0x42 | Socket Connect              | xbee/socket.h, xbee_socket.c
+| 0x43 | Socket Close                | xbee/socket.h, xbee_socket.c
+| 0x44 | Socket Send                 | xbee/socket.h, xbee_socket.c
+| 0x45 | Socket SendTo               | xbee/socket.h, xbee_socket.c
+| 0x46 | Socket Listen               | xbee/socket.h, xbee_socket.c
 |      |      **XBee to Host**       |
 | 0x80 | Rx Packet: 64-bit address   |
 | 0x81 | Rx Packet: 16-bit address   |
@@ -62,4 +69,13 @@ files written to handle them.
 | 0xB8 | Send Data Response          |
 | 0xB9 | Device Request              |
 | 0xBA | Device Response Status      |
+| 0xC0 | Socket Create Response      | xbee/socket.h, xbee_socket.c
+| 0xC1 | Socket Option Response      | xbee/socket.h, xbee_socket.c
+| 0xC2 | Socket Connect Response     | xbee/socket.h, xbee_socket.c
+| 0xC3 | Socket Close Response       | xbee/socket.h, xbee_socket.c
+| 0xC6 | Socket Listen Response      | xbee/socket.h, xbee_socket.c
+| 0xCC | Socket New Client           | xbee/socket.h, xbee_socket.c
+| 0xCD | Socket Receive              | xbee/socket.h, xbee_socket.c
+| 0xCE | Socket Receive From         | xbee/socket.h, xbee_socket.c
+| 0xCF | Socket Status               | xbee/socket.h, xbee_socket.c
 | 0xFE | Frame Error                 |

@@ -145,6 +145,12 @@ sms_client_OBJECTS = $(xbee_OBJECTS) sms_client.o $(atinter_OBJECTS) xbee_sms.o
 sms_client : $(sms_client_OBJECTS)
 	$(COMPILE) -o $@ $^
 
+socket_OBJECTS = $(xbee_OBJECTS) xbee_socket_frames.o xbee_socket.o
+socket_dev_OBJECTS = $(socket_OBJECTS) socket_dev.o $(atinter_OBJECTS) \
+            xbee_ipv4.o xbee_delivery_status.o
+socket_dev : $(socket_dev_OBJECTS)
+	$(COMPILE) -o $@ $^
+
 transparent_client_OBJECTS = $(zigbee_OBJECTS) transparent_client.o \
 	$(atinter_OBJECTS) _nodetable.o \
 	xbee_discovery.o \
