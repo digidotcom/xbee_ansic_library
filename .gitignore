@@ -1,8 +1,12 @@
+# POSIX executables
+**/posix/*
+!**/posix/*.*
+!**/posix/Makefile
+
 # Win32, POSIX
 *.d
 *.o
-samples/*/*.exe
-test/*/*.exe
+*.exe
 
 # DOS
 */dos/*.err
@@ -46,8 +50,3 @@ coverity
 samples/rabbit/main-node_discovery.c
 samples/rabbit/my_config.h
 
-# POSIX executables
-test/posix/*.
-samples/posix/*.
-!test/posix/Makefile
-!samples/posix/Makefile
