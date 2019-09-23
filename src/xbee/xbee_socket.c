@@ -17,9 +17,7 @@
 
     Support code for Extended Socket frames (0x40-0x4F and 0xC0-0xCF).
 
-    TODO: write some good documentation on the design of this API layer
-
-
+    See xbee/socket.h for summary of API.
 */
 
 #if 0
@@ -34,6 +32,22 @@
 #include "xbee/byteorder.h"
 #include "xbee/device.h"
 #include "xbee/socket.h"
+
+/*
+    State machine for .type element of socket_t:
+
+    AVAILABLE -> PENDING        user code calls xbee_sock_create()
+    PENDING -> CREATED          handle_create_resp() frame handler
+    CREATED -> ATTACH           user code calls xbee_sock_connect(),
+                                xbee_sock_bind() or xbee_sock_listen()
+    handle_attach_resp():
+    ATTACH -> CONNECT           XBEE_FRAME_SOCK_CONNECT_RESP frame
+    ATTACH -> BIND              XBEE_FRAME_SOCK_LISTEN_RESP frame (UDP)
+    ATTACH -> LISTEN            XBEE_FRAME_SOCK_LISTEN_RESP frame (TCP/SSL)
+
+    * -> AVAILABLE              xbee_sock_close(), xbee_sock_close_all(), or
+                                xbee_sock_reset()
+*/
 
 // Private/opaque structure, intentionally not exposed in a header file.
 typedef struct xbee_sock_socket {
@@ -71,7 +85,7 @@ static socket_t socket_table[XBEE_SOCK_SOCKET_COUNT];
 /// call this function until after sending the Socket Create frame and setting
 /// the create_frame_id of the structure.
 ///
-/// Currently (table_index << 8) in high byte and create_frame_id in low byte.
+/// Currently table_index in high byte and create_frame_id in low byte.
 static xbee_sock_t _xbee_sock_t(socket_t *s)
 {
     if (s == NULL) {
@@ -117,11 +131,14 @@ static socket_t *_lookup_socket_id(xbee_dev_t *xbee, uint8_t socket_id)
     return NULL;
 }
 
+/// Free an entry allocated from the socket table with _socket_alloc().
 static void _socket_free(socket_t *s)
 {
     memset(s, 0, sizeof(*s));
 }
 
+/// Returns a pointer to an open entry in the sockets table, with its state
+/// updated to PENDING.
 static socket_t *_socket_alloc(xbee_dev_t *xbee)
 {
     socket_t *s;
@@ -190,6 +207,7 @@ xbee_sock_t xbee_sock_create(xbee_dev_t *xbee,
 }
 
 
+// API documented in xbee/socket.h
 int xbee_sock_connect(xbee_sock_t socket, uint16_t remote_port,
                       uint32_t remote_addr, const char *remote_host,
                       xbee_sock_receive_fn receive_handler)
@@ -250,6 +268,24 @@ int xbee_sock_connect(xbee_sock_t socket, uint16_t remote_port,
 }
 
 
+/**
+    @brief
+    Common code shared by xbee_sock_bind() and xbee_sock_listen().
+
+    @param[in]  socket          Socket ID returned from xbee_sock_create().
+    @param[in]  local_port      Port to listen on.
+    @param[in]  is_bind         TRUE for _bind(), FALSE for _listen().
+    @param[out] sock            Allocated socket (if return value is 0).
+
+    @retval     0               Sent Socket Bind/Listen frame to XBee module.
+    @retval     -ENOENT         Invalid socket ID passed to function.
+    @retval     -EPERM          Socket already connected/bound/listening, or
+                                not a UDP socket.
+    @retval     -EBUSY          Transmit serial buffer is full, or XBee is not
+                                accepting serial data (deasserting /CTS signal).
+
+    @sa xbee_sock_bind, xbee_sock_listen
+*/
 static int _common_bind_listen(xbee_sock_t socket,
                                uint16_t local_port,
                                int is_bind,
@@ -288,6 +324,8 @@ static int _common_bind_listen(xbee_sock_t socket,
     return retval;
 }
 
+
+// API documented in xbee/socket.h
 int xbee_sock_bind(xbee_sock_t socket, uint16_t local_port,
                    xbee_sock_receive_from_fn receive_from_handler)
 {
@@ -306,6 +344,7 @@ int xbee_sock_bind(xbee_sock_t socket, uint16_t local_port,
 }
 
 
+// API documented in xbee/socket.h
 int xbee_sock_listen(xbee_sock_t socket, uint16_t local_port,
                      xbee_sock_ipv4_client_fn ipv4_client_handler)
 {
@@ -324,6 +363,7 @@ int xbee_sock_listen(xbee_sock_t socket, uint16_t local_port,
 }
 
 
+// API documented in xbee/socket.h
 int xbee_sock_send(xbee_sock_t socket, uint8_t tx_options,
                    const void *payload, size_t payload_len)
 {
@@ -335,6 +375,10 @@ int xbee_sock_send(xbee_sock_t socket, uint8_t tx_options,
     if (s->type != XBEE_SOCK_SOCKET_TYPE_CONNECT) {
         // only allow sending for connected socket (not listening/bound)
         return -EPERM;
+    }
+
+    if (payload_len > 1500) {
+        return -EMSGSIZE;
     }
 
     xbee_header_sock_send_t header;
@@ -359,6 +403,7 @@ int xbee_sock_send(xbee_sock_t socket, uint8_t tx_options,
 }
 
 
+// API documented in xbee/socket.h
 int xbee_sock_sendto(xbee_sock_t socket, uint8_t tx_options,
                      uint32_t remote_addr, uint16_t remote_port,
                      const void *payload, size_t payload_len)
@@ -371,6 +416,10 @@ int xbee_sock_sendto(xbee_sock_t socket, uint8_t tx_options,
     if (s->type != XBEE_SOCK_SOCKET_TYPE_BIND) {
         // only allow sending for bound socket (not connected/listening)
         return -EPERM;
+    }
+
+    if (payload_len > 1500) {
+        return -EMSGSIZE;
     }
 
     xbee_header_sock_sendto_t header;
@@ -396,8 +445,9 @@ int xbee_sock_sendto(xbee_sock_t socket, uint8_t tx_options,
 }
 
 
+// API documented in xbee/socket.h
 int xbee_sock_option(xbee_sock_t socket, uint8_t option_id, const void *data,
-                     size_t data_length, xbee_sock_option_resp_fn callback)
+                     size_t data_len, xbee_sock_option_resp_fn callback)
 {
     socket_t *s = _lookup_sock_t(socket);
     if (s == NULL) {
@@ -417,10 +467,10 @@ int xbee_sock_option(xbee_sock_t socket, uint8_t option_id, const void *data,
     header.option_id = option_id;
 
     int retval = xbee_frame_write(s->xbee, &header, sizeof(header),
-                                  data, data_length, XBEE_WRITE_FLAG_NONE);
+                                  data, data_len, XBEE_WRITE_FLAG_NONE);
 
     debug_printf("%s: %u bytes in frame 0x%02X  sock 0x%02X  result %d\n",
-                 __FUNCTION__, (unsigned)data_length, header.frame_id,
+                 __FUNCTION__, (unsigned)data_len, header.frame_id,
                  s->socket_id, retval);
 
     if (retval == 0) {
@@ -431,7 +481,17 @@ int xbee_sock_option(xbee_sock_t socket, uint8_t option_id, const void *data,
 }
 
 
-// shared helper for sending a Socket Close frame
+/**
+    @brief
+    Shared helper for sending a Socket Close frame.
+
+    @param[in]  xbee            XBee device for socket closure.
+    @param[in]  socket_id       Socket ID to use in frame.
+
+    @retval     0               Sent request.
+    @retval     -EBUSY          Transmit serial buffer is full, or XBee is not
+                                accepting serial data (deasserting /CTS signal).
+*/
 static int _sock_close_frame(xbee_dev_t *xbee, uint8_t socket_id)
 {
     xbee_frame_sock_close_t frame;
@@ -447,7 +507,19 @@ static int _sock_close_frame(xbee_dev_t *xbee, uint8_t socket_id)
                             NULL, 0, XBEE_WRITE_FLAG_NONE);
 }
 
-// shared helper to close socket and free entry in the socket table
+
+/**
+    @brief
+    Shared helper for sending a Socket Close frame and freeing the entry from
+    the socket table.
+
+    @param[in]  s               Socket to close and release.
+
+    @retval     0               Sent request and freed socket entry.
+    @retval     -ENOENT         \a s is NULL.
+    @retval     -EBUSY          Transmit serial buffer is full, or XBee is not
+                                accepting serial data (deasserting /CTS signal).
+*/
 static int _sock_close(socket_t *s)
 {
     if (s == NULL) {
@@ -520,8 +592,15 @@ int xbee_sock_close_all(xbee_dev_t *xbee)
     @brief
     Frame handler for 0x89 (XBEE_FRAME_TX_STATUS) frames.
 
-    Figure out which socket sent data matching this TX Status frame, and
-    notify the user with the XBEE_TX_DELIVERY_xxx message.
+    Figures out which socket sent data matching this TX Status frame, and
+    notifies the user with the XBEE_TX_DELIVERY_xxx message.
+
+    @param[in]  xbee            XBee device that received the frame.
+    @param[in]  frame           Received frame.
+
+    @retval     0               Matched entry in socket table and called
+                                the Notify handler.
+    @retval     -ENOENT         Couldn't find matching entry in socket table.
 */
 static int handle_tx_status(xbee_dev_t *xbee,
                             const xbee_frame_tx_status_t FAR *frame)
@@ -537,11 +616,11 @@ static int handle_tx_status(xbee_dev_t *xbee,
             // accidentally match another TX Status frame.
             s->tx_frame_id = 0;
 
-            break;
+            return 0;
         }
     }
 
-    return 0;
+    return -ENOENT;
 }
 
 
@@ -550,6 +629,13 @@ static int handle_tx_status(xbee_dev_t *xbee,
     Frame handler for 0xC0 (XBEE_FRAME_SOCK_CREATE_RESP) frames.
 
     Updates entry in socket table and calls user's callback.
+
+    @param[in]  xbee            XBee device that received the frame.
+    @param[in]  frame           Received frame.
+
+    @retval     0               Matched entry in socket table, updated status
+                                and called the Notify handler.
+    @retval     -ENOENT         Couldn't find matching entry in socket table.
 */
 static int handle_create_resp(xbee_dev_t *xbee,
                               const xbee_frame_sock_shared_resp_t FAR *frame)
@@ -591,6 +677,12 @@ static int handle_create_resp(xbee_dev_t *xbee,
         0xC2 (XBEE_FRAME_SOCK_CONNECT_RESP)
         0xC6 (XBEE_FRAME_SOCK_LISTEN_RESP)
 
+    @param[in]  xbee            XBee device that received the frame.
+    @param[in]  frame           Received frame.
+
+    @retval     0               Matched entry in socket table, updated status
+                                and called the Notify handler.
+    @retval     -ENOENT         Couldn't find matching entry in socket table.
 */
 static int handle_attach_resp(xbee_dev_t *xbee,
                               const xbee_frame_sock_shared_resp_t FAR *frame)
@@ -637,19 +729,28 @@ static int handle_attach_resp(xbee_dev_t *xbee,
 /**
     @brief
     Frame handler for 0xC1 (XBEE_FRAME_SOCK_OPTION_RESP) frames.
+
+    @param[in]  xbee            XBee device that received the frame.
+    @param[in]  frame           Received frame.
+    @param[in]  length          Length of frame (to calculate payload length).
+
+    @retval     0               Matched entry in socket table and called the
+                                Option handler.
+    @retval     -ENOENT         Couldn't find matching entry in socket table.
+    @retval     -EINVAL         \a length was too small for this frame type.
 */
 static int handle_option_resp(xbee_dev_t *xbee,
                               const xbee_frame_sock_option_resp_t FAR *frame,
                               uint16_t length)
 {
-    int16_t payload_length =
+    int16_t payload_len =
         length - offsetof(xbee_frame_sock_option_resp_t, option_data);
 
     debug_printf("%s: frame 0x%02X  sock 0x%02X  opt 0x%02X  status 0x%02X\n",
                  __FUNCTION__, frame->frame_id, frame->socket_id,
                  frame->option_id, frame->status);
 
-    if (payload_length < 0) {
+    if (payload_len < 0) {
         return -EINVAL;
     }
 
@@ -662,9 +763,9 @@ static int handle_option_resp(xbee_dev_t *xbee,
 
     if (s->option_handler != NULL) {
         const void *option_data =
-            payload_length ? &frame->option_data[0] : NULL;
+            payload_len ? &frame->option_data[0] : NULL;
         s->option_handler(_xbee_sock_t(s), frame->option_id, frame->status,
-                          option_data, payload_length);
+                          option_data, payload_len);
     }
 
     return 0;
@@ -674,6 +775,15 @@ static int handle_option_resp(xbee_dev_t *xbee,
 /**
     @brief
     Frame handler for 0xCC (XBEE_FRAME_SOCK_IPV4_CLIENT) frames.
+
+    @param[in]  xbee            XBee device that received the frame.
+    @param[in]  frame           Received frame.
+
+    @retval     0               Found Listening socket in socket table, created
+                                new Connected socket, and called the IPv4 Client
+                                handler.
+    @retval     -ENOENT         Couldn't find matching entry in socket table.
+    @retval     -EPERM          Socket isn't a listening socket.
 */
 static int handle_ipv4_client(xbee_dev_t *xbee,
                               const xbee_frame_sock_ipv4_client_t FAR *frame)
@@ -754,17 +864,31 @@ static int handle_ipv4_client(xbee_dev_t *xbee,
     @brief
     Shared code for frame handlers processing XBEE_FRAME_SOCK_RECEIVE and
     XBEE_FRAME_SOCK_RECEIVE_FROM frames.
+
+    @param[in]  xbee            XBee device that received the frame.
+    @param[in]  payload_len     Length of payload (up to 1500 bytes).
+    @param[in]  type_check      XBEE_SOCK_SOCKET_TYPE_CONNECT for
+                                XBEE_FRAME_SOCK_RECEIVE or
+                                XBEE_SOCK_SOCKET_TYPE_BIND for
+                                XBEE_FRAME_SOCK_RECEIVE_FROM.
+    @param[in]  socket_id       Socket ID field from received frame.
+    @param[out] socket          Socket table entry (if return value is 0).
+
+    @retval     0               Found socket in table with correct type.
+    @retval     -EINVAL         Invalid (negative) \a payload_len.
+    @retval     -ENOENT         Couldn't find matching entry in socket table.
+    @retval     -EPERM          Socket type doesn't match \a type_check.
 */
 static int _common_receive(xbee_dev_t *xbee,
-                           int16_t payload_length,
+                           int16_t payload_len,
                            uint8_t type_check,
                            uint8_t socket_id,
                            socket_t **socket)
 {
     debug_printf("%s: socket 0x%02X:  %d bytes\n",
-                 __FUNCTION__, socket_id, payload_length);
+                 __FUNCTION__, socket_id, payload_len);
 
-    if (payload_length < 0) {
+    if (payload_len < 0) {
         return -EINVAL;
     }
 
@@ -789,22 +913,32 @@ static int _common_receive(xbee_dev_t *xbee,
 /**
     @brief
     Frame handler for 0xCD (XBEE_FRAME_SOCK_RECEIVE) frames.
+
+    @param[in]  xbee            XBee device that received the frame.
+    @param[in]  frame           Received frame.
+    @param[in]  length          Length of frame (to calculate payload length).
+
+    @retval     0               Found socket in table and passed payload to
+                                the Receive handler.
+    @retval     -EINVAL         \a length was too small for this frame type.
+    @retval     -ENOENT         Couldn't find matching entry in socket table.
+    @retval     -EPERM          Socket type isn't XBEE_SOCK_SOCKET_TYPE_CONNECT.
 */
 static int handle_receive(xbee_dev_t *xbee,
                           const xbee_frame_sock_receive_t FAR *frame,
                           uint16_t length)
 {
-    int16_t payload_length =
+    int16_t payload_len =
         length - offsetof(xbee_frame_sock_receive_t, payload);
 
     socket_t *s;
-    int retval = _common_receive(xbee, payload_length,
+    int retval = _common_receive(xbee, payload_len,
                                  XBEE_SOCK_SOCKET_TYPE_CONNECT,
                                  frame->socket_id, &s);
 
     if (retval == 0) {
         s->handler.receive(_xbee_sock_t(s), frame->status,
-                           frame->payload, payload_length);
+                           frame->payload, payload_len);
     }
 
     return retval;
@@ -814,16 +948,26 @@ static int handle_receive(xbee_dev_t *xbee,
 /**
     @brief
     Frame handler for 0xCE (XBEE_FRAME_SOCK_RECEIVE_FROM) frames.
+
+    @param[in]  xbee            XBee device that received the frame.
+    @param[in]  frame           Received frame.
+    @param[in]  length          Length of frame (to calculate payload length).
+
+    @retval     0               Found socket in table and passed payload to
+                                the Receive From handler.
+    @retval     -EINVAL         \a length was too small for this frame type.
+    @retval     -ENOENT         Couldn't find matching entry in socket table.
+    @retval     -EPERM          Socket type isn't XBEE_SOCK_SOCKET_TYPE_BIND.
 */
 static int handle_receive_from(xbee_dev_t *xbee,
                                const xbee_frame_sock_receive_from_t FAR *frame,
                                uint16_t length)
 {
-    int16_t payload_length =
+    int16_t payload_len =
         length - offsetof(xbee_frame_sock_receive_from_t, payload);
 
     socket_t *s;
-    int retval = _common_receive(xbee, payload_length,
+    int retval = _common_receive(xbee, payload_len,
                                  XBEE_SOCK_SOCKET_TYPE_BIND,
                                  frame->socket_id, &s);
 
@@ -831,7 +975,7 @@ static int handle_receive_from(xbee_dev_t *xbee,
         s->handler.receive_from(_xbee_sock_t(s), frame->status,
                                 be32toh(frame->remote_addr_be),
                                 be16toh(frame->remote_port_be),
-                                frame->payload, payload_length);
+                                frame->payload, payload_len);
     }
 
     return retval;
@@ -841,6 +985,13 @@ static int handle_receive_from(xbee_dev_t *xbee,
 /**
     @brief
     Frame handler for 0xCF (XBEE_FRAME_SOCK_STATE) frames.
+
+    @param[in]  xbee            XBee device that received the frame.
+    @param[in]  frame           Received frame.
+
+    @retval     0               Called Notify handler and released socket entry
+                                if frame reported an error.
+    @retval     -ENOENT         Couldn't find matching entry in socket table.
 */
 static int handle_sock_state(xbee_dev_t *xbee,
                              const xbee_frame_sock_state_t FAR *frame)
@@ -866,19 +1017,18 @@ static int handle_sock_state(xbee_dev_t *xbee,
     return 0;
 }
 
-/**
-    @brief
-    Frame handler for all response frames.
+/*
+    Single handler for all frames, reduces number of entries in frame handler
+    table and can use a simpler API for each frame type (length only necessary
+    for variable-length frames, drop unused context, cast the void pointer
+    to the correct frame type).
 
-    View the documentation of xbee_frame_handler_fn() for this function's
-    parameters and return value.
-
-    @sa xbee_frame_handler_fn
+    API documented in xbee/socket.h.
 */
 int xbee_sock_frame_handler(xbee_dev_t *xbee, const void FAR *rawframe,
                             uint16_t length, void FAR *context)
 {
-    // Switch on frame_type, first byte of frame
+    // Switch on frame_type, always teh first byte of the frame.
     switch (*(const uint8_t *)rawframe)
     {
     case XBEE_FRAME_TX_STATUS:
@@ -907,7 +1057,8 @@ int xbee_sock_frame_handler(xbee_dev_t *xbee, const void FAR *rawframe,
         return handle_sock_state(xbee, rawframe);
     }
 
-    // Library calls this handler for ALL frame types, so just return if it's
-    // a frame we aren't interested in.
+    // Because we use a 0 for frame_type in out xbee_dispatch_table_entry_t,
+    // the library calls our handler for ALL frame types.  So just return if
+    // this is a frame we aren't interested in.
     return 0;
 }
