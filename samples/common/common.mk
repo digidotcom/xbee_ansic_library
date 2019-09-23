@@ -146,9 +146,14 @@ sms_client : $(sms_client_OBJECTS)
 	$(COMPILE) -o $@ $^
 
 socket_OBJECTS = $(xbee_OBJECTS) xbee_socket_frames.o xbee_socket.o
-socket_dev_OBJECTS = $(socket_OBJECTS) socket_dev.o $(atinter_OBJECTS) \
+socket_test_OBJECTS = $(socket_OBJECTS) socket_test.o $(atinter_OBJECTS) \
             xbee_ipv4.o xbee_delivery_status.o
-socket_dev : $(socket_dev_OBJECTS)
+socket_test : $(socket_test_OBJECTS)
+	$(COMPILE) -o $@ $^
+
+xbee_netcat_OBJECTS = $(socket_OBJECTS) xbee_netcat.o xbee_delivery_status.o \
+            xbee_readline.o xbee_term_$(PORT).o xbee_ipv4.o
+xbee_netcat : $(xbee_netcat_OBJECTS)
 	$(COMPILE) -o $@ $^
 
 transparent_client_OBJECTS = $(zigbee_OBJECTS) transparent_client.o \
