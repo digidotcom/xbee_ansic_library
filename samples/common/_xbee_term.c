@@ -154,7 +154,9 @@ void dump_serial_data( const char *buffer, int length)
 	fflush( stdout);
 }
 
-#define CTRL(x)	((x) & 0x1F)
+#ifndef CTRL
+	#define CTRL(x)	((x) & 0x1F)
+#endif
 void xbee_term( xbee_serial_t *port)
 {
 	int ch, retval;

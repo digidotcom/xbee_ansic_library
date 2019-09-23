@@ -20,6 +20,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "xbee/bl_gen3.h"
 #include "xbee/device.h"
@@ -47,7 +48,7 @@ int main(int argc, char *argv[])
     uint32_t t;
     int result;
     int query_only = FALSE;
-    xbee_gen3_state_t last_state, new_state;
+    xbee_gen3_state_t last_state = 0, new_state;
     xbee_serial_t XBEE_SERPORT;
 
     parse_serial_arguments(argc, argv, &XBEE_SERPORT);
