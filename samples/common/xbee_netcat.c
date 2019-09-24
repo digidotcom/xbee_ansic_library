@@ -17,6 +17,7 @@
     TCP or UDP socket and pass its data to/from stdout/stdin.
 */
 
+#include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -484,7 +485,8 @@ int main(int argc, char *argv[])
 
         case 'x':
 #ifdef POSIX
-            xbee_serial.device = optarg;
+            snprintf(xbee_serial.device, sizeof xbee_serial.device,
+                    "%s", optarg);
 #else // assume Win32
             if (memcmp(optarg, "COM", 3) == 0) {
                 unsigned long param = parse_num(&optarg[3]);
