@@ -37,8 +37,10 @@ EXE += \
 	ipv4_client \
 	network_scan \
 	sms_client \
+	socket_test \
 	transparent_client \
 	user_data_relay \
+	xbee_netcat \
 	xbee_term \
 	zcltime \
 	zigbee_walker \
@@ -56,53 +58,10 @@ eblinfo : eblinfo.o xbee_ebl_file.o swapbytes.o
 	$(COMPILE) -o $@ $^
 
 SRCS = \
-	atinter.c \
-	eblinfo.c \
-	install_ebl.c \
-	ipv4_client.c \
-	transparent_client.c \
-	pxbee_ota_update.c \
-	xbee_term.c _xbee_term.c xbee_term_$(PORT).c \
-	zcltime.c \
-	parse_serial_args.c \
-	_atinter.c _pxbee_ota_update.c \
-	_commission_client.c \
-	_commission_server.c _nodetable.c _zigbee_walker.c \
-	xbee_atcmd.c \
-	xbee_atmode.c \
-	xbee_bl_gen3.c \
-	xbee_cbuf.c \
-	xbee_device.c \
-	xbee_discovery.c \
-	xbee_ebl_file.c \
-	xbee_firmware.c \
-	xbee_gpm.c \
-	xbee_ipv4.c \
-	xbee_ota_client.c \
-	xbee_platform_$(PORT).c \
-	xbee_readline.c \
-	xbee_scan.c \
-	xbee_serial_$(PORT).c \
-	xbee_sms.c \
-	xbee_time.c \
-	xbee_transparent_serial.c \
-	xbee_tx_status.c \
-	xbee_user_data.c \
-	xbee_wifi.c \
-	xbee_xmodem.c \
-	zcl_basic.c \
-	zcl_client.c \
-	zcl_identify.c \
-	zcl_time.c \
-	zcl_types.c \
-	zigbee_zcl.c \
-	zigbee_zdo.c \
-	wpan_types.c \
-	xmodem_crc16.c \
-	hexstrtobyte.c \
-	swapbytes.c \
-	memcheck.c \
-	hexdump.c \
+	$(wildcard $(SRCDIR)/*/*.c) \
+	$(wildcard $(PORTDIR)/*.c) \
+	$(wildcard $(DRIVER)/samples/$(PORT)/*.c) \
+	$(wildcard $(DRIVER)/samples/common/*.c) \
 
 base_OBJECTS = xbee_platform_$(PORT).o xbee_serial_$(PORT).o hexstrtobyte.o \
 					memcheck.o swapbytes.o swapcpy.o hexdump.o parse_serial_args.o
@@ -217,17 +176,6 @@ commissioning_server : $(commissioning_server_OBJECTS)
 %.o : ../common/%.c
 	$(COMPILE) -c $<
 
-# ...or in SRCDIR...
-%.o : $(SRCDIR)/%.c
+# ...or in a subdirectory of SRCDIR...
+%.o : $(SRCDIR)/*/%.c
 	$(COMPILE) -c $<
-
-# ...or in a given subdirectory of SRCDIR.
-%.o : $(SRCDIR)/xbee/%.c
-	$(COMPILE) -c $<
-%.o : $(SRCDIR)/wpan/%.c
-	$(COMPILE) -c $<
-%.o : $(SRCDIR)/zigbee/%.c
-	$(COMPILE) -c $<
-%.o : $(SRCDIR)/util/%.c
-	$(COMPILE) -c $<
-
