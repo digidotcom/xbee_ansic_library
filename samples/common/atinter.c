@@ -61,20 +61,17 @@ int main( int argc, char *argv[])
       int linelen;
       do {
          linelen = xbee_readline(cmdstr, sizeof cmdstr);
-         if (linelen == -ENODATA) {
-            return 0;
-         }
          xbee_dev_tick( &my_xbee);
-      } while (linelen < 0);
+      } while (linelen == -EAGAIN);
 
-		if (! strncmpi( cmdstr, "menu", 4))
-      {
-      	printATCmds( &my_xbee);
-      }
-      else if (! strcmpi( cmdstr, "quit"))
+      if (linelen == -ENODATA || ! strcmpi( cmdstr, "quit"))
       {
 			return 0;
 		}
+		else if (! strncmpi( cmdstr, "menu", 4))
+      {
+      	printATCmds( &my_xbee);
+      }
       else
       {
 			process_command( &my_xbee, cmdstr);

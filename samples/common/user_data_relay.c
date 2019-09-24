@@ -150,7 +150,7 @@ int main(int argc, char *argv[])
                 return 0;
             }
             xbee_dev_tick(&my_xbee);
-        } while (linelen < 0);
+        } while (linelen == -EAGAIN);
 
         // blank line changes to next interface
         if (*cmdstr == '\0') {

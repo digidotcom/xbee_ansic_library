@@ -322,13 +322,10 @@ int main( int argc, char *argv[])
       int linelen;
       do {
          linelen = xbee_readline(cmdstr, sizeof cmdstr);
-         if (linelen == -ENODATA) {
-            return 0;
-         }
          wpan_tick( &my_xbee.wpan_dev);
-      } while (linelen < 0);
+      } while (linelen == -EAGAIN);
 
-		if (! strcmpi( cmdstr, "quit"))
+		if (linelen == -ENODATA || ! strcmpi( cmdstr, "quit"))
       {
 			return 0;
 		}

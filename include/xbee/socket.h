@@ -187,10 +187,10 @@ typedef void (*xbee_sock_option_resp_fn)(xbee_sock_t socket,
 
     @param[in]  protocol        one of XBEE_SOCK_PROTOCOL_UDP, _TCP or _SSL
     @param[in]  notify_handler  Callback to receive socket notifications from
-                                multiple frame types.
+                                multiple frame types.  Must be non-NULL.
 
     @retval     >0              Socket identifier of newly allocated socket.
-    @retval     -EINVAL         Invalid protocol or NULL created_handler.
+    @retval     -EINVAL         Invalid protocol or NULL notify_handler.
     @retval     -ENOSPC         Active socket table is full.
     @retval     -EBUSY          Transmit serial buffer is full, or XBee is not
                                 accepting serial data (deasserting /CTS signal).
@@ -283,13 +283,16 @@ int xbee_sock_listen(xbee_sock_t socket, uint16_t local_port,
     Send data on a Connected socket, or an IPv4 Client socket spawned from
     a Listening socket.
 
+    This function has a hard limit of 1500 bytes for the payload, and returns
+    -EMSGSIZE for values above 1500.  An XBee Cellular module may have a lower
+    limit in some scenarios (e.g., UDP sockets on XBee3 Cellular LTE-M/NBIoT)
+    and will respond with an XBEE_TX_DELIVERY_PAYLOAD_TOO_BIG delivery status
+    (passed to the socket's Notify handler.
+
     @param[in]  socket          Socket ID returned from xbee_sock_create().
     @param[in]  tx_options      Reserved field of Socket Send frame; set to 0.
     @param[in]  payload         Data to send.
     @param[in]  payload_len     Length of data to send (maximum of 1500 bytes).
-                                If too large, the XBee will respond with an
-                                XBEE_TX_DELIVERY_PAYLOAD_TOO_BIG delivery
-                                status, passed to the notify handler.
 
     @retval     0               Sent Socket Send frame to XBee module.
     @retval     -EINVAL         Invalid parameter passed to function.
@@ -309,6 +312,12 @@ int xbee_sock_send(xbee_sock_t socket, uint8_t tx_options,
     @brief
     Send a datagram on a Bound UDP socket.
 
+    This function has a hard limit of 1500 bytes for the payload, and returns
+    -EMSGSIZE for values above 1500.  An XBee Cellular module may have a lower
+    limit in some scenarios (e.g., UDP sockets on XBee3 Cellular LTE-M/NBIoT)
+    and will respond with an XBEE_TX_DELIVERY_PAYLOAD_TOO_BIG delivery status
+    (passed to the socket's Notify handler).
+
     @param[in]  socket          Socket ID returned from xbee_sock_create().
     @param[in]  tx_options      Reserved field of Socket SendTo frame; set to 0.
     @param[in]  remote_addr     Remote device's address as a 32-bit value
@@ -316,9 +325,6 @@ int xbee_sock_send(xbee_sock_t socket, uint8_t tx_options,
     @param[in]  remote_port     Remote device's port.
     @param[in]  payload         Data to send.
     @param[in]  payload_len     Length of data to send (maximum of 1500 bytes).
-                                If too large, the XBee will respond with an
-                                XBEE_TX_DELIVERY_PAYLOAD_TOO_BIG delivery
-                                status, passed to the notify handler.
 
     @retval     0               Sent Socket Send frame to XBee module.
     @retval     -EINVAL         Invalid parameter passed to function.

@@ -49,7 +49,7 @@ int xbee_readline( char *buffer, int length)
 		case XBEE_READLINE_STATE_EOF:
 			usleep( 1000);	// sleep 1ms to reduce CPU usage
 			while (kbhit()) {
-				getchar();      // drain any additional input
+				getch();        // drain any additional input
 			}
 			return -ENODATA;
 
