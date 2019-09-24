@@ -1,5 +1,7 @@
 # Makefile for sample programs on POSIX platforms
 
+CC ?= gcc
+
 PORT = posix
 
 DEFINE = -DPOSIX
@@ -8,7 +10,7 @@ DEFINE = -DPOSIX
 # -MMD generates dependency files automatically, omitting system files
 # -MP creates phony targets for each prerequisite in a .d file
 
-COMPILE = gcc -iquote$(INCDIR) -std=gnu99 -g -MMD -MP -Wall $(DEFINE) $(CFLAGS)
+COMPILE = $(CC) -iquote$(INCDIR) -std=gnu99 -g -MMD -MP -Wall $(DEFINE) $(CFLAGS)
 
 include ../common/common.mk
 
