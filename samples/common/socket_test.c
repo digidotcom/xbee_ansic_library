@@ -131,15 +131,18 @@ static void option_callback(xbee_sock_t socket, uint8_t option_id,
     }
 }
 
-void print_menu(void)
+void print_menu(xbee_dev_t *xbee, const char *command)
 {
+    XBEE_UNUSED_PARAMETER(xbee);
+    XBEE_UNUSED_PARAMETER(command);
+
     puts("");
     puts("--- AT Commands ---");
     puts("Valid command formats (CC is command):");
     puts(" ATCC 0xXXXXXX (where XXXXXX is an even number of " \
            "hexadecimal characters)");
     puts(" ATCC YYYY (where YYYY is an integer, up to 32 bits)");
-    puts(" ATCC \"Node ID String\" (where quotes contain string data)");
+    puts(" ATCC \"ASCII string\" (where quotes contain string data)");
     puts("--- Create Socket ---");
     puts(" create [udp|tcp|ssl]            Create socket (returns ID for other cmds)");
     puts("--- Option Request ---");
@@ -163,6 +166,206 @@ void print_menu(void)
     puts(" quit                            Quit");
     puts("");
 }
+
+void handle_ip_cmd(xbee_dev_t *xbee, const char *command)
+{
+    uint32_t ip_be;
+    char buffer[16];
+
+    if (strchr(command, '.')) {
+        // convert dotted quad to uint32_t
+        if (xbee_ipv4_aton(&command[3], &ip_be) == 0) {
+            printf("%s = 0x%08X\n", &command[3], be32toh(ip_be));
+            return;
+        }
+    } else {
+        // convert uint32_t to dotted quad
+        ip_be = htobe32((uint32_t)strtoul(&command[3], NULL, 0));
+        if (xbee_ipv4_ntoa(buffer, ip_be) == 0) {
+            printf("%s = %s\n", &command[3], buffer);
+            return;
+        }
+    }
+    printf("Error parsing command\n");
+}
+
+void handle_create_cmd(xbee_dev_t *xbee, const char *command)
+{
+    int proto;
+
+    if (strcmpi(&command[7], "udp") == 0) {
+        proto = XBEE_SOCK_PROTOCOL_UDP;
+    } else if (strcmpi(&command[7], "tcp") == 0) {
+        proto = XBEE_SOCK_PROTOCOL_TCP;
+    } else if (strcmpi(&command[7], "ssl") == 0) {
+        proto = XBEE_SOCK_PROTOCOL_SSL;
+    } else {
+        printf("Error: invalid protocol '%s'\n", &command[7]);
+        return;
+    }
+
+    xbee_sock_t s = xbee_sock_create(xbee, proto, &notify_callback);
+    if (s < 0) {
+        printf("Error %d\n", s);
+    } else {
+        printf("Created socket 0x%04X\n", s);
+    }
+}
+
+void handle_option_cmd(xbee_dev_t *xbee, const char *command)
+{
+    xbee_sock_t s;
+    int option_id, value;
+
+    int params = sscanf(&command[7], "%i %i %i", &s, &option_id, &value);
+    if (params == 2) {          // get option
+        xbee_sock_option(s, option_id, NULL, 0, option_callback);
+    } else if (params == 3) {   // set option
+        uint8_t data = (uint8_t)value;
+        xbee_sock_option(s, option_id, &data, 1, option_callback);
+    } else {
+        printf("Error parsing command\n");
+    }
+}
+
+void handle_connect_cmd(xbee_dev_t *xbee, const char *command)
+{
+    xbee_sock_t s;
+    char hostname[80];
+    unsigned port;
+
+    if (sscanf(&command[8], "%i %80s %u", &s, &hostname[0], &port) < 3) {
+        printf("Error parsing command\n");
+    } else {
+        int result;
+        if (strchr(hostname, '.') == NULL) {
+            // treat hostname as 32-bit numeric address
+            uint32_t address = (uint32_t)strtoul(hostname, NULL, 0);
+            result = xbee_sock_connect(s, (uint16_t)port, address,
+                                       NULL, receive_callback);
+        } else {
+            result = xbee_sock_connect(s, (uint16_t)port, 0,
+                                       hostname, receive_callback);
+        }
+        if (result) {
+            printf("Error %d\n", result);
+        }
+    }
+}
+
+void handle_bind_cmd(xbee_dev_t *xbee, const char *command)
+{
+    xbee_sock_t s;
+    unsigned port;
+
+    if (sscanf(&command[5], "%i %u", &s, &port) < 2) {
+        printf("Error parsing command\n");
+    } else {
+        int result = xbee_sock_bind(s, (uint16_t)port, receive_from_callback);
+        if (result) {
+            printf("Error %d\n", result);
+        } else {
+            printf("Socket 0x%04X: bound to port %u\n", s, port);
+        }
+    }
+}
+
+void handle_listen_cmd(xbee_dev_t *xbee, const char *command)
+{
+    xbee_sock_t s;
+    unsigned port;
+
+    if (sscanf(&command[7], "%i %u", &s, &port) < 2) {
+        printf("Error parsing command\n");
+    } else {
+        int result = xbee_sock_listen(s, (uint16_t)port, ipv4_client_callback);
+        if (result) {
+            printf("Error %d\n", result);
+        } else {
+            printf("Socket 0x%04X: listening on port %u\n", s, port);
+        }
+    }
+}
+
+void handle_close_cmd(xbee_dev_t *xbee, const char *command)
+{
+    int err;
+    if (strcmpi(&command[6], "all") == 0) {
+        err = xbee_sock_close_all(xbee);
+    } else {
+        xbee_sock_t s = (xbee_sock_t)strtoul(&command[6], NULL, 0);
+        err = xbee_sock_close(s);
+    }
+    if (err) {
+        printf("Error %d\n", err);
+    }
+}
+
+void handle_send_cmd(xbee_dev_t *xbee, const char *command)
+{
+    if (strncmpi(command, "sendto ", 7) == 0) {
+        xbee_sock_t s;
+        unsigned addr, port;
+        char message[80];
+
+        memset(message, '\0', sizeof(message));
+        int parsed = sscanf(&command[7], "%i %i %u %80c",
+                            &s, &addr, &port, &message[0]);
+        if (parsed < 4) {
+            printf("Error parsing command\n");
+        } else {
+            xbee_sock_sendto(s, 0, (uint32_t)addr, (uint16_t)port,
+                             message, strlen(message));
+        }
+        return;
+    }
+
+    xbee_sock_t s;
+    char *space = strchr(command, ' ');
+    if (space == NULL) {
+        printf("Error parsing command\n");
+    } else {
+        s = (xbee_sock_t)strtoul(space + 1, &space, 0);
+        if (strncmpi(command, "sendcrlf ", 9) == 0) {
+            xbee_sock_send(s, 0, "\r\n", 2);
+        } else if (strncmpi(command, "sendcr ", 7) == 0) {
+            xbee_sock_send(s, 0, "\r", 1);
+        } else if (space) {
+            ++space;
+            size_t len = strlen(space);
+            if (strncmpi(command, "sendline ", 9) == 0) {
+                strcpy(&space[len], "\r\n");
+                len += 2;
+            }
+            xbee_sock_send(s, 0, space, len);
+        } else {
+            printf("Error parsing command\n");
+        }
+    }
+}
+
+typedef void (*command_fn)(xbee_dev_t *xbee, const char *command);
+typedef struct cmd_entry_t {
+    const char *command;
+    command_fn handler;
+} cmd_entry_t;
+
+cmd_entry_t commands[] = {
+    { "at",             &process_command },
+    { "?",              &print_menu },
+    { "help",           &print_menu },
+    { "menu",           &print_menu },
+    { "ip ",            &handle_ip_cmd },
+    { "create ",        &handle_create_cmd },
+    { "option ",        &handle_option_cmd },
+    { "connect ",       &handle_connect_cmd },
+    { "bind ",          &handle_bind_cmd },
+    { "listen ",        &handle_listen_cmd },
+    { "send",           &handle_send_cmd },     // matches send*
+    { "close ",         &handle_close_cmd },
+
+    { NULL, NULL }                      // end of command table
+};
 
 int main(int argc, char *argv[])
 {
@@ -195,7 +398,7 @@ int main(int argc, char *argv[])
     // report on the settings
     xbee_dev_dump_settings(&my_xbee, XBEE_DEV_DUMP_FLAG_DEFAULT);
 
-    print_menu();
+    print_menu(NULL, NULL);
     xbee_sock_reset(&my_xbee);          // close all open sockets
 
     while (1) {
@@ -207,162 +410,18 @@ int main(int argc, char *argv[])
 
         if (linelen == -ENODATA || strcmpi(cmdstr, "quit") == 0) {
             break;
-        } else if (strcmpi(cmdstr, "menu") == 0
-                   || strcmpi(cmdstr, "help") == 0
-                   || strcmp(cmdstr, "?") == 0)
-        {
-            print_menu();
-        } else if (strncmpi(cmdstr, "at", 2) == 0) {
-            process_command(&my_xbee, cmdstr);
-        } else if (strncmpi(cmdstr, "ip ", 3) == 0) {
-            uint32_t ip_be;
-            char buffer[16];
-            if (strchr(cmdstr, '.')) {
-                // convert dotted quad to uint32_t
-                if (xbee_ipv4_aton(&cmdstr[3], &ip_be) == 0) {
-                    printf("%s = 0x%08X\n", &cmdstr[3], be32toh(ip_be));
-                    continue;
-                }
-            } else {
-                // convert uint32_t to dotted quad
-                ip_be = htobe32((uint32_t)strtoul(&cmdstr[3], NULL, 0));
-                if (xbee_ipv4_ntoa(buffer, ip_be) == 0) {
-                    printf("%s = %s\n", &cmdstr[3], buffer);
-                    continue;
-                }
-            }
-            printf("Error parsing command\n");
-        } else if (strncmpi(cmdstr, "create ", 7) == 0) {
-            int proto = -1;
-            if (strcmpi(&cmdstr[7], "udp") == 0) {
-                proto = XBEE_SOCK_PROTOCOL_UDP;
-            } else if (strcmpi(&cmdstr[7], "tcp") == 0) {
-                proto = XBEE_SOCK_PROTOCOL_TCP;
-            } else if (strcmpi(&cmdstr[7], "ssl") == 0) {
-                proto = XBEE_SOCK_PROTOCOL_SSL;
-            } else {
-                printf("Error: invalid protocol '%s'\n", &cmdstr[7]);
-            }
-            if (proto != -1) {
-                xbee_sock_t s = xbee_sock_create(&my_xbee, proto,
-                                                 &notify_callback);
-                if (s < 0) {
-                    printf("Error %d\n", s);
-                } else {
-                    printf("Created socket 0x%04X\n", s);
-                }
-            }
-        } else if (strncmpi(cmdstr, "option ", 7) == 0) {
-            xbee_sock_t s;
-            int option_id, value;
+        }
 
-            int params = sscanf(&cmdstr[7], "%i %i %i", &s, &option_id, &value);
-            if (params == 2) {          // get option
-                xbee_sock_option(s, option_id, NULL, 0, option_callback);
-            } else if (params == 3) {   // set option
-                uint8_t data = (uint8_t)value;
-                xbee_sock_option(s, option_id, &data, 1, option_callback);
+        // Match command to an entry in the command table.
+        cmd_entry_t *cmd;
+        for (cmd = &commands[0]; cmd->command != NULL; ++cmd) {
+            if (strncmpi(cmdstr, cmd->command, strlen(cmd->command)) == 0) {
+                cmd->handler(&my_xbee, cmdstr);
+                break;
             }
-        } else if (strncmpi(cmdstr, "connect ", 8) == 0) {
-            xbee_sock_t s;
-            char hostname[80];
-            unsigned port;
+        }
 
-            if (sscanf(&cmdstr[8], "%i %80s %u", &s, &hostname[0], &port) < 3) {
-                printf("Error parsing command\n");
-            } else {
-                int result;
-                if (strchr(hostname, '.') == NULL) {
-                    // treat hostname as 32-bit numeric address
-                    uint32_t address = (uint32_t)strtoul(hostname, NULL, 0);
-                    result = xbee_sock_connect(s, (uint16_t)port, address,
-                                               NULL, receive_callback);
-                } else {
-                    result = xbee_sock_connect(s, (uint16_t)port, 0,
-                                               hostname, receive_callback);
-                }
-                if (result) {
-                    printf("Error %d\n", result);
-                }
-            }
-        } else if (strncmpi(cmdstr, "bind ", 5) == 0) {
-            xbee_sock_t s;
-            unsigned port;
-
-            if (sscanf(&cmdstr[5], "%i %u", &s, &port) < 2) {
-                printf("Error parsing command\n");
-            } else {
-                int result = xbee_sock_bind(s, (uint16_t)port,
-                                            receive_from_callback);
-                if (result) {
-                    printf("Error %d\n", result);
-                } else {
-                    printf("Socket 0x%04X: bound to port %u\n", s, port);
-                }
-            }
-        } else if (strncmpi(cmdstr, "listen ", 7) == 0) {
-            xbee_sock_t s;
-            unsigned port;
-
-            if (sscanf(&cmdstr[7], "%i %u", &s, &port) < 2) {
-                printf("Error parsing command\n");
-            } else {
-                printf("sock 0x%04X listening to port %u\n", s, port);
-                int result = xbee_sock_listen(s, (uint16_t)port,
-                                              ipv4_client_callback);
-                if (result) {
-                    printf("Error %d\n", result);
-                } else {
-                    printf("Socket 0x%04X: listening on port %u\n", s, port);
-                }
-            }
-        } else if (strncmpi(cmdstr, "sendto ", 7) == 0) {
-            xbee_sock_t s;
-            unsigned addr, port;
-            char message[80];
-
-            memset(message, '\0', sizeof(message));
-            int parsed = sscanf(&cmdstr[7], "%i %i %u %80c",
-                                &s, &addr, &port, &message[0]);
-            if (parsed < 4) {
-                printf("Error parsing command\n");
-            } else {
-                xbee_sock_sendto(s, 0, (uint32_t)addr, (uint16_t)port,
-                                 message, strlen(message));
-            }
-        } else if (strncmpi(cmdstr, "send", 4) == 0) {
-            xbee_sock_t s;
-            char *space = strchr(cmdstr, ' ');
-            if (space) {
-                s = (xbee_sock_t)strtoul(space + 1, &space, 0);
-                if (strncmpi(cmdstr, "sendcrlf ", 9) == 0) {
-                    xbee_sock_send(s, 0, "\r\n", 2);
-                } else if (strncmpi(cmdstr, "sendcr ", 7) == 0) {
-                    xbee_sock_send(s, 0, "\r", 1);
-                } else if (space) {
-                    ++space;
-                    size_t len = strlen(space);
-                    if (strncmpi(cmdstr, "sendline ", 9) == 0) {
-                        strcpy(&space[len], "\r\n");
-                        len += 2;
-                    }
-                    xbee_sock_send(s, 0, space, len);
-                } else {
-                    printf("Error parsing command\n");
-                }
-            }
-        } else if (strncmpi(cmdstr, "close ", 6) == 0) {
-            int err;
-            if (strcmpi(&cmdstr[6], "all") == 0) {
-                err = xbee_sock_close_all(&my_xbee);
-            } else {
-                xbee_sock_t s = (xbee_sock_t)strtoul(&cmdstr[6], NULL, 0);
-                err = xbee_sock_close(s);
-            }
-            if (err) {
-                printf("Error %d\n", err);
-            }
-        } else {
+        if (cmd->command == NULL) {
             printf("Error: unknown command '%s'\n", cmdstr);
         }
     }
