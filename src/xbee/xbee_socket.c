@@ -31,6 +31,7 @@
 
 #include "xbee/byteorder.h"
 #include "xbee/device.h"
+#include "xbee/ipv4.h"
 #include "xbee/socket.h"
 
 /*
@@ -377,7 +378,7 @@ int xbee_sock_send(xbee_sock_t socket, uint8_t tx_options,
         return -EPERM;
     }
 
-    if (payload_len > 1500) {
+    if (payload_len > XBEE_IPV4_MAX_PAYLOAD) {
         return -EMSGSIZE;
     }
 
@@ -418,7 +419,7 @@ int xbee_sock_sendto(xbee_sock_t socket, uint8_t tx_options,
         return -EPERM;
     }
 
-    if (payload_len > 1500) {
+    if (payload_len > XBEE_IPV4_MAX_PAYLOAD) {
         return -EMSGSIZE;
     }
 
