@@ -269,23 +269,24 @@ int xbee_bl_gen3_install_tick(xbee_gen3_update_t *source)
 #ifdef XBEE_BL_GEN3_VERBOSE
             printf("%s: CTS is %u\n", __FUNCTION__,
                    xbee_ser_get_cts(serport));
-            printf("%s: clear break and assert RTS\n", __FUNCTION__);
 #endif
-
-            // clear break condition and set RTS
-            xbee_ser_break(serport, 0);
-            xbee_ser_set_rts(serport, 1);
-
-            // Flush any buffered data from serial port
-            xbee_ser_rx_flush(serport);
 
             _next_state(source);
         }
         break;
 
     case XBEE_GEN3_STATE_GET_BL_VERSION:
+        // wait for 100ms from reset for bootloader to be ready
         if (_TIME_ELAPSED(100)) {
-            // Request bootloader version 100ms after bootloader drops CTS
+#ifdef XBEE_BL_GEN3_VERBOSE
+            printf("%s: clear break\n", __FUNCTION__);
+#endif
+            xbee_ser_break(serport, 0);
+
+            // Flush any buffered data from serial port
+            xbee_ser_rx_flush(serport);
+
+            // Request bootloader version
             xbee_ser_putchar(serport, XBEE_GEN3_CMD_BL_VERSION);
             _next_state(source);
         }
