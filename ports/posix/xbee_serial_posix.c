@@ -288,6 +288,9 @@ int xbee_ser_baudrate( xbee_serial_t *serial, uint32_t baudrate)
 	// disable any processing of serial input/output
 	cfmakeraw( &options);
 
+	// ignore modem status lines (blocked write() on macOS)
+	options.c_cflag |= CLOCAL;
+
 	// Set the new options for the port, waiting until buffered data is sent
 	if (tcsetattr( serial->fd, TCSADRAIN, &options) == -1)
 	{
@@ -398,13 +401,18 @@ int xbee_ser_flowcontrol( xbee_serial_t *serial, int enabled)
 		return -errno;
 	}
 
+#ifdef CRTSXOFF
+	#define XBEE_FLOW_FLAGS (CRTSCTS | CRTSXOFF)
+#else
+	#define XBEE_FLOW_FLAGS (CRTSCTS)
+#endif
 	if (enabled)
 	{
-		options.c_cflag |= (CRTSCTS | CRTSXOFF);
+		options.c_cflag |= XBEE_FLOW_FLAGS;
 	}
 	else
 	{
-		options.c_cflag &= ~(CRTSCTS | CRTSXOFF);
+		options.c_cflag &= ~XBEE_FLOW_FLAGS;
 	}
 
 	// Set the new options for the port immediately
