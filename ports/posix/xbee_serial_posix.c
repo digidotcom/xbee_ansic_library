@@ -404,11 +404,11 @@ int xbee_ser_flowcontrol( xbee_serial_t *serial, int enabled)
 
 	if (enabled)
 	{
-		options.c_cflag |= CRTSCTS;
+		options.c_cflag |= (CRTSCTS | CRTSXOFF);
 	}
 	else
 	{
-		options.c_cflag &= ~CRTSCTS;
+		options.c_cflag &= ~(CRTSCTS | CRTSXOFF);
 	}
 
 	// Set the new options for the port immediately
