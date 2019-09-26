@@ -303,6 +303,7 @@ int xbee_dev_reset( xbee_dev_t *xbee)
 @retval	-EINVAL	If \a xbee isn't a valid device structure.
 @retval	-EBUSY	If xbee_dev_tick() was called when it's already running
 							for this device.
+@retval	-EIO		Error reading from serial port.
 
 */
 _xbee_device_debug
@@ -642,8 +643,7 @@ int _xbee_frame_load( xbee_dev_t *xbee)
 
 	uint8_t ch;
 	uint16_t length;
-	int retval;
-	int bytes_left, read;
+	int bytes_left, ser_read;
 	uint_fast8_t dispatched;
 	xbee_serial_t	*serport;
 
@@ -669,10 +669,9 @@ int _xbee_frame_load( xbee_dev_t *xbee)
 					start with 0x7E).
 	      	*/
 	         do {
-	            retval = xbee_ser_read( serport, &ch, 1);
-	            if (retval != 1)
-	            {
-					goto _exit_loop;
+	            ser_read = xbee_ser_read( serport, &ch, 1);
+	            if (ser_read != 1) {
+	               goto _exit_loop;
 	            }
 	         } while (ch != 0x7E);
 	         #ifdef XBEE_DEVICE_VERBOSE
@@ -683,9 +682,9 @@ int _xbee_frame_load( xbee_dev_t *xbee)
 
 	   	case XBEE_RX_STATE_LENGTH_MSB:
 	   		// try to read a character from the serial port
-	   		if (xbee_ser_read( serport, &ch, 1) == 0)
-	   		{
-				goto _exit_loop;
+	   		ser_read = xbee_ser_read( serport, &ch, 1);
+	   		if (ser_read != 1) {
+	   		   goto _exit_loop;
 	   		}
 				if (ch == 0x7E)
 				{
@@ -703,9 +702,9 @@ int _xbee_frame_load( xbee_dev_t *xbee)
 			   // fall through to trying to read LSB of length
 	   	case XBEE_RX_STATE_LENGTH_LSB:
 	   		// try to read a character from the serial port
-	   		if (xbee_ser_read( serport, &ch, 1) == 0)
-	   		{
-				goto _exit_loop;
+	   		ser_read = xbee_ser_read( serport, &ch, 1);
+	   		if (ser_read != 1) {
+	   		   goto _exit_loop;
 	   		}
 
 	   		// set LSB of frame length, make local copy for range check
@@ -738,15 +737,15 @@ int _xbee_frame_load( xbee_dev_t *xbee)
 
 	      case XBEE_RX_STATE_RXFRAME:      // receiving frame & trailing checksum
 	      	bytes_left = xbee->rx.bytes_in_frame - xbee->rx.bytes_read + 1;
-				read = xbee_ser_read( serport,
+				ser_read = xbee_ser_read( serport,
 							xbee->rx.frame_data + xbee->rx.bytes_read, bytes_left);
-				if (read != bytes_left)
+				if (ser_read != bytes_left)
 				{
 					// Not enough bytes to finish reading current frame, record
 					// number of bytes read and return.
-					if (read > 0)
+					if (ser_read > 0)
 					{
-						xbee->rx.bytes_read += read;
+						xbee->rx.bytes_read += ser_read;
 					}
 					goto _exit_loop;
 				}
@@ -803,7 +802,7 @@ int _xbee_frame_load( xbee_dev_t *xbee)
 	   }
 	}
 	_exit_loop:
-	return dispatched;
+	return ser_read < 0 ? ser_read : dispatched;
 }
 #ifdef __XBEE_PLATFORM_HCS08
 	#pragma MESSAGE DEFAULT C5909		// restore C5909 (Assignment in condition)
