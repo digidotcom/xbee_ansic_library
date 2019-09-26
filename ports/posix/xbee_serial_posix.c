@@ -246,7 +246,7 @@ int xbee_ser_rx_flush( xbee_serial_t *serial)
 int xbee_ser_baudrate( xbee_serial_t *serial, uint32_t baudrate)
 {
 	struct termios options;
-	unsigned int baud;
+	speed_t baud;
 
 	XBEE_SER_CHECK( serial);
 
@@ -285,12 +285,8 @@ int xbee_ser_baudrate( xbee_serial_t *serial, uint32_t baudrate)
 	cfsetispeed( &options, baud);
 	cfsetospeed( &options, baud);
 
-	// Enable the receiver and set local mode...
-	options.c_cflag |= (CLOCAL | CREAD);
-
-	// Set 8-bit mode
-	options.c_cflag &= ~CSIZE;
-	options.c_cflag |= CS8;
+	// disable any processing of serial input/output
+	cfmakeraw( &options);
 
 	// Set the new options for the port, waiting until buffered data is sent
 	if (tcsetattr( serial->fd, TCSADRAIN, &options) == -1)
@@ -319,22 +315,22 @@ int xbee_ser_open( xbee_serial_t *serial, uint32_t baudrate)
 	// make sure device name is null terminated
 	serial->device[(sizeof serial->device) - 1] = '\0';
 
-	serial->fd = open( serial->device, O_RDWR | O_NOCTTY | O_NDELAY);
-	if (serial->fd < 0)
-	{
-		#ifdef XBEE_SERIAL_VERBOSE
-			printf( "%s: open('%s') failed (errno=%d)\n", __FUNCTION__,
-				serial->device, errno);
-		#endif
-		return -errno;
+	// if device isn't already open
+	if (serial->fd <= 0) {
+		serial->fd = open( serial->device, O_RDWR | O_NOCTTY | O_NONBLOCK);
+		if (serial->fd < 0)
+		{
+			#ifdef XBEE_SERIAL_VERBOSE
+				printf( "%s: open('%s') failed (errno=%d)\n", __FUNCTION__,
+					serial->device, errno);
+			#endif
+			return -errno;
+		}
+
+		// Configure file descriptor to not block on read() if there aren't
+		// any characters available.
+		fcntl( serial->fd, F_SETFL, FNDELAY);
 	}
-
-	// Configure file descriptor to not block on read() if there aren't
-	// any characters available.
-	fcntl( serial->fd, F_SETFL, FNDELAY);
-
-	// reset port before setting actual baudrate
-	xbee_ser_baudrate( serial, 0);
 
 	return xbee_ser_baudrate( serial, baudrate);
 }
