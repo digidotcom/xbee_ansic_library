@@ -47,7 +47,7 @@ void xbee_term_console_init( void)
 	  //turn off canonical mode AND ECHO
 	  ttystate.c_lflag &= ~(ECHO | ECHONL | ICANON | IEXTEN);
 	  //minimum of number input read.
-	  ttystate.c_cc[VMIN] = 1;
+	  ttystate.c_cc[VMIN] = 0;
 
     //set the terminal attributes.
     tcsetattr(STDIN_FILENO, TCSANOW, &ttystate);
