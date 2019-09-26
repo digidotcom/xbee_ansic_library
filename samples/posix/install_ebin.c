@@ -111,7 +111,10 @@ int main(int argc, char *argv[])
         xbee_gen3_dump_extended_ver(&fw.ext_ver);
     }
 
-    fclose(file);
+    if (file) {
+        fclose(file);
+    }
+
     xbee_ser_close(&my_xbee.serport);
 
     // Note that some firmware updates may revert to default settings,
