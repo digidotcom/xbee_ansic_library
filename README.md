@@ -91,7 +91,7 @@ and clusters.  On exit, set AO back to 1 so the radio will process those
 requests (and Smart Energy devices can complete Key Establishment to join a
 network).
 
-    xbee_cmd_simple( &my_xbee, "AO", 3);
+    xbee_cmd_simple(&my_xbee, "AO", 3);
 
 On ZigBee networks without Key Establishment, it should be safe to keep AO set
 to 3.
@@ -99,6 +99,9 @@ to 3.
 
 File Descriptions
 -----------------
+Note that `frame_types.md` identifies headers and source files written to
+support each frame type.
+
 Headers:
 
 - `xbee/platform.h`: Function prototypes for hardware abstraction layer.
@@ -119,6 +122,9 @@ Headers:
 - `xbee/atmode.h`: Interfacing with XBee module in "AT mode", currently
   used for firmware updates on non-ZigBee modules.
 
+- `xbee/bl_gen3.h`: Support for the "Gen3 Bootloader" used by S3B, S6, S6B,
+  XLR, Cellular, SX, SX868, and S8 hardware.
+
 - `xbee/byteorder.h`: Byte-order-related functions used by multiple layers
   of the driver.
 
@@ -130,9 +136,11 @@ Headers:
   Cluster on XBee ZB modules.  See `zigbee/zcl_commissioning.h` for the
   required networking code.
 
+- `xbee/delivery_status.h`: Status codes for 0x89 and 0x8B frames.
+
 - `xbee/discovery.h`: Code related to Node Discovery (ATND).
 
-- `xbee/firmware.h`: Code for updating radio firmware via .ebl or .oem
+- `xbee/firmware.h`: Code for updating radio firmware via .ebl, .gbl or .oem
   files.
 
 - `xbee/gpm.h`: Code related to the General Purpose Memory (GPM) present
@@ -140,6 +148,8 @@ Headers:
 
 - `xbee/io.h`: Code for working with the analog and digital I/O pins on
   the XBee module.
+
+- `xbee/ipv4.h`: Support for IPv4 frames on XBee and XBee3 Cellular products.
 
 - `xbee/jslong.h` and `xbee/jslong_glue.h`: Code from mozilla.org used to
   manage 64-bit integers on platforms without direct support of them.
@@ -152,6 +162,11 @@ Headers:
 
 - `xbee/scan.h`: Structures describing `ATAS` (Active Scan) responses.
 
+- `xbee/sms.h`: Support for SMS features of XBee and XBee3 Cellular products.
+
+- `xbee/socket.h` and `xbee/socket_frames.h`: Support for Sockets API frames on
+  XBee and XBee3 Cellular prodcuts.
+  
 - `xbee/sxa.h`: A "Simplified XBee API" with support for node table
   management, configurable I/O, point-to-point data streams and a
   connectionless datagram protocol.  Used for XBee-only (not general
@@ -165,6 +180,9 @@ Headers:
   Serial" cluster (cluster 0x0011 of endpoint 0xE8), to communicate with
   "dumb" XBee modules running non-API mode firmware.
 
+- `xbee/user_data.h`: Support for User Data Relay API frames used on XBee
+  and XBee3 Cellular/802.15.4/Digimesh/Zigbee products.
+  
 - `xbee/wifi.h`: Code specific to the XBee S6B (Wi-Fi) module.
 
 - `xbee/wpan.h`: Glue layer between XBee device driver and 802.15.4/ZigBee
@@ -230,24 +248,34 @@ please follow these general guidelines.
 
 Coding Style
 ------------
--	In general, code additions should match the style of existing code.
+-	In general, code additions should match the style of existing code.  Old
+	files used 3-space tabs to match a legacy codebase, but current preference
+	is to use four spaces for indentation instead of tabs.
 
 -	When naming things in the global namespace (functions, macros, global
     variables) use a consistent prefix in the names.
 
--	Set tabs to 3 spaces and limit line length to 80 characters.
+-	Limit line length to 80 characters.
 
 -	Use Doxygen-formatted comments for functions, types, globals and macros.
 
 -	Always use curly braces ({ and }) after if and else statements.  Follow
     style of existing files:
 
+        // Legacy style:
         if (foo)
         {
-            do_bar();
+           do_bar();
         }
         else
         {
+           do_baz();
+        }
+
+        // Preferred style for new code:
+        if (foo) {
+            do_bar();
+        } else {
             do_baz();
         }
 
@@ -313,7 +341,7 @@ If you find that this library doesn't meet your needs, take a look at
 [libxbee], "a C/C++ library to aid the use of Digi XBee radios in API mode".
 
 For a detailed list of libraries in many languages, visit Digi's [XBee Examples]
-site..
+site.
 
 [libxbee]: https://github.com/attie/libxbee3/
 [XBee Examples]: http://examples.digi.com/quick-reference/

@@ -27,6 +27,10 @@ with platform-specific support code in each `samples/<target>` directory.
   available for host use, and is also used to stage firmware images before
   installation.
 
+- **install ebin**:
+  Sends firmware updates (.ebin files) to XBee modules using the Gen3
+  bootloader (including S3B, S6, S6B, XLR, Cellular, SX, SX868, S8).
+
 - **install ebl**:
   Sends firmware updates (.ebl and .gbl files) to XBee modules with 
   Ember processors (e.g., ZigBee and Smart Energy firmware to XBee S2, 
@@ -42,6 +46,11 @@ with platform-specific support code in each `samples/<target>` directory.
   Demonstrate the "transparent serial" cluster used by XBee modules in
   "AT mode", along with node discovery using the ATND command.  Send
   strings between XBee modules on a network.
+
+- **user data relay**:
+  Sample that sends/receives User Data Relay frames to Serial, Bluetooth
+  and MicroPython destinations on XBee3 Cellular/802.15.4/Digimesh/Zigbee
+  products.
 
 - **xbee term**:
   Simple, stand-alone terminal emulator to interact with a module's
@@ -79,6 +88,14 @@ collection of sample programs.
 
 - **sms_client**:
   Demonstrates sending and receiving SMS messages.
+
+- **socket test**:
+  Tool used for manually/interactively exploring and testing 
+  xbee/xbee_socket.c APIs.
+
+- **xbee netcat**:
+  A version of the netcat (nc) tool that uses the XBee sockets API to 
+  open a TCP or UDP socket and pass its data to/from stdout/stdin.
 
 ### Zigbee Samples
 
