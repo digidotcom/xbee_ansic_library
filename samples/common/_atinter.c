@@ -143,13 +143,9 @@ int xbee_cmd_callback( const xbee_cmd_response_t FAR *response)
 	// check to see if we can print the value out as a string
 	printable = 1;
 	p = response->value_bytes;
-	for (i = length; i; ++p, --i)
+	for (i = length; printable && i; ++p, --i)
 	{
-		if (! isprint( *p))
-		{
-			printable = 0;
-			break;
-		}
+		printable = isprint(*p);
 	}
 
 	if (printable)
@@ -161,6 +157,15 @@ int xbee_cmd_callback( const xbee_cmd_response_t FAR *response)
 		// format hex string with (2 * number of bytes in value) leading zeros
 		printf( "= 0x%0*" PRIX32 " (%" PRIu32 ")\n", length * 2, response->value,
 			response->value);
+	}
+	else if (length <= 32)
+	{
+		// format hex string
+		printf("= 0x");
+		for (i = length, p = response->value_bytes; i; ++p, --i) {
+			printf("%02X", *p);
+		}
+		puts("");
 	}
 	else
 	{
