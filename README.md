@@ -77,7 +77,7 @@ XBee Firmware
 -------------
 Configure your XBee radio with DigiMesh, ZigBee or Smart Energy firmware in
 "API" mode (with an API mode firmware or by setting ATAP=1).  The samples use
-a default baud rate of 115200. The library is written to make use of flow control, 
+a default baud rate of 115200. The library is written to make use of flow control,
 so ATD6/ATD7 needs to be set to 1. Configure the radio with ATAO set to 1 to use
 extended transmit and receive frames.
 
@@ -166,7 +166,7 @@ Headers:
 
 - `xbee/socket.h` and `xbee/socket_frames.h`: Support for Sockets API frames on
   XBee and XBee3 Cellular prodcuts.
-  
+
 - `xbee/sxa.h`: A "Simplified XBee API" with support for node table
   management, configurable I/O, point-to-point data streams and a
   connectionless datagram protocol.  Used for XBee-only (not general
@@ -182,7 +182,7 @@ Headers:
 
 - `xbee/user_data.h`: Support for User Data Relay API frames used on XBee
   and XBee3 Cellular/802.15.4/Digimesh/Zigbee products.
-  
+
 - `xbee/wifi.h`: Code specific to the XBee S6B (Wi-Fi) module.
 
 - `xbee/wpan.h`: Glue layer between XBee device driver and 802.15.4/ZigBee
@@ -205,7 +205,7 @@ Headers:
 - `zigbee/zcl_basic_attributes.h`: Used in main program to create a data
   structure and attribute for use in the device's endpoint table.
 
-- `zigbee/zcl_client.h`: Helper functions for creating ZCL client 
+- `zigbee/zcl_client.h`: Helper functions for creating ZCL client
   clusters.
 
 - `zigbee/zcl_commissioning.h`: Non-certified implementation of

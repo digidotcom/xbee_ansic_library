@@ -12,7 +12,7 @@ with platform-specific support code in each `samples/<target>` directory.
   in a Legacy X-CTU Profile (`.PRO` file).
 
 - **atinter**:
-  Short for "AT Interactive", this simple sample demonstrates the 
+  Short for "AT Interactive", this simple sample demonstrates the
   `xbee_atcmd` API for reading and setting AT parameters on the XBee
   radio.  This is a good starting sample to verify correct communication
   with an XBee module in API mode.
@@ -32,9 +32,9 @@ with platform-specific support code in each `samples/<target>` directory.
   bootloader (including S3B, S6, S6B, XLR, Cellular, SX, SX868, S8).
 
 - **install ebl**:
-  Sends firmware updates (.ebl and .gbl files) to XBee modules with 
-  Ember processors (e.g., ZigBee and Smart Energy firmware to XBee S2, 
-  S2B and S2C) and EFR32 processors (e.g., XBee3 Cellular, 802.15.4, 
+  Sends firmware updates (.ebl and .gbl files) to XBee modules with
+  Ember processors (e.g., ZigBee and Smart Energy firmware to XBee S2,
+  S2B and S2C) and EFR32 processors (e.g., XBee3 Cellular, 802.15.4,
   DigiMesh, and Zigbee).
 
 - **network scan**:
@@ -54,7 +54,7 @@ with platform-specific support code in each `samples/<target>` directory.
 
 - **xbee term**:
   Simple, stand-alone terminal emulator to interact with a module's
-  bootloader or its regular firmware in command mode 
+  bootloader or its regular firmware in command mode
 
 ## Platform-Specific Samples
 
@@ -90,17 +90,17 @@ collection of sample programs.
   Demonstrates sending and receiving SMS messages.
 
 - **socket test**:
-  Tool used for manually/interactively exploring and testing 
+  Tool used for manually/interactively exploring and testing
   xbee/xbee_socket.c APIs.
 
 - **xbee netcat**:
-  A version of the netcat (nc) tool that uses the XBee sockets API to 
+  A version of the netcat (nc) tool that uses the XBee sockets API to
   open a TCP or UDP socket and pass its data to/from stdout/stdin.
 
 ### Zigbee Samples
 
 These samples target XBee modules joined to Zigbee-compliant networks.
- 
+
 - **commissioning client** and **commissioning server**:
   Client and server samples demonstrating the use of the ZCL Commissioning
   Cluster to configure network settings on a Zigbee device.
