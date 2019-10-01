@@ -105,6 +105,9 @@ These samples target XBee modules joined to Zigbee-compliant networks.
   Client and server samples demonstrating the use of the ZCL Commissioning
   Cluster to configure network settings on a Zigbee device.
 
+- **zigbee register device**:
+  Used to register a joining device to a trust center node of a network.
+
 - **zigbee walker**:
   "Walks" a Zigbee device using discovery packets to list all ZCL
   attributes.  Starts with ZDO requests to enumerate a device's endpoints

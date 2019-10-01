@@ -19,7 +19,7 @@ files written to handle them.
 | 0x20 | IPv4 Transmit               | xbee/ipv4.h, xbee_ipv4.c
 | 0x21 | Create Source Route         | xbee/route.h, xbee_route.c
 | 0x23 | IPv4 Tx Request with TLS    |
-| 0x24 | Register Joining Device     |
+| 0x24 | Register Joining Device     | xbee/register_device.h, xbee_register_device.c
 | 0x28 | Send Data Request           |
 | 0x2A | Device Response             |
 | 0x2B | Cellular Firmware Update    |
@@ -59,7 +59,7 @@ files written to handle them.
 | 0xA1 | Route Record                | xbee/route.h, xbee_route.c
 | 0xA2 | Device Authenticated        |
 | 0xA3 | Many-to-One Route Request   | xbee/route.h, xbee_route.c
-| 0xA4 | Register Joining Dev Status |
+| 0xA4 | Register Joining Dev Status | xbee/register_device.h, xbee_register_device.c
 | 0xA5 | Join Notification           |
 | 0xA7 | IPv6 I/O Data Sample        |
 | 0xAB | Cellular FW Update Response |

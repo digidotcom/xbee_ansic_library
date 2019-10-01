@@ -43,6 +43,7 @@ EXE += \
 	xbee_netcat \
 	xbee_term \
 	zcltime \
+	zigbee_register_device \
 	zigbee_walker \
 
 all : $(EXE)
@@ -137,6 +138,12 @@ install_ebl_OBJECTS += $(xbee_OBJECTS) install_ebl.o \
 
 install_ebl: $(install_ebl_OBJECTS)
 	$(COMPILE) -o $@ $^ $(DIALOG_LIBS)
+
+zigbee_register_device_OBJECTS = $(xbee_OBJECTS) $(atinter_OBJECTS) \
+            xbee_register_device.o zigbee_register_device.o \
+            _nodetable.o xbee_discovery.o
+zigbee_register_device : $(zigbee_register_device_OBJECTS)
+	$(COMPILE) -o $@ $^
 
 zigbee_walker_OBJECTS = $(zigbee_OBJECTS) \
 	_zigbee_walker.o zigbee_walker.o xbee_time.o zcl_client.o
