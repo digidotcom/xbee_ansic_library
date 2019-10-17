@@ -1,13 +1,13 @@
 /*
- * Copyright (c) 2010-2012 Digi International Inc.,
+ * Copyright (c) 2010-2019 Digi International Inc.,
  * All rights not expressly granted are reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * Digi International Inc. 11001 Bren Road East, Minnetonka, MN 55343
- * =======================================================================
+ * Digi International Inc., 9350 Excelsior Blvd., Suite 700, Hopkins, MN 55343
+ * ===========================================================================
  */
 
 /***************************************************************************
@@ -29,7 +29,7 @@
 #include "wpan/aps.h"
 
 #include "wpan/aps.h"
-#include "xbee/ota_client.h"
+#include "xbee/pxbee_ota_client.h"
 
 #include "_pxbee_ota_update.h"
 
@@ -192,9 +192,9 @@ const xbee_dispatch_table_entry_t xbee_frame_handlers[] =
 };
 
 // !!! temporarily a global, move to some state/context later
-xbee_ota_t xbee_ota;
+pxbee_ota_t pxbee_ota;
 
-int xbee_ota_error( const wpan_envelope_t	FAR *envelope,
+int pxbee_ota_error( const wpan_envelope_t	FAR *envelope,
 	void FAR *context)
 {
 	// This cluster callback has a NULL context in the cluster table, so
@@ -211,10 +211,10 @@ int xbee_ota_error( const wpan_envelope_t	FAR *envelope,
 wpan_cluster_table_entry_t digi_data_clusters[] =
 {
 	// Initialization code may set the flags for this entry to use encryption
-	XBEE_OTA_DATA_CLIENT_CLUST_ENTRY( &xbee_ota, WPAN_CLUST_FLAG_NONE),
+	PXBEE_OTA_DATA_CLIENT_CLUST_ENTRY( &pxbee_ota, WPAN_CLUST_FLAG_NONE),
 
 	// cluster for sending command to kick off OTA update
-	XBEE_OTA_CMD_CLIENT_CLUST_ENTRY( xbee_ota_error, NULL,
+	PXBEE_OTA_CMD_CLIENT_CLUST_ENTRY( pxbee_ota_error, NULL,
 																		WPAN_CLUST_FLAG_NONE),
 
 	WPAN_CLUST_ENTRY_LIST_END
@@ -247,7 +247,7 @@ struct _endpoints sample_endpoints = {
 	WPAN_ENDPOINT_END_OF_LIST
 };
 
-int xbee_ota_find_devices( wpan_dev_t *dev, wpan_response_fn callback,
+int pxbee_ota_find_devices( wpan_dev_t *dev, wpan_response_fn callback,
 	const void FAR *context)
 {
 	static uint16_t clusters[] =

@@ -400,7 +400,7 @@ int xbee_nd_cmd_response_handler(xbee_dev_t *xbee, const void FAR *raw,
 	static const xbee_at_cmd_t nd = {{'N', 'D'}};
 	const xbee_frame_local_at_resp_t FAR *resp = raw;
 	xbee_node_id_t node_id;
-	xbee_node_id_t * tab_node;
+	int node_index;
 
    if (XBEE_AT_RESP_STATUS( resp->header.status) == XBEE_AT_RESP_SUCCESS)
    {
@@ -411,10 +411,14 @@ int xbee_nd_cmd_response_handler(xbee_dev_t *xbee, const void FAR *raw,
          if (xbee_disc_nd_parse(&node_id, resp->value,
          		length - offsetof( xbee_frame_local_at_resp_t, value)) == 0)
          {
-            tab_node = node_add(&node_id);
-            if (tab_node)
+            node_index = node_add(&node_id);
+            if (node_index < 0)
             {
-               printf( "%2u: ", (int)(tab_node - node_table));
+               printf( "Error %d adding node:\n", node_index);
+            }
+            else
+            {
+               printf( "%2u: ", node_index);
             }
             xbee_disc_node_id_dump(&node_id);
          }

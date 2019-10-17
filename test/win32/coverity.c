@@ -23,7 +23,7 @@
 #include "xbee/platform.h"
 #include "xbee/atcmd.h"
 #include "xbee/device.h"
-#include "xbee/ota_server.h"
+#include "xbee/pxbee_ota_server.h"
 #include "xbee/wpan.h"
 
 #include "wpan/types.h"

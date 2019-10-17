@@ -1,13 +1,13 @@
 /*
- * Copyright (c) 2008-2012 Digi International Inc.,
+ * Copyright (c) 2008-2019 Digi International Inc.,
  * All rights not expressly granted are reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * Digi International Inc. 11001 Bren Road East, Minnetonka, MN 55343
- * =======================================================================
+ * Digi International Inc., 9350 Excelsior Blvd., Suite 700, Hopkins, MN 55343
+ * ===========================================================================
  */
 
 /**
@@ -192,7 +192,7 @@ typedef struct xbee_xmodem_state_t
 	@retval		-EINVAL		NULL parameter passed in
 	@retval		<0				error assigning \c serport to \c xbxm
 
-	@sa xbee_ota_init, xbee_xmodem_set_stream
+	@sa pxbee_ota_init, xbee_xmodem_set_stream
 */
 int xbee_xmodem_use_serport( xbee_xmodem_state_t *xbxm, xbee_serial_t *serport);
 
@@ -229,7 +229,7 @@ int xbee_xmodem_set_source( xbee_xmodem_state_t *xbxm,
 	@retval		0			successfully configured communication path to target
 	@retval		-EINVAL	invalid parameter passed in
 
-	@sa xbee_ota_init, xbee_xmodem_use_serport
+	@sa pxbee_ota_init, xbee_xmodem_use_serport
 */
 int xbee_xmodem_set_stream( xbee_xmodem_state_t *xbxm,
 	xbee_xmodem_read_fn read, xbee_xmodem_write_fn write,
@@ -251,7 +251,7 @@ int xbee_xmodem_set_stream( xbee_xmodem_state_t *xbxm,
 	@retval	-EINVAL	invalid parameter passed in
 	@retval	0			initialized state, can pass it to xbee_xmodem_tx_tick
 
-	@sa xbee_ota_init
+	@sa pxbee_ota_init
 */
 int xbee_xmodem_tx_init( xbee_xmodem_state_t *xbxm, uint16_t flags);
 

@@ -117,21 +117,21 @@ void profile_changed( void)
 	// set OTA flag for encryption
 	if (current_profile->flags & WPAN_CLUST_FLAG_ENCRYPT)
 	{
-		xbee_ota.flags = XBEE_OTA_FLAG_APS_ENCRYPT;
+		pxbee_ota.flags = PXBEE_OTA_FLAG_APS_ENCRYPT;
 	}
 }
 
 void set_password( const char *pw)
 {
-	xbee_ota.auth_length = (pw != NULL) ? strlen( pw) : 0;
+	pxbee_ota.auth_length = (pw != NULL) ? strlen( pw) : 0;
 
-	if (xbee_ota.auth_length > 0)
+	if (pxbee_ota.auth_length > 0)
 	{
-		if (xbee_ota.auth_length > XBEE_OTA_MAX_AUTH_LENGTH)
+		if (pxbee_ota.auth_length > PXBEE_OTA_MAX_AUTH_LENGTH)
 		{
-			xbee_ota.auth_length = XBEE_OTA_MAX_AUTH_LENGTH;
+			pxbee_ota.auth_length = PXBEE_OTA_MAX_AUTH_LENGTH;
 		}
-		memcpy( xbee_ota.auth_data, pw, xbee_ota.auth_length);
+		memcpy( pxbee_ota.auth_data, pw, pxbee_ota.auth_length);
 	}
 }
 
@@ -218,7 +218,7 @@ int main( int argc, char *argv[])
 		printf( "Using profile ID 0x%04x with%s APS encryption.\n",
 			dynamic_profile.profile_id,
 			(dynamic_profile.flags & WPAN_CLUST_FLAG_ENCRYPT) ? "" : "out");
-		xbee_ota_find_devices( &my_xbee.wpan_dev, xbee_found, NULL);
+		pxbee_ota_find_devices( &my_xbee.wpan_dev, xbee_found, NULL);
 	}
 
 	while (1)
@@ -230,7 +230,7 @@ int main( int argc, char *argv[])
 
 			if (fw_file != NULL)
 			{
-				if (xbee_xmodem_tx_tick( &xbee_ota.xbxm) != 0)
+				if (xbee_xmodem_tx_tick( &pxbee_ota.xbxm) != 0)
 				{
 					uint16_t timer;
 
@@ -242,26 +242,26 @@ int main( int argc, char *argv[])
 					timer = XBEE_SET_TIMEOUT_MS(1000);
 					while (! XBEE_CHECK_TIMEOUT_MS( timer));
 
-					xbee_ota_find_devices( &my_xbee.wpan_dev, xbee_found, NULL);
+					pxbee_ota_find_devices( &my_xbee.wpan_dev, xbee_found, NULL);
 				}
 
 				#ifdef VERBOSE
-					if (last_state != xbee_ota.xbxm.state)
+					if (last_state != pxbee_ota.xbxm.state)
 					{
 						printf( "state change from %u to %u\n", last_state,
-							xbee_ota.xbxm.state);
-						last_state = xbee_ota.xbxm.state;
+							pxbee_ota.xbxm.state);
+						last_state = pxbee_ota.xbxm.state;
 					}
 				#endif
-				if (last_packet != xbee_ota.xbxm.packet_num)
+				if (last_packet != pxbee_ota.xbxm.packet_num)
 				{
 					#ifdef VERBOSE
-						printf( "packet #%u\n", xbee_ota.xbxm.packet_num);
+						printf( "packet #%u\n", pxbee_ota.xbxm.packet_num);
 					#else
 						printf( " %" PRIu32 " bytes\r",
-							UINT32_C(64) * xbee_ota.xbxm.packet_num);
+							UINT32_C(64) * pxbee_ota.xbxm.packet_num);
 					#endif
-					last_packet = xbee_ota.xbxm.packet_num;
+					last_packet = pxbee_ota.xbxm.packet_num;
 				}
 			}
       } while (linelen == -EAGAIN);
@@ -282,7 +282,7 @@ int main( int argc, char *argv[])
 			}
 			else
 			{
-				xbee_ota_find_devices( &my_xbee.wpan_dev, xbee_found, NULL);
+				pxbee_ota_find_devices( &my_xbee.wpan_dev, xbee_found, NULL);
 			}
 		}
 		else if (! strncmpi( cmdstr, "profile ", 8))
@@ -307,7 +307,7 @@ int main( int argc, char *argv[])
 			if (target_index == 0)
 			{
 				printf( "error, no targets in list, starting search now...\n");
-				xbee_ota_find_devices( &my_xbee.wpan_dev, xbee_found, NULL);
+				pxbee_ota_find_devices( &my_xbee.wpan_dev, xbee_found, NULL);
 			}
 			else if (i < 0 || i >= target_index)
 			{
@@ -344,14 +344,14 @@ int main( int argc, char *argv[])
 		else if (! strncmpi( cmdstr, "password ", 9))
 		{
 			set_password( &cmdstr[9]);
-			printf( "set password to [%.*s]\n", xbee_ota.auth_length,
-				xbee_ota.auth_data);
+			printf( "set password to [%.*s]\n", pxbee_ota.auth_length,
+				pxbee_ota.auth_data);
 		}
 		else if (! strcmpi( cmdstr, "aps"))
 		{
-			xbee_ota.flags ^= XBEE_OTA_FLAG_APS_ENCRYPT;
+			pxbee_ota.flags ^= PXBEE_OTA_FLAG_APS_ENCRYPT;
 			printf( "APS encryption %sabled\n",
-				(xbee_ota.flags & XBEE_OTA_FLAG_APS_ENCRYPT) ? "en" : "dis");
+				(pxbee_ota.flags & PXBEE_OTA_FLAG_APS_ENCRYPT) ? "en" : "dis");
 		}
 		else if (! strcmpi( cmdstr, "go"))
 		{
@@ -387,15 +387,15 @@ int main( int argc, char *argv[])
 				exit( -1);
 			}
 
-			status = xbee_ota_init( &xbee_ota, &my_xbee.wpan_dev, &target->ieee);
+			status = pxbee_ota_init( &pxbee_ota, &my_xbee.wpan_dev, &target->ieee);
 
 			if (status)
 			{
-				printf( "%s returned %d\n", "xbee_ota_init", status);
+				printf( "%s returned %d\n", "pxbee_ota_init", status);
 				continue;
 			}
 
-			status = xbee_xmodem_set_source( &xbee_ota.xbxm, xmodem_buffer,
+			status = xbee_xmodem_set_source( &pxbee_ota.xbxm, xmodem_buffer,
 																		fw_read, fw_file);
 			if (status)
 			{
@@ -404,7 +404,7 @@ int main( int argc, char *argv[])
 			}
 
 			// reset the xbee_xmodem_state_t state machine, keeping existing flags
-			status = xbee_xmodem_tx_init( &xbee_ota.xbxm, xbee_ota.xbxm.flags);
+			status = xbee_xmodem_tx_init( &pxbee_ota.xbxm, pxbee_ota.xbxm.flags);
 			if (status)
 			{
 				printf( "%s returned %d\n", "xbee_xmodem_tx_init", status);
@@ -423,15 +423,15 @@ int main( int argc, char *argv[])
 #ifdef XBEE_XMODEM_TESTING
 		else if (! strcmpi( cmdstr, "ACK"))
 		{
-			xbee_ota.xbxm.flags |= XBEE_XMODEM_FLAG_DROP_ACK;
+			pxbee_ota.xbxm.flags |= XBEE_XMODEM_FLAG_DROP_ACK;
 		}
 		else if (! strcmpi( cmdstr, "FRAME"))
 		{
-			xbee_ota.xbxm.flags |= XBEE_XMODEM_FLAG_DROP_FRAME;
+			pxbee_ota.xbxm.flags |= XBEE_XMODEM_FLAG_DROP_FRAME;
 		}
 		else if (! strcmpi( cmdstr, "CRC"))
 		{
-			xbee_ota.xbxm.flags |= XBEE_XMODEM_FLAG_BAD_CRC;
+			pxbee_ota.xbxm.flags |= XBEE_XMODEM_FLAG_BAD_CRC;
 		}
 #endif
 		else if (! strncmpi( cmdstr, "AT", 2))

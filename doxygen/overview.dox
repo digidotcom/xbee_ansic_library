@@ -172,17 +172,17 @@
 
 			Support code for Transparent Serial Cluster of Digi Data Endpoint
 
-			@defgroup xbee_ota Over-The-Air Firmware Update Cluster
+			@defgroup pxbee_ota Over-The-Air Firmware Update Cluster
 
 			Support code for performing over-the-air firmware updates on a
 			Programmable XBee module.
 			@{
-				@defgroup xbee_ota_server Server
+				@defgroup pxbee_ota_server Server
 
 				Code for the Programmable XBee to receive over-the-air firmware
 				updates.
 
-				@defgroup xbee_ota_client Client
+				@defgroup pxbee_ota_client Client
 
 				Code for a device to send over-the-air firmware updates to a
 				Programmable XBee.

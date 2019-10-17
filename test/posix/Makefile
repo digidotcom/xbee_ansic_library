@@ -95,8 +95,8 @@ SRCS = unittest.c main.c \
 	xbee_discovery.c \
 	xbee_firmware.c \
 	xbee_io.c \
-	xbee_ota_client.c \
-	xbee_ota_server.c \
+	pxbee_ota_client.c \
+	pxbee_ota_server.c \
 	xbee_reg_descr.c \
 	xbee_scan.c \
 	xbee_sxa.c \
@@ -140,8 +140,8 @@ all_OBJECTS = \
 	xbee_discovery.o \
 	xbee_firmware.o \
 	xbee_io.o \
-	xbee_ota_client.o \
-	xbee_ota_server.o \
+	pxbee_ota_client.o \
+	pxbee_ota_server.o \
 	xbee_reg_descr.o \
 	xbee_sxa.o \
 	xbee_time.o \

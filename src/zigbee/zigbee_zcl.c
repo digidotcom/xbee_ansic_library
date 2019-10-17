@@ -1,13 +1,13 @@
 /*
- * Copyright (c) 2010-2012 Digi International Inc.,
+ * Copyright (c) 2010-2019 Digi International Inc.,
  * All rights not expressly granted are reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * Digi International Inc. 11001 Bren Road East, Minnetonka, MN 55343
- * =======================================================================
+ * Digi International Inc., 9350 Excelsior Blvd., Suite 700, Hopkins, MN 55343
+ * ===========================================================================
  */
 
 /**
@@ -1909,7 +1909,7 @@ const char *zcl_status_text( uint_fast8_t status)
 		case ZCL_STATUS_FAILURE:				return "Failure";
 		case ZCL_STATUS_NOT_AUTHORIZED:		return "Not Authorized";
 		case ZCL_STATUS_RESERVED_FIELD_NOT_ZERO:
-														return "Rerserved Field Not Zero";
+														return "Reserved Field Not Zero";
 		case ZCL_STATUS_MALFORMED_COMMAND:	return "Malformed Command";
 		case ZCL_STATUS_UNSUP_CLUSTER_COMMAND:
 														return "Unsupported Cluster Command";
@@ -1936,6 +1936,11 @@ const char *zcl_status_text( uint_fast8_t status)
 														return "Inconsistent Startup State";
 		case ZCL_STATUS_DEFINED_OUT_OF_BAND:
 														return "Defined Out Of Band";
+		case ZCL_STATUS_ABORT:					return "Abort";
+		case ZCL_STATUS_INVALID_IMAGE:		return "Invalid Image";
+		case ZCL_STATUS_WAIT_FOR_DATA:		return "Wait For Data";
+		case ZCL_STATUS_NO_IMAGE_AVAILABLE:	return "No Image Available";
+		case ZCL_STATUS_REQUIRE_MORE_IMAGE:	return "Require More Image";
 		case ZCL_STATUS_HARDWARE_FAILURE:	return "Hardware Failure";
 		case ZCL_STATUS_SOFTWARE_FAILURE:	return "Software Failure";
 		case ZCL_STATUS_CALIBRATION_ERROR:	return "Calibration Error";

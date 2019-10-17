@@ -1,13 +1,13 @@
 /*
- * Copyright (c) 2010 Digi International Inc.,
+ * Copyright (c) 2010-2019 Digi International Inc.,
  * All rights not expressly granted are reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * Digi International Inc. 11001 Bren Road East, Minnetonka, MN 55343
- * =======================================================================
+ * Digi International Inc., 9350 Excelsior Blvd., Suite 700, Hopkins, MN 55343
+ * ===========================================================================
  */
 
 #ifndef _PXBEE_OTA_UPDATE_H
@@ -15,7 +15,7 @@
 
 #include "xbee/platform.h"
 #include "wpan/aps.h"
-#include "xbee/ota_client.h"
+#include "xbee/pxbee_ota_client.h"
 
 typedef struct supported_profile_t {
 	uint16_t 	profile_id;
@@ -50,9 +50,9 @@ struct _endpoints {
 
 extern struct _endpoints sample_endpoints;
 extern wpan_cluster_table_entry_t digi_data_clusters[];
-extern xbee_ota_t xbee_ota;
+extern pxbee_ota_t pxbee_ota;
 
-int xbee_ota_find_devices( wpan_dev_t *dev, wpan_response_fn callback,
+int pxbee_ota_find_devices( wpan_dev_t *dev, wpan_response_fn callback,
 	const void FAR *context);
 int xbee_found( wpan_conversation_t FAR *conversation,
 	const wpan_envelope_t FAR *envelope);

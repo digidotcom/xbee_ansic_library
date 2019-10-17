@@ -1,19 +1,19 @@
 /*
- * Copyright (c) 2010-2012 Digi International Inc.,
+ * Copyright (c) 2010-2019 Digi International Inc.,
  * All rights not expressly granted are reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * Digi International Inc. 11001 Bren Road East, Minnetonka, MN 55343
- * =======================================================================
+ * Digi International Inc., 9350 Excelsior Blvd., Suite 700, Hopkins, MN 55343
+ * ===========================================================================
  */
 
 /**
-	@addtogroup xbee_ota_server
+	@addtogroup pxbee_ota_server
 	@{
-	@file xbee_ota_server.c
+	@file pxbee_ota_server.c
 
 	Code to add an OTA Server Cluster to a device.  It receives notification
 	to start an update, and then calls back to the bootloader to receive
@@ -22,12 +22,12 @@
 
 /*** BeginHeader */
 #include <stdio.h>
-#include "xbee/ota_server.h"
+#include "xbee/pxbee_ota_server.h"
 /*** EndHeader */
 
-/*** BeginHeader xbee_ota_server_cmd */
+/*** BeginHeader pxbee_ota_server_cmd */
 /*** EndHeader */
-int xbee_ota_server_cmd( const wpan_envelope_t FAR *envelope,
+int pxbee_ota_server_cmd( const wpan_envelope_t FAR *envelope,
 	void FAR *context)
 {
 	uint16_t options;

@@ -81,6 +81,16 @@ collection of sample programs.
   Install firmware update to a Programmable XBee module over a wired
   serial connection.
 
+### XBee3 802.15.4, DigiMesh and Zigbee
+
+- **XBee3 OTA tool**:
+  Tool to send .ota (firmware) and .otb (file system) update images
+  to remote devices.
+
+- **Zigbee OTA info**:
+  Dump information from the header of .ota (firmware) and .otb (file
+  system) update files.
+
 ### Cellular Samples
 
 - **ipv4_client**:

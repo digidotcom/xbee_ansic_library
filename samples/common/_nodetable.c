@@ -1,13 +1,13 @@
 /*
- * Copyright (c) 2011-2012 Digi International Inc.,
+ * Copyright (c) 2011-2019 Digi International Inc.,
  * All rights not expressly granted are reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * Digi International Inc. 11001 Bren Road East, Minnetonka, MN 55343
- * =======================================================================
+ * Digi International Inc., 9350 Excelsior Blvd., Suite 700, Hopkins, MN 55343
+ * ===========================================================================
  */
 
 /*
@@ -78,7 +78,7 @@ xbee_node_id_t *node_by_index( int idx)
 }
 
 // copy node_id into the node table, possibly updating existing entry
-xbee_node_id_t *node_add( const xbee_node_id_t *node_id)
+int node_add( const xbee_node_id_t *node_id)
 {
 	xbee_node_id_t *rec, *copy = NULL;
 
@@ -95,12 +95,14 @@ xbee_node_id_t *node_add( const xbee_node_id_t *node_id)
 		}
 	}
 
-	if (copy != NULL)
+	if (copy == NULL)
 	{
-		*copy = *node_id;
+		return -ENOSPC;
 	}
 
-	return copy;
+	*copy = *node_id;
+
+	return copy - &node_table[0];
 }
 
 void node_table_dump( void)

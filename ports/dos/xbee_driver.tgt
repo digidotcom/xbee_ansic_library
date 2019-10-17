@@ -433,7 +433,7 @@ WVList
 100
 MItem
 32
-..\..\src\xbee\xbee_ota_client.c
+..\..\src\xbee\pxbee_ota_client.c
 101
 WString
 4
@@ -451,7 +451,7 @@ WVList
 104
 MItem
 32
-..\..\src\xbee\xbee_ota_server.c
+..\..\src\xbee\pxbee_ota_server.c
 105
 WString
 4

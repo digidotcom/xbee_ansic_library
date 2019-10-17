@@ -1,19 +1,19 @@
 /*
- * Copyright (c) 2010-2012 Digi International Inc.,
+ * Copyright (c) 2010-2019 Digi International Inc.,
  * All rights not expressly granted are reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * Digi International Inc. 11001 Bren Road East, Minnetonka, MN 55343
- * =======================================================================
+ * Digi International Inc., 9350 Excelsior Blvd., Suite 700, Hopkins, MN 55343
+ * ===========================================================================
  */
 
 /**
-	@addtogroup xbee_ota_client
+	@addtogroup pxbee_ota_client
 	@{
-	@file xbee_ota_client.c
+	@file pxbee_ota_client.c
 
 	Support code for over-the-air (OTA) firmware updates of application code
 	on Programmable XBee target.
@@ -24,11 +24,11 @@
 #include <string.h>
 
 #include "xbee/platform.h"
-#include "xbee/ota_client.h"
+#include "xbee/pxbee_ota_client.h"
 #include "xbee/cbuf.h"
 /*** EndHeader */
 
-/*** BeginHeader _xbee_ota_transparent_rx */
+/*** BeginHeader _pxbee_ota_transparent_rx */
 /*** EndHeader */
 /*
 	Thoughts on generalizing this function...
@@ -43,25 +43,25 @@
 	Maybe better to just have a list of functions that can see all of the
 	payloads?
 */
-// documented in xbee/ota_client.h
-int _xbee_ota_transparent_rx( const wpan_envelope_t FAR *envelope,
+// documented in xbee/pxbee_ota_client.h
+int _pxbee_ota_transparent_rx( const wpan_envelope_t FAR *envelope,
 	void FAR *context)
 {
-	xbee_ota_t FAR *ota = context;
+	pxbee_ota_t FAR *ota = context;
 
-	#ifdef XBEE_OTA_VERBOSE
+	#ifdef PXBEE_OTA_VERBOSE
 		printf( "%s: got %u-byte transparent data:\n", __FUNCTION__,
 			envelope->length);
 		hex_dump( envelope->payload, envelope->length, HEX_DUMP_FLAG_TAB);
 	#endif
 
-	// flag in xbee_ota_t to ignore data until we're actually doing update?
+	// flag in pxbee_ota_t to ignore data until we're actually doing update?
 	if (memcmp( &ota->target, &envelope->ieee_address, 8) == 0)
 	{
 		xbee_cbuf_put( &ota->rxbuf.cbuf, envelope->payload,
 														(uint8_t) envelope->length);
 	}
-#ifdef XBEE_OTA_VERBOSE
+#ifdef PXBEE_OTA_VERBOSE
 	else
 	{
 		printf( "%s: ignoring transparent serial data from wrong address\n",
@@ -73,25 +73,25 @@ int _xbee_ota_transparent_rx( const wpan_envelope_t FAR *envelope,
 }
 
 
-/*** BeginHeader xbee_ota_init */
+/*** BeginHeader pxbee_ota_init */
 /*** EndHeader */
 /** @internal
 
 	Function assigned to the \c stream.read function pointer of an
 	xbee_xmodem_state_t object.  Reads data from the target specified in
-	the xbee_ota_t structure.
+	the pxbee_ota_t structure.
 
-	@param[in]		context	xbee_ota_t structure
+	@param[in]		context	pxbee_ota_t structure
 	@param[in,out]	buffer	buffer to store read data
 	@param[in]		bytes		maximum number of bytes to write to \c buffer
 
 	@sa xbee_xmodem_read_fn()
 */
-int _xbee_ota_xmodem_read( void FAR *context, void FAR *buffer, int16_t bytes)
+int _pxbee_ota_xmodem_read( void FAR *context, void FAR *buffer, int16_t bytes)
 {
 	// Function must follow prototype of xbee_xmodem_read_fn, so first
 	// parameter is always a void pointer.  Cast it to the correct type.
-	xbee_ota_t FAR *ota = context;
+	pxbee_ota_t FAR *ota = context;
 
 	if (context == NULL || buffer == NULL || bytes < 0)
 	{
@@ -106,9 +106,9 @@ int _xbee_ota_xmodem_read( void FAR *context, void FAR *buffer, int16_t bytes)
 
 	Function assigned to the \c stream.write function pointer of an
 	xbee_xmodem_state_t object.  Sends data to the target specified in
-	the xbee_ota_t structure.
+	the pxbee_ota_t structure.
 
-	@param[in]		context	xbee_ota_t structure
+	@param[in]		context	pxbee_ota_t structure
 	@param[in,out]	buffer	source of data to send
 	@param[in]		bytes		number of bytes to send
 
@@ -116,12 +116,12 @@ int _xbee_ota_xmodem_read( void FAR *context, void FAR *buffer, int16_t bytes)
 
 	@sa xbee_xmodem_write_fn()
 */
-int _xbee_ota_xmodem_write( void FAR *context, const void FAR *buffer,
+int _pxbee_ota_xmodem_write( void FAR *context, const void FAR *buffer,
 																					int16_t bytes)
 {
 	// Function must follow prototype of xbee_xmodem_write_fn, so first
 	// parameter is always a void pointer.  Cast it to the correct type.
-	xbee_ota_t FAR *ota = context;
+	pxbee_ota_t FAR *ota = context;
 	wpan_envelope_t	envelope;
 
 	if (context == NULL || buffer == NULL || bytes < 0)
@@ -133,28 +133,28 @@ int _xbee_ota_xmodem_write( void FAR *context, const void FAR *buffer,
 																	WPAN_NET_ADDR_UNDEFINED);
 	envelope.payload = buffer;
 	envelope.length = bytes;
-	envelope.options = (ota->flags & XBEE_OTA_FLAG_APS_ENCRYPT)
+	envelope.options = (ota->flags & PXBEE_OTA_FLAG_APS_ENCRYPT)
 															? WPAN_CLUST_FLAG_ENCRYPT : 0;
 
 	if (xbee_transparent_serial( &envelope))
 	{
 		// error on send, try again
-		#ifdef XBEE_OTA_VERBOSE
+		#ifdef PXBEE_OTA_VERBOSE
 			printf( "%s: %s failed\n", __FUNCTION__, "xbee_transparent_serial");
 		#endif
 		return 0;
 	}
 
 	// successfully sent packet of <bytes> bytes
-	#ifdef XBEE_OTA_VERBOSE
+	#ifdef PXBEE_OTA_VERBOSE
 		printf ("%s: sent %u bytes\n", __FUNCTION__, bytes);
 	#endif
 
 	return bytes;
 }
 
-// documented in xbee/ota_client.h
-int xbee_ota_init( xbee_ota_t *ota, wpan_dev_t *dev, const addr64 *target)
+// documented in xbee/pxbee_ota_client.h
+int pxbee_ota_init( pxbee_ota_t *ota, wpan_dev_t *dev, const addr64 *target)
 {
 	wpan_envelope_t							envelope;
 	int											error;
@@ -174,7 +174,7 @@ int xbee_ota_init( xbee_ota_t *ota, wpan_dev_t *dev, const addr64 *target)
 	envelope.source_endpoint = WPAN_ENDPOINT_DIGI_DATA;
 	envelope.dest_endpoint = WPAN_ENDPOINT_DIGI_DATA;
 	envelope.cluster_id = DIGI_CLUST_PROG_XBEE_OTA_UPD;
-	envelope.options = (ota->flags & XBEE_OTA_FLAG_APS_ENCRYPT) ?
+	envelope.options = (ota->flags & PXBEE_OTA_FLAG_APS_ENCRYPT) ?
 		WPAN_CLUST_FLAG_ENCRYPT : WPAN_SEND_FLAG_NONE;
 
 	if (ota->auth_length)
@@ -206,6 +206,6 @@ int xbee_ota_init( xbee_ota_t *ota, wpan_dev_t *dev, const addr64 *target)
 
 	xbee_xmodem_tx_init( &ota->xbxm, XBEE_XMODEM_FLAG_64);
 
-	return xbee_xmodem_set_stream( &ota->xbxm, _xbee_ota_xmodem_read,
-													_xbee_ota_xmodem_write, ota);
+	return xbee_xmodem_set_stream( &ota->xbxm, _pxbee_ota_xmodem_read,
+													_pxbee_ota_xmodem_write, ota);
 }

@@ -1,13 +1,13 @@
 /*
- * Copyright (c) 2009-2012 Digi International Inc.,
+ * Copyright (c) 2009-2019 Digi International Inc.,
  * All rights not expressly granted are reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * Digi International Inc. 11001 Bren Road East, Minnetonka, MN 55343
- * =======================================================================
+ * Digi International Inc., 9350 Excelsior Blvd., Suite 700, Hopkins, MN 55343
+ * ===========================================================================
  */
 
 /**
@@ -313,31 +313,36 @@ typedef XBEE_PACKED(zcl_header_nomfg_t, {
 	ZCL_STATUS_ prepended.
 	@{
 */
-#define ZCL_STATUS_SUCCESS									0x00
-#define ZCL_STATUS_FAILURE									0x01
-#define ZCL_STATUS_NOT_AUTHORIZED						0x7e
-#define ZCL_STATUS_RESERVED_FIELD_NOT_ZERO			0x7f
-#define ZCL_STATUS_MALFORMED_COMMAND					0x80
-#define ZCL_STATUS_UNSUP_CLUSTER_COMMAND				0x81
-#define ZCL_STATUS_UNSUP_GENERAL_COMMAND				0x82
-#define ZCL_STATUS_UNSUP_MANUF_CLUSTER_COMMAND		0x83
-#define ZCL_STATUS_UNSUP_MANUF_GENERAL_COMMAND		0x84
-#define ZCL_STATUS_INVALID_FIELD							0x85
-#define ZCL_STATUS_UNSUPPORTED_ATTRIBUTE				0x86
-#define ZCL_STATUS_INVALID_VALUE							0x87
-#define ZCL_STATUS_READ_ONLY								0x88
-#define ZCL_STATUS_INSUFFICIENT_SPACE					0x89
-#define ZCL_STATUS_DUPLICATE_EXISTS						0x8a
-#define ZCL_STATUS_NOT_FOUND								0x8b
-#define ZCL_STATUS_UNREPORTABLE_ATTRIBUTE				0x8c
-#define ZCL_STATUS_INVALID_DATA_TYPE					0x8d
-#define ZCL_STATUS_INVALID_SELECTOR						0x8e
-#define ZCL_STATUS_WRITE_ONLY								0x8f
-#define ZCL_STATUS_INCONSISTENT_STARTUP_STATE		0x90
-#define ZCL_STATUS_DEFINED_OUT_OF_BAND					0x91
-#define ZCL_STATUS_HARDWARE_FAILURE						0xc0
-#define ZCL_STATUS_SOFTWARE_FAILURE						0xc1
-#define ZCL_STATUS_CALIBRATION_ERROR					0xc2
+#define ZCL_STATUS_SUCCESS                                      0x00
+#define ZCL_STATUS_FAILURE                                      0x01
+#define ZCL_STATUS_NOT_AUTHORIZED                               0x7e
+#define ZCL_STATUS_RESERVED_FIELD_NOT_ZERO                      0x7f
+#define ZCL_STATUS_MALFORMED_COMMAND                            0x80
+#define ZCL_STATUS_UNSUP_CLUSTER_COMMAND                        0x81
+#define ZCL_STATUS_UNSUP_GENERAL_COMMAND                        0x82
+#define ZCL_STATUS_UNSUP_MANUF_CLUSTER_COMMAND                  0x83
+#define ZCL_STATUS_UNSUP_MANUF_GENERAL_COMMAND                  0x84
+#define ZCL_STATUS_INVALID_FIELD                                0x85
+#define ZCL_STATUS_UNSUPPORTED_ATTRIBUTE                        0x86
+#define ZCL_STATUS_INVALID_VALUE                                0x87
+#define ZCL_STATUS_READ_ONLY                                    0x88
+#define ZCL_STATUS_INSUFFICIENT_SPACE                           0x89
+#define ZCL_STATUS_DUPLICATE_EXISTS                             0x8a
+#define ZCL_STATUS_NOT_FOUND                                    0x8b
+#define ZCL_STATUS_UNREPORTABLE_ATTRIBUTE                       0x8c
+#define ZCL_STATUS_INVALID_DATA_TYPE                            0x8d
+#define ZCL_STATUS_INVALID_SELECTOR                             0x8e
+#define ZCL_STATUS_WRITE_ONLY                                   0x8f
+#define ZCL_STATUS_INCONSISTENT_STARTUP_STATE                   0x90
+#define ZCL_STATUS_DEFINED_OUT_OF_BAND                          0x91
+#define ZCL_STATUS_ABORT                                        0x95
+#define ZCL_STATUS_INVALID_IMAGE                                0x96
+#define ZCL_STATUS_WAIT_FOR_DATA                                0x97
+#define ZCL_STATUS_NO_IMAGE_AVAILABLE                           0x98
+#define ZCL_STATUS_REQUIRE_MORE_IMAGE                           0x99
+#define ZCL_STATUS_HARDWARE_FAILURE                             0xc0
+#define ZCL_STATUS_SOFTWARE_FAILURE                             0xc1
+#define ZCL_STATUS_CALIBRATION_ERROR                            0xc2
 //@}
 
 const char *zcl_status_text( uint_fast8_t status);

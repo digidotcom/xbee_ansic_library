@@ -48,7 +48,7 @@ pxbee_ota_update_OBJECTS = $(zigbee_OBJECTS) \
 	pxbee_ota_update.o \
 	$(atinter_OBJECTS) _pxbee_ota_update.o \
 	xbee_cbuf.o \
-	xbee_ota_client.o \
+	pxbee_ota_client.o \
 	xbee_transparent_serial.o \
 	xbee_xmodem.o xmodem_crc16.o \
 	zcl_client.o zcl_identify.o xbee_time.o

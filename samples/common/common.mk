@@ -42,7 +42,9 @@ EXE += \
 	user_data_relay \
 	xbee_netcat \
 	xbee_term \
+	xbee3_ota_tool \
 	zcltime \
+	zigbee_ota_info \
 	zigbee_register_device \
 	zigbee_walker \
 
@@ -138,6 +140,20 @@ install_ebl_OBJECTS += $(xbee_OBJECTS) install_ebl.o \
 
 install_ebl: $(install_ebl_OBJECTS)
 	$(COMPILE) -o $@ $^ $(DIALOG_LIBS)
+
+xbee3_ota_tool_OBJECTS = $(zigbee_OBJECTS) $(atinter_OBJECTS) \
+            _nodetable.o xbee_discovery.o zcl_ota_upgrade.o zcl_ota_server.o \
+            xbee3_ota_tool.o
+xbee3_ota_tool : $(xbee3_ota_tool_OBJECTS)
+	$(COMPILE) -o $@ $^
+
+# Zigbee samples
+
+# Info on files used with over-the-air (OTA) upgrade cluster
+zigbee_ota_info_OBJECTS = swapbytes.o swapcpy.o hexstrtobyte.o \
+                zcl_ota_upgrade.o zigbee_ota_info.o wpan_types.o
+zigbee_ota_info : $(zigbee_ota_info_OBJECTS)
+	$(COMPILE) -o $@ $^
 
 zigbee_register_device_OBJECTS = $(xbee_OBJECTS) $(atinter_OBJECTS) \
             xbee_register_device.o zigbee_register_device.o \

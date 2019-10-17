@@ -154,10 +154,10 @@ Headers:
 - `xbee/jslong.h` and `xbee/jslong_glue.h`: Code from mozilla.org used to
   manage 64-bit integers on platforms without direct support of them.
 
-- `xbee/ota_client.h`: Client code for sending OTA (over-the-air) firmware
+- `xbee/pxbee_ota_client.h`: Client code for sending OTA (over-the-air) firmware
   updates to Programmable XBee modules.
 
-- `xbee/ota_server.h`: Server code for advertising OTA capabilities on a
+- `xbee/pxbee_ota_server.h`: Server code for advertising OTA capabilities on a
   device (typically a Programmable XBee module).
 
 - `xbee/scan.h`: Structures describing `ATAS` (Active Scan) responses.
