@@ -20,6 +20,8 @@
  *  This file is part of Mbed TLS (https://tls.mbed.org)
  */
 
+// Renamed from platform_util.c to mbedtls_util.c for XBee Host C Library.
+
 /*
  * Ensure gmtime_r is available even with -std=c99; must be defined before
  * config.h, which pulls in glibc's features.h. Harmless on other platforms.
@@ -36,7 +38,7 @@
 
 #include "mbedtls/platform_util.h"
 #include "mbedtls/platform.h"
-#include "mbedtls/threading.h"
+//#include "mbedtls/threading.h"
 
 #include <stddef.h>
 #include <string.h>
