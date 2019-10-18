@@ -9,7 +9,8 @@
 DRIVER = ../..
 
 # directory for platform support
-PORTDIR = $(DRIVER)/ports/win32
+PORT = win32
+PORTDIR = $(DRIVER)/ports/$(PORT)
 
 # path to include files
 INCDIR = $(DRIVER)/include
@@ -78,68 +79,17 @@ clean :
 	- rm *.o *.d $(addsuffix .exe, $(EXE)) jsll_gen.exe
 
 SRCS = unittest.c main.c \
-		zcl_test_common.c \
-		zcl_write.c \
-		zcl_read.c \
-		zcl_24bit.c \
-		zcl_boolean.c \
-		zdo_match_desc_request.c \
-		zdo_simple_desc_respond.c \
-		zdo_tool.c \
-		xbee_timer_compare.c \
-		t_cbuf.c \
-		zcl_type_name.c \
-		t_memcheck.c \
-		coverity.c \
-	wpan_aps.c \
-	wpan_types.c \
-	xbee_platform_win32.c \
-	xbee_serial_win32.c \
-	xbee_atcmd.c \
-	xbee_atmode.c \
-	xbee_cbuf.c \
-	xbee_commissioning.c \
-	xbee_device.c \
-	xbee_discovery.c \
-	xbee_firmware.c \
-	xbee_io.c \
-	pxbee_ota_client.c \
-	pxbee_ota_server.c \
-	xbee_reg_descr.c \
-	xbee_scan.c \
-	xbee_sxa.c \
-	xbee_time.c \
-	xbee_transparent_serial.c \
-	xbee_wifi.c \
-	xbee_wpan.c \
-	xbee_xmodem.c \
-	sep_key_estab.c \
-	sep_messaging.c \
-	sep_metering.c \
-	zcl_basic.c \
-	zcl_client.c \
-	zcl_commissioning.c \
-	zcl_identify.c \
-	zcl_onoff.c \
-	zcl_time.c \
-	zcl_types.c \
-	zigbee_zcl.c \
-	zigbee_zdo.c \
-	xmodem_crc16.c \
-	hexdump.c \
-	hexstrtobyte.c \
-	memcheck.c \
-	swapbytes.c \
-	swapcpy.c \
-	xmodem_crc16.c \
-	_atinter.c \
-	parse_serial_args.c
+	$(wildcard $(SRCDIR)/*/*.c) \
+	$(wildcard $(PORTDIR)/*.c) \
+	$(wildcard $(DRIVER)/test/*/*.c) \
+	$(wildcard $(DRIVER)/samples/$(PORT)/*.c) \
+	$(wildcard $(DRIVER)/samples/common/*.c) \
 
 all_OBJECTS = \
 	wpan_aps.o \
 	wpan_types.o \
-	xbee_platform_win32.o \
-	xbee_serial_win32.o \
+	xbee_platform_$(PORT).o \
+	xbee_serial_$(PORT).o \
 	xbee_atcmd.o \
 	xbee_atmode.o \
 	xbee_cbuf.o \
@@ -175,7 +125,7 @@ all_OBJECTS = \
 	swapcpy.o \
 	xmodem_crc16.o
 
-platform_OBJECTS = xbee_platform_win32.o xbee_serial_win32.o \
+platform_OBJECTS = xbee_platform_$(PORT).o xbee_serial_$(PORT).o \
 	hexdump.o					\
 	swapbytes.o					\
 	swapcpy.o					\
@@ -206,37 +156,37 @@ zcl_test_OBJECTS = $(zcl_common_OBJECTS) zcl_test_common.o
 
 zcl_type_info_OBJECTS = unittest.o zcl_types.o zcl_type_info.o
 zcl_type_info : $(zcl_type_info_OBJECTS)
-	$(COMPILE) -o $@ $(zcl_type_info_OBJECTS)
+	$(COMPILE) -o $@ $^
 
 zcl_write_OBJECTS = $(zcl_test_OBJECTS) zcl_write.o
 zcl_write : $(zcl_write_OBJECTS)
-	$(COMPILE) -o $@ $(zcl_write_OBJECTS)
+	$(COMPILE) -o $@ $^
 
 zcl_read_OBJECTS = $(zcl_test_OBJECTS) zcl_read.o
 zcl_read : $(zcl_read_OBJECTS)
-	$(COMPILE) -o $@ $(zcl_read_OBJECTS)
+	$(COMPILE) -o $@ $^
 
 zcl_24bit_OBJECTS = $(zcl_test_OBJECTS) zcl_24bit.o
 zcl_24bit : $(zcl_24bit_OBJECTS)
-	$(COMPILE) -o $@ $(zcl_24bit_OBJECTS)
+	$(COMPILE) -o $@ $^
 
 zcl_boolean_OBJECTS = $(zcl_test_OBJECTS) zcl_boolean.o
 zcl_boolean : $(zcl_boolean_OBJECTS)
-	$(COMPILE) -o $@ $(zcl_boolean_OBJECTS)
+	$(COMPILE) -o $@ $^
 
 zcl_encode_structured_values_OBJECTS = $(zcl_common_OBJECTS) \
 	zcl_encode_structured_values.o
 zcl_encode_structured_values : $(zcl_encode_structured_values_OBJECTS)
-	$(COMPILE) -o $@ $(zcl_encode_structured_values_OBJECTS)
+	$(COMPILE) -o $@ $^
 
 zdo_match_desc_request_OBJECTS = $(zcl_test_OBJECTS) zdo_match_desc_request.o
 zdo_match_desc_request : $(zdo_match_desc_request_OBJECTS)
-	$(COMPILE) -o $@ $(zdo_match_desc_request_OBJECTS)
+	$(COMPILE) -o $@ $^
 
 zdo_simple_desc_respond_OBJECTS = $(zcl_test_OBJECTS) \
 	zdo_simple_desc_respond.o
 zdo_simple_desc_respond : $(zdo_simple_desc_respond_OBJECTS)
-	$(COMPILE) -o $@ $(zdo_simple_desc_respond_OBJECTS)
+	$(COMPILE) -o $@ $^
 
 # testing for jslong
 jsll_gen : ../util/jsll_gen.c
@@ -248,33 +198,33 @@ t_jslong : ../util/jsll_vectors.h $(platform_OBJECTS) t_jslong.o main.o
 
 t_memcheck_OBJECTS = $(platform_OBJECTS) t_memcheck.o memcheck.o
 t_memcheck : $(t_memcheck_OBJECTS)
-	$(COMPILE) -o $@ $(t_memcheck_OBJECTS)
+	$(COMPILE) -o $@ $^
 
 t_packed_struct : t_packed_struct.o
 	$(COMPILE) -o $@ $^
 
 xbee_timer_compare_OBJECTS = $(platform_OBJECTS) xbee_timer_compare.o
 xbee_timer_compare : $(xbee_timer_compare_OBJECTS)
-	$(COMPILE) -o $@ $(xbee_timer_compare_OBJECTS)
+	$(COMPILE) -o $@ $^
 
 t_cbuf_OBJECTS = $(platform_OBJECTS) $(cbuf_OBJECTS) t_cbuf.o
 t_cbuf : $(t_cbuf_OBJECTS)
-	$(COMPILE) -o $@ $(t_cbuf_OBJECTS)
+	$(COMPILE) -o $@ $^
 
 zcl_type_name_OBJECTS = zcl_type_name.o zcl_types.o unittest.o
 zcl_type_name: $(zcl_type_name_OBJECTS)
-	$(COMPILE) -o $@ $(zcl_type_name_OBJECTS)
+	$(COMPILE) -o $@ $^
 
 zdo_tool_OBJECTS = $(zigbee_OBJECTS) $(atinter_OBJECTS) zdo_tool.o
 zdo_tool : $(zdo_tool_OBJECTS)
-	$(COMPILE) -o $@ $(zdo_tool_OBJECTS)
+	$(COMPILE) -o $@ $^
 
 serial-passthru: serial-passthru.o $(base_OBJECTS)
-	$(COMPILE) -o $@ serial-passthru.o $(base_OBJECTS)
+	$(COMPILE) -o $@ $^
 
 coverity_OBJECTS = $(all_OBJECTS) coverity.o
 coverity : $(coverity_OBJECTS)
-	$(COMPILE) -o $@ $(coverity_OBJECTS)
+	$(COMPILE) -o $@ $^
 
 coverity-clean :
 	- rm *.o *.d coverity.exe
@@ -307,6 +257,18 @@ coverity-push:
 .c.o :
 	$(COMPILE) -c $<
 
+# ...or in the port support directory...
+%.o : $(PORTDIR)/%.c
+	$(COMPILE) -c $<
+
+# ...or in common samples directory...
+%.o : ../common/%.c
+	$(COMPILE) -c $<
+
+# ...or in a subdirectory of SRCDIR...
+%.o : $(SRCDIR)/*/%.c
+	$(COMPILE) -c $<
+
 # ...or up one dir
 %.o : ../%.c
 	$(COMPILE) -c $<
@@ -319,26 +281,8 @@ coverity-push:
 %.o : ../util/%.c
 	$(COMPILE) -c $<
 
-# ...or in the port support directory...
-%.o : $(PORTDIR)/%.c
-	$(COMPILE) -c $<
-
-# ...or in SRCDIR...
-%.o : $(SRCDIR)/%.c
-	$(COMPILE) -c $<
-
-# ...or in a given subdirectory of SRCDIR.
-%.o : $(SRCDIR)/xbee/%.c
-	$(COMPILE) -c $<
-%.o : $(SRCDIR)/wpan/%.c
-	$(COMPILE) -c $<
-%.o : $(SRCDIR)/zigbee/%.c
-	$(COMPILE) -c $<
-%.o : $(SRCDIR)/util/%.c
-	$(COMPILE) -c $<
-
-# ...or in a samples/win32 (for parse_serial_args.o)
-%.o : ../../samples/win32/%.c
+# ...or in the port's samples (for parse_serial_args.o)
+%.o : ../../samples/$(PORT)/%.c
 	$(COMPILE) -c $<
 
 # ...or in a samples/common (for _atinter.o)
