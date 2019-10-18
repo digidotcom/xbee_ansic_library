@@ -47,6 +47,7 @@ EXE = zcl_write \
 		t_cbuf \
 		zcl_type_name \
 		t_memcheck \
+		t_srp \
 
 all : $(EXE)
 
@@ -65,6 +66,7 @@ test : $(EXE)
 	&& ./t_cbuf \
 	&& ./zcl_type_name \
 	&& ./t_memcheck \
+	&& ./t_srp \
 	&& echo "ALL PASSED"
 
 clean :
@@ -190,6 +192,12 @@ t_jslong : ../util/jsll_vectors.h $(platform_OBJECTS) t_jslong.o main.o
 
 t_memcheck_OBJECTS = $(platform_OBJECTS) t_memcheck.o memcheck.o
 t_memcheck : $(t_memcheck_OBJECTS)
+	$(COMPILE) -o $@ $^
+
+mbedtls_OBJECTS = aes.o bignum.o ctr_drbg.o entropy.o entropy_poll.o sha256.o \
+            mbedtls_util.o xbee_random_mbedtls.o
+t_srp_OBJECTS = $(mbedtls_OBJECTS) srp.o t_srp.o unittest.o
+t_srp : $(t_srp_OBJECTS)
 	$(COMPILE) -o $@ $^
 
 t_packed_struct : t_packed_struct.o
