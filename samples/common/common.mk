@@ -43,6 +43,7 @@ EXE += \
 	xbee_netcat \
 	xbee_term \
 	xbee3_ota_tool \
+	xbee3_srp_verifier \
 	zcltime \
 	zigbee_ota_info \
 	zigbee_register_device \
@@ -145,6 +146,12 @@ xbee3_ota_tool_OBJECTS = $(zigbee_OBJECTS) $(atinter_OBJECTS) \
             _nodetable.o xbee_discovery.o zcl_ota_upgrade.o zcl_ota_server.o \
             xbee3_ota_tool.o
 xbee3_ota_tool : $(xbee3_ota_tool_OBJECTS)
+
+mbedtls_OBJECTS = aes.o bignum.o ctr_drbg.o entropy.o entropy_poll.o sha256.o \
+            mbedtls_util.o xbee_random_mbedtls.o
+xbee3_srp_verifier_OBJECTS = $(mbedtls_OBJECTS) $(xbee_OBJECTS) $(atinter_OBJECTS) \
+            srp.o xbee3_srp_verifier.o
+xbee3_srp_verifier : $(xbee3_srp_verifier_OBJECTS)
 	$(COMPILE) -o $@ $^
 
 # Zigbee samples

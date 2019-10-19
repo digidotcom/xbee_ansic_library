@@ -87,6 +87,9 @@ collection of sample programs.
   Tool to send .ota (firmware) and .otb (file system) update images
   to remote devices.
 
+- **XBee3 SRP Verifier**:
+  Tool to configure salt and verifier for BLE and SecureSession access.
+
 - **Zigbee OTA info**:
   Dump information from the header of .ota (firmware) and .otb (file
   system) update files.
@@ -106,6 +109,9 @@ collection of sample programs.
 - **xbee netcat**:
   A version of the netcat (nc) tool that uses the XBee sockets API to
   open a TCP or UDP socket and pass its data to/from stdout/stdin.
+
+- **XBee3 SRP Verifier**:
+  Tool to configure salt and verifier for BLE access.
 
 ### Zigbee Samples
 
