@@ -3,6 +3,10 @@
  * Copyright (c) 2010 Tom Cocagne. All rights reserved.
  * https://github.com/cocagne/csrp
  *
+ * Modified by Digi International to use Mbed TLS instead of OpenSSL.
+ * Copyright (c) 2019 Digi International Inc.
+ * All rights not expressly granted are reserved.
+ *
  * The MIT License (MIT)
  *
  * Copyright (c) 2013 Tom Cocagne
@@ -35,7 +39,8 @@
  *
  * Author:        tom.cocagne@gmail.com (Tom Cocagne)
  *
- * Dependencies:  OpenSSL (and Advapi32.lib on Windows)
+ * Dependencies:  original: OpenSSL (and Advapi32.lib on Windows)
+ *                modified: Mbed TLS (BIGNUM, CTR_DRBG, ENTROPY, SHA256)
  *
  * Usage:         Refer to test_srp.c for a demonstration
  *
@@ -57,79 +62,32 @@
 #ifndef SRP_H
 #define SRP_H
 
+// Digi International's XBee products use the following SRP configuration.
+#define SRP_GROUP_LEN       128
+#define SRP_HASH_LEN        32
 
 struct SRPVerifier;
 struct SRPUser;
 
-typedef enum
-{
-    SRP_NG_1024,
-    SRP_NG_2048,
-    SRP_NG_4096,
-    SRP_NG_8192,
-    SRP_NG_CUSTOM
-} SRP_NGType;
-
-typedef enum
-{
-    SRP_SHA1,
-    SRP_SHA224,
-    SRP_SHA256,
-    SRP_SHA384,
-    SRP_SHA512
-} SRP_HashAlgorithm;
-
-
-/* This library will automatically seed the OpenSSL random number generator
- * using cryptographically sound random data on Windows & Linux. If this is
- * undesirable behavior or the host OS does not provide a /dev/urandom file,
- * this function may be called to seed the random number generator with
- * alternate data.
- *
- * The random data should include at least as many bits of entropy as the
- * largest hash function used by the application. So, for example, if a
- * 512-bit hash function is used, the random data requies at least 512
- * bits of entropy.
- *
- * Passing a null pointer to this function will cause this library to skip
- * seeding the random number generator. This is only legitimate if it is
- * absolutely known that the OpenSSL random number generator has already
- * been sufficiently seeded within the running application.
- *
- * Notes:
- *    * This function is optional on Windows & Linux and mandatory on all
- *      other platforms.
- */
-void srp_random_seed( const unsigned char * random_data, int data_length );
-
-
 /* Out: bytes_s, len_s, bytes_v, len_v
  *
  * The caller is responsible for freeing the memory allocated for bytes_s and bytes_v
- *
- * The n_hex and g_hex parameters should be 0 unless SRP_NG_CUSTOM is used for ng_type.
- * If provided, they must contain ASCII text of the hexidecimal notation.
  */
-void srp_create_salted_verification_key( SRP_HashAlgorithm alg,
-                                         SRP_NGType ng_type, const char * username,
+int srp_create_salted_verification_key( const char * username,
                                          const unsigned char * password, int len_password,
                                          const unsigned char ** bytes_s, int * len_s,
-                                         const unsigned char ** bytes_v, int * len_v,
-                                         const char * n_hex, const char * g_hex );
+                                         const unsigned char ** bytes_v, int * len_v );
 
 
 /* Out: bytes_B, len_B.
  *
  * On failure, bytes_B will be set to NULL and len_B will be set to 0
- *
- * The n_hex and g_hex parameters should be 0 unless SRP_NG_CUSTOM is used for ng_type
  */
-struct SRPVerifier *  srp_verifier_new( SRP_HashAlgorithm alg, SRP_NGType ng_type, const char * username,
+struct SRPVerifier *  srp_verifier_new( const char * username,
                                         const unsigned char * bytes_s, int len_s,
                                         const unsigned char * bytes_v, int len_v,
                                         const unsigned char * bytes_A, int len_A,
-                                        const unsigned char ** bytes_B, int * len_B,
-                                        const char * n_hex, const char * g_hex );
+                                        const unsigned char ** bytes_B, int * len_B );
 
 
 void                  srp_verifier_delete( struct SRPVerifier * ver );
@@ -154,10 +112,8 @@ void                  srp_verifier_verify_session( struct SRPVerifier * ver,
 
 /*******************************************************************************/
 
-/* The n_hex and g_hex parameters should be 0 unless SRP_NG_CUSTOM is used for ng_type */
-struct SRPUser *      srp_user_new( SRP_HashAlgorithm alg, SRP_NGType ng_type, const char * username,
-                                    const unsigned char * bytes_password, int len_password,
-                                    const char * n_hex, const char * g_hex );
+struct SRPUser *      srp_user_new( const char * username,
+                                    const unsigned char * bytes_password, int len_password );
 
 void                  srp_user_delete( struct SRPUser * usr );
 
@@ -172,12 +128,12 @@ const unsigned char * srp_user_get_session_key( struct SRPUser * usr, int * key_
 int                   srp_user_get_session_key_length( struct SRPUser * usr );
 
 /* Output: username, bytes_A, len_A */
-void                  srp_user_start_authentication( struct SRPUser * usr, const char ** username,
+int                   srp_user_start_authentication( struct SRPUser * usr, const char ** username,
                                                      const unsigned char ** bytes_A, int * len_A );
 
 /* Output: bytes_M, len_M  (len_M may be null and will always be
  *                          srp_user_get_session_key_length() bytes in size) */
-void                  srp_user_process_challenge( struct SRPUser * usr,
+int                   srp_user_process_challenge( struct SRPUser * usr,
                                                   const unsigned char * bytes_s, int len_s,
                                                   const unsigned char * bytes_B, int len_B,
                                                   const unsigned char ** bytes_M, int * len_M );
