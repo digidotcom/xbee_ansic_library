@@ -31,7 +31,7 @@ XBEE_BEGIN_DECLS
 	@{
 */
 #define ZCL_TYPE_NO_DATA				0x00		// 0 octets
-//@}
+///@}
 
 
 /** @name ZCL General Data (discrete) Types
@@ -45,13 +45,13 @@ XBEE_BEGIN_DECLS
 #define ZCL_TYPE_GENERAL_48BIT		0x0d		// 6 octets
 #define ZCL_TYPE_GENERAL_56BIT		0x0e		// 7 octets
 #define ZCL_TYPE_GENERAL_64BIT		0x0f		// 8 octets
-//@}
+///@}
 
 /** @name ZCL Logical (discrete) Types
 	@{
 */
 #define ZCL_TYPE_LOGICAL_BOOLEAN		0x10		// 1 octet, invalid=0xff
-//@}
+///@}
 
 /** @name Values for #ZCL_TYPE_LOGICAL_BOOLEAN
 	@{
@@ -59,7 +59,7 @@ XBEE_BEGIN_DECLS
 #define ZCL_BOOL_FALSE		0x00
 #define ZCL_BOOL_TRUE		0x01
 #define ZCL_BOOL_INVALID	0xff
-//@}
+///@}
 
 /** @name ZCL Bitmap (discrete) Types
 	@{
@@ -72,7 +72,7 @@ XBEE_BEGIN_DECLS
 #define ZCL_TYPE_BITMAP_48BIT			0x1d		// 6 octets
 #define ZCL_TYPE_BITMAP_56BIT			0x1e		// 7 octets
 #define ZCL_TYPE_BITMAP_64BIT			0x1f		// 8 octets
-//@}
+///@}
 
 /** @name ZCL Unsigned integer (analog) Types
 	@{
@@ -85,7 +85,7 @@ XBEE_BEGIN_DECLS
 #define ZCL_TYPE_UNSIGNED_48BIT		0x25		// 6 octets, invalid = all ff's
 #define ZCL_TYPE_UNSIGNED_56BIT		0x26		// 7 octets, invalid = all ff's
 #define ZCL_TYPE_UNSIGNED_64BIT		0x27		// 8 octets, invalid = all ff's
-//@}
+///@}
 
 /** @name ZCL Signed integer (analog) Types
 	@{
@@ -98,14 +98,14 @@ XBEE_BEGIN_DECLS
 #define ZCL_TYPE_SIGNED_48BIT			0x2d		// 6 octets, invalid=0x80...0
 #define ZCL_TYPE_SIGNED_56BIT			0x2e		// 7 octets, invalid=0x80...0
 #define ZCL_TYPE_SIGNED_64BIT			0x2f		// 8 octets, invalid=0x80...0
-//@}
+///@}
 
 /** @name ZCL Enumeration (discrete) Types
 	@{
 */
 #define ZCL_TYPE_ENUM_8BIT				0x30		// 1 octet, invalid=0xff
 #define ZCL_TYPE_ENUM_16BIT			0x31		// 2 octets, invalid=0xffff
-//@}
+///@}
 
 /** @name ZCL Floating point (analog) Types
 	@{
@@ -118,7 +118,7 @@ XBEE_BEGIN_DECLS
 
 /// double-precision (64-bit) IEEE 754 floating point
 #define ZCL_TYPE_FLOAT_DOUBLE			0x3a		// 8 octets, invalid=NaN
-//@}
+///@}
 
 /*	For now, comment out all floating point macros.
 	Needs significant work if we're going to use it.
@@ -168,7 +168,7 @@ XBEE_BEGIN_DECLS
 /// Semi-Precision, Negative Zero:
 ///	sign of 1, exponent of 0 and mantissa of 0
 #define ZCL_FLOAT_SEMI_ZERO_NEG			UINT16_C(0x8000)
-//@}
+///@}
 
 / ** @name Semi-Precision Floating Point
 	Macros for working with single-precision IEEE 754 floating-point values, stored
@@ -204,7 +204,7 @@ XBEE_BEGIN_DECLS
 // Zero: indicated by a zero exponent and zero mantissa
 #define ZCL_FLOAT_ZERO_POS				(float) 0x00000000ul
 #define ZCL_FLOAT_ZERO_NEG				(float) 0x80000000ul
-//@}
+///@}
 
 */
 
@@ -232,7 +232,7 @@ XBEE_BEGIN_DECLS
 /// "language and character set field of the complex descriptor contained
 /// in the character data [following the first octet]".  See ZCL for details.
 #define ZCL_TYPE_STRING_LONG_CHAR	0x44
-//@}
+///@}
 
 // Array, Structure, Set, Bag
 // These datatypes are currently unsupported.
@@ -244,7 +244,7 @@ XBEE_BEGIN_DECLS
 #define ZCL_TYPE_ARRAY					0x48		// invalid=0xffff in first 2 octets
 /// ZCL Struct (unsupported)
 #define ZCL_TYPE_STRUCT					0x4C		// invalid=0xffff in first 2 octets
-//@}
+///@}
 
 /** @name ZCL Collection (discrete) Types
 	@{
@@ -253,7 +253,7 @@ XBEE_BEGIN_DECLS
 #define ZCL_TYPE_SET						0x50		// number of elements = 0xffff
 /// ZCL Bag (unsupported)
 #define ZCL_TYPE_BAG						0x51		// number of elements = 0xffff
-//@}
+///@}
 
 /** @name ZCL Time (analog) Types
 	@{
@@ -266,7 +266,7 @@ XBEE_BEGIN_DECLS
 
 /// number of seconds (stored in uint32_t) since Midnight on 1/1/2000 UTC
 #define ZCL_TYPE_TIME_UTCTIME			0xE2		// 4 octets, invalid=0xffffffff
-//@}
+///@}
 
 typedef uint32_t zcl_utctime_t;
 #define ZCL_UTCTIME_INVALID		0xFFFFFFFF
@@ -298,7 +298,7 @@ typedef XBEE_PACKED(zcl_date_t, {
 
 /// 32-bit BACnet OID
 #define ZCL_TYPE_ID_BACNET_OID	0xEA			// 4 octets, invalid=0xffffffff
-//@}
+///@}
 
 /** @name ZCL Miscellaneous Types
 	@{
@@ -308,14 +308,14 @@ typedef XBEE_PACKED(zcl_date_t, {
 
 /// 128-bit security key
 #define ZCL_TYPE_SECURITY_KEY		0xF1			// 16 octets (128-bit security key)
-//@}
+///@}
 
 /** @name ZCL Unknown Type
 	@{
 */
 /// Unknown ZCL Type
 #define ZCL_TYPE_UNKNOWN			0xFF			// 0 octets
-//@}
+///@}
 
 // DEVNOTE: May be necessary to add pragmas to pack these structures on
 //				non-embedded platforms.
@@ -391,7 +391,7 @@ typedef union zcl48_t {
 #define ZCL_T_SIZE_128BIT	0x0C
 /// variable-length value (array, set, bag, struct)
 #define ZCL_T_SIZE_VARIABLE	0x0B
-//@}
+///@}
 
 /// ZCL data type \a t is an analog type
 #define ZCL_TYPE_IS_ANALOG(t) 		(zcl_type_info[t] & ZCL_T_ANALOG)

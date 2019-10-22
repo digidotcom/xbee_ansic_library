@@ -53,18 +53,18 @@
 // Private/opaque structure, intentionally not exposed in a header file.
 typedef struct xbee_sock_socket {
     uint8_t     type;
-#define XBEE_SOCK_SOCKET_TYPE_AVAILABLE 0x00    //< slot in table available
-#define XBEE_SOCK_SOCKET_TYPE_PENDING   0x01    //< waiting for Create Response
-#define XBEE_SOCK_SOCKET_TYPE_CREATED   0x02    //< allocated but not established
-#define XBEE_SOCK_SOCKET_TYPE_ATTACH    0x03    //< waiting for Connect/Bind/Listen Resp
-#define XBEE_SOCK_SOCKET_TYPE_CONNECT   0x04    //< point-to-point connection
-#define XBEE_SOCK_SOCKET_TYPE_BIND      0x05    //< UDP socket accepting datagrams
-#define XBEE_SOCK_SOCKET_TYPE_LISTEN    0x06    //< TCP/SSL socket accepting connections
-    uint8_t     create_frame_id;        //< used to match Create Response frame
-    uint8_t     tx_frame_id;            //< used to match TX Status frame
+#define XBEE_SOCK_SOCKET_TYPE_AVAILABLE 0x00    ///< slot in table available
+#define XBEE_SOCK_SOCKET_TYPE_PENDING   0x01    ///< waiting for Create Response
+#define XBEE_SOCK_SOCKET_TYPE_CREATED   0x02    ///< allocated but not established
+#define XBEE_SOCK_SOCKET_TYPE_ATTACH    0x03    ///< waiting for Connect/Bind/Listen Resp
+#define XBEE_SOCK_SOCKET_TYPE_CONNECT   0x04    ///< point-to-point connection
+#define XBEE_SOCK_SOCKET_TYPE_BIND      0x05    ///< UDP socket accepting datagrams
+#define XBEE_SOCK_SOCKET_TYPE_LISTEN    0x06    ///< TCP/SSL socket accepting connections
+    uint8_t     create_frame_id;        ///< used to match Create Response frame
+    uint8_t     tx_frame_id;            ///< used to match TX Status frame
     uint8_t     socket_id;
     uint8_t     protocol;
-    xbee_dev_t  *xbee;                  //< device hosting the socket
+    xbee_dev_t  *xbee;                  ///< device hosting the socket
 
     /// Callback for Create, Connect, Listen, Close, State, & TX Status responses.
     xbee_sock_notify_fn                 notify_handler;
@@ -74,9 +74,9 @@ typedef struct xbee_sock_socket {
 
     /// Callbacks based on the socket type.
     union {
-        xbee_sock_receive_fn            receive;        //< for TYPE_CONNECT
-        xbee_sock_receive_from_fn       receive_from;   //< for TYPE_BIND
-        xbee_sock_ipv4_client_fn        ipv4_client;    //< for TYPE_LISTEN
+        xbee_sock_receive_fn            receive;        ///< for TYPE_CONNECT
+        xbee_sock_receive_from_fn       receive_from;   ///< for TYPE_BIND
+        xbee_sock_ipv4_client_fn        ipv4_client;    ///< for TYPE_LISTEN
     } handler;
 } socket_t;
 

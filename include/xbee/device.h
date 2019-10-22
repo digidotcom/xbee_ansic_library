@@ -35,7 +35,7 @@ XBEE_BEGIN_DECLS
 	@{
 */
 #define XBEE_DEV_FLAG_NONE		0x0000
-//@}
+///@}
 
 #ifndef XBEE_DEV_MAX_DISPATCH_PER_TICK
 	#define XBEE_DEV_MAX_DISPATCH_PER_TICK 5
@@ -141,7 +141,7 @@ enum xbee_frame_type {
 	@name
 	Values for the \c options field of many receive frame types.
 */
-//@{
+///@{
 /// XBee Receive Options: packet was acknowledged [ZigBee, DigiMesh]
 #define XBEE_RX_OPT_ACKNOWLEDGED    0x01
 
@@ -168,7 +168,7 @@ enum xbee_frame_type {
 
 	/// XBee Receive Options: DigiMesh (not available on 10k product) [DigiMesh]
 	#define XBEE_RX_OPT_MODE_DIGIMESH				(3<<6)
-//@}
+///@}
 
 /// Smart Energy and ZigBee are limited to 128 bytes, DigiMesh is 256 bytes.
 #ifndef XBEE_MAX_RFPAYLOAD
@@ -202,7 +202,7 @@ struct xbee_dev_t;
 	Function pointer prototypes, forward declaration using "struct xbee_dev_t"
 	instead of "xbee_dev_t" since we use the types in the xbee_dev_t definition.
 */
-//@{
+///@{
 
 /**
 	@brief
@@ -289,7 +289,7 @@ struct xbee_node_id_t;
 */
 typedef void (*xbee_disc_node_id_fn)( struct xbee_dev_t *xbee,
 		const struct xbee_node_id_t *rec);
-//@}
+///@}
 
 typedef struct xbee_dispatch_table_entry {
 	uint8_t						frame_type;	///< if 0, match all frames of this type
@@ -392,7 +392,7 @@ typedef struct xbee_dev_t
 		#define XBEE_HARDWARE_S6B				0x2700		// XBee Wi-Fi
 		#define XBEE_HARDWARE_CELL_CAT1_VZW		0x4000
 		#define XBEE_HARDWARE_CELL_3G			0x4400
-	//@}
+	///@}
 
 	/// Value of XBee module's VR register (4-bytes on some devices)
 	uint32_t				firmware_version;
@@ -415,7 +415,7 @@ typedef struct xbee_dev_t
 		#define XBEE_NODETYPE_COORD			0x0100
 		#define XBEE_NODETYPE_ROUTER			0x0300
 		#define XBEE_NODETYPE_ENDDEV			0x0900
-	//@}
+	///@}
 
 	/// Multi-purpose flags for tracking information about this device.
 	enum xbee_dev_flags			flags;
@@ -562,7 +562,7 @@ typedef XBEE_PACKED(xbee_frame_modem_status_t, {
 #define XBEE_MODEM_STATUS_CONFIG_CHANGE_IN_JOIN	0x11
 /// XBee Modem Status: Network stack error [ZigBee]
 #define XBEE_MODEM_STATUS_STACK_ERROR				0x80
-//@}
+///@}
 
 /**
 	@brief

@@ -38,9 +38,9 @@ XBEE_BEGIN_DECLS
 
 /// Common sequence of fields appearing in multiple frame formats.
 typedef XBEE_PACKED(zcl_ota_image_id_t, {
-    uint16_t    mfg_code_le;            //< Manufacturer code
-    uint16_t    image_type_le;          //< Image type
-    uint32_t    file_version_le;        //< File version
+    uint16_t    mfg_code_le;            ///< Manufacturer code
+    uint16_t    image_type_le;          ///< Image type
+    uint32_t    file_version_le;        ///< File version
 }) zcl_ota_image_id_t;
 
 /// OTA Upgrade File Header
@@ -65,10 +65,10 @@ typedef XBEE_PACKED(zcl_ota_file_header_t, {
 
 /*
 // Optional fields after zcl_ota_file_header_t, based on field_control_le bits:
-    uint8_t     security_cred_ver;      //< Security credential version
-    addr64      upgrade_dest_le;        //< Upgrade file destination
-    uint16_t    min_hardware_ver_le;    //< Minimum hardware version
-    uint16_t    max_hardware_ver_le;    //< Maximum hardware version
+    uint8_t     security_cred_ver;      ///< Security credential version
+    addr64      upgrade_dest_le;        ///< Upgrade file destination
+    uint16_t    min_hardware_ver_le;    ///< Minimum hardware version
+    uint16_t    max_hardware_ver_le;    ///< Maximum hardware version
 */
 
 /// value for file_id_le element of zcl_ota_file_header_t
@@ -115,24 +115,24 @@ typedef XBEE_PACKED(zcl_ota_element_t, {
 
 /// Sub-element with signature for the entire file, must be last in the file.
 typedef XBEE_PACKED(zcl_ota_element_ecdsa_signature_t, {
-    uint16_t    tag_id_le;      //< Tag ID (ZCL_OTA_TAG_ID_ECDSA_SIGNATURE)
-    uint32_t    length_le;      //< Length Field (always 0x00000032)
-    addr64      signer_addr_le; //< Signer IEEE Address
-    uint8_t     signature[42];  //< Signature Data
+    uint16_t    tag_id_le;      ///< Tag ID (ZCL_OTA_TAG_ID_ECDSA_SIGNATURE)
+    uint32_t    length_le;      ///< Length Field (always 0x00000032)
+    addr64      signer_addr_le; ///< Signer IEEE Address
+    uint8_t     signature[42];  ///< Signature Data
 }) zcl_ota_element_ecdsa_signature_t;
 
 /// Sub-element with the certificate used to generate the OTA file's signature.
 typedef XBEE_PACKED(zcl_ota_element_ecdsa_cert_t, {
-    uint16_t    tag_id_le;      //< Tag ID (ZCL_OTA_TAG_ID_ECDSA_CERTIFICATE)
-    uint32_t    length_le;      //< Length Field (always 0x00000030)
-    uint8_t     cert[48];       //< ECDSA Certificate
+    uint16_t    tag_id_le;      ///< Tag ID (ZCL_OTA_TAG_ID_ECDSA_CERTIFICATE)
+    uint32_t    length_le;      ///< Length Field (always 0x00000030)
+    uint8_t     cert[48];       ///< ECDSA Certificate
 }) zcl_ota_element_ecdsa_cert_t;
 
 /// Sub-element with a hash value to verify the integrity of the OTA file.
 typedef XBEE_PACKED(zcl_ota_element_integrity_code_t, {
-    uint16_t    tag_id_le;      //< Tag ID (ZCL_OTA_TAG_ID_IMAGE_INTEGRITY_CODE)
-    uint32_t    length_le;      //< Length Field (always 0x00000010)
-    uint8_t     hash[16];       //< Hash Value
+    uint16_t    tag_id_le;      ///< Tag ID (ZCL_OTA_TAG_ID_IMAGE_INTEGRITY_CODE)
+    uint32_t    length_le;      ///< Length Field (always 0x00000010)
+    uint8_t     hash[16];       ///< Hash Value
 }) zcl_ota_element_integrity_code_t;
 
 // OTA Cluster Attributes (client side)
@@ -169,20 +169,20 @@ typedef XBEE_PACKED(zcl_ota_image_notify_t, {
 #define ZCL_OTA_IMAGE_NOTIFY_PAYLOAD_INC_IMAGE_TYPE     0x02    // ends at .id.image_type_le
 #define ZCL_OTA_IMAGE_NOTIFY_PAYLOAD_INC_FILE_VERSION   0x03    // ends at .id.file_version_le
     uint8_t     query_jitter;
-    zcl_ota_image_id_t  id;             //< new image identification
+    zcl_ota_image_id_t  id;             ///< new image identification
 }) zcl_ota_image_notify_t;
 
 typedef XBEE_PACKED(zcl_ota_query_next_image_req_t, {
     uint8_t     field_control;
 #define ZCL_OTA_QUERY_NEXT_IMAGE_FIELD_HARDWARE_VER     (1<<0)
     zcl_ota_image_id_t
-                id;                     //< current image identification
+                id;                     ///< current image identification
     uint16_t    hardware_ver_le;
 }) zcl_ota_query_next_image_req_t;
 
 typedef XBEE_PACKED(zcl_ota_query_next_image_resp_t, {
     uint8_t     status;
-    zcl_ota_image_id_t  id;             //< new image identification
+    zcl_ota_image_id_t  id;             ///< new image identification
     uint32_t    image_size_le;
 }) zcl_ota_query_next_image_resp_t;
 
@@ -190,7 +190,7 @@ typedef XBEE_PACKED(zcl_ota_image_block_req_t, {
     uint8_t     field_control;
 #define ZCL_OTA_IMAGE_BLOCK_FIELD_NODE_ADDR             (1<<0)
 #define ZCL_OTA_IMAGE_BLOCK_FIELD_BLOCK_DELAY           (1<<1)
-    zcl_ota_image_id_t  id;             //< upgrade image identification
+    zcl_ota_image_id_t  id;             ///< upgrade image identification
     uint32_t    file_offset_le;
     uint8_t     max_data_size;
     addr64      request_node_addr_le;
@@ -200,7 +200,7 @@ typedef XBEE_PACKED(zcl_ota_image_block_req_t, {
 typedef XBEE_PACKED(zcl_ota_image_page_req_t, {
     uint8_t     field_control;
 #define ZCL_OTA_IMAGE_PAGE_FIELD_NODE_ADDR             (1<<0)
-    zcl_ota_image_id_t  id;             //< upgrade image identification
+    zcl_ota_image_id_t  id;             ///< upgrade image identification
     uint32_t    file_offset_le;
     uint8_t     max_data_size;
     uint16_t    page_size_le;
@@ -213,7 +213,7 @@ typedef XBEE_PACKED(zcl_ota_image_block_resp_t, {
         uint8_t status;
         XBEE_PACKED(, {
             uint8_t     status;         // set to ZCL_STATUS_SUCCESS
-            zcl_ota_image_id_t  id;     //< upgrade image identification
+            zcl_ota_image_id_t  id;     ///< upgrade image identification
             uint32_t    file_offset_le;
             uint8_t     data_size;
             // followed by <data_size> bytes of image data
@@ -232,11 +232,11 @@ typedef XBEE_PACKED(zcl_ota_image_block_resp_t, {
 
 typedef XBEE_PACKED(zcl_ota_upgrade_end_req_t, {
     uint8_t     status;
-    zcl_ota_image_id_t  id;             //< upgrade image identification
+    zcl_ota_image_id_t  id;             ///< upgrade image identification
 }) zcl_ota_upgrade_end_req_t;
 
 typedef XBEE_PACKED(zcl_ota_upgrade_end_resp_t, {
-    zcl_ota_image_id_t  id;             //< upgrade image identification
+    zcl_ota_image_id_t  id;             ///< upgrade image identification
     zcl_utctime_t   current_time_le;
     zcl_utctime_t   upgrade_time_le;
 }) zcl_ota_upgrade_end_resp_t;

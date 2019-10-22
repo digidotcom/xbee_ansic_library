@@ -50,7 +50,7 @@ XBEE_BEGIN_DECLS
 
 /// sender is ending transmission
 #define XMODEM_EOT	0x04		// end of transmission
-//@}
+///@}
 
 /**
 	@brief

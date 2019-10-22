@@ -65,19 +65,19 @@ typedef struct xbee_gen3_update_t {
     xbee_gen3_state_t           state;
     xbee_gen3_state_t           next_state;
     uint16_t                    flags;
-#define XBEE_GEN3_BL_FLAG_RETRY_MASK    (0xFF)  //< count retries on upload
-#define XBEE_GEN3_BL_FLAG_QUERY_ONLY    (1<<8)  //< don't upload firmware
-#define XBEE_GEN3_BL_FLAG_PROTO1        (1<<9)  //< upload uses CRC16
-#define XBEE_GEN3_BL_FLAG_EOF           (1<<10) //< reached end of fw image
+#define XBEE_GEN3_BL_FLAG_RETRY_MASK    (0xFF)  ///< count retries on upload
+#define XBEE_GEN3_BL_FLAG_QUERY_ONLY    (1<<8)  ///< don't upload firmware
+#define XBEE_GEN3_BL_FLAG_PROTO1        (1<<9)  ///< upload uses CRC16
+#define XBEE_GEN3_BL_FLAG_EOF           (1<<10) ///< reached end of fw image
 
-    uint16_t                    bl_version;     //< parsed response from 'B' cmd
-    uint16_t                    page_num;       //< page we're sending to BL
+    uint16_t                    bl_version;     ///< parsed response from 'B' cmd
+    uint16_t                    page_num;       ///< page we're sending to BL
 
     /// Current offset into buffer (0 - <n-1>); -1 if sending page header;
     /// <n> if sending checksum/CRC16 (where <n> = XBEE_GEN3_UPLOAD_PAGE_SIZE).
     int16_t                     page_offset;
 
-    xbee_gen3_extended_ver_t    ext_ver;        //< parsed response from 'V' cmd
+    xbee_gen3_extended_ver_t    ext_ver;        ///< parsed response from 'V' cmd
 
     xbee_dev_t                  *xbee;
 

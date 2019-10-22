@@ -116,4 +116,4 @@ XBEE_END_DECLS
 
 #endif		// __XBEE_SXA_SOCKET
 
-//@}
+///@}

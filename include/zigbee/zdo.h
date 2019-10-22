@@ -68,10 +68,10 @@ int zdo_match_desc_request(void *buffer, int16_t buflen,
 /**	@name
 	values for \c .request_type in NWK and IEEE address requests
 */
-//@{
+///@{
 #define ZDO_REQUEST_TYPE_SINGLE		0x00
 #define ZDO_REQUEST_TYPE_EXTENDED	0x01
-//@}
+///@}
 
 /**	@name ZDO Mac Capability Flags
 	@{
@@ -84,7 +84,7 @@ int zdo_match_desc_request(void *buffer, int16_t buflen,
 #define ZDO_CAPABILITY_RESERVED_2		0x20
 #define ZDO_CAPABILITY_SECURITY			0x40
 #define ZDO_CAPABILITY_ALLOCATE_ADDR	0x80
-//@}
+///@}
 
 /**	@name ZDO Status Values
 	@{
@@ -106,7 +106,7 @@ int zdo_match_desc_request(void *buffer, int16_t buflen,
 #define ZDO_STATUS_NOT_PERMITTED			0x8B
 #define ZDO_STATUS_TABLE_FULL				0x8C
 #define ZDO_STATUS_NOT_AUTHORIZED		0x8D
-//@}
+///@}
 
 /// Cluster IDs with the high bit set are responses.
 #define ZDO_CLUST_RESPONSE_MASK			0x8000
@@ -307,7 +307,7 @@ typedef XBEE_PACKED(zdo_node_desc_t, {
 #define ZDO_NODE_DESC_MAC_CAPABILITY_RESERVED_5			(1<<5)
 #define ZDO_NODE_DESC_MAC_CAPABILITY_SECURITY			(1<<6)
 #define ZDO_NODE_DESC_MAC_CAPABILITY_ALLOCATE_ADDR		(1<<7)
-//@}
+///@}
 
 /**	@name ZDO Node Descriptor - Server Mask Bit Assignments
 	@{
@@ -320,7 +320,7 @@ typedef XBEE_PACKED(zdo_node_desc_t, {
 #define ZDO_NODE_DESC_SERVER_MASK_BACKUP_DISCOVERY		(1<<5)
 #define ZDO_NODE_DESC_SERVER_MASK_NETWORK_MANAGER		(1<<6)
 // bits 7 through 15 are reserved
-//@}
+///@}
 
 typedef XBEE_PACKED(zdo_node_desc_resp_t, {
 	uint8_t					status;					///< see ZDO_STATUS_* macros
@@ -345,7 +345,7 @@ typedef XBEE_PACKED(zdo_power_desc_req_t, {
 /** @name PowerDescriptor macros
 	macros used in PowerDescriptor (zdo_power_desc_t)
 */
-//@{
+///@{
 #define ZDO_POWER_SOURCE_MAINS			0x01
 #define ZDO_POWER_SOURCE_RECHARGABLE	0x02
 #define ZDO_POWER_SOURCE_DISPOSABLE		0x04
@@ -373,7 +373,7 @@ typedef XBEE_PACKED(zdo_power_desc_req_t, {
 #define ZDO_POWER1_CURRENT_RECHARGABLE	ZDO_POWER_SOURCE_RECHARGABLE
 #define ZDO_POWER1_CURRENT_DISPOSABLE	ZDO_POWER_SOURCE_DISPOSABLE
 #define ZDO_POWER1_CURRENT_RESERVED		ZDO_POWER_SOURCE_RESERVED
-//@}
+///@}
 
 /// format for ZDO PowerDescriptor
 typedef XBEE_PACKED(zdo_power_desc_t, {

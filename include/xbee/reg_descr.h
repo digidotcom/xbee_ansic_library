@@ -112,4 +112,4 @@ XBEE_END_DECLS
 
 #endif		// __XBEE_REG_DESCR
 
-//@}
+///@}

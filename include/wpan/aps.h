@@ -72,10 +72,10 @@ typedef struct wpan_envelope_t {
 #define WPAN_STACK_PROFILE_ZIGBEE					0x1
 /// ZigBee PRO (2007)
 #define WPAN_STACK_PROFILE_ZIGBEE_PRO				0x2
-//@}
+///@}
 
-//@name Profile IDs
-//@{
+///@name Profile IDs
+///@{
 /// ZigBee Device Object (aka ZigBee Device Profile)
 #define WPAN_PROFILE_ZDO				0x0000
 
@@ -84,7 +84,7 @@ typedef struct wpan_envelope_t {
 
 /// Digi International, mfg-specific
 #define WPAN_PROFILE_DIGI				0xC105
-//@}
+///@}
 
 /** @name Manufacturer IDs
 	Contact the ZigBee Alliance to have a Manufacturer ID assigned to your
@@ -103,10 +103,10 @@ typedef struct wpan_envelope_t {
 #define WPAN_MANUFACTURER_TEST2		0xFFF2
 /// Test Vendor #3
 #define WPAN_MANUFACTURER_TEST3		0xFFF3
-//@}
+///@}
 
-//@name List of fixed endpoints
-//@{
+///@name List of fixed endpoints
+///@{
 /// ZigBee Device Object/Profile
 #define WPAN_ENDPOINT_ZDO				0x00
 /// Digi Smart Energy
@@ -118,7 +118,7 @@ typedef struct wpan_envelope_t {
 #define WPAN_ENDPOINT_DIGI_DATA		0xE8
 /// Broadcast Endpoint
 #define WPAN_ENDPOINT_BROADCAST		0xFF
-//@}
+///@}
 
 /// Digi Data cluster IDs (endpoint #WPAN_ENDPOINT_DIGI_DATA)
 // (cast to int required by Codewarrior/HCS08 platform if enum is signed)
@@ -242,7 +242,7 @@ typedef struct wpan_cluster_table_entry_t {
 		#define WPAN_CLUST_FLAG_ENCRYPT_UNICAST	0x20
 		/// this cluster is NOT using the ZigBee Cluster Library (ZCL)
 		#define WPAN_CLUST_FLAG_NOT_ZCL				0x80
-		//@}
+		///@}
 } wpan_cluster_table_entry_t;
 
 /// Information on each endpoint on this device.
@@ -321,7 +321,7 @@ typedef int (*wpan_endpoint_send_fn)( const wpan_envelope_t FAR *envelope,
 */
 #define WPAN_SEND_FLAG_NONE			0x0000
 #define WPAN_SEND_FLAG_ENCRYPTED		0x0001
-//@}
+///@}
 
 /**
 	@internal

@@ -69,7 +69,7 @@ int addr64_parse( addr64 *address, const char FAR *str);
 
 /// network coordinator always uses network address 0x0000
 #define WPAN_NET_ADDR_COORDINATOR		0x0000
-//@}
+///@}
 
 /** @name Reserved/Special WPAN MAC (64-bit) addresses
 	@{
@@ -91,7 +91,7 @@ extern const addr64 _WPAN_IEEE_ADDR_COORDINATOR;
 /// Pointer to \c addr64 of all zeros.
 /// @see addr64_is_zero
 #define WPAN_IEEE_ADDR_ALL_ZEROS (&_WPAN_IEEE_ADDR_COORDINATOR)
-//@}
+///@}
 
 /// Single structure to hold an 802.15.4 device's 64-bit IEEE/MAC address
 /// and 16-bit network address.

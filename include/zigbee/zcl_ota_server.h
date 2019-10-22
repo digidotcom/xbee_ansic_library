@@ -57,11 +57,11 @@ typedef int (*zcl_ota_upgrade_read_fn)
 
 /// Datatype for providing an OTA Upgrade Image to a client.
 typedef struct zcl_ota_upgrade_source_t {
-    zcl_ota_image_id_t          id;             //< ID fields for image
-    uint32_t                    image_size;     //< size of image
+    zcl_ota_image_id_t          id;             ///< ID fields for image
+    uint32_t                    image_size;     ///< size of image
 
-    zcl_ota_upgrade_read_fn     read_handler;   //< callback to read image
-    void                        *context;       //< location to hold user data
+    zcl_ota_upgrade_read_fn     read_handler;   ///< callback to read image
+    void                        *context;       ///< location to hold user data
 } zcl_ota_upgrade_source_t;
 
 /**

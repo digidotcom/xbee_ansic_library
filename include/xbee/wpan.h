@@ -114,7 +114,7 @@ typedef XBEE_PACKED(xbee_header_transmit_explicit_t, {
 #define XBEE_TX_OPT_MODE_REPEATER			(2<<6)
 /// XBee Transmit Option: DigiMesh (not available on 10k product) [DigiMesh]
 #define XBEE_TX_OPT_MODE_DIGIMESH			(3<<6)
-//@}
+///@}
 
 typedef XBEE_PACKED(xbee_frame_transmit_status_t, {
 	uint8_t			frame_type;			//< XBEE_FRAME_TRANSMIT_STATUS (0x8B)
@@ -138,7 +138,7 @@ typedef XBEE_PACKED(xbee_frame_transmit_status_t, {
 
 	/// XBee Transmit Discovery Status: Extended Timeout Discovery [ZigBee]
 		#define XBEE_TX_DISCOVERY_EXTENDED_TIMEOUT 0x40
-//@}
+///@}
 
 }) xbee_frame_transmit_status_t;
 

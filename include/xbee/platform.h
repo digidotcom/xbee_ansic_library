@@ -46,7 +46,7 @@
 #include <stddef.h>
 
 /**
-	@name
+	@name error codes
 	These error names are used throughout the library.  Some platforms don't
 	define them in errno.h, so we define them here using arbitrary values.
 	@{
@@ -87,6 +87,8 @@
 		operation not permitted (POSIX.1)
 	@def ETIMEDOUT
 		connection timed out (POSIX.1)
+
+	@}
 */
 #ifndef ENODATA
 	#define ENODATA	20000
@@ -143,11 +145,11 @@
 	#define EPERM		20019
 #endif
 // Note to developers: if possible, only add POSIX.1-2001 macros to this list.
-//@}
 
 
 /**
 	@ingroup platform_specific
+	@name Platform-specific Macros
 	Documentation for things that must be defined in the platform-specific
 	header files.
 @{
@@ -299,6 +301,12 @@
 	Macros typically defined in <inttypes.h>, define manually if inttypes.h is
 	not available on this platform.
 @{
+	@def PRId16
+	Format specifier for 16-bit signed (usually \c "d" or \c "hd")
+
+	@def PRId32
+	Format specifier for 32-bit signed (usually \c "ld" or \c "d")
+
 	@def PRIu16
 	Format specifier for 16-bit unsigned (usually \c "u" or \c "hu")
 
@@ -564,7 +572,7 @@ void hex_dump( const void FAR *address, uint16_t length, uint16_t flags);
 #define HEX_DUMP_FLAG_ADDRESS		0x0002
 /// Prefix each line with a tab character.
 #define HEX_DUMP_FLAG_TAB			0x0004
-//@}
+///@}
 
 
 /**

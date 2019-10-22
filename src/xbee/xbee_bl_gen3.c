@@ -57,13 +57,13 @@
 #define XBEE_GEN3_RSP_FAILURE           '\x11'
 
 // single-character response to sending an XBEE_GEN3_CMD_UPLOAD_PAGE
-#define XBEE_GEN3_RSP_UPLOAD_CRC_ERR    '\x12'  //< Checksum/CRC invalid
-#define XBEE_GEN3_RSP_UPLOAD_VERIFY_ERR '\x13'  //< flash write failed
+#define XBEE_GEN3_RSP_UPLOAD_CRC_ERR    '\x12'  ///< Checksum/CRC invalid
+#define XBEE_GEN3_RSP_UPLOAD_VERIFY_ERR '\x13'  ///< flash write failed
 
 // Parameter to XBEE_GEN3_CMD_UPLOAD_PAGE when bootloader protocol version
 // (returned from 'L' command) returns 'U'.  Pad last page with 0xFF bytes.
 typedef XBEE_PACKED(xbee_gen3_page_ver0_t, {
-    uint8_t     command;                //< XBEE_GEN3_CMD_UPLOAD_PAGE
+    uint8_t     command;                ///< XBEE_GEN3_CMD_UPLOAD_PAGE
     uint8_t     page_num;
     uint8_t     page_data[XBEE_GEN3_UPLOAD_PAGE_SIZE];
     uint8_t     checksum;
@@ -73,10 +73,10 @@ typedef XBEE_PACKED(xbee_gen3_page_ver0_t, {
 // (returned from 'L' command) returns '1U'.  On upload, skip any pages
 // that contain only 0xFF.  Pad last page with 0xFF bytes.
 typedef XBEE_PACKED(xbee_gen3_page_ver1_t, {
-    uint8_t     command;                //< XBEE_GEN3_CMD_UPLOAD_PAGE
+    uint8_t     command;                ///< XBEE_GEN3_CMD_UPLOAD_PAGE
     uint16_t    page_num_le;
     uint8_t     page_data[XBEE_GEN3_UPLOAD_PAGE_SIZE];
-    uint16_t    crc_le;                 //< CRC16 with 0x8005 polynomial
+    uint16_t    crc_le;                 ///< CRC16 with 0x8005 polynomial
 }) xbee_gen3_page_ver1_t;
 
 

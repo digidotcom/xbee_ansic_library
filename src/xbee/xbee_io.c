@@ -78,7 +78,7 @@ int xbee_io_response_parse( xbee_io_t FAR *parsed, const void FAR *source)
    parsed->analog_enabled = *p++;
    // If reported as analog, turn off the shadow indicator
    // that pin was a digital I/O...
-   //@todo: the 0x0F constant is an artifact of the sharing of AD0-3 with
+   ///@todo: the 0x0F constant is an artifact of the sharing of AD0-3 with
    // DIO0-3.  This assumption may not be true with future hardware.
    amask = ~(parsed->analog_enabled & 0x0F);
    parsed->dout_enabled &= amask;
@@ -441,7 +441,7 @@ int xbee_io_configure( xbee_dev_t *xbee, xbee_io_t FAR *io,
    {
    	return -EINVAL;
    }
-   //@todo: this is a relatively crude test.  Need to look at hardware
+   ///@todo: this is a relatively crude test.  Need to look at hardware
    // and firmware versions to really make a proper check.  For now, this
    // is about as tight as we can get it.
    if (type > XBEE_IO_TYPE_TXEN_ACTIVE_HIGH ||

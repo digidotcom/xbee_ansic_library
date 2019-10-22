@@ -60,7 +60,7 @@ XBEE_BEGIN_DECLS
 							///< DeviceEnabled, BOOLEAN, r/w
 #define ZCL_BASIC_ATTR_ALARM_MASK			0x0013
 							///< AlarmMask, BITMAP8, r/w
-//@}
+///@}
 
 /**
 	ZCL_VERSION is sent as ZCLVersion attribute.
@@ -89,7 +89,7 @@ XBEE_BEGIN_DECLS
 #define ZCL_BASIC_PS_EMERGENCY_SWITCH	0x06
 											///< Emergency mains, transfer switch
 	// 0x07 to 0x7F are reserved
-//@}
+///@}
 
 /// definition of b7 of PowerSource attribute (device has battery backup)
 #define ZCL_BASIC_PS_BATTERY_BACKUP		0x80

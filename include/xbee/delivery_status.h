@@ -119,7 +119,7 @@ XBEE_BEGIN_DECLS
     /// XBee Transmit Delivery Status: Key not authorized [0x89, 08B]
     #define XBEE_TX_DELIVERY_KEY_NOT_AUTHORIZED         0xBB
 
-//@}
+///@}
 
 /// Buffer size used for xbee_tx_delivery_str().
 #define XBEE_TX_DELIVERY_STR_BUF_SIZE   40
@@ -129,6 +129,6 @@ const char *xbee_tx_delivery_str(uint8_t status,
 
 XBEE_END_DECLS
 
-//@}
+///@}
 
 #endif // __XBEE_DELIVERY_STATUS_H

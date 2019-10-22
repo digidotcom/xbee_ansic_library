@@ -27,16 +27,16 @@
 
 XBEE_BEGIN_DECLS
 
-#define XBEE_ZIGBEE_INSTALL_KEY_LEN     18      //< length of an install code
-#define XBEE_ZIGBEE_LINK_KEY_MAXLEN     16      //< maximum length of a link key
+#define XBEE_ZIGBEE_INSTALL_KEY_LEN     18      ///< length of an install code
+#define XBEE_ZIGBEE_LINK_KEY_MAXLEN     16      ///< maximum length of a link key
 
 #define XBEE_FRAME_REGISTER_DEVICE              0x24
 typedef XBEE_PACKED(xbee_header_register_device_t, {
-    uint8_t     frame_type;     //< XBEE_FRAME_REGISTER_DEVICE (0x24)
-    uint8_t     frame_id;       //< ID to match REGISTER_DEVICE_STATUS frame
-    addr64      device_addr_be; //< 64-bit address of destination devices
-    uint16_t    reserved_be;    //< set to WPAN_NET_ADDR_UNDEFINED (0xFFFE)
-    uint8_t     options;        //< options for join, XBEE_REG_DEV_OPT_xxx
+    uint8_t     frame_type;     ///< XBEE_FRAME_REGISTER_DEVICE (0x24)
+    uint8_t     frame_id;       ///< ID to match REGISTER_DEVICE_STATUS frame
+    addr64      device_addr_be; ///< 64-bit address of destination devices
+    uint16_t    reserved_be;    ///< set to WPAN_NET_ADDR_UNDEFINED (0xFFFE)
+    uint8_t     options;        ///< options for join, XBEE_REG_DEV_OPT_xxx
 #define XBEE_REG_DEV_OPT_LINK_KEY       0x00
 #define XBEE_REG_DEV_OPT_INSTALL_CODE   0x01
     // header followed by optional key (1-16 bytes for link key, 18 bytes for
@@ -45,9 +45,9 @@ typedef XBEE_PACKED(xbee_header_register_device_t, {
 
 #define XBEE_FRAME_REGISTER_DEVICE_STATUS       0xA4
 typedef XBEE_PACKED(xbee_frame_register_device_status_t, {
-    uint8_t     frame_type;     //< XBEE_FRAME_REGISTER_DEVICE_STATUS (0xA4)
-    uint8_t     frame_id;       //< ID of REGISTER_DEVICE frame
-    uint8_t     status;         //< result of operation
+    uint8_t     frame_type;     ///< XBEE_FRAME_REGISTER_DEVICE_STATUS (0xA4)
+    uint8_t     frame_id;       ///< ID of REGISTER_DEVICE frame
+    uint8_t     status;         ///< result of operation
 #define XBEE_REG_DEV_STATUS_SUCCESS             0x00
 #define XBEE_REG_DEV_STATUS_KEY_TOO_LONG        0x01
 #define XBEE_REG_DEV_STATUS_ADDR_NOT_FOUND      0xB1

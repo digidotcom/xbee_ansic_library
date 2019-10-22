@@ -105,7 +105,7 @@ typedef struct xbee_io_t {
 #define XBEE_IO_DIO11						0x0800
 /// DIO12 (pin 4) - also CD signal if so configured
 #define XBEE_IO_DIO12						0x1000
-//@}
+///@}
 
 
 typedef XBEE_PACKED(xbee_frame_io_response_t, {

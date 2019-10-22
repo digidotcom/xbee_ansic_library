@@ -56,7 +56,7 @@ extern const zcl_attribute_tree_t zcl_time_attribute_tree[];
 										///< 3.12.2.2.7 StandardTime Attribute
 #define ZCL_TIME_ATTR_LOCAL_TIME			0x0007
 										///< 3.12.2.2.8 LocalTime Attribute
-//@}
+///@}
 
 /** @name
 	Bitfields for attribute #ZCL_TIME_ATTR_TIME, TimeStatus.
@@ -84,7 +84,7 @@ extern const zcl_attribute_tree_t zcl_time_attribute_tree[];
 /// and DstShift attributes are set internally to correct values for the
 /// location of the clock.
 #define ZCL_TIME_STATUS_MASTERZONEDST	0x04
-//@}
+///@}
 
 // what time is it?
 zcl_utctime_t zcl_time_now( void);

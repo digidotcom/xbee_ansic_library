@@ -115,7 +115,7 @@ typedef struct xbee_cmd_response {
 		#define XBEE_CMD_RESP_MASK_STATUS			0x000F
 		#define XBEE_CMD_RESP_ATND_RSSI_INVALID	XBEE_AT_RESP_ATND_RSSI_INVALID
 		#define XBEE_CMD_RESP_FLAG_TIMEOUT			0x8000
-	//@}
+	///@}
 
 	/// Number of bytes in .value_bytes or zero if there wasn't a value sent
 	/// with the response.
@@ -143,7 +143,7 @@ typedef struct xbee_cmd_response {
 /// Returned by an xbee_cmd_callback_fn() if more reponses are expected,
 /// or it has re-used the command handle.
 #define XBEE_ATCMD_REUSE	1
-//@}
+///@}
 
 /**
 	@brief
@@ -203,7 +203,7 @@ typedef struct xbee_cmd_request {
 		/// mask of flags user can set (passed into xbee_cmd_set_flags)
 		#define XBEE_CMD_FLAG_USER_MASK	(XBEE_CMD_FLAG_QUEUE_CHANGE	\
 													|XBEE_CMD_FLAG_REUSE_HANDLE)
-	//@}
+	///@}
 
 /*
 	we probably don't need this member
@@ -275,7 +275,7 @@ typedef XBEE_PACKED(xbee_header_remote_at_req, {
 
 		/// Apply changes immediately, don't wait for ATAC command.
 		#define XBEE_REMOTE_AT_OPT_IMMEDIATE	0x02
-		//@}
+		///@}
 	xbee_at_cmd_t		command;
 }) xbee_header_remote_at_req_t;
 
@@ -698,7 +698,7 @@ int _xbee_cmd_handle_response( xbee_dev_t *xbee, const void FAR *rawframe,
 int _xbee_cmd_modem_status( xbee_dev_t *xbee,
 	const void FAR *payload, uint16_t length, void FAR *context);
 
-//@}
+///@}
 
 /**
 	@ingroup xbee_device

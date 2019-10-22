@@ -66,14 +66,14 @@ XBEE_BEGIN_DECLS
 #define ZCL_CLUST_MULTI_OUT						0x0013
 #define ZCL_CLUST_MULTI_VALUE						0x0014
 #define ZCL_CLUST_COMMISSIONING					0x0015
-//@}
+///@}
 
 /** @name
 	0x0100-0x01ff Closure Clusters
 	@{
 */
 #define ZCL_CLUST_SHADE_CONFIG					0x0100
-//@}
+///@}
 
 /** @name
 	0x0200-0x02ff HVAC Clusters
@@ -84,7 +84,7 @@ XBEE_BEGIN_DECLS
 #define ZCL_CLUST_FAN_CONTROL						0x0202
 #define ZCL_CLUST_DEHUMIDIFY_CONTROL			0x0203
 #define ZCL_CLUST_THERMOSTAT_UI_CONFIG			0x0204
-//@}
+///@}
 
 /** @name
 	0x0300-0x03ff Lighting Clusters
@@ -92,7 +92,7 @@ XBEE_BEGIN_DECLS
 */
 #define ZCL_CLUST_COLOR_CONTROL					0x0300
 #define ZCL_CLUST_BALLAST_CONFIG					0x0301
-//@}
+///@}
 
 /** @name
 	0x0400-0x04ff Measurement and Sensing Clusters
@@ -105,7 +105,7 @@ XBEE_BEGIN_DECLS
 #define ZCL_CLUST_FLOW_MEASURE					0x0404
 #define ZCL_CLUST_HUMIDITY_MEASURE				0x0405
 #define ZCL_CLUST_OCCUPANCY_SENSING				0x0406
-//@}
+///@}
 
 /** @name
 	0x0500-0x05ff Security and Safety Clusters
@@ -114,7 +114,7 @@ XBEE_BEGIN_DECLS
 #define ZCL_CLUST_IAS_ZONE							0x0500
 #define ZCL_CLUST_IAS_ACE							0x0501
 #define ZCL_CLUST_IAS_WD							0x0502
-//@}
+///@}
 
 /** @name
 	0x0600-0x06ff Protocol Interface Clusters
@@ -140,7 +140,7 @@ XBEE_BEGIN_DECLS
 #define ZCL_CLUST_BACNET_EXT_MULTI_OUT			0x0611
 #define ZCL_CLUST_BACNET_REG_MULTI_VALUE		0x0612
 #define ZCL_CLUST_BACNET_EXT_MULTI_VALUE		0x0613
-//@}
+///@}
 
 
 //////////
@@ -237,7 +237,7 @@ typedef XBEE_PACKED(zcl_header_nomfg_t, {
 												///< default response only on error
 #define ZCL_FRAME_RESERVED_BITS		0xE0
 												///< should be set to 0
-//@}
+///@}
 
 /**
 	@brief
@@ -343,7 +343,7 @@ typedef XBEE_PACKED(zcl_header_nomfg_t, {
 #define ZCL_STATUS_HARDWARE_FAILURE                             0xc0
 #define ZCL_STATUS_SOFTWARE_FAILURE                             0xc1
 #define ZCL_STATUS_CALIBRATION_ERROR                            0xc2
-//@}
+///@}
 
 const char *zcl_status_text( uint_fast8_t status);
 
@@ -412,7 +412,7 @@ const char *zcl_status_text( uint_fast8_t status);
 
 #define ZCL_CMD_WRITE_STRUCT_ATTRIB_RESP	0x10
 
-//@}
+///@}
 
 /// General format for an attribute, used for Write Attributes and Report
 /// Attributes commands.
@@ -763,7 +763,7 @@ typedef struct zcl_attribute_base_t
 
 		/// If set, this is part of a zcl_attribute_full_t structure.
 		#define ZCL_ATTRIB_FLAG_FULL			0x80
-		//@}
+		///@}
 
 	/// The ZCL Attribute Type, should be one of the ZCL_TYPE_* macros defined
 	/// in zigbee/zcl_types.h
