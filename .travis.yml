@@ -1,0 +1,32 @@
+sudo: false 
+
+branches:
+  only:
+    - master
+
+before_install: 
+  # Decrypt the deployment key, failure aborts deployment
+  - >-
+    openssl aes-256-cbc -K "$encrypted_2ac1cf63d748_key" \
+      -iv "$encrypted_2ac1cf63d748_iv" \
+      -in '.ci/travis_deploy_key.enc' \
+      -out 'travis_deploy_key' -d
+      
+addons:
+  apt:
+    packages:
+      - doxygen
+
+script:
+  - doxygen Doxyfile
+
+deploy:
+  # opt-in to dpl v2
+  edge: true
+  provider: pages:git
+  deploy_key: travis_deploy_key
+  cleanup: false
+  keep_history: false
+  local_dir: doc/html
+  on:
+    branch: master
