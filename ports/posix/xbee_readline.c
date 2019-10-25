@@ -10,14 +10,14 @@
  * =======================================================================
  */
 /**
-	@addtogroup hal_posix
-	@{
-	@file posix/xbee_readline.c
+    @addtogroup hal_posix
+    @{
+    @file posix/xbee_readline.c
 
-	ANSI C xbee_readline() implementation that works for POSIX platforms
-	(Win32, Linux, BSD, Mac OS X).
+    ANSI C xbee_readline() implementation that works for POSIX platforms
+    (Win32, Linux, BSD, Mac OS X).
 
-	Function documentation appears in xbee/platform.h.
+    Function documentation appears in xbee/platform.h.
 */
 
 #include <stdio.h>
@@ -48,7 +48,7 @@ int kbhit()
 struct termios _ttystate_orig;
 void _restore_tty( void)
 {
-	tcsetattr(STDIN_FILENO, TCSANOW, &_ttystate_orig);
+    tcsetattr(STDIN_FILENO, TCSANOW, &_ttystate_orig);
 }
 
 void nonblock(int state)
@@ -56,12 +56,12 @@ void nonblock(int state)
     static int init = 1;
     struct termios ttystate;
 
-	 if (init)
-	 {
+     if (init)
+     {
         init = 0;
-		  tcgetattr( STDIN_FILENO, &_ttystate_orig);
-		  atexit( _restore_tty);
-	 }
+          tcgetattr( STDIN_FILENO, &_ttystate_orig);
+          atexit( _restore_tty);
+     }
 
     //get the terminal state
     tcgetattr(STDIN_FILENO, &ttystate);
@@ -83,90 +83,90 @@ void nonblock(int state)
 
 }
 
-#define XBEE_READLINE_STATE_INIT				0
-#define XBEE_READLINE_STATE_START_LINE		1
-#define XBEE_READLINE_STATE_CONTINUE_LINE	2
-#define XBEE_READLINE_STATE_EOF				-1
+#define XBEE_READLINE_STATE_INIT                0
+#define XBEE_READLINE_STATE_START_LINE      1
+#define XBEE_READLINE_STATE_CONTINUE_LINE   2
+#define XBEE_READLINE_STATE_EOF             -1
 
 // See xbee/platform.h for function documentation.
 int xbee_readline( char *buffer, int length)
 {
-	static int state = XBEE_READLINE_STATE_INIT;
-	int c;
-	static char *cursor;
+    static int state = XBEE_READLINE_STATE_INIT;
+    int c;
+    static char *cursor;
 
-	if (buffer == NULL || length < 1)
-	{
-		return -EINVAL;
-	}
+    if (buffer == NULL || length < 1)
+    {
+        return -EINVAL;
+    }
 
-	switch (state)
-	{
-		case XBEE_READLINE_STATE_EOF:
-			usleep( 1000);	// sleep 1ms to reduce CPU usage
-			while (kbhit()) {
-				getchar();      // drain any additional input
-			}
-			return -ENODATA;
+    switch (state)
+    {
+        case XBEE_READLINE_STATE_EOF:
+            usleep( 1000);  // sleep 1ms to reduce CPU usage
+            while (kbhit()) {
+                getchar();      // drain any additional input
+            }
+            return -ENODATA;
 
-		default:
-		case XBEE_READLINE_STATE_INIT:		// first time through, init terminal
-			nonblock(NB_ENABLE);
-			state = XBEE_READLINE_STATE_START_LINE;
-			// fall through to start of new line
+        default:
+        case XBEE_READLINE_STATE_INIT:      // first time through, init terminal
+            nonblock(NB_ENABLE);
+            state = XBEE_READLINE_STATE_START_LINE;
+            // fall through to start of new line
 
-		case XBEE_READLINE_STATE_START_LINE:			// start of new line
-			cursor = buffer;
-			*buffer = '\0';	// reset string
-			state = XBEE_READLINE_STATE_CONTINUE_LINE;
-			// fall through to start of new line
+        case XBEE_READLINE_STATE_START_LINE:            // start of new line
+            cursor = buffer;
+            *buffer = '\0'; // reset string
+            state = XBEE_READLINE_STATE_CONTINUE_LINE;
+            // fall through to start of new line
 
-		case XBEE_READLINE_STATE_CONTINUE_LINE:		// continued input
-			if (! kbhit())
-			{
-				usleep( 1000);	// sleep 1ms to reduce CPU usage
-				return -EAGAIN;
-			}
-			c = getchar();
-			switch (c)
-			{
-				case 0x7F:				// backspace (Win32)
-				case '\b':				// supposedly backspace...
-					if (buffer != cursor)
-					{
-						fputs("\b \b", stdout);		// back up, erase last character
-						cursor--;
-					}
-					break;
+        case XBEE_READLINE_STATE_CONTINUE_LINE:     // continued input
+            if (! kbhit())
+            {
+                usleep( 1000);  // sleep 1ms to reduce CPU usage
+                return -EAGAIN;
+            }
+            c = getchar();
+            switch (c)
+            {
+                case 0x7F:              // backspace (Win32)
+                case '\b':              // supposedly backspace...
+                    if (buffer != cursor)
+                    {
+                        fputs("\b \b", stdout);     // back up, erase last character
+                        cursor--;
+                    }
+                    break;
 
-				case 0x04:				// treat CTRL-D as EOF
-					putchar('\n');
-					state = XBEE_READLINE_STATE_EOF;
-					return cursor == buffer ? -ENODATA : cursor - buffer;
+                case 0x04:              // treat CTRL-D as EOF
+                    putchar('\n');
+                    state = XBEE_READLINE_STATE_EOF;
+                    return cursor == buffer ? -ENODATA : cursor - buffer;
 
-				case '\n':
-				case '\r':
-					putchar('\n');
-					state = XBEE_READLINE_STATE_START_LINE;
-					return cursor - buffer;
+                case '\n':
+                case '\r':
+                    putchar('\n');
+                    state = XBEE_READLINE_STATE_START_LINE;
+                    return cursor - buffer;
 
-				default:
-					if (isprint( c) && (cursor - buffer < length - 1))
-					{
-						*cursor++= c;
-						putchar(c);
-					}
+                default:
+                    if (isprint( c) && (cursor - buffer < length - 1))
+                    {
+                        *cursor++= c;
+                        putchar(c);
+                    }
                else
                {
                   putchar( '\x07');     // error beep -- bad char
                }
-					break;
-			}
-			*cursor = 0;		// keep string null-terminated
-			fflush(stdout);
-	}
+                    break;
+            }
+            *cursor = 0;        // keep string null-terminated
+            fflush(stdout);
+    }
 
-	return -EAGAIN;
+    return -EAGAIN;
 }
 
 

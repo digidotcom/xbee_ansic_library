@@ -11,10 +11,10 @@
  */
 
 /**
-	@addtogroup wpan_types
-	@{
-	@file wpan/types.h
-	WPAN datatypes and support functions, valid for ZigBee and DigiMesh.
+   @addtogroup wpan_types
+   @{
+   @file wpan/types.h
+   WPAN datatypes and support functions, valid for ZigBee and DigiMesh.
 */
 
 #ifndef __WPAN_TYPES_H
@@ -32,16 +32,16 @@ XBEE_BEGIN_DECLS
 /// (big-endian) or _le (little-endian) where appropriate.  Add functions
 /// to convert 64-bit values between host byte order and big/little endian.
 typedef union {
-	uint8_t			b[8];
-	uint16_t			u[4];
-	uint32_t			l[2];
+   uint8_t        b[8];
+   uint16_t       u[4];
+   uint32_t       l[2];
 } addr64;
 
 
 #ifndef ADDR64_FORMAT_SEPARATOR
-	/// Separator used by addr64_format(), defaults to '-' unless specified
-	/// at compile time.
-	#define ADDR64_FORMAT_SEPARATOR '-'
+   /// Separator used by addr64_format(), defaults to '-' unless specified
+   /// at compile time.
+   #define ADDR64_FORMAT_SEPARATOR '-'
 #endif
 
 /// Size of character buffer to pass to addr64_format()
@@ -55,24 +55,24 @@ bool_t addr64_is_zero( const addr64 FAR *addr);
 int addr64_parse( addr64 *address, const char FAR *str);
 
 /** @name Reserved/Special WPAN network (16-bit) addresses
-	@{
+   @{
 */
 /// network broadcast address for all nodes
-#define WPAN_NET_ADDR_BCAST_ALL_NODES	0xFFFF
+#define WPAN_NET_ADDR_BCAST_ALL_NODES  0xFFFF
 /// network broadcast address for non-sleeping devices
-#define WPAN_NET_ADDR_BCAST_NOT_ASLEEP	0xFFFD
+#define WPAN_NET_ADDR_BCAST_NOT_ASLEEP 0xFFFD
 /// network broadcast address for all routers (and coordinators)
-#define WPAN_NET_ADDR_BCAST_ROUTERS		0xFFFC
+#define WPAN_NET_ADDR_BCAST_ROUTERS    0xFFFC
 
 /// used to indicate 64-bit addressing (16-bit address is ignored)
-#define WPAN_NET_ADDR_UNDEFINED			0xFFFE
+#define WPAN_NET_ADDR_UNDEFINED        0xFFFE
 
 /// network coordinator always uses network address 0x0000
-#define WPAN_NET_ADDR_COORDINATOR		0x0000
+#define WPAN_NET_ADDR_COORDINATOR      0x0000
 ///@}
 
 /** @name Reserved/Special WPAN MAC (64-bit) addresses
-	@{
+   @{
 */
 /// Pointer to \c addr64 representing an undefined IEEE address
 /// (all ones).
@@ -96,8 +96,8 @@ extern const addr64 _WPAN_IEEE_ADDR_COORDINATOR;
 /// Single structure to hold an 802.15.4 device's 64-bit IEEE/MAC address
 /// and 16-bit network address.
 typedef struct _wpan_address_t {
-	addr64		ieee;
-	uint16_t		network;
+   addr64      ieee;
+   uint16_t    network;
 } wpan_address_t;
 
 XBEE_END_DECLS

@@ -23,6 +23,4 @@ int set_target(const char *str, addr64 FAR *address);
 void sxa_select_help(void);
 int sxa_select_command( char *cmdstr);
 
-
-#endif	// _SXA_SELECT_H_INCL
-
+#endif // _SXA_SELECT_H_INCL

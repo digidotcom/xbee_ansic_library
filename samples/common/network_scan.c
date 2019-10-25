@@ -25,69 +25,69 @@ xbee_dev_t my_xbee;
 
 const xbee_dispatch_table_entry_t xbee_frame_handlers[] =
 {
-	XBEE_FRAME_HANDLE_LOCAL_AT,
-	{ XBEE_FRAME_LOCAL_AT_RESPONSE, 0, xbee_scan_dump_response, NULL },
-	XBEE_FRAME_TABLE_END
+   XBEE_FRAME_HANDLE_LOCAL_AT,
+   { XBEE_FRAME_LOCAL_AT_RESPONSE, 0, xbee_scan_dump_response, NULL },
+   XBEE_FRAME_TABLE_END
 };
 
 void print_menu( void)
 {
-	puts( "help                 This list of options.");
-	puts( "scan                 Initiate active scan.");
-	puts( "quit                 Quit the program.");
-	puts( "");
+   puts( "help                 This list of options.");
+   puts( "scan                 Initiate active scan.");
+   puts( "quit                 Quit the program.");
+   puts( "");
 }
 
 void active_scan( void)
 {
-	puts( "Initiating active scan...");
-	xbee_cmd_execute( &my_xbee, "AS", NULL, 0);
+   puts( "Initiating active scan...");
+   xbee_cmd_execute( &my_xbee, "AS", NULL, 0);
 }
 
 /*
-	main
+   main
 
-	Initiate communication with the XBee module, then accept AT commands from
-	STDIO, pass them to the XBee module and print the result.
+   Initiate communication with the XBee module, then accept AT commands from
+   STDIO, pass them to the XBee module and print the result.
 */
 int main( int argc, char *argv[])
 {
    char cmdstr[80];
-	int status;
-	xbee_serial_t XBEE_SERPORT = { 115200, 0 };
+   int status;
+   xbee_serial_t XBEE_SERPORT = { 115200, 0 };
 
-	parse_serial_arguments( argc, argv, &XBEE_SERPORT);
+   parse_serial_arguments( argc, argv, &XBEE_SERPORT);
 
-	// initialize the serial and device layer for this XBee device
-	if (xbee_dev_init( &my_xbee, &XBEE_SERPORT, NULL, NULL))
-	{
-		printf( "Failed to initialize device.\n");
-		return 0;
-	}
+   // initialize the serial and device layer for this XBee device
+   if (xbee_dev_init( &my_xbee, &XBEE_SERPORT, NULL, NULL))
+   {
+      printf( "Failed to initialize device.\n");
+      return 0;
+   }
 
-	// Initialize the AT Command layer for this XBee device and have the
-	// driver query it for basic information (hardware version, firmware version,
-	// serial number, IEEE address, etc.)
-	xbee_cmd_init_device( &my_xbee);
-	printf( "Waiting for driver to query the XBee device...\n");
-	do {
-		xbee_dev_tick( &my_xbee);
-		status = xbee_cmd_query_status( &my_xbee);
-	} while (status == -EBUSY);
-	if (status)
-	{
-		printf( "Error %d waiting for query to complete.\n", status);
-	}
+   // Initialize the AT Command layer for this XBee device and have the
+   // driver query it for basic information (hardware version, firmware version,
+   // serial number, IEEE address, etc.)
+   xbee_cmd_init_device( &my_xbee);
+   printf( "Waiting for driver to query the XBee device...\n");
+   do {
+      xbee_dev_tick( &my_xbee);
+      status = xbee_cmd_query_status( &my_xbee);
+   } while (status == -EBUSY);
+   if (status)
+   {
+      printf( "Error %d waiting for query to complete.\n", status);
+   }
 
-	// report on the settings
-	xbee_dev_dump_settings( &my_xbee, XBEE_DEV_DUMP_FLAG_DEFAULT);
+   // report on the settings
+   xbee_dev_dump_settings( &my_xbee, XBEE_DEV_DUMP_FLAG_DEFAULT);
 
-	// Take responsibility for responding to certain ZDO requests.
-	// This is necessary for other devices to discover our endpoints.
-	xbee_cmd_simple( &my_xbee, "AO", 3);
+   // Take responsibility for responding to certain ZDO requests.
+   // This is necessary for other devices to discover our endpoints.
+   xbee_cmd_simple( &my_xbee, "AO", 3);
 
-	print_menu();
-	active_scan();
+   print_menu();
+   active_scan();
 
    while (1)
    {
@@ -99,23 +99,23 @@ int main( int argc, char *argv[])
 
       if (linelen == -ENODATA || ! strcmpi( cmdstr, "quit"))
       {
-			return 0;
-		}
-		else if (! strcmpi( cmdstr, "help") || ! strcmp( cmdstr, "?"))
-		{
-			print_menu();
-		}
-		else if (! strcmpi( cmdstr, "scan"))
-      {
-      	active_scan();
+         return 0;
       }
-		else if (! strncmpi( cmdstr, "AT", 2))
-		{
-			process_command( &my_xbee, &cmdstr[2]);
-		}
-	   else
-	   {
-			printf( "unknown command: %s\n", cmdstr);
-	   }
+      else if (! strcmpi( cmdstr, "help") || ! strcmp( cmdstr, "?"))
+      {
+         print_menu();
+      }
+      else if (! strcmpi( cmdstr, "scan"))
+      {
+         active_scan();
+      }
+      else if (! strncmpi( cmdstr, "AT", 2))
+      {
+         process_command( &my_xbee, &cmdstr[2]);
+      }
+      else
+      {
+         printf( "unknown command: %s\n", cmdstr);
+      }
    }
 }

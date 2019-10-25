@@ -4,7 +4,7 @@
       http://mxr.mozilla.org/mozilla/source/js/src/jslong.h
 
    Do not include it directly, as it requires glue macros and typedefs defined
-	in xbee/platform.h (which includes it automatically).
+   in xbee/platform.h (which includes it automatically).
 */
 /* ***** BEGIN LICENSE BLOCK *****
  * Version: MPL 1.1/GPL 2.0/LGPL 2.1
@@ -117,7 +117,7 @@
 **  JSLL_MOD            Modulus (two's compliment)
 ***********************************************************************/
 #define JSLL_MUL(r, a, b)        ((r) = (a) * (b))
-#define JSLL_MUL32(r, a, b)		((r) = (JSUint64)(a) * (JSUint32)(b))
+#define JSLL_MUL32(r, a, b)      ((r) = (JSUint64)(a) * (JSUint32)(b))
 #define JSLL_DIV(r, a, b)        ((r) = (a) / (b))
 #define JSLL_MOD(r, a, b)        ((r) = (a) % (b))
 
@@ -228,7 +228,7 @@
     JSUint32 t; \
     t = (a).lo + (b).lo; \
     (r).hi = (a).hi + (b).hi + (t < (b).lo); \
-	 (r).lo = t; \
+    (r).lo = t; \
 }
 
 #define JSLL_SUB(r, a, b) { \

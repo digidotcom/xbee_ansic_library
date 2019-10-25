@@ -11,22 +11,22 @@
  */
 
 /**
-	@addtogroup xbee_wifi
-	@{
-	@file xbee/wifi.h
-	Features related to the Wi-Fi XBee module (S6B).
+    @addtogroup xbee_wifi
+    @{
+    @file xbee/wifi.h
+    Features related to the Wi-Fi XBee module (S6B).
 */
 
 #include "xbee/platform.h"
 
 #if !XBEE_WIFI_ENABLED
-	#error "XBEE_WIFI_ENABLED must be defined as non-zero to use this header."
+    #error "XBEE_WIFI_ENABLED must be defined as non-zero to use this header."
 #endif
 
 // Values for ATEE:
-#define XBEE_WIFI_ENCRYPTION_OPEN			0x00
-#define XBEE_WIFI_ENCRYPTION_WPA				0x01
-#define XBEE_WIFI_ENCRYPTION_WPA2			0x02
-#define XBEE_WIFI_ENCRYPTION_WEP				0x03
+#define XBEE_WIFI_ENCRYPTION_OPEN       0x00
+#define XBEE_WIFI_ENCRYPTION_WPA        0x01
+#define XBEE_WIFI_ENCRYPTION_WPA2       0x02
+#define XBEE_WIFI_ENCRYPTION_WEP        0x03
 
-const char *xbee_wifi_encryption_name( uint8_t type);
+const char *xbee_wifi_encryption_name(uint8_t type);

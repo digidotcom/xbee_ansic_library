@@ -11,8 +11,8 @@
  */
 
 /*
-	Simple code for managing a table of xbee_node_id_t objects -- the
-	XBee-specific node record used for ATND responses and Join Notifications.
+    Simple code for managing a table of xbee_node_id_t objects -- the
+    XBee-specific node record used for ATND responses and Join Notifications.
 */
 
 #ifndef _NODETABLE_H

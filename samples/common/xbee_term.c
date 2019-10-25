@@ -10,10 +10,10 @@
  * =======================================================================
  */
 /*
-	Code for a stand-alone terminal emulator.  Look in
-	samples/common/_xbee_term.c for xbee_term() and its support functions,
-	and in samples/<platform>/xbee_term_<platform>.c for platform-specific
-	console support functions.
+    Code for a stand-alone terminal emulator.  Look in
+    samples/common/_xbee_term.c for xbee_term() and its support functions,
+    and in samples/<platform>/xbee_term_<platform>.c for platform-specific
+    console support functions.
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -25,22 +25,22 @@
 
 int main( int argc, char *argv[])
 {
-	int retval;
-	xbee_serial_t serport;
+    int retval;
+    xbee_serial_t serport;
 
-	parse_serial_arguments( argc, argv, &serport);
+    parse_serial_arguments( argc, argv, &serport);
 
-	retval = xbee_ser_open( &serport, serport.baudrate);
-	if (retval != 0)
-	{
-		fprintf( stderr, "Error %d opening serial port\n", retval);
-		return EXIT_FAILURE;
-	}
+    retval = xbee_ser_open( &serport, serport.baudrate);
+    if (retval != 0)
+    {
+        fprintf( stderr, "Error %d opening serial port\n", retval);
+        return EXIT_FAILURE;
+    }
 
-	xbee_term( &serport);
+    xbee_term( &serport);
 
-	xbee_ser_close( &serport);
+    xbee_ser_close( &serport);
 
-	return 0;
+    return 0;
 }
 

@@ -11,8 +11,8 @@
  */
 
 /*
-	Common code used by POSIX samples to extract serial port settings from
-	the command-line arguments passed into the program.
+    Common code used by POSIX samples to extract serial port settings from
+    the command-line arguments passed into the program.
 */
 
 #include <stdio.h>
@@ -23,42 +23,42 @@
 #include "parse_serial_args.h"
 
 /*
-	Parse the command-line arguments, looking for "/dev/" to determine the
-	serial port to use, and a bare number (assumed to be the baud rate).
+    Parse the command-line arguments, looking for "/dev/" to determine the
+    serial port to use, and a bare number (assumed to be the baud rate).
 
-	@param[in]	argc		argument count
-	@param[in]	argv		array of \a argc arguments
-	@param[out]	serial	serial port settings
+    @param[in]  argc        argument count
+    @param[in]  argv        array of \a argc arguments
+    @param[out] serial      serial port settings
 */
 void parse_serial_arguments( int argc, char *argv[], xbee_serial_t *serial)
 {
-	int i;
-	uint32_t baud;
+    int i;
+    uint32_t baud;
 
-	memset( serial, 0, sizeof *serial);
+    memset( serial, 0, sizeof *serial);
 
-	// default baud rate
-	serial->baudrate = 115200;
+    // default baud rate
+    serial->baudrate = 115200;
 
-	for (i = 1; i < argc; ++i)
-	{
-		if (strncmp( argv[i], "/dev", 4) == 0)
-		{
-			strncpy( serial->device, argv[i], (sizeof serial->device) - 1);
-			serial->device[(sizeof serial->device) - 1] = '\0';
-		}
-		if ( (baud = (uint32_t) strtoul( argv[i], NULL, 0)) > 0)
-		{
-			serial->baudrate = baud;
-		}
-	}
+    for (i = 1; i < argc; ++i)
+    {
+        if (strncmp( argv[i], "/dev", 4) == 0)
+        {
+            strncpy( serial->device, argv[i], (sizeof serial->device) - 1);
+            serial->device[(sizeof serial->device) - 1] = '\0';
+        }
+        if ( (baud = (uint32_t) strtoul( argv[i], NULL, 0)) > 0)
+        {
+            serial->baudrate = baud;
+        }
+    }
 
-	while (*serial->device == '\0')
-	{
-		printf( "Connect to which device? ");
-		fgets( serial->device, sizeof serial->device, stdin);
-		// strip any trailing newline characters (CR/LF)
-		serial->device[strcspn(serial->device, "\r\n")] = '\0';
-	}
+    while (*serial->device == '\0')
+    {
+        printf( "Connect to which device? ");
+        fgets( serial->device, sizeof serial->device, stdin);
+        // strip any trailing newline characters (CR/LF)
+        serial->device[strcspn(serial->device, "\r\n")] = '\0';
+    }
 }
 

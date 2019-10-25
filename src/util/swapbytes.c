@@ -11,13 +11,13 @@
  */
 
 /**
-	@addtogroup util_byteorder
-	@{
-	@file swapbytes.c
-	For platforms without swap32() and swap16() functions for swapping byte
-	order for 32 and 16-bit values.
+   @addtogroup util_byteorder
+   @{
+   @file swapbytes.c
+   For platforms without swap32() and swap16() functions for swapping byte
+   order for 32 and 16-bit values.
 
-	@note Should be written in assembly for embedded targets.
+   @note Should be written in assembly for embedded targets.
 */
 
 #include "xbee/platform.h"
@@ -25,28 +25,28 @@
 #ifndef HAVE_SWAP_FUNCS
 
 /**
-	@brief Swap the byte order of a 32-bit value.
+   @brief Swap the byte order of a 32-bit value.
 
-	@param[in]	value	value to swap
-	@return		new 32-bit value with opposite endianness of \a value
+   @param[in]  value value to swap
+   @return     new 32-bit value with opposite endianness of \a value
 */
 uint32_t swap32( uint32_t value)
 {
-	return  (value & 0x000000FF) << 24
-			| (value & 0x0000FF00) << 8
-			| (value & 0x00FF0000) >> 8
-			| (value & 0xFF000000) >> 24;
+   return  (value & 0x000000FF) << 24
+         | (value & 0x0000FF00) << 8
+         | (value & 0x00FF0000) >> 8
+         | (value & 0xFF000000) >> 24;
 }
 
 /**
-	@brief Swap the byte order of a 16-bit value.
+   @brief Swap the byte order of a 16-bit value.
 
-	@param[in]	value	value to swap
-	@return		new 16-bit value with opposite endianness of \a value
+   @param[in]  value value to swap
+   @return     new 16-bit value with opposite endianness of \a value
 */
 uint16_t swap16( uint16_t value)
 {
-	return ((value & 0x00FF) << 8) | (value >> 8);
+   return ((value & 0x00FF) << 8) | (value >> 8);
 }
 
 #endif /* HAVE_SWAP_FUNCS */

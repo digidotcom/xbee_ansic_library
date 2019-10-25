@@ -11,14 +11,14 @@
  */
 
 /**
-	@addtogroup pxbee_ota_client
-	@{
-	@file pxbee_ota_client.c
+   @addtogroup pxbee_ota_client
+   @{
+   @file pxbee_ota_client.c
 
-	Support code for over-the-air (OTA) firmware updates of application code
-	on Programmable XBee target.
+   Support code for over-the-air (OTA) firmware updates of application code
+   on Programmable XBee target.
 
-	Preliminary API may change in future releases.
+   Preliminary API may change in future releases.
 */
 /*** BeginHeader */
 #include <string.h>
@@ -31,45 +31,45 @@
 /*** BeginHeader _pxbee_ota_transparent_rx */
 /*** EndHeader */
 /*
-	Thoughts on generalizing this function...
+   Thoughts on generalizing this function...
 
-	There could be a table of ieee addresses and associated functions to pass
-	payloads to.  The last entry of the table would be a "catchall" for
-	paylaods from devices not in the table.
+   There could be a table of ieee addresses and associated functions to pass
+   payloads to.  The last entry of the table would be a "catchall" for
+   paylaods from devices not in the table.
 
-	"context" of this function would be the table.  Functions that get the
-	payloads would just accept the envelope parameter.
+   "context" of this function would be the table.  Functions that get the
+   payloads would just accept the envelope parameter.
 
-	Maybe better to just have a list of functions that can see all of the
-	payloads?
+   Maybe better to just have a list of functions that can see all of the
+   payloads?
 */
 // documented in xbee/pxbee_ota_client.h
 int _pxbee_ota_transparent_rx( const wpan_envelope_t FAR *envelope,
-	void FAR *context)
+   void FAR *context)
 {
-	pxbee_ota_t FAR *ota = context;
+   pxbee_ota_t FAR *ota = context;
 
-	#ifdef PXBEE_OTA_VERBOSE
-		printf( "%s: got %u-byte transparent data:\n", __FUNCTION__,
-			envelope->length);
-		hex_dump( envelope->payload, envelope->length, HEX_DUMP_FLAG_TAB);
-	#endif
+   #ifdef PXBEE_OTA_VERBOSE
+      printf( "%s: got %u-byte transparent data:\n", __FUNCTION__,
+         envelope->length);
+      hex_dump( envelope->payload, envelope->length, HEX_DUMP_FLAG_TAB);
+   #endif
 
-	// flag in pxbee_ota_t to ignore data until we're actually doing update?
-	if (memcmp( &ota->target, &envelope->ieee_address, 8) == 0)
-	{
-		xbee_cbuf_put( &ota->rxbuf.cbuf, envelope->payload,
-														(uint8_t) envelope->length);
-	}
+   // flag in pxbee_ota_t to ignore data until we're actually doing update?
+   if (memcmp( &ota->target, &envelope->ieee_address, 8) == 0)
+   {
+      xbee_cbuf_put( &ota->rxbuf.cbuf, envelope->payload,
+                                          (uint8_t) envelope->length);
+   }
 #ifdef PXBEE_OTA_VERBOSE
-	else
-	{
-		printf( "%s: ignoring transparent serial data from wrong address\n",
-			__FUNCTION__);
-	}
+   else
+   {
+      printf( "%s: ignoring transparent serial data from wrong address\n",
+         __FUNCTION__);
+   }
 #endif
 
-	return 0;
+   return 0;
 }
 
 
@@ -77,135 +77,135 @@ int _pxbee_ota_transparent_rx( const wpan_envelope_t FAR *envelope,
 /*** EndHeader */
 /** @internal
 
-	Function assigned to the \c stream.read function pointer of an
-	xbee_xmodem_state_t object.  Reads data from the target specified in
-	the pxbee_ota_t structure.
+   Function assigned to the \c stream.read function pointer of an
+   xbee_xmodem_state_t object.  Reads data from the target specified in
+   the pxbee_ota_t structure.
 
-	@param[in]		context	pxbee_ota_t structure
-	@param[in,out]	buffer	buffer to store read data
-	@param[in]		bytes		maximum number of bytes to write to \c buffer
+   @param[in]     context  pxbee_ota_t structure
+   @param[in,out] buffer   buffer to store read data
+   @param[in]     bytes    maximum number of bytes to write to \c buffer
 
-	@sa xbee_xmodem_read_fn()
+   @sa xbee_xmodem_read_fn()
 */
 int _pxbee_ota_xmodem_read( void FAR *context, void FAR *buffer, int16_t bytes)
 {
-	// Function must follow prototype of xbee_xmodem_read_fn, so first
-	// parameter is always a void pointer.  Cast it to the correct type.
-	pxbee_ota_t FAR *ota = context;
+   // Function must follow prototype of xbee_xmodem_read_fn, so first
+   // parameter is always a void pointer.  Cast it to the correct type.
+   pxbee_ota_t FAR *ota = context;
 
-	if (context == NULL || buffer == NULL || bytes < 0)
-	{
-		return -EINVAL;
-	}
+   if (context == NULL || buffer == NULL || bytes < 0)
+   {
+      return -EINVAL;
+   }
 
-	return xbee_cbuf_get( &ota->rxbuf.cbuf, buffer,
-		(bytes > 255) ? 255 : (uint_fast8_t) bytes);
+   return xbee_cbuf_get( &ota->rxbuf.cbuf, buffer,
+      (bytes > 255) ? 255 : (uint_fast8_t) bytes);
 }
 
 /** @internal
 
-	Function assigned to the \c stream.write function pointer of an
-	xbee_xmodem_state_t object.  Sends data to the target specified in
-	the pxbee_ota_t structure.
+   Function assigned to the \c stream.write function pointer of an
+   xbee_xmodem_state_t object.  Sends data to the target specified in
+   the pxbee_ota_t structure.
 
-	@param[in]		context	pxbee_ota_t structure
-	@param[in,out]	buffer	source of data to send
-	@param[in]		bytes		number of bytes to send
+   @param[in]     context  pxbee_ota_t structure
+   @param[in,out] buffer   source of data to send
+   @param[in]     bytes    number of bytes to send
 
-	@return Number of bytes sent to target.
+   @return Number of bytes sent to target.
 
-	@sa xbee_xmodem_write_fn()
+   @sa xbee_xmodem_write_fn()
 */
 int _pxbee_ota_xmodem_write( void FAR *context, const void FAR *buffer,
-																					int16_t bytes)
+                                                               int16_t bytes)
 {
-	// Function must follow prototype of xbee_xmodem_write_fn, so first
-	// parameter is always a void pointer.  Cast it to the correct type.
-	pxbee_ota_t FAR *ota = context;
-	wpan_envelope_t	envelope;
+   // Function must follow prototype of xbee_xmodem_write_fn, so first
+   // parameter is always a void pointer.  Cast it to the correct type.
+   pxbee_ota_t FAR *ota = context;
+   wpan_envelope_t   envelope;
 
-	if (context == NULL || buffer == NULL || bytes < 0)
-	{
-		return -EINVAL;
-	}
+   if (context == NULL || buffer == NULL || bytes < 0)
+   {
+      return -EINVAL;
+   }
 
-	wpan_envelope_create( &envelope, ota->dev, &ota->target,
-																	WPAN_NET_ADDR_UNDEFINED);
-	envelope.payload = buffer;
-	envelope.length = bytes;
-	envelope.options = (ota->flags & PXBEE_OTA_FLAG_APS_ENCRYPT)
-															? WPAN_CLUST_FLAG_ENCRYPT : 0;
+   wpan_envelope_create( &envelope, ota->dev, &ota->target,
+                                                   WPAN_NET_ADDR_UNDEFINED);
+   envelope.payload = buffer;
+   envelope.length = bytes;
+   envelope.options = (ota->flags & PXBEE_OTA_FLAG_APS_ENCRYPT)
+                                             ? WPAN_CLUST_FLAG_ENCRYPT : 0;
 
-	if (xbee_transparent_serial( &envelope))
-	{
-		// error on send, try again
-		#ifdef PXBEE_OTA_VERBOSE
-			printf( "%s: %s failed\n", __FUNCTION__, "xbee_transparent_serial");
-		#endif
-		return 0;
-	}
+   if (xbee_transparent_serial( &envelope))
+   {
+      // error on send, try again
+      #ifdef PXBEE_OTA_VERBOSE
+         printf( "%s: %s failed\n", __FUNCTION__, "xbee_transparent_serial");
+      #endif
+      return 0;
+   }
 
-	// successfully sent packet of <bytes> bytes
-	#ifdef PXBEE_OTA_VERBOSE
-		printf ("%s: sent %u bytes\n", __FUNCTION__, bytes);
-	#endif
+   // successfully sent packet of <bytes> bytes
+   #ifdef PXBEE_OTA_VERBOSE
+      printf ("%s: sent %u bytes\n", __FUNCTION__, bytes);
+   #endif
 
-	return bytes;
+   return bytes;
 }
 
 // documented in xbee/pxbee_ota_client.h
 int pxbee_ota_init( pxbee_ota_t *ota, wpan_dev_t *dev, const addr64 *target)
 {
-	wpan_envelope_t							envelope;
-	int											error;
+   wpan_envelope_t                     envelope;
+   int                                 error;
 
-	if (ota == NULL || dev == NULL || target == NULL)
-	{
-		return -EINVAL;
-	}
+   if (ota == NULL || dev == NULL || target == NULL)
+   {
+      return -EINVAL;
+   }
 
-	ota->dev = dev;
-	ota->target = *target;
+   ota->dev = dev;
+   ota->target = *target;
 
-	xbee_cbuf_init( &ota->rxbuf.cbuf, 255);
+   xbee_cbuf_init( &ota->rxbuf.cbuf, 255);
 
-	wpan_envelope_create( &envelope, dev, target, WPAN_NET_ADDR_UNDEFINED);
-	envelope.profile_id = WPAN_PROFILE_DIGI;
-	envelope.source_endpoint = WPAN_ENDPOINT_DIGI_DATA;
-	envelope.dest_endpoint = WPAN_ENDPOINT_DIGI_DATA;
-	envelope.cluster_id = DIGI_CLUST_PROG_XBEE_OTA_UPD;
-	envelope.options = (ota->flags & PXBEE_OTA_FLAG_APS_ENCRYPT) ?
-		WPAN_CLUST_FLAG_ENCRYPT : WPAN_SEND_FLAG_NONE;
+   wpan_envelope_create( &envelope, dev, target, WPAN_NET_ADDR_UNDEFINED);
+   envelope.profile_id = WPAN_PROFILE_DIGI;
+   envelope.source_endpoint = WPAN_ENDPOINT_DIGI_DATA;
+   envelope.dest_endpoint = WPAN_ENDPOINT_DIGI_DATA;
+   envelope.cluster_id = DIGI_CLUST_PROG_XBEE_OTA_UPD;
+   envelope.options = (ota->flags & PXBEE_OTA_FLAG_APS_ENCRYPT) ?
+      WPAN_CLUST_FLAG_ENCRYPT : WPAN_SEND_FLAG_NONE;
 
-	if (ota->auth_length)
-	{
-		envelope.length = ota->auth_length;
-		envelope.payload = ota->auth_data;
-	}
-	else
-	{
-		// payload must be at least one byte (default to '\0')
-		envelope.length = 1;
-		envelope.payload = "";
-	}
+   if (ota->auth_length)
+   {
+      envelope.length = ota->auth_length;
+      envelope.payload = ota->auth_data;
+   }
+   else
+   {
+      // payload must be at least one byte (default to '\0')
+      envelope.length = 1;
+      envelope.payload = "";
+   }
 
-	// tell app to start receiving firmware update
-	error = wpan_envelope_send( &envelope);
-	if (error)
-	{
-		return error;
-	}
+   // tell app to start receiving firmware update
+   error = wpan_envelope_send( &envelope);
+   if (error)
+   {
+      return error;
+   }
 
-	// Tell bootloader to start receiving in case app isn't running.  Better to
-	// do this second, in case application on target is using Transparent
-	// Serial for something else.
-	envelope.payload = "F";
-	envelope.length = 1;
-	envelope.cluster_id = DIGI_CLUST_SERIAL;
-	wpan_envelope_send( &envelope);
+   // Tell bootloader to start receiving in case app isn't running.  Better to
+   // do this second, in case application on target is using Transparent
+   // Serial for something else.
+   envelope.payload = "F";
+   envelope.length = 1;
+   envelope.cluster_id = DIGI_CLUST_SERIAL;
+   wpan_envelope_send( &envelope);
 
-	xbee_xmodem_tx_init( &ota->xbxm, XBEE_XMODEM_FLAG_64);
+   xbee_xmodem_tx_init( &ota->xbxm, XBEE_XMODEM_FLAG_64);
 
-	return xbee_xmodem_set_stream( &ota->xbxm, _pxbee_ota_xmodem_read,
-													_pxbee_ota_xmodem_write, ota);
+   return xbee_xmodem_set_stream( &ota->xbxm, _pxbee_ota_xmodem_read,
+                                       _pxbee_ota_xmodem_write, ota);
 }

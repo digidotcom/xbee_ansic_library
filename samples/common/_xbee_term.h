@@ -16,10 +16,10 @@
 #include "xbee/platform.h"
 
 enum char_source {
-	SOURCE_UNKNOWN,				// startup condition
-	SOURCE_KEYBOARD,				// from user entering data at keyboard
-	SOURCE_SERIAL,					// from XBee on serial port
-	SOURCE_STATUS,					// status messages
+    SOURCE_UNKNOWN,             // startup condition
+    SOURCE_KEYBOARD,            // from user entering data at keyboard
+    SOURCE_SERIAL,              // from XBee on serial port
+    SOURCE_STATUS,              // status messages
 };
 
 // Platform-specific functions used by xbee_term.c.

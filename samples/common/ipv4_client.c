@@ -169,7 +169,7 @@ int main(int argc, char **argv)
 static int receive_handler(xbee_dev_t *xbee, const void FAR *frame_in,
     uint16_t frame_len, void FAR *context)
 {
-	const xbee_frame_receive_ipv4_t FAR *frame = frame_in;
+    const xbee_frame_receive_ipv4_t FAR *frame = frame_in;
     size_t len = frame_len - offsetof(xbee_frame_receive_ipv4_t, payload);
     xbee_term_set_color(SOURCE_SERIAL);
     if (fwrite(frame->payload, len, 1, stdout) != 1) {
@@ -183,7 +183,7 @@ static int receive_handler(xbee_dev_t *xbee, const void FAR *frame_in,
 static int tx_status_handler(xbee_dev_t *xbee, const void FAR *frame_in,
     uint16_t frame_len, void FAR *context)
 {
-	const xbee_frame_tx_status_t FAR *frame = frame_in;
+    const xbee_frame_tx_status_t FAR *frame = frame_in;
     if (frame->delivery != XBEE_TX_DELIVERY_SUCCESS) {
         printf("Error delivering packet, delivery status 0x%.2x\n",
             frame->delivery);

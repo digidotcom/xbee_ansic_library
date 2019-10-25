@@ -19,9 +19,9 @@
 #define SAMPLE_COMMISION_ENDPOINT 1
 
 struct _endpoints {
-	wpan_endpoint_table_entry_t		zdo;
-	wpan_endpoint_table_entry_t		zcl;
-	uint8_t									end_of_list;
+   wpan_endpoint_table_entry_t      zdo;
+   wpan_endpoint_table_entry_t      zcl;
+   uint8_t                          end_of_list;
 };
 
 extern struct _endpoints sample_endpoints;

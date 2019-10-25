@@ -23,11 +23,11 @@
 #include "_commission_server.h"
 #include "zigbee/zcl_commissioning.h"
 
-#define ZCL_APP_VERSION			0x01
-#define ZCL_MANUFACTURER_NAME	"Digi International"
-#define ZCL_MODEL_IDENTIFIER	"ZCL Commissioning Server"
-#define ZCL_DATE_CODE			"20110630 dev"
-#define ZCL_POWER_SOURCE		ZCL_BASIC_PS_SINGLE_PHASE
+#define ZCL_APP_VERSION       0x01
+#define ZCL_MANUFACTURER_NAME "Digi International"
+#define ZCL_MODEL_IDENTIFIER  "ZCL Commissioning Server"
+#define ZCL_DATE_CODE         "20110630 dev"
+#define ZCL_POWER_SOURCE      ZCL_BASIC_PS_SINGLE_PHASE
 #include "zigbee/zcl_basic_attributes.h"
 
 /// Used to track ZDO transactions in order to match responses to requests
@@ -39,37 +39,37 @@ wpan_ep_state_t zcl_ep_state = { 0 };
 
 const wpan_cluster_table_entry_t zcl_cluster_table[] =
 {
-	ZCL_CLUST_ENTRY_BASIC_SERVER,
-	ZCL_CLUST_ENTRY_IDENTIFY_SERVER,
-	ZCL_CLUST_ENTRY_COMMISSIONING_SERVER,
+   ZCL_CLUST_ENTRY_BASIC_SERVER,
+   ZCL_CLUST_ENTRY_IDENTIFY_SERVER,
+   ZCL_CLUST_ENTRY_COMMISSIONING_SERVER,
 
-	WPAN_CLUST_ENTRY_LIST_END
+   WPAN_CLUST_ENTRY_LIST_END
 };
 
 // Since we're not using a dynamic frame dispatch table, we need to define
 // it here.
-#include "xbee/atcmd.h"			// for XBEE_FRAME_HANDLE_LOCAL_AT
-#include "xbee/wpan.h"			// for XBEE_FRAME_HANDLE_RX_EXPLICIT
+#include "xbee/atcmd.h"       // for XBEE_FRAME_HANDLE_LOCAL_AT
+#include "xbee/wpan.h"        // for XBEE_FRAME_HANDLE_RX_EXPLICIT
 const xbee_dispatch_table_entry_t xbee_frame_handlers[] =
 {
-	XBEE_FRAME_HANDLE_LOCAL_AT,
-	XBEE_FRAME_HANDLE_RX_EXPLICIT,
-	XBEE_FRAME_MODEM_STATUS_DEBUG,
-	XBEE_FRAME_TABLE_END
+   XBEE_FRAME_HANDLE_LOCAL_AT,
+   XBEE_FRAME_HANDLE_RX_EXPLICIT,
+   XBEE_FRAME_MODEM_STATUS_DEBUG,
+   XBEE_FRAME_TABLE_END
 };
 
 struct _endpoints sample_endpoints = {
-	ZDO_ENDPOINT(zdo_ep_state),
+   ZDO_ENDPOINT(zdo_ep_state),
 
-	{	SAMPLE_COMMISION_ENDPOINT,		// endpoint
-		0,										// profile ID (filled in later)
-		NULL,									// endpoint handler
-		&zcl_ep_state,						// ep_state
-		0x0000,								// device ID
-		0x00,									// version
-		zcl_cluster_table,				// clusters
-	},
+   {  SAMPLE_COMMISION_ENDPOINT,    // endpoint
+      0,                            // profile ID (filled in later)
+      NULL,                         // endpoint handler
+      &zcl_ep_state,                // ep_state
+      0x0000,                       // device ID
+      0x00,                         // version
+      zcl_cluster_table,            // clusters
+   },
 
-	WPAN_ENDPOINT_END_OF_LIST
+   WPAN_ENDPOINT_END_OF_LIST
 };
 

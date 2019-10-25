@@ -11,10 +11,10 @@
  */
 
 /**
-	@addtogroup xbee_atmode
-	@{
-	@file xbee/atmode.h
-	Header for working with XBee modules in AT command mode instead of API mode.
+    @addtogroup xbee_atmode
+    @{
+    @file xbee/atmode.h
+    Header for working with XBee modules in AT command mode instead of API mode.
 */
 
 #ifndef __XBEE_ATMODE
@@ -25,21 +25,19 @@
 
 XBEE_BEGIN_DECLS
 
-int xbee_atmode_enter( xbee_dev_t *xbee);
-int xbee_atmode_exit( xbee_dev_t *xbee);
-int xbee_atmode_tick( xbee_dev_t *xbee);
+int xbee_atmode_enter(xbee_dev_t *xbee);
+int xbee_atmode_exit(xbee_dev_t *xbee);
+int xbee_atmode_tick(xbee_dev_t *xbee);
 
-int xbee_atmode_send_request( xbee_dev_t *xbee, const char FAR *command);
-int xbee_atmode_read_response( xbee_dev_t *xbee, char FAR *response,
-	int resp_size, int FAR *bytesread);
+int xbee_atmode_send_request(xbee_dev_t *xbee, const char FAR *command);
+int xbee_atmode_read_response(xbee_dev_t *xbee, char FAR *response,
+    int resp_size, int FAR *bytesread);
 
 XBEE_END_DECLS
 
 // If compiling in Dynamic C, automatically #use the appropriate C file.
 #ifdef __DC__
-	#use "xbee_atmode.c"
+    #use "xbee_atmode.c"
 #endif
 
 #endif
-
-

@@ -11,10 +11,10 @@
  */
 
 /**
-	@addtogroup xbee_tx_status
-	@{
-	@file xbee_tx_status.c
-	Code for handling tx_status frames (not transmit frames).
+    @addtogroup xbee_tx_status
+    @{
+    @file xbee_tx_status.c
+    Code for handling tx_status frames (not transmit frames).
 */
 #include <stddef.h>
 #include <stdio.h>
@@ -24,17 +24,17 @@
 #include "xbee/tx_status.h"
 
 int xbee_frame_dump_tx_status( xbee_dev_t *xbee,
-	const void FAR *frame, uint16_t length, void FAR *context)
+    const void FAR *frame, uint16_t length, void FAR *context)
 {
-	XBEE_UNUSED_PARAMETER( xbee);
-	XBEE_UNUSED_PARAMETER( length);
-	XBEE_UNUSED_PARAMETER( context);
-	
-	const xbee_frame_tx_status_t FAR* status_frame = frame;
-	
-	printf("%s: id: 0x%02x \t status: 0x%x\n", __FUNCTION__, status_frame->frame_id,
-		status_frame->delivery);
-	
-	return 0;	
+    XBEE_UNUSED_PARAMETER( xbee);
+    XBEE_UNUSED_PARAMETER( length);
+    XBEE_UNUSED_PARAMETER( context);
+    
+    const xbee_frame_tx_status_t FAR* status_frame = frame;
+    
+    printf("%s: id: 0x%02x \t status: 0x%x\n", __FUNCTION__, status_frame->frame_id,
+        status_frame->delivery);
+    
+    return 0;   
 }
 //TODO everything

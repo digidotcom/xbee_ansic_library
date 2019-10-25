@@ -11,10 +11,10 @@
  */
 
 /**
-	@addtogroup hal_win32
-	@{
-	@file xbee_platform_win32.c
-	Platform-specific functions for use by the XBee Driver on Win32/gcc target.
+    @addtogroup hal_win32
+    @{
+    @file xbee_platform_win32.c
+    Platform-specific functions for use by the XBee Driver on Win32/gcc target.
 */
 
 #include "xbee/platform.h"
@@ -22,10 +22,10 @@
 
 uint32_t xbee_seconds_timer()
 {
-	return time(NULL);
+    return time(NULL);
 }
 
 uint32_t xbee_millisecond_timer()
 {
-	return GetTickCount();
+    return GetTickCount();
 }

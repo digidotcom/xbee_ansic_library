@@ -152,13 +152,13 @@ uint16_t xbee_bl_gen3_install_state(xbee_gen3_update_t *source);
     @param[in]  source      Structure used to track install status.
 
     @retval     0           Successfully installed new firmware.
-    @retval	-EAGAIN     Firmware installation in progress (incomplete).
+    @retval     -EAGAIN     Firmware installation in progress (incomplete).
     @retval     -EINVAL     NULL \a source.
     @retval     -EBADMSG    Invalid state for firmware update process.
     @retval     -ECANCELED  Transfer aborted after three CRC failures on a page
                             or module reported a flash write error.
-    @retval	-EILSEQ     Bootloader verification of firmware failed.
-    @retval	-EIO        Couldn't establish communications with XBee module.
+    @retval     -EILSEQ     Bootloader verification of firmware failed.
+    @retval     -EIO        Couldn't establish communications with XBee module.
 
 */
 int xbee_bl_gen3_install_tick(xbee_gen3_update_t *source);

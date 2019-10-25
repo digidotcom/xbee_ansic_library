@@ -11,13 +11,13 @@
  */
 
 /**
-	@addtogroup pxbee_ota_server
-	@{
-	@file xbee/pxbee_ota_server.h
+   @addtogroup pxbee_ota_server
+   @{
+   @file xbee/pxbee_ota_server.h
 
-	Code to add an OTA Server Cluster to a device.  It receives notification
-	to start an update, and then calls back to the bootloader to receive
-	that update.
+   Code to add an OTA Server Cluster to a device.  It receives notification
+   to start an update, and then calls back to the bootloader to receive
+   that update.
 */
 
 #ifndef PXBEE_OTA_SERVER_H
@@ -29,60 +29,60 @@
 XBEE_BEGIN_DECLS
 
 /**
-	@brief Cluster command to initiate firmware updates.
+   @brief Cluster command to initiate firmware updates.
 
-	Verifies that APS encryption
-	was used (if cluster is configured as such) before handing off to
-	implementation-provided function xbee_update_firmware_ota().
+   Verifies that APS encryption
+   was used (if cluster is configured as such) before handing off to
+   implementation-provided function xbee_update_firmware_ota().
 
-	@see wpan_aps_handler_fn
+   @see wpan_aps_handler_fn
 */
 int pxbee_ota_server_cmd( const wpan_envelope_t FAR *envelope,
-	void FAR *context);
+   void FAR *context);
 
 /**
-	@brief
-	Application needs to provide this function as a method of
-	receiving firmware updates over-the-air with Xmodem protocol.
+   @brief
+   Application needs to provide this function as a method of
+   receiving firmware updates over-the-air with Xmodem protocol.
 
-	See xbee/pxbee_ota_client.h for details on sending updates.
+   See xbee/pxbee_ota_client.h for details on sending updates.
 
-	Your application can support password-protected updates by checking the
-	payload of the request.  If the payload is a valid request to initiate
-	an update, this function should enter an "XMODEM receive" mode and
-	start sending 'C' to the sender of the request, indicating that it
-	should start sending 64-byte XMODEM packets with the new firmware.
+   Your application can support password-protected updates by checking the
+   payload of the request.  If the payload is a valid request to initiate
+   an update, this function should enter an "XMODEM receive" mode and
+   start sending 'C' to the sender of the request, indicating that it
+   should start sending 64-byte XMODEM packets with the new firmware.
 
-	On Digi's Programmable XBee platform, this function would exit to the
-	bootloader so it can receive the new application firmware.
+   On Digi's Programmable XBee platform, this function would exit to the
+   bootloader so it can receive the new application firmware.
 
-	@param[in]	envelope		command sent to start update -- function may want
-									to use the payload for some sort of password
-									verification
-	@param[in,out]	context	user context (from cluster table)
+   @param[in]  envelope    command sent to start update -- function may want
+                           to use the payload for some sort of password
+                           verification
+   @param[in,out] context  user context (from cluster table)
 
-	@retval	NULL	do not respond to request
-	@retval	!NULL	respond to request with error message
+   @retval  NULL  do not respond to request
+   @retval  !NULL respond to request with error message
 
 */
 const char *xbee_update_firmware_ota( const wpan_envelope_t FAR *envelope,
-	void FAR *context);
+   void FAR *context);
 
 /**
-	@brief
-	Macro to add the OTA cluster to the Digi Data Endpoint.
+   @brief
+   Macro to add the OTA cluster to the Digi Data Endpoint.
 
-	@param[in]	flag	set to WPAN_CLUST_FLAG_NONE or WPAN_CLUST_FLAG_ENCRYPT
+   @param[in]  flag  set to WPAN_CLUST_FLAG_NONE or WPAN_CLUST_FLAG_ENCRYPT
 */
-#define PXBEE_OTA_CMD_SERVER_CLUST_ENTRY(flag)								\
-	{	DIGI_CLUST_PROG_XBEE_OTA_UPD,	pxbee_ota_server_cmd, NULL,			\
-		(flag) | WPAN_CLUST_FLAG_SERVER | WPAN_CLUST_FLAG_NOT_ZCL }
+#define PXBEE_OTA_CMD_SERVER_CLUST_ENTRY(flag)                       \
+   {  DIGI_CLUST_PROG_XBEE_OTA_UPD, pxbee_ota_server_cmd, NULL,         \
+      (flag) | WPAN_CLUST_FLAG_SERVER | WPAN_CLUST_FLAG_NOT_ZCL }
 
 XBEE_END_DECLS
 
 // If compiling in Dynamic C, automatically #use the appropriate C file.
 #ifdef __DC__
-	#use "pxbee_ota_server.c"
+   #use "pxbee_ota_server.c"
 #endif
 
-#endif		// PXBEE_OTA_SERVER_H defined
+#endif      // PXBEE_OTA_SERVER_H defined

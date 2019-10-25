@@ -11,10 +11,10 @@
  */
 
 /**
-	@addtogroup xbee_atcmd
-	@{
-	@file xbee/reg_descr.h
-	Header for XBee register descriptors
+   @addtogroup xbee_atcmd
+   @{
+   @file xbee/reg_descr.h
+   Header for XBee register descriptors
 
    @note This header is sensitive to the value of the macro IDIGI_USE_XBEE.
    If this macro is defined, some additional fields in the register descriptor
@@ -34,12 +34,12 @@ XBEE_BEGIN_DECLS
 /// descriptor table.
 typedef enum
 {
-	XBEE_RCI_TYPE_UINT32,
-	XBEE_RCI_TYPE_HEX32,
-	XBEE_RCI_TYPE_STRING,
-	XBEE_RCI_TYPE_BIN,	// Bin turns into XBEE_RCI_TYPE_STRING for RCI, but formatted as 0x
-   							// followed by hex digits.
-	XBEE_RCI_TYPE_ADDR64,
+   XBEE_RCI_TYPE_UINT32,
+   XBEE_RCI_TYPE_HEX32,
+   XBEE_RCI_TYPE_STRING,
+   XBEE_RCI_TYPE_BIN,   // Bin turns into XBEE_RCI_TYPE_STRING for RCI, but formatted as 0x
+                        // followed by hex digits.
+   XBEE_RCI_TYPE_ADDR64,
 } _xbee_rci_type_t;
 
 /// Table to map _xbee_rci_type_t to RCI type string
@@ -49,16 +49,16 @@ extern const char *_xbee_rci_types[];
 
 typedef struct _xbee_reg_descr_t
 {
-	/// 1 if a "state", 0 if a "setting", or other values for special purposes.
+   /// 1 if a "state", 0 if a "setting", or other values for special purposes.
    /// A state is read-only, and
    /// reflects dynamic state such as error counts.  A setting is read/write
    /// or write-only, which can (in principle) be saved to non-volatile
    /// storage on the device.
-	int	is_state;
-	/// Two-character AT command string for this register (except entry for
+   int   is_state;
+   /// Two-character AT command string for this register (except entry for
    /// <dest_addr> is "DH/DL").
-	const char *alias;
-	/** Custom xbee_type value (bitfield) for query descriptor.
+   const char *alias;
+   /** Custom xbee_type value (bitfield) for query descriptor.
 
        This field is a bitmask, which determines whether this entry is
        applicable to a given XBee module type.  A mask (M) for the module is
@@ -74,29 +74,29 @@ typedef struct _xbee_reg_descr_t
 
        @note This mask behavior is derived from NDS and is used by iDigi.
    */
-   uint16_t		cxval;
-	/// RCI type
-   _xbee_rci_type_t		rci_type;
+   uint16_t    cxval;
+   /// RCI type
+   _xbee_rci_type_t     rci_type;
 #ifdef IDIGI_USE_XBEE
-	/// If iDigi support: RCI element name for this register
-	const char *rci_element;
-	/// If iDigi support: register description string
+   /// If iDigi support: RCI element name for this register
+   const char *rci_element;
+   /// If iDigi support: register description string
    const char *desc;
-	/// If iDigi support: "units" element value for query descriptor
+   /// If iDigi support: "units" element value for query descriptor
    const char *units;
-	// Note: these are stored as strings since it results in less storage
+   // Note: these are stored as strings since it results in less storage
    // use compared with 32-bit numbers, plus the format is correct for RCI.
-	/// If iDigi support: "min" element value for query descriptor
+   /// If iDigi support: "min" element value for query descriptor
    const char *min;
-	/// If iDigi support: "max" element value for query descriptor
+   /// If iDigi support: "max" element value for query descriptor
    const char *max;
 #endif
-	/// Offset in SXA node structure of cached field value
-   uint16_t 	sxa_offs;
-	/// Length of cached field value
-   uint16_t 	sxa_len;
-	/// SXA cache group (bitfield), or SXA_CACHED_MISC if not grouped.
-   uint16_t 	sxa_cache_group;
+   /// Offset in SXA node structure of cached field value
+   uint16_t    sxa_offs;
+   /// Length of cached field value
+   uint16_t    sxa_len;
+   /// SXA cache group (bitfield), or SXA_CACHED_MISC if not grouped.
+   uint16_t    sxa_cache_group;
 } _xbee_reg_descr_t;
 
 
@@ -107,9 +107,9 @@ XBEE_END_DECLS
 
 // If compiling in Dynamic C, automatically #use the appropriate C file.
 #ifdef __DC__
-	#use "xbee_reg_descr.c"
+   #use "xbee_reg_descr.c"
 #endif
 
-#endif		// __XBEE_REG_DESCR
+#endif      // __XBEE_REG_DESCR
 
 ///@}

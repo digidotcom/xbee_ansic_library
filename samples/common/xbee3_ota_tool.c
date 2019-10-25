@@ -114,7 +114,7 @@ const wpan_endpoint_table_entry_t sample_endpoints[] = {
     ZDO_ENDPOINT(zdo_ep_state),
 
     // Endpoint/cluster for OTA Upgrade Cluster and join notifications
-    {	WPAN_ENDPOINT_DIGI_DATA,        // endpoint
+    {   WPAN_ENDPOINT_DIGI_DATA,        // endpoint
         WPAN_PROFILE_DIGI,              // profile ID
         NULL,                           // endpoint handler
         &digi_data_ep_state,            // ep_state

@@ -17,35 +17,35 @@
 
 // Win32 epoch is 1/1/1970, add 30 years, plus 7 leap days (1972, 1976, 1980,
 // 1984, 1988, 1992, 1996) to get to ZigBee epoch of 1/1/2000.
-#define ZCL_TIME_EPOCH_DELTA	(((uint32_t)30 * 365 + 7) * 24 * 60 * 60)
+#define ZCL_TIME_EPOCH_DELTA    (((uint32_t)30 * 365 + 7) * 24 * 60 * 60)
 
 int main( int argc, char *argv[])
 {
-	time_t rawtime;
-	char *tail;
-	struct tm *timeinfo;
+    time_t rawtime;
+    char *tail;
+    struct tm *timeinfo;
 
-	if (argc != 2)
-	{
-		printf( "usage: %s <time>\n", argv[0]);
-		printf( "\tWhere <time> is a ZCL UTCTime value in hex (0x prefix)\n");
-		printf( "\tor decimal (no prefix).\n");
+    if (argc != 2)
+    {
+        printf( "usage: %s <time>\n", argv[0]);
+        printf( "\tWhere <time> is a ZCL UTCTime value in hex (0x prefix)\n");
+        printf( "\tor decimal (no prefix).\n");
 
-		return 0;
-	}
+        return 0;
+    }
 
-	rawtime = (time_t) strtoul( argv[1], &tail, 0);
-	if (tail == argv[1])
-	{
-		printf( "Error trying to convert '%s'.\n", argv[1]);
-		return -1;
-	}
+    rawtime = (time_t) strtoul( argv[1], &tail, 0);
+    if (tail == argv[1])
+    {
+        printf( "Error trying to convert '%s'.\n", argv[1]);
+        return -1;
+    }
 
-	rawtime += ZCL_TIME_EPOCH_DELTA;
-	timeinfo = gmtime( &rawtime);
-	printf( "  ZCL = '%s'\n  UTC = %s", argv[1], asctime( timeinfo));
-	timeinfo = localtime( &rawtime);
-	printf( "local = %s", asctime( timeinfo));
+    rawtime += ZCL_TIME_EPOCH_DELTA;
+    timeinfo = gmtime( &rawtime);
+    printf( "  ZCL = '%s'\n  UTC = %s", argv[1], asctime( timeinfo));
+    timeinfo = localtime( &rawtime);
+    printf( "local = %s", asctime( timeinfo));
 
-	return 0;
+    return 0;
 }

@@ -256,4 +256,4 @@ uint32_t zcl_ota_tag_identifier_length(uint16_t id);
 
 XBEE_END_DECLS
 
-#endif	// ZCL_OTA_UPGRADE_H defined
+#endif // ZCL_OTA_UPGRADE_H defined

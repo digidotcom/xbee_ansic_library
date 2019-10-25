@@ -4,12 +4,12 @@
       http://mxr.mozilla.org/mozilla/source/js/src/jslong.c
 
    Do not link it with your project, it is included automatically by the
-	platform_xxx.c file on platforms that don't have native 64-bit integers.
+   platform_xxx.c file on platforms that don't have native 64-bit integers.
 */
 /**
-	@addtogroup zcl_64
-	@{
-	@file util/jslong.c
+    @addtogroup zcl_64
+    @{
+    @file util/jslong.c
 */
 /* ***** BEGIN LICENSE BLOCK *****
  * Version: MPL 1.1/GPL 2.0/LGPL 2.1
@@ -82,7 +82,7 @@ void jsll_mul32(JSUint64 *rp, JSUint32 a, JSUint32 b)
     _y1 += jshi16(_y0);                         /* can't carry */
     _y1 += _y2;                                /* might carry */
     if (_y1 < _y2)
-	 {
+    {
         _y3 += (JSUint32)(0x00010000);  /* propagate */
     }
     rp->lo = (jslo16(_y1) << 16) + jslo16(_y0);
@@ -129,7 +129,7 @@ static void norm_udivmod32(JSUint32 *qp, JSUint32 *rp, JSUint64 a, JSUint32 b)
 }
 
 #ifdef __XBEE_PLATFORM_HCS08
-	#pragma MESSAGE DISABLE C5909		// Assignment in condition is OK
+    #pragma MESSAGE DISABLE C5909       // Assignment in condition is OK
 #endif
 static uint_fast8_t CountLeadingZeros(JSUint32 a)
 {
@@ -151,7 +151,7 @@ static uint_fast8_t CountLeadingZeros(JSUint32 a)
     return r;
 }
 #ifdef __XBEE_PLATFORM_HCS08
-	#pragma MESSAGE DEFAULT C5909		// restore C5909 (Assignment in condition)
+    #pragma MESSAGE DEFAULT C5909       // restore C5909 (Assignment in condition)
 #endif
 
 void jsll_udivmod(JSUint64 *qp, JSUint64 *rp, JSUint64 a, JSUint64 b)
@@ -440,16 +440,16 @@ void jsll_ushr( JSInt64 *r, JSInt64 a, uint_fast8_t b)
 /*** EndHeader */
 int jsll_decstr( char *buffer, const JSInt64 *v)
 {
-	if ((JSInt32)v->hi < 0)
-	{
-		JSUint64 _abs;
+    if ((JSInt32)v->hi < 0)
+    {
+        JSUint64 _abs;
 
-		JSLL_NEG( _abs, *v);
-		*buffer = '-';
-		return jsll_udecstr( buffer + 1, &_abs);
-	}
+        JSLL_NEG( _abs, *v);
+        *buffer = '-';
+        return jsll_udecstr( buffer + 1, &_abs);
+    }
 
-	return jsll_udecstr( buffer, v);
+    return jsll_udecstr( buffer, v);
 }
 
 /*** BeginHeader jsll_udecstr */
@@ -460,44 +460,44 @@ int jsll_decstr( char *buffer, const JSInt64 *v)
 // to divide by 1 billion and convert 9 digits at a time.
 int jsll_udecstr( char *buffer, const JSUint64 *v)
 {
-	char temp[20];		// maximum of 20 digits, don't need pointer for null
-	char *p;
-	int length;
-	uint_fast8_t i;
-	bool_t fill;
-	JSUint64 quot, rem;
-	uint16_t rem16;
-	const JSUint64 divisor = JSLL_INIT( 0, 10000);
+    char temp[20];      // maximum of 20 digits, don't need pointer for null
+    char *p;
+    int length;
+    uint_fast8_t i;
+    bool_t fill;
+    JSUint64 quot, rem;
+    uint16_t rem16;
+    const JSUint64 divisor = JSLL_INIT( 0, 10000);
 
-	quot = *v;
-	if (JSLL_IS_ZERO( quot))
-	{
-		strcpy( buffer, "0");
-		return 1;
-	}
+    quot = *v;
+    if (JSLL_IS_ZERO( quot))
+    {
+        strcpy( buffer, "0");
+        return 1;
+    }
 
-	p = temp;
-	do
-	{
-		jsll_udivmod( &quot, &rem, quot, divisor);
-		rem16 = (uint16_t) rem.lo;
-		fill = ! JSLL_IS_ZERO( quot);
-		for (i = 4; i && (fill || rem16); ++p, --i)
-		{
-			*p = '0' + (rem16 % 10);
-			rem16 /= 10;
-		}
-	} while (fill);
+    p = temp;
+    do
+    {
+        jsll_udivmod( &quot, &rem, quot, divisor);
+        rem16 = (uint16_t) rem.lo;
+        fill = ! JSLL_IS_ZERO( quot);
+        for (i = 4; i && (fill || rem16); ++p, --i)
+        {
+            *p = '0' + (rem16 % 10);
+            rem16 /= 10;
+        }
+    } while (fill);
 
-	length = p - temp;
-	// copy <length> characters from <temp> to <buffer>, in reverse order
-	for (i = (uint_fast8_t) length; i; ++buffer, --i)
-	{
-		*buffer = *--p;
-	}
-	*buffer = '\0';		// add null terminator
+    length = p - temp;
+    // copy <length> characters from <temp> to <buffer>, in reverse order
+    for (i = (uint_fast8_t) length; i; ++buffer, --i)
+    {
+        *buffer = *--p;
+    }
+    *buffer = '\0';     // add null terminator
 
-	return length;
+    return length;
 }
 
 /*** BeginHeader */

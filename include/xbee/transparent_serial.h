@@ -11,12 +11,12 @@
  */
 
 /**
-	@addtogroup xbee_transparent
-	@{
-	@file xbee/transparent_serial.h
+   @addtogroup xbee_transparent
+   @{
+   @file xbee/transparent_serial.h
 
-	Support code for the "Digi Transparent Serial" cluster (cluster 0x0011 of
-	endpoint 0xE8).
+   Support code for the "Digi Transparent Serial" cluster (cluster 0x0011 of
+   endpoint 0xE8).
 */
 
 #ifndef XBEE_TRANSPARENT_SERIAL_H
@@ -28,49 +28,49 @@
 XBEE_BEGIN_DECLS
 
 /**
-	@brief
-	Send data to the "Digi Transparent Serial" cluster (cluster 0x0011 of
-	endpoint 0xE8).
+   @brief
+   Send data to the "Digi Transparent Serial" cluster (cluster 0x0011 of
+   endpoint 0xE8).
 
-	@param[in,out]	envelope	Envelope with device, addresses, payload, length
-					and options filled in.  This function sets the profile,
-					endpoints, and cluster fields of the envelope.
+   @param[in,out] envelope Envelope with device, addresses, payload, length
+               and options filled in.  This function sets the profile,
+               endpoints, and cluster fields of the envelope.
 
-	@retval	0	data sent
-	@retval	!0	error trying to send request
+   @retval  0  data sent
+   @retval  !0 error trying to send request
 
-	@sa xbee_transparent_serial_str
+   @sa xbee_transparent_serial_str
 
-	@note This is a preliminary API and may change in a future release.
+   @note This is a preliminary API and may change in a future release.
 */
-int xbee_transparent_serial( wpan_envelope_t *envelope);
+int xbee_transparent_serial(wpan_envelope_t *envelope);
 
 /**
-	@brief
-	Send string to the "Digi Transparent Serial" cluster (cluster 0x0011 of
-	endpoint 0xE8).
+   @brief
+   Send string to the "Digi Transparent Serial" cluster (cluster 0x0011 of
+   endpoint 0xE8).
 
-	@param[in,out]	envelope	Envelope with device, addresses and options
-									filled in.  This function sets the payload,
-									length, profile, endpoints, and cluster fields
-									of the envelope.
-	@param[in]		data		string to send
+   @param[in,out] envelope Envelope with device, addresses and options
+                           filled in.  This function sets the payload,
+                           length, profile, endpoints, and cluster fields
+                           of the envelope.
+   @param[in]     data     string to send
 
-	@retval	0	data sent
-	@retval	!0	error trying to send request
+   @retval  0  data sent
+   @retval  !0 error trying to send request
 
-	@sa xbee_transparent_serial
+   @sa xbee_transparent_serial
 
-	@note This is a preliminary API and may change in a future release.
+   @note This is a preliminary API and may change in a future release.
 */
-int xbee_transparent_serial_str( wpan_envelope_t *envelope,
-																	const char FAR *data);
+int xbee_transparent_serial_str(wpan_envelope_t *envelope,
+                                const char FAR *data);
 
 XBEE_END_DECLS
 
 // If compiling in Dynamic C, automatically #use the appropriate C file.
 #ifdef __DC__
-	#use "xbee_transparent_serial.c"
+   #use "xbee_transparent_serial.c"
 #endif
 
 #endif

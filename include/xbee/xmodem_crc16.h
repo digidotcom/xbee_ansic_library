@@ -11,10 +11,10 @@
  */
 
 /**
-	@addtogroup util_xmodem
-	@{
-	@file xmodem_crc16.h
-	Header for crc16_calc() function implemented in xmodem_crc16.c.
+    @addtogroup util_xmodem
+    @{
+    @file xmodem_crc16.h
+    Header for crc16_calc() function implemented in xmodem_crc16.c.
 */
 
 #ifndef XBEE_XMODEM_CRC16_H
@@ -24,10 +24,10 @@
 
 XBEE_BEGIN_DECLS
 
-uint16_t crc16_calc( const void FAR *data, uint16_t length, uint16_t current);
+uint16_t crc16_calc(const void FAR *data, uint16_t length, uint16_t current);
 
 // Rabbit platform has crc16_calc() in crc16.lib; no need to #use xmodem_crc16.c
 
 XBEE_END_DECLS
 
-#endif		// XBEE_XMODEM_CRC16_H defined
+#endif      // XBEE_XMODEM_CRC16_H defined

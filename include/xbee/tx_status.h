@@ -11,9 +11,9 @@
  */
 
 /**
-	@addtogroup xbee_tx_status
-	@{
-	@file xbee/tx_status.h
+    @addtogroup xbee_tx_status
+    @{
+    @file xbee/tx_status.h
 */
 
 #ifndef __XBEE_TX_STATUS_H
@@ -23,8 +23,8 @@
 #include "xbee/delivery_status.h"
 
 #if (!XBEE_WIFI_ENABLED) && (!XBEE_CELLULAR_ENABLED)
-	#error "At least one of XBEE_WIFI_ENABLED and XBEE_CELLULAR_ENABLED " \
-		"must be defined as non-zero to use this header."
+    #error "At least one of XBEE_WIFI_ENABLED and XBEE_CELLULAR_ENABLED " \
+        "must be defined as non-zero to use this header."
 #endif
 
 /// Indicates the success or failure of a transmit operation. [Wi-Fi, Cellular]
@@ -33,29 +33,29 @@
 XBEE_BEGIN_DECLS
 
 typedef XBEE_PACKED(xbee_frame_tx_status_t, {
-	uint8_t			frame_type;			//< XBEE_FRAME_TX_STATUS (0x89)
-	uint8_t			frame_id;
-	uint8_t			delivery; /// See xbee/delivery_status.h
+    uint8_t         frame_type;         //< XBEE_FRAME_TX_STATUS (0x89)
+    uint8_t         frame_id;
+    uint8_t         delivery; //< See xbee/delivery_status.h
 }) xbee_frame_tx_status_t;
 
 
 
 /**
-	@brief
-	Frame handler for 0x89 (XBEE_FRAME_TX_STATUS) frames -- dumps transmit
-	status to STDOUT for debugging purposes.
+    @brief
+    Frame handler for 0x89 (XBEE_FRAME_TX_STATUS) frames -- dumps transmit
+    status to STDOUT for debugging purposes.
 
-	View the documentation of xbee_frame_handler_fn() for this function's
-	parameters and return value.
+    View the documentation of xbee_frame_handler_fn() for this function's
+    parameters and return value.
 */
-int xbee_frame_dump_tx_status( xbee_dev_t *xbee,
-	const void FAR *frame, uint16_t length, void FAR *context);
+int xbee_frame_dump_tx_status(xbee_dev_t *xbee,
+    const void FAR *frame, uint16_t length, void FAR *context);
 
 XBEE_END_DECLS
 
 // If compiling in Dynamic C, automatically #use the appropriate C file.
 #ifdef __DC__
-	#use "xbee_tx_status.c"
+    #use "xbee_tx_status.c"
 #endif
 
 #endif /* __XBEE_TX_STATUS_H */

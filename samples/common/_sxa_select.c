@@ -11,7 +11,7 @@
  */
 
 /*
-	This file has some common routines for selecting SXA target devices.
+   This file has some common routines for selecting SXA target devices.
    The code is used as an adjunct to the sample programs, and is not intended
    to be used in production applications.
 */
@@ -24,7 +24,7 @@
 #include "_sxa_select.h"
 
 /*
-	Some global variables to keep track of current target.
+   Some global variables to keep track of current target.
 */
 addr64 target_ieee;
 int have_target = 0;
@@ -36,82 +36,82 @@ extern xbee_dev_t my_xbee;
 
 
 /*
-	Called whenever target device changed, so that the SXA pointer is
+   Called whenever target device changed, so that the SXA pointer is
    kept aligned with it.
 */
 void set_sxa(void)
 {
-	if (have_target)
+   if (have_target)
    {
-   	sxa = sxa_node_by_addr(&target_ieee);
-	   if (!sxa)
-	   {
-	      printf("Cannot locate SXA, using local entry\n");
-	      sxa = sxa_local_node(&my_xbee);
-	   }
+      sxa = sxa_node_by_addr(&target_ieee);
+      if (!sxa)
+      {
+         printf("Cannot locate SXA, using local entry\n");
+         sxa = sxa_local_node(&my_xbee);
+      }
    }
    else
    {
-   	sxa = sxa_local_node(&my_xbee);
+      sxa = sxa_local_node(&my_xbee);
    }
 }
 
 
 /*
-	Parse '>' command to locate target device
+   Parse '>' command to locate target device
 */
 int set_target(const char *str, addr64 FAR *address)
 {
-	uint_fast8_t i;
-	uint8_t FAR *b;
-	int ret;
+   uint_fast8_t i;
+   uint8_t FAR *b;
+   int ret;
    sxa_node_t FAR *node;
    char buf[40];
 
-	i = 8;			// bytes to convert
-	if (str != NULL && address != NULL)
-	{
-		// skip over leading spaces
-		while (isspace( (uint8_t) *str))
-		{
-			++str;
-		}
-		for (b = address->b; i; ++b, --i)
-		{
-			ret = hexstrtobyte( str);
-			if (ret < 0)
-			{
-         	if (isdigit(*str))
+   i = 8;         // bytes to convert
+   if (str != NULL && address != NULL)
+   {
+      // skip over leading spaces
+      while (isspace( (uint8_t) *str))
+      {
+         ++str;
+      }
+      for (b = address->b; i; ++b, --i)
+      {
+         ret = hexstrtobyte( str);
+         if (ret < 0)
+         {
+            if (isdigit(*str))
             {
-            	node = sxa_node_by_index( *str - '0');
+               node = sxa_node_by_index( *str - '0');
                if (node)
                {
-               	i = 0;
+                  i = 0;
                   _f_memcpy(address, &node->id.ieee_addr_be, 8);
                }
                else
                {
-               	printf("Table entry not found.  Select from:\n");
+                  printf("Table entry not found.  Select from:\n");
                   sxa_node_table_dump();
                }
             }
-				break;
-			}
-			*b = (uint8_t)ret;
-			str += 2;					// point past the encoded byte
+            break;
+         }
+         *b = (uint8_t)ret;
+         str += 2;               // point past the encoded byte
 
-			// skip over any separator, if present
-			if (*str && ! isxdigit( (uint8_t) *str))
-			{
-				++str;
-			}
-		}
-	}
+         // skip over any separator, if present
+         if (*str && ! isxdigit( (uint8_t) *str))
+         {
+            ++str;
+         }
+      }
+   }
    if (i == 4)
    {
-   	for (i = 7; i >= 4; --i)
+      for (i = 7; i >= 4; --i)
       {
-      	address->b[i] = address->b[i-4];
+         address->b[i] = address->b[i-4];
       }
       address->b[0] = 0x00;
       address->b[1] = 0x13;
@@ -120,14 +120,14 @@ int set_target(const char *str, addr64 FAR *address)
       i = 0;
    }
 
-	if (i != 0)
-	{
-   	printf("Target set to local device\n");
-		return 0;
-	}
+   if (i != 0)
+   {
+      printf("Target set to local device\n");
+      return 0;
+   }
 
    printf("Target now %" PRIsFAR "\n", addr64_format(buf, address));
-	return 1;
+   return 1;
 }
 
 void sxa_select_help(void)
@@ -160,7 +160,7 @@ int sxa_select_command( char *cmdstr)
       {
          have_target = 1;
          printf("Reinstating %" PRIsFAR "\n",
-         	addr64_format(cmdstr, &target_ieee));
+            addr64_format(cmdstr, &target_ieee));
       }
       else
       {
@@ -177,7 +177,7 @@ int sxa_select_command( char *cmdstr)
    {
       return 0;   // not an SXA select command
    }
-   return 1;	// Command was processed
+   return 1;   // Command was processed
 }
 
 
