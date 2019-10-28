@@ -87,6 +87,9 @@ collection of sample programs.
   Tool to send .ota (firmware) and .otb (file system) update images
   to remote devices.
 
+- **XBee3 Secure Session**:
+  Sample showing method to establish a Secure Session to a remote node.
+
 - **XBee3 SRP Verifier**:
   Tool to configure salt and verifier for BLE and SecureSession access.
 

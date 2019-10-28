@@ -39,6 +39,8 @@ const char *xbee_tx_delivery_str(uint8_t status,
     case XBEE_TX_DELIVERY_INVALID_EP:           return "invalid endpoint";
     case XBEE_TX_DELIVERY_INTERNAL_ERROR:       return "internal error";
     case XBEE_TX_DELIVERY_RESOURCE_ERROR:       return "resource error";
+    case XBEE_TX_DELIVERY_NO_SECURE_SESSION:    return "no secure session";
+    case XBEE_TX_DELIVERY_ENCRYPTION_FAILURE:   return "encryption failure";
     case XBEE_TX_DELIVERY_PAYLOAD_TOO_BIG:      return "payload too large";
     case XBEE_TX_DELIVERY_UNREQ_INDIRECT_MSG:   return "unrequested indirect msg";
     case XBEE_TX_DELIVERY_SOCKET_CREATION_FAIL: return "socket creation failed";

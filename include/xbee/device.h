@@ -148,6 +148,9 @@ enum xbee_frame_type {
 /// XBee Receive Options: broadcast packet [ZigBee, DigiMesh]
 #define XBEE_RX_OPT_BROADCAST       0x02
 
+/// XBee Receive Options: received encrypted via Secure Session [XBee3]
+#define XBEE_RX_OPT_SENT_ENCRYPTED  0x10
+
 /// XBee Receive Options: APS-encrypted packet [ZigBee]
 #define XBEE_RX_OPT_APS_ENCRYPT     0x20
 
@@ -560,6 +563,12 @@ typedef XBEE_PACKED(xbee_frame_modem_status_t, {
 #define XBEE_MODEM_STATUS_KEY_ESTABLISHED       0x10
 /// XBee Modem Status: Modem config changed while join in progress [ZigBee]
 #define XBEE_MODEM_STATUS_CONFIG_CHANGE_IN_JOIN 0x11
+/// XBee Modem Status: Secure Session Established
+#define XBEE_MODEM_STATUS_SS_ESTABLISHED        0x3B
+/// XBee Modem Status: Secure Session Ended
+#define XBEE_MODEM_STATUS_SS_ENDED              0x3C
+/// XBee Modem Status: Secure Session Authentication Failed
+#define XBEE_MODEM_STATUS_SS_AUTH_FAILED        0x3D
 /// XBee Modem Status: Network stack error [ZigBee]
 #define XBEE_MODEM_STATUS_STACK_ERROR           0x80
 ///@}

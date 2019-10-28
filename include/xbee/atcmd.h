@@ -265,20 +265,24 @@ typedef XBEE_PACKED(xbee_header_remote_at_req, {
 
    /// Options byte (see XBEE_REMOTE_AT_OPT_* macros)
    uint8_t           options;
-      /** @name
-         Values for \c .options member of xbee_header_remote_at_req_t.
-         @{
-      */
-      /// Queue changes until ATAC command or another request with
-      /// XBEE_REMOTE_AT_OPT_IMMEDIATE set.
-      #define XBEE_REMOTE_AT_OPT_QUEUE       0x00
 
-      /// Apply changes immediately, don't wait for ATAC command.
-      #define XBEE_REMOTE_AT_OPT_IMMEDIATE   0x02
-      ///@}
    xbee_at_cmd_t     command;
 }) xbee_header_remote_at_req_t;
 
+/** @name XBEE_REMOTE_AT_OPT_*
+    Values for \a .options member of xbee_header_remote_at_req_t.
+    @{
+*/
+/// Queue changes until ATAC command or another request with
+/// XBEE_REMOTE_AT_OPT_IMMEDIATE set.
+#define XBEE_REMOTE_AT_OPT_QUEUE        (0)
+
+/// Apply changes immediately, don't wait for ATAC command.
+#define XBEE_REMOTE_AT_OPT_IMMEDIATE    (1<<1)
+
+/// Send securely (requires Secure Session to target).
+#define XBEE_REMOTE_AT_OPT_SECURE       (1<<4)
+///@}
 
 /// Useful typedef to create either a local or remote request frame.
 typedef union xbee_header_at_request {
@@ -297,15 +301,18 @@ typedef union xbee_header_at_request {
 /// xbee_frame_local_at_resp_t.
 enum xbee_at_resp_status {
    /// Mask to ignore extra bits used in the status response.
-   XBEE_AT_RESP_STATUS_MASK = 0x0F,
-   XBEE_AT_RESP_SUCCESS = 0,
-   XBEE_AT_RESP_ERROR = 1,
-   XBEE_AT_RESP_BAD_COMMAND = 2,
-   XBEE_AT_RESP_BAD_PARAMETER = 3,
-   XBEE_AT_RESP_TX_FAIL = 4,
+   XBEE_AT_RESP_STATUS_MASK             = 0x0F,
+   XBEE_AT_RESP_SUCCESS                 = 0x00,
+   XBEE_AT_RESP_ERROR                   = 0x01,
+   XBEE_AT_RESP_BAD_COMMAND             = 0x02,
+   XBEE_AT_RESP_BAD_PARAMETER           = 0x03,
+   XBEE_AT_RESP_TX_FAIL                 = 0x04,
+   XBEE_AT_RESP_NO_SESSION              = 0x0B,
+   XBEE_AT_RESP_ENCRYPTION_ERR          = 0x0C,
+   XBEE_AT_RESP_TO_BIT_NOT_SET          = 0x0D,
 
    /// The RSSI field of the ATND response is not valid [DigiMesh]
-   XBEE_AT_RESP_ATND_RSSI_INVALID = 0x40,
+   XBEE_AT_RESP_ATND_RSSI_INVALID       = 0x40,
 };
 
 /// Macro for checking the status byte of an AT response.  If this library

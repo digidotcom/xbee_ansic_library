@@ -43,6 +43,7 @@ EXE += \
 	xbee_netcat \
 	xbee_term \
 	xbee3_ota_tool \
+	xbee3_secure_session \
 	xbee3_srp_verifier \
 	zcltime \
 	zigbee_ota_info \
@@ -146,6 +147,12 @@ xbee3_ota_tool_OBJECTS = $(zigbee_OBJECTS) $(atinter_OBJECTS) \
             _nodetable.o xbee_discovery.o zcl_ota_upgrade.o zcl_ota_server.o \
             xbee3_ota_tool.o
 xbee3_ota_tool : $(xbee3_ota_tool_OBJECTS)
+
+xbee3_secure_session_OBJECTS = $(xbee_OBJECTS) $(atinter_OBJECTS) \
+            _nodetable.o xbee_discovery.o xbee_ext_modem_status.o \
+            xbee_secure_session.o xbee3_secure_session.o
+xbee3_secure_session : $(xbee3_secure_session_OBJECTS)
+	$(COMPILE) -o $@ $^
 
 mbedtls_OBJECTS = aes.o bignum.o ctr_drbg.o entropy.o entropy_poll.o sha256.o \
             mbedtls_util.o xbee_random_mbedtls.o

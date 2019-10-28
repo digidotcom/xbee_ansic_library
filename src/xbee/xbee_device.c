@@ -1035,6 +1035,18 @@ int xbee_frame_dump_modem_status( xbee_dev_t *xbee,
          status_str = "config change during join";
          break;
 
+      case XBEE_MODEM_STATUS_SS_ESTABLISHED:
+         status_str = "secure session established";
+         break;
+
+      case XBEE_MODEM_STATUS_SS_ENDED:
+         status_str = "secure session ended";
+         break;
+
+      case XBEE_MODEM_STATUS_SS_AUTH_FAILED:
+         status_str = "secure session auth failed";
+         break;
+
       case XBEE_MODEM_STATUS_STACK_ERROR:
          status_str = "stack error";
          break;

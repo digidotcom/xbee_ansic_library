@@ -97,23 +97,25 @@ typedef XBEE_PACKED(xbee_header_transmit_explicit_t, {
    @{
 */
 /// XBee Transmit Option: Disable ACK [ZigBee and DigiMesh]
-#define XBEE_TX_OPT_DISABLE_ACK           0x01
+#define XBEE_TX_OPT_DISABLE_ACK                 (1<<0)
 /// XBee Transmit Option: Disable Route Discovery [DigiMesh]
-#define XBEE_TX_OPT_DISABLE_ROUTE_DISC    0x02
+#define XBEE_TX_OPT_DISABLE_ROUTE_DISC          (1<<1)
 /// XBee Transmit Option: Enable Unicast NACK messages [DigiMesh]
-#define XBEE_TX_OPT_ENABLE_UNICAST_NACK   0x04
+#define XBEE_TX_OPT_ENABLE_UNICAST_NACK         (1<<2)
 /// XBee Transmit Option: Enable Unicast Trace Route messages [DigiMesh]
-#define XBEE_TX_OPT_ENABLE_UNICAST_TRACE  0x08
+#define XBEE_TX_OPT_ENABLE_UNICAST_TRACE        (1<<3)
+/// XBee Transmit Option: Send encrypted (over Secure Session) [XBee3]
+#define XBEE_TX_OPT_SEND_ENCRYPTED              (1<<4)
 /// XBee Transmit Option: Enable APS encryption (if EE=1) [ZigBee]
-#define XBEE_TX_OPT_APS_ENCRYPT           0x20
+#define XBEE_TX_OPT_APS_ENCRYPT                 (1<<5)
 /// XBee Transmit Option: Use extended timeout for this destination. [ZigBee]
-#define XBEE_TX_OPT_EXTENDED_TIMEOUT      0x40
+#define XBEE_TX_OPT_EXTENDED_TIMEOUT            (1<<6)
 /// XBee Transmit Option: Point-Multipoint [DigiMesh]
-#define XBEE_TX_OPT_MODE_POINT_MULTIPOINT (1<<6)
+#define XBEE_TX_OPT_MODE_POINT_MULTIPOINT       (1<<6)
 /// XBee Transmit Option: Repeater mode (directed broadcast) [DigiMesh]
-#define XBEE_TX_OPT_MODE_REPEATER         (2<<6)
+#define XBEE_TX_OPT_MODE_REPEATER               (2<<6)
 /// XBee Transmit Option: DigiMesh (not available on 10k product) [DigiMesh]
-#define XBEE_TX_OPT_MODE_DIGIMESH         (3<<6)
+#define XBEE_TX_OPT_MODE_DIGIMESH               (3<<6)
 ///@}
 
 typedef XBEE_PACKED(xbee_frame_transmit_status_t, {

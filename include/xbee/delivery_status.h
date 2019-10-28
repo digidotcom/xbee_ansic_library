@@ -63,6 +63,12 @@ XBEE_BEGIN_DECLS
     /// timers, etc.) [0x89, 0x8B]
     #define XBEE_TX_DELIVERY_RESOURCE_ERROR             0x32
 
+    /// XBee Transmit Delivery Status: No Secure Session Connection
+    #define XBEE_TX_DELIVERY_NO_SECURE_SESSION          0x34
+
+    /// XBee Transmit Delivery Status: No Secure Session Connection
+    #define XBEE_TX_DELIVERY_ENCRYPTION_FAILURE         0x35
+
     /// XBee Transmit Delivery Status: Data payload too large [0x89, 0x8B]
     #define XBEE_TX_DELIVERY_PAYLOAD_TOO_BIG            0x74
 

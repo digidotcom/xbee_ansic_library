@@ -25,6 +25,7 @@ files written to handle them.
 | 0x2B | Cellular Firmware Update    |
 | 0x2C | BLE Unlock Request          |
 | 0x2D | User Data Relay Tx          | xbee/user_data.h, xbee_user_data.c
+| 0x2E | Secure Session Control      | xbee/secure_session.h, xbee_secure_session.c
 | 0x40 | Socket Create               | xbee/socket.h, xbee_socket.c
 | 0x41 | Socket Option               | xbee/socket.h, xbee_socket.c
 | 0x42 | Socket Connect              | xbee/socket.h, xbee_socket.c
@@ -65,6 +66,7 @@ files written to handle them.
 | 0xAB | Cellular FW Update Response |
 | 0xAC | BLE Unlock Response         |
 | 0xAD | User Data Relay Rx          | xbee/user_data.h, xbee_user_data.c
+| 0xAE | Secure Session Response     | xbee/secure_session.h, xbee_secure_session.c
 | 0xB0 | IPv4 Receive                | xbee/ipv4.h, xbee_ipv4.c
 | 0xB8 | Send Data Response          |
 | 0xB9 | Device Request              |
