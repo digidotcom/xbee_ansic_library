@@ -70,9 +70,9 @@
     #define XBEE_SER_RX_BUFSIZE 4096
 
 // Elements needed to keep track of serial port settings.  Must have a
-// baudrate memember, other fields are platform-specific.
+// baudrate member, other fields are platform-specific.
 typedef struct xbee_serial_t {
-    uint32_t        baudrate;
+    uint32_t    baudrate;
     int         comport;        // COMx:
     HANDLE      hCom;
 } xbee_serial_t;

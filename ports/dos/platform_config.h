@@ -66,7 +66,7 @@
 	#define INTERRUPT_DISABLE		_disable()
 
 // Elements needed to keep track of serial port settings.  Must have a
-// baudrate memember, other fields are platform-specific.
+// baudrate member, other fields are platform-specific.
 typedef struct xbee_serial_t {
 	uint32_t		baudrate;
 	uint16_t		flags;

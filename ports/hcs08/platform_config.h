@@ -103,7 +103,7 @@
 	#define FAR
 
 	// Elements needed to keep track of serial port settings.  Must have a
-	// baudrate memember, other fields are platform-specific.
+	// baudrate member, other fields are platform-specific.
 
 	#define SERIAL_PORT_SCI1	1
 	#define SERIAL_PORT_SCI2	2

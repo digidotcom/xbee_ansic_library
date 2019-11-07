@@ -63,7 +63,7 @@
     #define XBEE_NATIVE_64BIT
 
 // Elements needed to keep track of serial port settings.  Must have a
-// baudrate memember, other fields are platform-specific.
+// baudrate member, other fields are platform-specific.
 typedef struct xbee_serial_t {
     uint32_t    baudrate;
     int         fd;
