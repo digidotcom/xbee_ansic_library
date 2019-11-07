@@ -26,6 +26,7 @@
 struct termios _ttystate_orig;
 void xbee_term_console_restore( void)
 {
+   xbee_term_set_color(SOURCE_UNKNOWN);
    tcsetattr(STDIN_FILENO, TCSANOW, &_ttystate_orig);
 }
 
