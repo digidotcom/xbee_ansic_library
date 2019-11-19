@@ -10,7 +10,7 @@ DEFINE = -DPOSIX
 # -MMD generates dependency files automatically, omitting system files
 # -MP creates phony targets for each prerequisite in a .d file
 
-COMPILE = $(CC) -iquote$(INCDIR) -std=gnu99 -g -MMD -MP -Wall $(DEFINE) $(CFLAGS)
+CFLAGS += -iquote$(INCDIR) -std=gnu99 -g -MMD -MP -Wall $(DEFINE)
 
 include ../common/common.mk
 

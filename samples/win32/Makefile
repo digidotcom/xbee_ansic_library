@@ -5,7 +5,7 @@
 PORT = win32
 
 # libs for samples using GetOpenFileName
-DIALOG_LIBS = -lkernel32 -lcomdlg32
+LDLIBS = -lkernel32 -lcomdlg32
 
 # samples in addition to those in samples/common
 EXE = comports pxbee_ota_update pxbee_update
@@ -13,14 +13,15 @@ EXE = comports pxbee_ota_update pxbee_update
 # compiler parameters for building each file
 # -MMD generates dependency files automatically, omitting system files
 # -MP creates phony targets for each prerequisite in a .d file
+CFLAGS += -std=gnu99 -g -MMD -MP -Wall $(DEFINE) 
 
 # use gcc 4 with MinGW (will not work with Cygwin)
-COMPILE_GCC4 = gcc -iquote$(INCDIR)
+CFLAGS += -iquote$(INCDIR)
+CC ?= gcc
 
 # use gcc 3 in Cygwin with -mno-cygwin option to build standalone executables
-COMPILE_GCC3 = gcc-3 -mno-cygwin -I$(INCDIR)
-
-COMPILE = $(COMPILE_GCC4) -std=gnu99 -g -MMD -MP -Wall $(DEFINE) $(CFLAGS)
+#CFLAGS += -mno-cygwin -I$(INCDIR)
+#CC ?= gcc-3
 
 # extra objects for some samples
 install_ebl_OBJECTS = win32_select_file.o
@@ -33,7 +34,7 @@ clean :
 
 # Samples unique to this platform
 comports : comports.c
-	$(COMPILE) -o $@ $^
+	$(CC) $(CFLAGS) $^ -o $@
 
 pxbee_update_OBJECTS = $(xbee_OBJECTS) pxbee_update.o \
 	win32_select_file.o \
@@ -41,7 +42,7 @@ pxbee_update_OBJECTS = $(xbee_OBJECTS) pxbee_update.o \
 	xbee_firmware.o \
 	xbee_xmodem.o xmodem_crc16.o
 pxbee_update: $(pxbee_update_OBJECTS)
-	$(COMPILE) -o $@ $^ $(DIALOG_LIBS)
+	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@
 
 pxbee_ota_update_OBJECTS = $(zigbee_OBJECTS) \
 	win32_select_file.o \
@@ -54,4 +55,4 @@ pxbee_ota_update_OBJECTS = $(zigbee_OBJECTS) \
 	zcl_client.o zcl_identify.o xbee_time.o
 
 pxbee_ota_update : $(pxbee_ota_update_OBJECTS)
-	$(COMPILE) -o $@ $^ $(DIALOG_LIBS)
+	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@
