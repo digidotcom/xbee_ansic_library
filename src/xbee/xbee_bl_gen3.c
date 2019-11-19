@@ -248,7 +248,6 @@ int xbee_bl_gen3_install_tick(xbee_gen3_update_t *source)
 #ifdef XBEE_BL_GEN3_VERBOSE
         printf("%s: RTS off\n", __FUNCTION__);
 #endif
-        xbee_ser_flowcontrol(serport, 0);
         xbee_ser_set_rts(serport, 0);
 
         // Begin serial break condition by setting Tx line low (space) while
