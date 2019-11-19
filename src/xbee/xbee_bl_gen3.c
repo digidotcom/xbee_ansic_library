@@ -368,7 +368,12 @@ int xbee_bl_gen3_install_tick(xbee_gen3_update_t *source)
             if ((source->flags & XBEE_GEN3_BL_FLAG_QUERY_ONLY)
                 || source->read == NULL)
             {
-                // caller just wanted to enter bootloader and query it
+                // Caller just wanted to enter bootloader and query it.  Some
+                // bootloader versions will time out and automatically launch
+                // the application, others are stuck unless we send a command
+                // to run the app.
+                xbee_ser_putchar(serport, XBEE_GEN3_CMD_VERIFY_FW);
+
                 source->state = XBEE_GEN3_STATE_SUCCESS;
                 return 0;
             }
