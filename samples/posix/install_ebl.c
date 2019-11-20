@@ -51,7 +51,7 @@ int fw_read( void FAR *context, void FAR *buffer, int16_t bytes)
     return fread( buffer, 1, bytes, (FILE FAR *)context);
 }
 
-void myxbee_reset( xbee_dev_t *xbee, int reset)
+void manual_xbee_reset(xbee_dev_t *xbee, int reset)
 {
     static int state = 0;           // assume released
     char buffer[10];
@@ -80,6 +80,11 @@ int main( int argc, char *argv[])
     unsigned int last_state;
     xbee_serial_t XBEE_SERPORT;
 
+    xbee_reset_fn xbee_reset = XBEE_RESET_FN;
+    if (xbee_reset == NULL) {
+        xbee_reset = &manual_xbee_reset;
+    }
+
     if (argc > 1)
     {
         file = fopen( argv[1], "rb");
@@ -96,7 +101,7 @@ int main( int argc, char *argv[])
 
     parse_serial_arguments( argc, argv, &XBEE_SERPORT);
 
-    if (xbee_dev_init( &my_xbee, &XBEE_SERPORT, NULL, myxbee_reset))
+    if (xbee_dev_init( &my_xbee, &XBEE_SERPORT, NULL, xbee_reset))
     {
         printf( "Failed to initialize device.\n");
         return 0;

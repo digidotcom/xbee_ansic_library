@@ -165,6 +165,14 @@
    returns void.  If defined, called by xbee_dev_init() before setting up
    the xbee_dev_t structure.
 
+   @def XBEE_RESET_FN
+   Function pointer to pass to xbee_dev_init() in shared sample code for the
+   xbee_reset_fn parameter.  Set to NULL by default.
+
+   @def XBEE_IS_AWAKE_FN
+   Function pointer to pass to xbee_dev_init() in shared sample code for the
+   xbee_is_awake_fn parameter.  Set to NULL by default.
+
    @typedef xbee_serial_t
    Must be a structure with uint32_t member \c baudrate and any additional
    members required by the functions in xbee/serial.h.
@@ -455,6 +463,13 @@
    #define PRIX32          "lX"
 #endif
 
+
+#ifndef XBEE_RESET_FN
+	#define XBEE_RESET_FN 		NULL
+#endif
+#ifndef XBEE_IS_AWAKE_FN
+	#define XBEE_IS_AWAKE_FN 	NULL
+#endif
 
 /// Helper macro for calculating the number of entries in an array.
 #define _TABLE_ENTRIES(array)    ((sizeof (array)) / (sizeof (*array)))
