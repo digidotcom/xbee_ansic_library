@@ -1,7 +1,15 @@
-# POSIX executables
+# POSIX/digiapix executables
 **/posix/*
 !**/posix/*.*
 !**/posix/Makefile
+**/digiapix/*
+!**/digiapix/*.*
+!**/digiapix/Makefile
+
+# Files for Eclipse CDT
+.cproject
+.project
+/build/
 
 # Win32, POSIX
 *.d
@@ -49,4 +57,3 @@ coverity
 # auto-generated files
 samples/rabbit/main-node_discovery.c
 samples/rabbit/my_config.h
-
