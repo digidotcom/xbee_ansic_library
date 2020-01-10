@@ -133,7 +133,10 @@ int xbee_dev_init( xbee_dev_t *xbee, const xbee_serial_t *serport,
    }
 
    #ifdef XBEE_PLATFORM_INIT
-      XBEE_PLATFORM_INIT();
+      error = XBEE_PLATFORM_INIT();
+      if (error != 0) {
+         return error;
+      }
    #endif
 
    // try communicating with the XBee module

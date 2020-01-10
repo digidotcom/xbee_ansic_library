@@ -65,7 +65,7 @@
 #if defined(__cplusplus)
 	extern "C" {
 #endif
-	void xbee_platform_init(void);
+	int xbee_platform_init(void);
 	#define XBEE_PLATFORM_INIT() xbee_platform_init()
 #if defined(__cplusplus)
 	}

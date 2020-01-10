@@ -1,6 +1,6 @@
 #include "mbed.h"
 #include "xbee_platform.h"
- 
+
 Serial Stdio( USBTX,USBRX);
 
 Ticker ticker;
@@ -12,7 +12,7 @@ void mstimer_isr( void)
     if (++MS_TIMER % 1000 == 0) ++SEC_TIMER;
 }
 
-void xbee_platform_init( void)
+int xbee_platform_init( void)
 {
     static bool_t init = TRUE;
     if (init)
@@ -21,6 +21,7 @@ void xbee_platform_init( void)
         ticker.attach_us( &mstimer_isr, 1000);
         Stdio.baud( 115200);
     }
+    return 0;
 }
 
 uint32_t xbee_seconds_timer( void)
@@ -81,7 +82,7 @@ int xbee_readline( char *buffer, int length)
     {
         default:
         case XBEE_READLINE_STATE_INIT:
-            
+
 
         case XBEE_READLINE_STATE_START_LINE:            // start of new line
             cursor = buffer;

@@ -67,7 +67,7 @@
     #define xbee_set_unaligned16( p, v) _xbee_set_unaligned16( p, v)
     #define xbee_set_unaligned32( p, v) _xbee_set_unaligned32( p, v)
 
-    void xbee_platform_init( void);
+    int xbee_platform_init( void);
     #define XBEE_PLATFORM_INIT() xbee_platform_init()
 
     XBEE_END_DECLS

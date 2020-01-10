@@ -32,13 +32,14 @@
 #ifndef  RTOS_MODULE_COMMON_CLK_AVAIL // if the second clock is available
 	#include  <rtos/common/include/clk.h>
 
-	void xbee_platform_init(void)
+	int xbee_platform_init(void)
 	{
 		RTOS_ERR err;
 		Clk_Init(&err);
 		/* Checks if the clock started or if the clock was already started */
 		APP_RTOS_ASSERT_CRITICAL(err.Code == RTOS_ERR_NONE ||
 					 err.Code == RTOS_ERR_ALREADY_EXISTS , ;);
+		return 0;
 	}
 
 	uint32_t xbee_seconds_timer()
