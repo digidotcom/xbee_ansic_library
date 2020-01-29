@@ -36,6 +36,7 @@ EXE += \
 	install_ebl \
 	ipv4_client \
 	network_scan \
+	remote_at \
 	sms_client \
 	socket_test \
 	transparent_client \
@@ -103,6 +104,11 @@ ipv4_client : $(ipv4_client_OBJECTS)
 user_data_relay_OBJECTS = $(xbee_OBJECTS) xbee_readline.o xbee_user_data.o \
 		user_data_relay.o
 user_data_relay : $(user_data_relay_OBJECTS)
+	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@
+
+remote_at_OBJECTS = $(xbee_OBJECTS) $(atinter_OBJECTS) \
+	_nodetable.o xbee_discovery.o remote_at.o
+remote_at : $(remote_at_OBJECTS)
 	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@
 
 sms_client_OBJECTS = $(xbee_OBJECTS) sms_client.o $(atinter_OBJECTS) xbee_sms.o

@@ -83,6 +83,9 @@ collection of sample programs.
 
 ### XBee3 802.15.4, DigiMesh and Zigbee
 
+- **Remote AT**:
+  Send AT commands to remote nodes on the network.
+
 - **XBee3 OTA tool**:
   Tool to send .ota (firmware) and .otb (file system) update images
   to remote devices.
