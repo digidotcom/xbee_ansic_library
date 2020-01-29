@@ -16,13 +16,11 @@
 #include "xbee/atcmd.h"
 #include "xbee/device.h"
 
-// first two functions don't need to be public
-//int parseParameter (const char *paramstr, int16_t request);
-//int xbee_cmd_callback( const xbee_cmd_response_t FAR *response);
-
-void process_command_remote( xbee_dev_t *xbee, const char *cmdstr,
+int parseParameter (const char *paramstr, int16_t request);
+int xbee_cmd_callback( const xbee_cmd_response_t FAR *response);
+int process_command_remote( xbee_dev_t *xbee, const char *cmdstr,
          const addr64 FAR *ieee);
-void process_command( xbee_dev_t *xbee, const char *cmdstr);
+int process_command( xbee_dev_t *xbee, const char *cmdstr);
 void printATCmds( xbee_dev_t *xbee);
 
 enum {

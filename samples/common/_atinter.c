@@ -176,7 +176,7 @@ int xbee_cmd_callback( const xbee_cmd_response_t FAR *response)
    return XBEE_ATCMD_DONE;
 }
 
-void process_command_remote( xbee_dev_t *xbee, const char *cmdstr,
+int process_command_remote( xbee_dev_t *xbee, const char *cmdstr,
          const addr64 FAR *ieee)
 {
    char cmdptr[2];
@@ -186,7 +186,7 @@ void process_command_remote( xbee_dev_t *xbee, const char *cmdstr,
    if (! *cmdstr)
    {
       puts( "Enter an AT command");
-      return;
+      return -EINVAL;
    }
 
    param = cmdstr;
@@ -223,12 +223,14 @@ void process_command_remote( xbee_dev_t *xbee, const char *cmdstr,
          xbee_cmd_send( request);
       }
    }
+
+   return request;
 }
 
 
-void process_command( xbee_dev_t *xbee, const char *cmdstr)
+int process_command( xbee_dev_t *xbee, const char *cmdstr)
 {
-   process_command_remote(xbee, cmdstr, NULL);
+   return process_command_remote(xbee, cmdstr, NULL);
 }
 
 
