@@ -12,6 +12,7 @@
 
 /**
     @addtogroup xbee_atmode
+    @ingroup xbee
     @{
     @file xbee/atmode.h
     Header for working with XBee modules in AT command mode instead of API mode.
@@ -41,3 +42,5 @@ XBEE_END_DECLS
 #endif
 
 #endif
+
+///@}

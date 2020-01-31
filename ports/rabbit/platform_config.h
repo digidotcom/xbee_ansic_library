@@ -11,10 +11,11 @@
  */
 
 /**
-	@addtogroup hal_rabbit
+	@defgroup hal_rabbit HAL: Rabbit/Dynamic C
+	Rabbit 4000/5000/6000 processors using Dynamic C 10.
+	@ingroup hal
 	@{
-	@file xbee/platform_rabbit.h
-	Header for Rabbit platform (using Dynamic C).
+	@file ports/rabbit/platform_config.h
 
 	This file is automatically included by xbee/platform.h.
 
@@ -72,4 +73,4 @@ typedef struct xbee_serial_t {
 
 #endif		// __XBEE_PLATFORM_RABBIT
 
-//@}
+///@}

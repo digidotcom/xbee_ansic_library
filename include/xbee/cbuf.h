@@ -11,11 +11,12 @@
  */
 
 /**
-   @addtogroup util_cbuf
-   @{
-   @file xbee/cbuf.h
+   @addtogroup util_cbuf Circular Buffer
    Circular buffer data type used by the OTA (Over-The-Air) firmware update
    client and transparent serial cluster.
+   @ingroup util
+   @{
+   @file xbee/cbuf.h
 */
 
 #ifndef XBEE_CBUF_H
@@ -206,3 +207,5 @@ XBEE_END_DECLS
 #endif
 
 #endif      // XBEE_CBUF_H defined
+
+///@}

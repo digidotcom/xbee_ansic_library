@@ -39,3 +39,4 @@
 	#define CTS_LOC				5
 
 #endif /* __SERIAL_CONFIG_H */
+///@}

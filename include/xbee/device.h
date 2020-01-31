@@ -12,9 +12,10 @@
 
 /**
    @addtogroup xbee_device
+   Device layer for XBee module interface.
+   @ingroup xbee
    @{
    @file xbee/device.h
-   Device layer for XBee module interface.
 
    @def XBEE_DEV_MAX_DISPATCH_PER_TICK
       Maximum number of frames to dispatch per call to xbee_tick().
@@ -488,8 +489,6 @@ extern const xbee_dispatch_table_entry_t xbee_frame_handlers[];
 
 #define XBEE_FRAME_TABLE_END     { 0xFF, 0, NULL, NULL }
 
-/// @addtogroup xbee_device
-/// @{
 uint8_t xbee_next_frame_id( xbee_dev_t *xbee);
 
 int xbee_dev_init( xbee_dev_t *xbee, const xbee_serial_t *serport,
@@ -511,7 +510,6 @@ int xbee_frame_write( xbee_dev_t *xbee, const void FAR *header,
 #define XBEE_WRITE_FLAG_NONE     0x0000
 
 void xbee_dev_flowcontrol( xbee_dev_t *xbee, bool_t enabled);
-/// @}
 
 // private functions exposed for unit testing
 
@@ -527,11 +525,11 @@ int _xbee_frame_dispatch( xbee_dev_t *xbee, const void FAR *frame,
 
 
 typedef XBEE_PACKED(xbee_frame_modem_status_t, {
-   uint8_t        frame_type;          //< XBEE_FRAME_MODEM_STATUS (0x8A)
-   uint8_t        status;
+   uint8_t        frame_type;          ///< XBEE_FRAME_MODEM_STATUS (0x8A)
+   uint8_t        status;              ///< See XBEE_MODEM_STATUS_*
 }) xbee_frame_modem_status_t;
 
-/** @name
+/** @name XBEE_MODEM_STATUS_*
    Values for \c status member of xbee_frame_modem_status_t.
    @{
 */
@@ -601,3 +599,5 @@ XBEE_END_DECLS
 #endif
 
 #endif      // #ifdef __XBEE_DEVICE
+
+///@}

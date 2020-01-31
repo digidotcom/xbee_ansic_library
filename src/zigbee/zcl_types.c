@@ -371,3 +371,4 @@ const char *zcl_type_name( uint8_t type)
    return name_buf;
 }
 
+///@}

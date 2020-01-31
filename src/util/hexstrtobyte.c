@@ -53,3 +53,5 @@ int hexstrtobyte (const char *p)
 
     return b;
 }
+
+///@}

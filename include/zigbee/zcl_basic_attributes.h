@@ -167,3 +167,4 @@ const zcl_attribute_base_t FAR zcl_basic_attributes[] =
 const zcl_attribute_tree_t FAR zcl_basic_attribute_tree[] =
                            { { ZCL_MFG_NONE, zcl_basic_attributes, NULL } };
 
+///@}

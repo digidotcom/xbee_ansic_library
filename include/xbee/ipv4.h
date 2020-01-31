@@ -11,16 +11,15 @@
  */
 
 /**
-   @addtogroup xbee_ipv4
+   @defgroup xbee_ipv4 Frames: IPv4 (0x20, 0xB0)
+   @ingroup xbee_frame
    @{
    @file xbee/ipv4.h
-
-   Support code for XBee IPv4 frames.
 */
 
 /*
    Dev notes:
-   
+
    Consider this a starting point.  I think we could develop something
    based on the wpan/aps.h APIs for using "envelope" structures to
    route frames.  Implementing Berkeley sockets is going to take a bit
@@ -42,18 +41,31 @@
 
 XBEE_BEGIN_DECLS
 
-/// Transmit IPv4 data. [Wi-Fi, Cellular]
+/// Frame Type: Transmit IPv4 data. [Wi-Fi, Cellular]
 #define XBEE_FRAME_TRANSMIT_IPV4       0x20
 
-/// Sent upon receiving IPv4 data. [Wi-Fi, Cellular]
+/// Frame Type: Sent upon receiving IPv4 data. [Wi-Fi, Cellular]
 #define XBEE_FRAME_RECEIVE_IPV4        0xB0
 
-#define XBEE_IPV4_PROTOCOL_UDP         0
-#define XBEE_IPV4_PROTOCOL_TCP         1
-#define XBEE_IPV4_PROTOCOL_SSL         4
+/** @name XBEE_IPV4_PROTOCOL_xxx
+   Values for \c protocol member of xbee_header_transmit_ipv4_t and
+   xbee_header_receive_ipv4_t.
+@{
+*/
+#define XBEE_IPV4_PROTOCOL_UDP         0        ///< UDP
+#define XBEE_IPV4_PROTOCOL_TCP         1        ///< TCP
+#define XBEE_IPV4_PROTOCOL_SSL         4        ///< SSL
+///@}
 
-#define XBEE_IPV4_TX_OPT_TCP_CLOSE     (1<<1)
+/** @name XBEE_IPV4_TX_OPT_xxx
+   Values for \c options member of xbee_header_transmit_ipv4_t.
+@{
+*/
+#define XBEE_IPV4_TX_OPT_NONE          0        ///< None
+#define XBEE_IPV4_TX_OPT_TCP_CLOSE     (1<<1)   ///< TCP Close
+///@}
 
+/// Maximum number of bytes in the payload of an IPv4 transmit or receive frame.
 #define XBEE_IPV4_MAX_PAYLOAD          1500
 
 /// Header of XBee API frame type 0x20 (#XBEE_FRAME_TRANSMIT_IPV4);
@@ -64,7 +76,7 @@ typedef XBEE_PACKED(xbee_header_transmit_ipv4_t, {
    uint32_t       remote_addr_be;
    uint16_t       remote_port_be;
    uint16_t       local_port_be;
-   uint8_t        protocol;
+   uint8_t        protocol;            ///< see XBEE_IPV4_PROTOCOL_xxx
    uint8_t        options;             ///< see XBEE_IPV4_TX_OPT_xxx
 }) xbee_header_transmit_ipv4_t;
 
@@ -75,7 +87,7 @@ typedef XBEE_PACKED(xbee_frame_receive_ipv4_t, {
    uint32_t       remote_addr_be;
    uint16_t       local_port_be;
    uint16_t       remote_port_be;
-   uint8_t        protocol;
+   uint8_t        protocol;            ///< see XBEE_IPV4_PROTOCOL_xxx
    uint8_t        status;
    uint8_t        payload[1];          ///< multi-byte payload
 }) xbee_frame_receive_ipv4_t;
@@ -87,7 +99,7 @@ typedef XBEE_PACKED(xbee_frame_receive_ipv4_t, {
      on 802.15.4 networks in big-endian byte order.
    - Easy to reply to a message, just copy the start of the envelope.
      (offsetof(ipv4_envelope_t, options) bytes)
-   
+
    For docs:
    @sa xbee_ipv4_ntoa(), xbee_ipv4_protocol_str()
 */
@@ -109,17 +121,17 @@ typedef struct xbee_ipv4_envelope_t {
 
 /**
    @brief Address a reply envelope using fields from a received envelope.
-   
+
    @param[out] reply    envelope structure to fill
    @param[in]  original received envelope we're replying to
-   
+
    @retval  0        envelope addressed
    @retval  -EINVAL  invalid parameter passed to function
 */
 int xbee_ipv4_envelope_reply(xbee_ipv4_envelope_t FAR *reply,
    const xbee_ipv4_envelope_t FAR *original);
 
-   
+
 /**
    @brief Print the contents of an IPv4 envelope to stdout.
 */
@@ -129,24 +141,24 @@ void xbee_ipv4_envelope_dump(const xbee_ipv4_envelope_t FAR *envelope,
 
 /**
    @brief Send an IPv4 packet.
-   
+
    @param[in]  envelope    Structure with information to send.
-   
+
    @retval  >0          Frame ID of message, to correlate with Transmit
                         Status frame received from XBee module.
    @retval  -EINVAL     Invalid parameter passed to function.
    @retval  -E2BIG      Payload too large to send.
-   
+
    @sa xbee_ipv4_envelope_reply()
 */
 int xbee_ipv4_envelope_send(const xbee_ipv4_envelope_t FAR *envelope);
 
 /**
    @brief Dump received IPv4 frame to stdout.
-   
+
    This is a sample frame handler that simply prints received IPv4 frame
    to the screen.  Include it in your frame handler table as:
-   
+
       { XBEE_FRAME_RECEIVE_IPV4, 0, xbee_ipv4_receive_dump, NULL }
 
    See the function help for xbee_frame_handler_fn() for full
@@ -158,10 +170,10 @@ int xbee_ipv4_receive_dump(xbee_dev_t *xbee, const void FAR *raw,
 /**
    @brief Format a big-endian IP address from an XBee frame as a
    "dotted quad", four decimal numbers separated by '.' (e.g., "192.0.2.31").
-   
+
    @param[out] buffer   buffer at least 16-bytes long to hold dotted quad
    @param[in]  ip_be    IP address in big-endian byte order
-   
+
    @retval  0        IP address successfully converted
    @retval  -EINVAL  NULL pointer passed for \a buffer
 */
@@ -170,12 +182,12 @@ int xbee_ipv4_ntoa(char buffer[16], uint32_t ip_be);
 /**
    @brief Takes an address separated by '.' (e.g., "192.0.2.31") and outputs
    a 32-bit big-endian address
-   
+
    @param[in]  cp       A NULL terminated string containing a dotted quad
    @param[out] ip_be    IP address in big-endian byte order
-   
+
    @retval  0        IP address successfully converted
-   @retval  -EINVAL     Malformed string/ipv4 address 
+   @retval  -EINVAL     Malformed string/ipv4 address
 */
 int xbee_ipv4_aton(const char * cp, uint32_t *ip_be);
 
@@ -185,10 +197,10 @@ int xbee_ipv4_aton(const char * cp, uint32_t *ip_be);
    Copies a string to the output buffer (e.g., "TCP") or the pattern "[P99]"
    for unknown protocol values (99 or 0x63) in this example).  Doesn't do
    anything if \a buffer is NULL.
-   
+
    @param[out] buffer   buffer at least 8-bytes long to hold description
    @param[in]  protocol protocol byte from an XBee IPv4 frame
-   
+
    @retval           buffer passed to function
 */
 char *xbee_ipv4_protocol_str(char buffer[8], uint8_t protocol);
@@ -201,3 +213,5 @@ XBEE_END_DECLS
 #endif
 
 #endif
+
+///@}

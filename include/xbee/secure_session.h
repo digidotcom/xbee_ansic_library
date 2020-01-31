@@ -11,11 +11,10 @@
  */
 
 /**
-    @defgroup xbee_secure_session XBee Secure Session
+    @defgroup xbee_secure_session Frames: Secure Session (0x2E, 0xAE)
 
-    Support of XBee3 802.15.4/DigiMesh/Zigbee Secure Sessions, including frame
-    type 0x2E and 0xAE.
-
+    Support of XBee3 802.15.4/DigiMesh/Zigbee Secure Sessions.
+    @ingroup xbee_frame
     @{
     @file xbee/secure_session.h
 */
@@ -310,6 +309,6 @@ int xbee_frame_dump_ext_mod_status_ss(xbee_dev_t *xbee,
 
 XBEE_END_DECLS
 
-/** @} */
-
 #endif // XBEE_SECURE_SESSION_H
+
+///@}

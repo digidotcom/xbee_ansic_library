@@ -726,3 +726,5 @@ void zcl_comm_factory_reset( uint16_t ms_delay)
    zcl_comm_state.flags |= ZCL_COMM_FLAG_DELAYED_RESTART
       | ZCL_COMM_FLAG_FACTORY_RESET | ZCL_COMM_FLAG_INSTALL;
 }
+
+///@}

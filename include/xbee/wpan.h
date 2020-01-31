@@ -11,7 +11,8 @@
  */
 
 /**
-   @addtogroup xbee_wpan
+   @addtogroup xbee_wpan WPAN API implementation for XBee Device
+   @ingroup xbee
    @{
    @file xbee/wpan.h
 */
@@ -91,7 +92,7 @@ typedef XBEE_PACKED(xbee_header_transmit_explicit_t, {
    uint8_t        options;             ///< combination of XBEE_TX_OPT_* macros
 }) xbee_header_transmit_explicit_t;
 
-/* @name
+/** @name XBEE_TX_OPT_*
    Options for \c options field of xbee_header_transmit_t and
    xbee_header_transmit_explicit_t.
    @{
@@ -119,13 +120,15 @@ typedef XBEE_PACKED(xbee_header_transmit_explicit_t, {
 ///@}
 
 typedef XBEE_PACKED(xbee_frame_transmit_status_t, {
-   uint8_t        frame_type;       //< XBEE_FRAME_TRANSMIT_STATUS (0x8B)
+   uint8_t        frame_type;       ///< XBEE_FRAME_TRANSMIT_STATUS (0x8B)
    uint8_t        frame_id;
    uint16_t       network_address_be;
-   uint8_t        retries;       // # of application Tx retries
-   uint8_t        delivery; /// See xbee/delivery_status.h
-   uint8_t        discovery;     // bitfield
-/** @name
+   uint8_t        retries;          // # of application Tx retries
+   uint8_t        delivery;         ///< See xbee/delivery_status.h
+   uint8_t        discovery;        // bitfield
+}) xbee_frame_transmit_status_t;
+
+/** @name XBEE_TX_DISCOVERY_*
    Values for \c discovery member of xbee_frame_transmit_status_t.
    @{
 */
@@ -141,8 +144,6 @@ typedef XBEE_PACKED(xbee_frame_transmit_status_t, {
    /// XBee Transmit Discovery Status: Extended Timeout Discovery [ZigBee]
       #define XBEE_TX_DISCOVERY_EXTENDED_TIMEOUT 0x40
 ///@}
-
-}) xbee_frame_transmit_status_t;
 
 /**
    @internal
@@ -188,3 +189,5 @@ XBEE_END_DECLS
 #endif
 
 #endif
+
+///@}

@@ -82,3 +82,5 @@ int xbee_dump_register_device_status(xbee_dev_t *xbee, const void FAR *rawframe,
 
     return 0;
 }
+
+///@}

@@ -51,3 +51,4 @@ uint16_t swap16( uint16_t value)
 
 #endif /* HAVE_SWAP_FUNCS */
 
+///@}

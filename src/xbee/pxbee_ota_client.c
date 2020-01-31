@@ -209,3 +209,5 @@ int pxbee_ota_init( pxbee_ota_t *ota, wpan_dev_t *dev, const addr64 *target)
    return xbee_xmodem_set_stream( &ota->xbxm, _pxbee_ota_xmodem_read,
                                        _pxbee_ota_xmodem_write, ota);
 }
+
+///@}

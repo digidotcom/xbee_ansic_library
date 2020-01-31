@@ -31,3 +31,5 @@ uint16_t crc16_calc(const void FAR *data, uint16_t length, uint16_t current);
 XBEE_END_DECLS
 
 #endif      // XBEE_XMODEM_CRC16_H defined
+
+///@}

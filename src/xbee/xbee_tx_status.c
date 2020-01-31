@@ -14,7 +14,6 @@
     @addtogroup xbee_tx_status
     @{
     @file xbee_tx_status.c
-    Code for handling tx_status frames (not transmit frames).
 */
 #include <stddef.h>
 #include <stdio.h>
@@ -38,3 +37,5 @@ int xbee_frame_dump_tx_status( xbee_dev_t *xbee,
     return 0;   
 }
 //TODO everything
+
+///@}

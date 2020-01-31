@@ -74,3 +74,5 @@ XBEE_END_DECLS
 #endif
 
 #endif
+
+///@}

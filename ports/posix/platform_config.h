@@ -11,10 +11,13 @@
  */
 
 /**
-    @addtogroup hal_posix
+    @defgroup hal_posix HAL: POSIX (Linux/Mac)
+
+    POSIX platforms (e.g., Linux, BSD, Mac OS X).
+
+    @ingroup hal
     @{
     @file ports/posix/platform_config.h
-    Header for POSIX platforms (e.g., Linux, BSD, Mac OS X).
 
     This file is automatically included by xbee/platform.h.
 
@@ -91,3 +94,5 @@ typedef struct xbee_serial_t {
 #define XBEE_MS_TIMER_RESOLUTION 10
 
 #endif      // __XBEE_PLATFORM_POSIX
+
+///@}

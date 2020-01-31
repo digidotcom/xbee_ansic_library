@@ -70,3 +70,5 @@ const char *xbee_sock_state_str(uint8_t state,
         return buffer;
     }
 }
+
+///@}

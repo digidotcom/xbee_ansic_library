@@ -11,7 +11,8 @@
  */
 
 /**
-    @addtogroup xbee_tx_status
+    @defgroup xbee_tx_status Frames: Tx Status (0x89)
+    @ingroup xbee_frame
     @{
     @file xbee/tx_status.h
 */
@@ -33,11 +34,10 @@
 XBEE_BEGIN_DECLS
 
 typedef XBEE_PACKED(xbee_frame_tx_status_t, {
-    uint8_t         frame_type;         //< XBEE_FRAME_TX_STATUS (0x89)
+    uint8_t         frame_type;         ///< XBEE_FRAME_TX_STATUS (0x89)
     uint8_t         frame_id;
-    uint8_t         delivery; //< See xbee/delivery_status.h
+    uint8_t         delivery;           ///< See xbee/delivery_status.h
 }) xbee_frame_tx_status_t;
-
 
 
 /**
@@ -59,3 +59,5 @@ XBEE_END_DECLS
 #endif
 
 #endif /* __XBEE_TX_STATUS_H */
+
+///@}

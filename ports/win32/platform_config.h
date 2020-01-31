@@ -11,10 +11,12 @@
  */
 
 /**
-    @addtogroup hal_win32
+    @defgroup hal_win32 HAL: Win32/MinGW/gcc
+    32-bit Windows (Win32) using MinGW and gcc.
+
+    @ingroup hal
     @{
     @file ports/win32/platform_config.h
-    Header for 32-bit Windows (Win32) platform (using cygwin and gcc).
 
     This file is automatically included by xbee/platform.h.
 */
@@ -92,4 +94,4 @@ typedef struct xbee_serial_t {
 
 #endif      // __XBEE_PLATFORM_WIN32
 
-
+///@}

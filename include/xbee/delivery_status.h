@@ -11,7 +11,8 @@
  */
 
 /**
-    @addtogroup xbee_delivery_status
+    @defgroup xbee_delivery_status Frames: Delivery Status (0x89, 0x8B)
+    @ingroup xbee_frame
     @{
     @file xbee/delivery_status.h
 */

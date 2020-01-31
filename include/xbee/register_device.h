@@ -11,7 +11,8 @@
  */
 
 /**
-    @addtogroup xbee_zigbee
+    @addtogroup xbee_zigbee Frames: Register Device (0x24, 0xA4)
+    @ingroup xbee_frame
     @{
     @file xbee/register_device.h
 
@@ -99,3 +100,5 @@ int xbee_dump_register_device_status(xbee_dev_t *xbee, const void FAR *rawframe,
 XBEE_END_DECLS
 
 #endif // XBEE_REGISTER_DEVICE_H
+
+///@}

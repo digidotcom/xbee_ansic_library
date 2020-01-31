@@ -11,10 +11,11 @@
  */
 
 /**
-   @addtogroup xbee_discovery
+   @addtogroup xbee_discovery Frames: Node Discovery (0x95)
+   Code related to "Node Discovery" (the ATND command, 0x95 frames)
+   @ingroup xbee_frame
    @{
    @file xbee/discovery.h
-   Header for code related to "Node Discovery" (the ATND command, 0x95 frames)
 
    Note that Node Discovery isn't supported on XBee Smart Energy firmware.
 
@@ -312,3 +313,5 @@ XBEE_END_DECLS
 #endif
 
 #endif
+
+///@}

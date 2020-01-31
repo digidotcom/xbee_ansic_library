@@ -271,7 +271,7 @@ XBEE_BEGIN_DECLS
 typedef uint32_t zcl_utctime_t;
 #define ZCL_UTCTIME_INVALID      0xFFFFFFFF
 
-/// Time of Day (for #ZCL_TYPE_TIME_TOD Data Type)
+/// Time of Day (for #ZCL_TYPE_TIME_TIMEOFDAY Data Type)
 typedef XBEE_PACKED(zcl_timeofday_t, {
    uint8_t  hours;      ///< 0-23 or 0xff for unused
    uint8_t  minutes;    ///< 0-59 or 0xff for unused
@@ -421,3 +421,5 @@ XBEE_END_DECLS
 #endif
 
 #endif      // __ZIGBEE_ZCL_TYPES_H
+
+///@}

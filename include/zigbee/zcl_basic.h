@@ -127,4 +127,4 @@ XBEE_END_DECLS
 
 #endif      // __XBEE_ZCL_BASIC_H
 
-
+///@}

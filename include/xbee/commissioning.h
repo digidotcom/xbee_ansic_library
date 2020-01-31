@@ -12,9 +12,9 @@
 
 /**
     @addtogroup xbee_commissioning
+    @ingroup xbee
     @{
     @file xbee/commissioning.h
-    Header for XBee module support of ZCL Commissioning Cluster.
 */
 
 #ifndef XBEE_COMMISSIONING_H
@@ -43,3 +43,5 @@ XBEE_END_DECLS
 #endif
 
 #endif  // XBEE_COMMISSIONING_H defined
+
+///@}

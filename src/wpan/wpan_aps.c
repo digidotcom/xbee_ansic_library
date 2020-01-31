@@ -882,3 +882,5 @@ int wpan_tick( wpan_dev_t *dev)
 #ifdef __XBEE_PLATFORM_HCS08
    #pragma MESSAGE DEFAULT C5909    // restore C5909 (Assignment in condition)
 #endif
+
+///@}

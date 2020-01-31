@@ -44,6 +44,7 @@ XBEE_BEGIN_DECLS
 /// socket creation wasn't successful.
 #define XBEE_SOCK_SOCKET_ID_INVALID     0xFF
 
+/// Frame Type: Extended Socket Create
 #define XBEE_FRAME_SOCK_CREATE          0x40
 /// Format of XBee API frame type 0x40 (#XBEE_FRAME_SOCK_CREATE).
 /// Sent from host to XBee, which responds with XBEE_FRAME_SOCK_CREATE_RESP.
@@ -57,6 +58,7 @@ typedef XBEE_PACKED(xbee_frame_sock_create_t, {
 }) xbee_frame_sock_create_t;
 
 
+/// Frame Type: Extended Socket Option Request
 #define XBEE_FRAME_SOCK_OPTION_REQ      0x41
 /// Header of XBee API frame type 0x41 (#XBEE_FRAME_SOCK_OPTION_REQ);
 /// sent from host to XBee.  Followed by variable-length data (to set)
@@ -69,6 +71,7 @@ typedef XBEE_PACKED(xbee_header_sock_option_req_t, {
 #define XBEE_SOCK_OPT_ID_TLS_PROFILE    0x00
 }) xbee_header_sock_option_req_t;
 
+/// Frame Type: Extended Socket Option Response
 #define XBEE_FRAME_SOCK_OPTION_RESP     0xC1
 /// Format of XBee API frame type 0xC1 (#XBEE_FRAME_SOCK_OPTION_RESP);
 /// sent from XBee to host.
@@ -82,6 +85,7 @@ typedef XBEE_PACKED(xbee_frame_sock_option_resp_t, {
 }) xbee_frame_sock_option_resp_t;
 
 
+/// Frame Type: Extended Socket Connect
 #define XBEE_FRAME_SOCK_CONNECT         0x42
 /// Header of XBee API frame type 0x42 (#XBEE_FRAME_SOCK_CONNECT);
 /// sent from host to XBee.  Followed by variable-length destination address.
@@ -98,6 +102,7 @@ typedef XBEE_PACKED(xbee_header_sock_connect_t, {
 }) xbee_header_sock_connect_t;
 
 
+/// Frame Type: Extended Socket Close
 #define XBEE_FRAME_SOCK_CLOSE           0x43
 /// Format of XBee API frame type 0x43 (#XBEE_FRAME_SOCK_CLOSE).
 /// Sent from host to XBee, which responds with XBEE_FRAME_SOCK_CLOSE_RESP.
@@ -108,6 +113,7 @@ typedef XBEE_PACKED(xbee_frame_sock_close_t, {
 }) xbee_frame_sock_close_t;
 
 
+/// Frame Type: Extended Socket Send
 #define XBEE_FRAME_SOCK_SEND            0x44
 /// Header of XBee API frame type 0x44 (#XBEE_FRAME_SOCK_SEND);
 /// sent from host to XBee.  Followed by variable-length payload.
@@ -120,6 +126,7 @@ typedef XBEE_PACKED(xbee_header_sock_send_t, {
 }) xbee_header_sock_send_t;
 
 
+/// Frame Type: Extended Socket Sendto
 #define XBEE_FRAME_SOCK_SENDTO          0x45
 /// Header of XBee API frame type 0x45 (#XBEE_FRAME_SOCK_SENDTO);
 /// sent from host to XBee.  Followed by variable-length payload.
@@ -134,6 +141,7 @@ typedef XBEE_PACKED(xbee_header_sock_sendto_t, {
 }) xbee_header_sock_sendto_t;
 
 
+/// Frame Type: Extended Socket Bind/Listen
 #define XBEE_FRAME_SOCK_BIND_LISTEN     0x46
 /// Format of XBee API frame type 0x46 (#XBEE_FRAME_SOCK_BIND_LISTEN).
 /// Sent from host to XBee, which responds with XBEE_FRAME_SOCK_LISTEN_RESP.
@@ -148,10 +156,18 @@ typedef XBEE_PACKED(xbee_frame_sock_bind_listen_t, {
 }) xbee_frame_sock_bind_listen_t;
 
 
+/// Frame Type: Extended Socket Create Response
 #define XBEE_FRAME_SOCK_CREATE_RESP     0xC0
+
+/// Frame Type: Extended Socket Connect Response
 #define XBEE_FRAME_SOCK_CONNECT_RESP    0xC2
+
+/// Frame Type: Extended Socket Close Response
 #define XBEE_FRAME_SOCK_CLOSE_RESP      0xC3
+
+/// Frame Type: Extended Socket Bind/Listen Response
 #define XBEE_FRAME_SOCK_LISTEN_RESP     0xC6
+
 /// Format of multiple XBee API frame types sent from XBee to host:
 ///     0xC0 (#XBEE_FRAME_SOCK_CREATE_RESP)
 ///     0xC2 (#XBEE_FRAME_SOCK_CONNECT_RESP)
@@ -167,6 +183,7 @@ typedef XBEE_PACKED(xbee_frame_sock_shared_resp_t, {
 }) xbee_frame_sock_shared_resp_t;
 
 
+/// Frame Type: Extended Socket IPv4 Client
 #define XBEE_FRAME_SOCK_IPV4_CLIENT 0xCC
 /// Format of XBee API frame type 0xCC (#XBEE_FRAME_SOCK_IPV4_CLIENT);
 /// sent from XBee to host for new connections on a listening socket.
@@ -179,6 +196,7 @@ typedef XBEE_PACKED(xbee_frame_sock_ipv4_client_t, {
 }) xbee_frame_sock_ipv4_client_t;
 
 
+/// Frame Type: Extended Socket Receive
 #define XBEE_FRAME_SOCK_RECEIVE         0xCD
 /// Format of XBee API frame type 0xCD (#XBEE_FRAME_SOCK_RECEIVE);
 /// sent from XBee to host when data arrives on a connected socket.
@@ -191,6 +209,7 @@ typedef XBEE_PACKED(xbee_frame_sock_receive_t, {
 }) xbee_frame_sock_receive_t;
 
 
+/// Frame Type: Extended Socket Receive From
 #define XBEE_FRAME_SOCK_RECEIVE_FROM    0xCE
 /// Format of XBee API frame type 0xCE (#XBEE_FRAME_SOCK_RECEIVE_FROM);
 /// sent from XBee to host when a datagram arrives on a bound UDP socket.
@@ -205,6 +224,7 @@ typedef XBEE_PACKED(xbee_frame_sock_receive_from_t, {
 }) xbee_frame_sock_receive_from_t;
 
 
+/// Frame Type: Extended Socket State
 #define XBEE_FRAME_SOCK_STATE           0xCF
 /// Format of XBee API frame type 0xCF (#XBEE_FRAME_SOCK_STATE);
 /// sent from XBee to host when a socket's state changes.  All values other
@@ -246,3 +266,5 @@ const char *xbee_sock_state_str(uint8_t state,
 XBEE_END_DECLS
 
 #endif // XBEE_SOCKET_FRAMES_H
+
+///@}

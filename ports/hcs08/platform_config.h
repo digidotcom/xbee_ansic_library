@@ -11,10 +11,12 @@
  */
 
 /**
-	@addtogroup hal_hcs08
+	@defgroup hal_hcs08 HAL: Freescale/Codewarrior (Programmable XBee)
+	Freescale HCS08 platform (XBee Programmable using CodeWarrior).
+
+	@ingroup hal
 	@{
-	@file xbee/platform_hcs08.h
-	Header for Freescale HCS08 platform (XBee Programmable using CodeWarrior).
+	@file ports/hcs08/platform_config.h
 
 	This file is automatically included by xbee/platform.h.
 */
@@ -136,3 +138,4 @@
 	void xbee_reset_radio( struct xbee_dev_t *xbee, bool_t asserted);
 #endif		// __XBEE_PLATFORM_HCS08
 
+///@}

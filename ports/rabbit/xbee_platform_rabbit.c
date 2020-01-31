@@ -110,4 +110,4 @@ void _swapcpy( void FAR *dst, const void FAR *src, uint_fast8_t bytes)
 #define xbee_readline(buffer, length) getsn_tick(buffer, length)
 /*** EndHeader */
 
-
+///@}

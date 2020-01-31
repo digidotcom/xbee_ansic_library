@@ -9,6 +9,11 @@
  * Digi International Inc. 11001 Bren Road East, Minnetonka, MN 55343
  * =======================================================================
  */
+/**
+    @addtogroup xbee_ipv4
+    @{
+    @file
+*/
 
 #include <stdlib.h>
 #include <stdint.h>
@@ -176,3 +181,5 @@ int xbee_ipv4_receive_dump(xbee_dev_t *xbee, const void FAR *raw,
     
     return 0;
 }
+
+///@}

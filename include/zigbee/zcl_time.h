@@ -104,6 +104,8 @@ int zcl_time_find_servers( wpan_dev_t *dev, uint16_t profile_id);
          zcl_time_attribute_tree,      \
          WPAN_CLUST_FLAG_INOUT | WPAN_CLUST_FLAG_ENCRYPT }
 
+/// Macro for inserting a standard Time Server (no Client) into an endpoint's
+/// cluster list.
 #define ZCL_CLUST_ENTRY_TIME_SERVER    \
       { ZCL_CLUST_TIME,                \
          &zcl_general_command,         \
@@ -125,3 +127,5 @@ XBEE_END_DECLS
 #endif
 
 #endif   // __XBEE_ZCL_TIME_H
+
+///@}

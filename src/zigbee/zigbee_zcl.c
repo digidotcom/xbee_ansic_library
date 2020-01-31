@@ -1080,7 +1080,6 @@ int _zcl_encode_array_value( uint8_t FAR *buffer, int16_t bufsize,
    @retval  -ZCL_STATUS_INSUFFICIENT_SPACE   buffer too small to encode value
    @retval  -ZCL_STATUS_FAILURE              unknown/unsupported attribute type
    @retval  -ZCL_STATUS_HARDWARE_FAILURE     failure updating attribute value
-   @retval  -ZCL_STATUS_SOFTWARE_FAILURE     failure updating attribute value
    @retval  >=0   number of bytes written
 */
 zigbee_zcl_debug
@@ -1950,3 +1949,5 @@ const char *zcl_status_text( uint_fast8_t status)
          return unknown;
    }
 }
+
+///@}

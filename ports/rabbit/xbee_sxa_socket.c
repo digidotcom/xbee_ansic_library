@@ -10,7 +10,7 @@
  * =======================================================================
  */
 /**
-	@addtogroup SXA
+	@addtogroup xbee_sxa
 	@{
 	@file xbee_sxa_socket.c
    Simple XBee API, TCP sockets over ZigBee.
@@ -378,4 +378,4 @@ int sxa_socket_init(void)
 	return 0;
 }
 
-
+///@}

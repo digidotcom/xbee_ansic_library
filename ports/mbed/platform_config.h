@@ -11,10 +11,12 @@
  */
 
 /**
-    @addtogroup hal_kl25
+    @defgroup hal_kl25 HAL: Freescale KL25/mbed.org
+    Freescale KL25 platform using mbed.org.
+
+    @ingroup hal
     @{
-    @file xbee/platform_kl25.h
-    Header for Freescale KL25 platform using mbed.org.
+    @file ports/mbed/platform_config.h
 
     This file is automatically included by xbee/platform.h.
 */
@@ -72,3 +74,4 @@
 
     XBEE_END_DECLS
 #endif
+///@}

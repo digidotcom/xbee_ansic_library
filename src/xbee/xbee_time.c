@@ -10,13 +10,12 @@
  * =======================================================================
  */
 /**
-   @addtogroup xbee_time
-   @{
-   @file xbee_time.c
-
+   @addtogroup util_time
    Implementations of time.h functions from the Standard C Library for
    platforms that may not support them, or for writing portable code to
    use January 1, 2000 as the epoch (as in the ZigBee specification).
+   @{
+   @file xbee_time.c
 */
 
 /*** BeginHeader */
@@ -288,3 +287,4 @@ xbee_utctime_t xbee_mktime( struct tm *time_rec)
    #pragma MESSAGE DEFAULT C5909    // restore C5909 (Assignment in condition)
 #endif
 
+///@}

@@ -11,12 +11,12 @@
  */
 
 /**
-    @addtogroup zcl_ota_upgrade
+    @addtogroup zcl_ota_upgrade ZCL Over-the-Air Upgrade Cluster
+    @ingroup zcl
     @{
     @file zigbee/zcl_ota_upgrade.h
 
-    Header for ZCL Over-the-Air Upgrade Cluster.  Based on ZigBee document
-    095264r23.
+    Based on ZigBee document 095264r23.
 
     XBee3 802.15.4, DigiMesh, and Zigbee products use a modified version of
     this protocol for firmware and file system updates on endpoint 0xE8 with
@@ -257,3 +257,5 @@ uint32_t zcl_ota_tag_identifier_length(uint16_t id);
 XBEE_END_DECLS
 
 #endif // ZCL_OTA_UPGRADE_H defined
+
+///@}

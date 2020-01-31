@@ -11,11 +11,10 @@
  */
 
 /**
-    @addtogroup xbee_user_data
+    @defgroup xbee_user_data Frames: User Data (0x2D, 0xAD)
+    @ingroup xbee_frame
     @{
     @file xbee/user_data.h
-
-    Support code for User Data Relay Frames (type 0x2D and 0xAD).
 */
 
 #ifndef XBEE_USER_DATA_H
@@ -26,10 +25,10 @@
 
 XBEE_BEGIN_DECLS
 
-/// Send data to MicroPython or BLE interface
+/// Frame Type: Send data to MicroPython or BLE interface
 #define XBEE_FRAME_USER_DATA_TX         0x2D
 
-/// Data received from MicroPython or BLE interface
+/// Frame Type: Data received from MicroPython or BLE interface
 #define XBEE_FRAME_USER_DATA_RX         0xAD
 
 // Interface identifiers used with USER_DATA_TX and USER_DATA_RX frames.
@@ -37,7 +36,7 @@ XBEE_BEGIN_DECLS
 #define XBEE_USER_DATA_IF_BLE           0x01    ///< Bluetooth
 #define XBEE_USER_DATA_IF_MICROPYTHON   0x02    ///< XBee-hosted MicroPython
 
-/// Header of XBee API frame type 0x2D (#XBEE_FRAME_USER_DATA_RELAY_TX);
+/// Header of XBee API frame type 0x2D (#XBEE_FRAME_USER_DATA_TX);
 /// sent from host to XBee.
 typedef XBEE_PACKED(xbee_header_user_data_tx_t, {
     uint8_t     frame_type;             ///< XBEE_FRAME_USER_DATA_TX (0x2D)
@@ -45,7 +44,7 @@ typedef XBEE_PACKED(xbee_header_user_data_tx_t, {
     uint8_t     destination;            ///< see XBEE_USER_DATA_IF_xxx
 }) xbee_header_user_data_tx_t;
 
-/// Format of XBee API frame type 0xAD (#XBEE_FRAME_USER_DATA_RELAY_RX);
+/// Format of XBee API frame type 0xAD (#XBEE_FRAME_USER_DATA_RX);
 /// received from XBee by host.
 typedef XBEE_PACKED(xbee_frame_user_data_rx_t, {
     uint8_t     frame_type;             ///< XBEE_FRAME_USER_DATA_RX (0xAD)
@@ -63,3 +62,5 @@ const char *xbee_user_data_interface(uint8_t iface);
 XBEE_END_DECLS
 
 #endif // XBEE_USER_DATA_H
+
+///@}

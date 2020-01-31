@@ -12,12 +12,16 @@
 
 /**
    @addtogroup pxbee_ota_server
+   @ingroup pxbee
    @{
    @file xbee/pxbee_ota_server.h
 
    Code to add an OTA Server Cluster to a device.  It receives notification
    to start an update, and then calls back to the bootloader to receive
    that update.
+
+   Note that this is NOT the ZCL Over-the-Air Upgrade Cluster.  It is
+   specific to the Programmable XBee.
 */
 
 #ifndef PXBEE_OTA_SERVER_H
@@ -86,3 +90,5 @@ XBEE_END_DECLS
 #endif
 
 #endif      // PXBEE_OTA_SERVER_H defined
+
+///@}

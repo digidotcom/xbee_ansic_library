@@ -11,11 +11,10 @@
  */
 
 /**
-   @addtogroup SXA
+   @addtogroup xbee_sxa Simplified XBee API (deprecated/unmaintained)
+   @ingroup xbee
    @{
    @file xbee/sxa.h
-   Header for Simplified XBee API
-
 */
 #ifndef __XBEE_SXA
 #define __XBEE_SXA

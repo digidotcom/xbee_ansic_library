@@ -11,11 +11,12 @@
  */
 
 /**
-	@addtogroup hal_dos
-	@{
-	@file xbee/platform_dos.h
-	Header for DOS platform (using Watcom C cross compiler).
+	@defgroup hal_dos HAL: DOS16/OpenWatcom
+	DOS platform (using Watcom C cross compiler)
 
+	@ingroup hal
+	@{
+	@file ports/dos/platform_config.h
 	This file is automatically included by xbee/platform.h.
 
 */
@@ -132,3 +133,4 @@ void clrscr_ansi( void);
 
 #endif		// __XBEE_PLATFORM_DOS
 
+///@}

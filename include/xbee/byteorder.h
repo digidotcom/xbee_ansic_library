@@ -11,10 +11,11 @@
  */
 
 /**
-   @addtogroup util_byteorder
+   @addtogroup util_byteorder Byte-swapping functions
+   Macros for converting between big/little endian and host byte order.
+   @ingroup util
    @{
    @file xbee/byteorder.h
-   Macros for converting between big/little endian and host byte order.
 
    @def be16toh(x)
    @brief Convert a uint16_t in big-endian byte order to host byte order.
@@ -160,3 +161,5 @@
    XBEE_END_DECLS
 
 #endif
+
+///@}

@@ -62,3 +62,5 @@ XBEE_END_DECLS
 #endif
 
 #endif      // ZIGBEE_ZCL_IDENTIFY_H
+
+///@}

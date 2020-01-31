@@ -106,3 +106,5 @@ int xbee_scan_dump_response( xbee_dev_t *xbee, const void FAR *raw,
 
    return 0;
 }
+
+///@}

@@ -34,3 +34,5 @@ void _swapcpy( void FAR *dst, const void FAR *src, uint_fast8_t bytes)
         } while (--bytes);
     }
 }
+
+///@}

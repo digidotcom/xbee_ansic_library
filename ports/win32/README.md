@@ -1,4 +1,4 @@
-Platform Support: Windows (Win32)
+Platform Support: Windows (Win32)                     {#platform_win32}
 =================================
 
 Overview

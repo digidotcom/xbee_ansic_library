@@ -52,3 +52,4 @@ int xbee_transparent_serial_str( wpan_envelope_t *envelope,
    return xbee_transparent_serial( envelope);
 }
 
+///@}

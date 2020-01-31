@@ -486,4 +486,4 @@ int xbee_ser_get_cts( xbee_serial_t *serial)
     return (status & TIOCM_CTS) ? 1 : 0;
 }
 
-//@}
+///@}

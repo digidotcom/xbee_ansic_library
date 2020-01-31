@@ -11,10 +11,9 @@
  */
 
 /**
-    @defgroup xbee_ext_modem_status XBee Extended Modem Status Frame (0x98)
+    @defgroup xbee_ext_modem_status Frames: Extended Modem Status (0x98)
 
-    Support for XBee Extended Modem Status Frame (0x98).
-
+    @ingroup xbee_frame
     @{
     @file xbee/ext_modem_status.h
 */
@@ -54,6 +53,6 @@ int xbee_frame_dump_ext_modem_status(xbee_dev_t *xbee,
 
 XBEE_END_DECLS
 
-/** @} */
-
 #endif // XBEE_SECURE_SESSION_H
+
+///@}

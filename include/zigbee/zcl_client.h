@@ -69,3 +69,5 @@ XBEE_END_DECLS
 #endif
 
 #endif   // __ZCL_CLIENT_H
+
+///@}

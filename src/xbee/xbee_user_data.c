@@ -14,8 +14,6 @@
     @addtogroup xbee_user_data
     @{
     @file xbee_user_data.c
-
-    Support code for User Data Relay Frames (type 0x2D and 0xAD).
 */
 
 #include "xbee/user_data.h"
@@ -71,3 +69,5 @@ const char *xbee_user_data_interface(uint8_t iface)
 
     return "[invalid]";
 }
+
+///@}

@@ -412,10 +412,6 @@
       "are deprecated. Please use XBEE_WIFI_ENABLED instead."
 #endif
 
-// legacy macro -- applications should remove conditional compilation
-// tests that use this macro
-#define XBEE_SERIAL_POLLED
-
 // assume platforms support up to 115200bps
 #ifndef XBEE_SERIAL_MAX_BAUDRATE
    #define XBEE_SERIAL_MAX_BAUDRATE 115200
@@ -736,4 +732,4 @@ XBEE_END_DECLS
 
 #endif
 
-
+///@}

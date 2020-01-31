@@ -111,3 +111,5 @@ int xbee_readline( char *buffer, int length)
 
     return -EAGAIN;
 }
+
+///@}

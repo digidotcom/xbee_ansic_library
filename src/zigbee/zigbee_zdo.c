@@ -189,7 +189,7 @@ int zdo_send_response( const wpan_envelope_t FAR *request,
 
    @param[in,out] buffer         location to store cluster list, updated to
                                  point to first byte after bytes written
-   @param[in]     cluster_read   list of 16-bit cluster IDs, terminated by
+   @param[in]     clust_read     list of 16-bit cluster IDs, terminated by
                                  WPAN_CLUSTER_END_OF_LIST
    @param[in]     max_count      maximum number of clusters to write to *buffer
 
@@ -1171,3 +1171,5 @@ int zdo_send_ieee_addr_req( wpan_dev_t *dev, uint16_t net_addr,
 
    return wpan_envelope_send( &envelope);
 }
+
+///@}

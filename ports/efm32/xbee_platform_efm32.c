@@ -113,3 +113,4 @@ uint32_t xbee_millisecond_timer()
 }
 
 #endif
+///@}

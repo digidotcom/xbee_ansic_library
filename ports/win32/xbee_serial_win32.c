@@ -15,9 +15,6 @@
     @{
     @file xbee_serial_win32.c
     Serial Interface for XBee Module (Win32 Platform)
-
-    @addtogroup hal_win32
-    @{
 */
 // NOTE: Documentation for these functions can be found in xbee/serial.h.
 
@@ -478,4 +475,4 @@ int xbee_ser_get_cts( xbee_serial_t *serial)
     return (dwModemStatus & MS_CTS_ON) ? 1 : 0;
 }
 
-//@}
+///@}

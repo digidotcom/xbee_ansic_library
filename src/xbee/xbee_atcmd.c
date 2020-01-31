@@ -1092,7 +1092,7 @@ int xbee_cmd_set_callback( int16_t handle, xbee_cmd_callback_fn callback,
                   #WPAN_NET_ADDR_UNDEFINED for the network address).
                -  #WPAN_IEEE_ADDR_UNDEFINED to use the 16-bit network address.
 
-   @param[in]  network
+   @param[in]  network_address
                16-bit network address of target.
                -  #WPAN_NET_ADDR_UNDEFINED if the node's network address
                   isn't known or this is a DigiMesh network.
@@ -1858,3 +1858,4 @@ void xbee_identify( xbee_dev_t *xbee, bool_t identify)
 }
 
 
+///@}

@@ -12,6 +12,7 @@
 
 /**
    @addtogroup xbee_serial
+   @ingroup xbee
    @{
    @file xbee/serial.h
    Platform-specific layer provieds a consistent serial API to upper layers
@@ -427,3 +428,5 @@ XBEE_END_DECLS
 #endif
 
 #endif
+
+///@}

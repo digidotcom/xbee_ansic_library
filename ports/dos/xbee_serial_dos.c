@@ -30,18 +30,18 @@
 #include "xbee/cbuf.h"
 
 // Registers
-#define UART_RBR		0			//< Receive Buffer				DLAB = 0, read
-#define UART_THR		0			//< Transmitter Holding			DLAB = 0, write
-#define UART_DLL		0			//< Divisor Latch LSB			DLAB = 1
-#define UART_IER		1			//< Interrupt Enable				DLAB = 0
-#define UART_DLM		1			//< Divisor Latch MSB			DLAB = 1
-#define UART_IIR		2			//< Interrupt Identification	read
-#define UART_FCR		2			//< FIFO Control					write
-#define UART_LCR		3			//< Line Control
-#define UART_MCR		4			//< Modem Control
-#define UART_LSR		5			//< Line Status					read
-#define UART_MSR		6			//< Modem Status					read
-#define UART_SCR		7			//< Scratch
+#define UART_RBR		0			///< Receive Buffer				DLAB = 0, read
+#define UART_THR		0			///< Transmitter Holding			DLAB = 0, write
+#define UART_DLL		0			///< Divisor Latch LSB			DLAB = 1
+#define UART_IER		1			///< Interrupt Enable				DLAB = 0
+#define UART_DLM		1			///< Divisor Latch MSB			DLAB = 1
+#define UART_IIR		2			///< Interrupt Identification	read
+#define UART_FCR		2			///< FIFO Control					write
+#define UART_LCR		3			///< Line Control
+#define UART_MCR		4			///< Modem Control
+#define UART_LSR		5			///< Line Status					read
+#define UART_MSR		6			///< Modem Status					read
+#define UART_SCR		7			///< Scratch
 
 // Bitmasks for Interrupt Enable Register
 #define IER_NONE						0
@@ -618,4 +618,4 @@ int xbee_ser_get_cts( xbee_serial_t *serial)
 #endif
 }
 
-//@}
+///@}

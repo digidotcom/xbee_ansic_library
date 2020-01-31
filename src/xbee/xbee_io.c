@@ -15,9 +15,6 @@
    @{
    @file xbee_io.c
 
-   Code related to I/O sampling and configuration (the ATIS command,
-   0x92 frames).
-
    @note This code is not directly concerned with collecting I/O samples.
    To do that, it is necessary to register a command handler for
    ATIS commands, and/or appropriate endpoints to handle the incoming
@@ -56,7 +53,7 @@
    Parse an I/O response and store it in an xbee_io_t structure.
 
    @param[out] parsed   Result structure
-   #param[in] source    Pointer to the start of the data i.e. the num_samples
+   @param[in] source    Pointer to the start of the data i.e. the num_samples
                         field of the I/O response.
 */
 _xbee_io_debug
@@ -788,6 +785,4 @@ int xbee_io_query_status( xbee_io_t FAR *io)
    return xbee_cmd_list_status(&io->clc);
 }
 
-
-
-
+///@}

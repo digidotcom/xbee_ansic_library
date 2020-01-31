@@ -11,6 +11,8 @@
  */
 
 /**
+   @addtogroup zcl_bacnet
+   @{
    @file zigbee/zcl_bacnet.h
    Macros associated with supporting BACnet under ZigBee.
 */
@@ -163,3 +165,5 @@ typedef struct zcl_binary_output_t {
 XBEE_END_DECLS
 
 #endif
+
+///@}

@@ -10,11 +10,11 @@
  * =======================================================================
  */
 /**
-    @addtogroup xbee_time
+    @addtogroup util_time Portable time functions
+    Portable time functions using January 1, 2000 as the epoch.
+    @ingroup util
     @{
     @file xbee/time.h
-
-    Header for portable time functions using January 1, 2000 as the epoch.
 */
 
 #ifndef __XBEE_TIME_H
@@ -43,3 +43,5 @@ XBEE_END_DECLS
 #endif
 
 #endif  // __XBEE_TIME_H defined
+
+///@}

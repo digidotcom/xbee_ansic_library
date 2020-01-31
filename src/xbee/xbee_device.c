@@ -1063,3 +1063,4 @@ int xbee_frame_dump_modem_status( xbee_dev_t *xbee,
    return 0;
 }
 
+///@}

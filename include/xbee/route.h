@@ -10,10 +10,11 @@
  * =======================================================================
  */
 /**
-   @addtogroup xbee_route
+   @defgroup xbee_route Frames: Source Routing (0x21, 0xA1, 0xA3)
+   Receive inbound route records, and send "Create Source Route" frames.
+   @ingroup xbee_frame
    @{
    @file xbee/route.h
-   Receive inbound route records, and send "Create Source Route" frames.
 */
 
 
@@ -28,6 +29,7 @@ XBEE_BEGIN_DECLS
 /// or a Route Record Indicator frame.
 #define XBEE_ROUTE_MAX_ADDRESS_COUNT         11
 
+/// Frame Type: Create Source Route
 #define XBEE_FRAME_CREATE_SOURCE_ROUTE       0x21
 typedef XBEE_PACKED(xbee_frame_create_source_route_t,
 {
@@ -57,6 +59,7 @@ typedef XBEE_PACKED(xbee_frame_create_source_route_t,
 }) xbee_frame_create_source_route_t;
 
 
+/// Frame Type: Route Record Indicator
 #define XBEE_FRAME_ROUTE_RECORD_INDICATOR    0xA1
 typedef XBEE_PACKED(xbee_frame_route_record_indicator_t,
 {
@@ -92,7 +95,7 @@ int xbee_route_dump_record_indicator( xbee_dev_t *xbee,
    {  XBEE_FRAME_ROUTE_RECORD_INDICATOR, 0, \
       xbee_route_dump_record_indicator, NULL }
 
-
+/// Frame Type: Many-to-one Request
 #define XBEE_FRAME_ROUTE_MANY_TO_ONE_REQ     0xA3
 /// The many-to-one route request indicator frame is sent out the serial port
 /// whenever a many-to-one route request is received
@@ -131,3 +134,4 @@ XBEE_END_DECLS
 
 #endif
 
+///@}

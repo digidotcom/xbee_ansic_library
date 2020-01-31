@@ -1,221 +1,229 @@
 /**
-	@mainpage Overview of Cross-Platform, ANSI C, XBee/ZigBee Driver
+    @mainpage Overview of Portable, ANSI C, XBee Host Library
 
-	The driver is broken up into multiple layers, with well-defined interfaces
-	between each layer.
+    The driver is broken up into multiple layers, with well-defined interfaces
+    between each layer.  Layers of the driver are similar to an Ethernet NIC
+    driver and a TCP/IP networking stack.  In our case:
+    - the \ref hal "Hardware Abstraction Layer", unique to each port
+      (hardware/compiler), provides a consistent interface for the other layers.
+    - the \ref xbee "XBee Driver" handles all serial communication with and
+      configuration of the attached XBee device
+    - the \ref wpan "Wireless Personal Networking" layer provides generic
+      802.15.4 networking support (endpoints and clusters)
+    - the \ref zigbee "Zigbee Networking Stack" layer provides support for
+      the Zigbee networking protocols (ZDO/ZDP and ZCL).
 
-	The two parts of the driver are similar to an Ethernet NIC driver and a
-	TCP/IP networking stack.  In our case, the \ref xbee "XBee Driver"
-	handles all serial communication with and configuration of the attached
-	XBee device, the \ref wpan "Wireless Personal Networking" layer provides
-	generic 802.15.4 networking support (endpoints and clusters), and the
-	\ref zigbee "ZigBee Networking Stack" layer provides support for the ZigBee
-	networking protocols.
+    See the [Modules](modules.html) section for a full outline of the API
+    layers, or view the more-detailed [README](README.md).  There's also a
+    [table of XBee frame types](frame_types.md) listing the source files
+    designed to process them.
 
-	These layers make use of a \ref hal "Hardware Abstraction Layer" that must
-	be created for each hardware/compiler platform.
+    \section quick_start Quick Start Guide
 
-	See the \link modules.html Modules \endlink section for a full outline of
-	the API layers.
+    If you're looking to get started quickly, use your desktop PC and an XBIB
+    development board to connect to an XBee module.  For the compiler
+    requirements, review READMEs for the \ref platform_win32 "Windows Platform"
+    or \ref platform_posix "POSIX Platform" (for Mac and Linux).
 
-	\section wpan_overview WPAN Overview
+    Start in `samples/win32` for Windows and `samples/posix` for Linux or Mac.
+    Run `make all` to build all of the sample programs.  See the \ref samples
+    "Samples README" for a description of each program.
 
-	\par Endpoint Table
-	The endpoint table is a complex data structure that describes all endpoints,
-	clusters, ZCL attributes and manufacturer-specific command handlers for a
-	given device.  The structure of the table is as follows (note that not all
-	members of each object are listed):
-	-	Each DEVICE (wpan_dev_t) corresponds to a local, serially-connected XBee
-		module.  This DEVICE has multiple ENDPOINTs.
-	-	Each ENDPOINT (wpan_endpoint_table_entry_t) has
-		-	An ENDPOINT ID (0 to 254), PROFILE ID, DEVICE ID and DEVICE VERSION.
-		-	Multiple CLUSTERs.  The ZDP endpoint handler currently uses a switch
-			to handle frames for each cluster, but could be updated to let the
-			endpoint dispatcher hand frames off to each cluster's handler.
-		-	A HANDLER to process frames for CLUSTERs without their own HANDLER,
-			or CLUSTERs that aren't in the table.
-		-	A pointer to an ENDPOINT STATE (wpan_ep_state_t) structure.
-	-	Each CLUSTER (wpan_cluster_table_entry_t) has
-		-	FLAGs indicating whether it is an input or output cluster (or both),
-			and whether packets sent to/from the cluster require APS-layer
-			encryption.
-		-	A HANDLER to process frames for that cluster.
-		-	A CONTEXT pointer that is passed to the HANDLER.  For a ZCL endpoint,
-			the CONTEXT points to an ATTRIBUTE TREE.
+    Most of the samples default to communicating at 115.2kbps to a module in
+    API mode (ATAP=1).  You can use the `xbee_term` sample as a simple terminal
+    interface to enter command mode on the XBee module, reconfigure it, and
+    then use `ATWR` to save the changes.
 
-	-	On ZCL endpoints, each entry in the ATTRIBUTE TREE (zcl_attribute_tree_t)
-		has
-		-	A manufacturer ID with ZCL_MFG_NONE (0) representing the general
-			attributes for the cluster.
-		-	Pointers to a list of SERVER and CLIENT cluster ATTRIBUTEs.
-	-	Each ATTRIBUTE is either a BASE ATTRIBUTE (zcl_attribute_base_t) with
-		-	A 16-bit ID.
-		-	FLAGS indicating whether the attribute is read-only, is a full
-			attribute (see below), has a minimum or maximum limit and is
-			reportable.
-		-	A ZCL TYPE.
-		-	A pointer to the ATTRIBUTE's VALUE.
-	-	... or a FULL ATTRIBUTE (zcl_attribute_full_t) which has
-		-	A BASE ATTRIBUTE structure (so both BASE and FULL attributes start
-			with the same structure elements).
-		-	Optional MINIMUM and MAXIMUM (zcl_attribute_minmax_t) values.
-		-	A READ function (zcl_attribute_update_fn) to refresh the
-			ATTRIBUTE's VALUE.
-		-	A WRITE function (zcl_attribute_write_fn) to process a ZCL Write
-			Attributes request if the attribute requires additional processing
-			over what the standard function, zcl_decode_attribute, does.
+    The "AT Inter" (short for "AT Interactive") sample is one of the simplest,
+    and uses API frames to send AT commands to the locally attached module, and
+    then parses the responses.  Most of the other interactive samples include
+    this common functionality.
 
-	\par Endpoint Dispatching
-	The endpoint dispatcher searches the endpoint table to find a handler for
-	a given frame, based on its destination endpoint and cluster ID.
+    Note that most of the source for these samples exists in `samples/common`,
+    including a shared Makefile, `common.mk`.
 
-	\section zigbee_overview ZigBee Overview
+    \addtogroup wpan
+    \section wpan_overview WPAN Overview
 
-	\par ZDO/ZDP (ZigBee Device Object/Profile) Command Processing
-	The ZDO endpoint handler (registered to endpoint 0) walks the endpoint table
-	to respond to requests.  It needs to know about all endpoints and their
-	input clusters and output clusters.  It walks the endpoint table but stops
-	at the context elements.  Therefore, all information required by the ZDO
-	layer must exist outside of the context elements of the endpoint table.
+    \par Endpoint Table
+    The endpoint table is a complex data structure that describes all endpoints,
+    clusters, ZCL attributes and manufacturer-specific command handlers for a
+    given device.  The structure of the table is as follows (note that not all
+    members of each object are listed):
+    -   Each DEVICE (wpan_dev_t) corresponds to a local, serially-connected XBee
+        module.  This DEVICE has multiple ENDPOINTs.
+    -   Each ENDPOINT (wpan_endpoint_table_entry_t) has
+        -   An ENDPOINT ID (0 to 254), PROFILE ID, DEVICE ID and DEVICE VERSION.
+        -   Multiple CLUSTERs.  The ZDP endpoint handler currently uses a switch
+            to handle frames for each cluster, but could be updated to let the
+            endpoint dispatcher hand frames off to each cluster's handler.
+        -   A HANDLER to process frames for CLUSTERs without their own HANDLER,
+            or CLUSTERs that aren't in the table.
+        -   A pointer to an ENDPOINT STATE (wpan_ep_state_t) structure.
+    -   Each CLUSTER (wpan_cluster_table_entry_t) has
+        -   FLAGs indicating whether it is an input or output cluster (or both),
+            and whether packets sent to/from the cluster require APS-layer
+            encryption.
+        -   A HANDLER to process frames for that cluster.
+        -   A CONTEXT pointer that is passed to the HANDLER.  For a ZCL endpoint,
+            the CONTEXT points to an ATTRIBUTE TREE.
 
-	\par ZCL (ZigBee Cluster Library) Command Processing
-	Consider a theoretical cluster with manufacturer-specific attributes and
-	commands for more than one manufacturer ID.  The handler registered to that
-	cluster would check the frame type and manufacturer-specific bits and hand
-	any GENERAL/PROFILE or MANUFACTURER-SPECIFIC commands off to the
-	ZCL General Command Handler (zcl_general_command).
+    -   On ZCL endpoints, each entry in the ATTRIBUTE TREE (zcl_attribute_tree_t)
+        has
+        -   A manufacturer ID with ZCL_MFG_NONE (0) representing the general
+            attributes for the cluster.
+        -   Pointers to a list of SERVER and CLIENT cluster ATTRIBUTEs.
+    -   Each ATTRIBUTE is either a BASE ATTRIBUTE (zcl_attribute_base_t) with
+        -   A 16-bit ID.
+        -   FLAGS indicating whether the attribute is read-only, is a full
+            attribute (see below), has a minimum or maximum limit and is
+            reportable.
+        -   A ZCL TYPE.
+        -   A pointer to the ATTRIBUTE's VALUE.
+    -   ... or a FULL ATTRIBUTE (zcl_attribute_full_t) which has
+        -   A BASE ATTRIBUTE structure (so both BASE and FULL attributes start
+            with the same structure elements).
+        -   Optional MINIMUM and MAXIMUM (zcl_attribute_minmax_t) values.
+        -   A READ function (zcl_attribute_update_fn) to refresh the
+            ATTRIBUTE's VALUE.
+        -   A WRITE function (zcl_attribute_write_fn) to process a ZCL Write
+            Attributes request if the attribute requires additional processing
+            over what the standard function, zcl_decode_attribute, does.
 
-	\par ZCL General Command Handler
-	This handler will see frames from the endpoint dispatcher for
-		-	Clusters that aren't in the cluster table for the endpoint (invalid
-			clusters).
-		-	Clusters that don't have their own handler (no cluster commands).
+    \par Endpoint Dispatching
+    The endpoint dispatcher searches the endpoint table to find a handler for
+    a given frame, based on its destination endpoint and cluster ID.
 
-	It also receives frames from clusters with handlers for cluster-specific
-	commands that are passing on a general or manufacturer-specific command
-	frame.
+    \addtogroup zigbee
+    \section zigbee_overview Zigbee Overview
 
-	The ZCL General Command handler finds the correct attribute list from the
-	attribute tree (general vs. manufacturer-specific, server vs. client
-	cluster), and then
-	-	If the frame is marked CLUSTER & MANUFACTURER-SPECIFIC, it passes the
-		frame on to the handler for that MFG ID (stored in the attribute
-		tree).
-	-	If it is marked CLUSTER-SPECIFIC but GENERAL, it generates an error.
-	-	If it is marked PROFILE-SPECIFIC and GENERAL, it processes the frame as
-		a general command, using the attribute list it retreived from the tree.
+    Reminder: the code in this layer was intended for Zigbee-compliant networks
+    and implements the various protocols required to interact on those networks.
+    It is not certified with the Zigbee Alliance.
 
-	\par Summary of ZCL handlers
-	-	ZCL General Command handler registered to the endpoint to process frames
-		for invalid clusters or clusters without cluster-specific commands (i.e.,
-		clusters with a NULL command handler).
-	-	Cluster-specific, general command handler registered to each cluster.
-	-	Cluster-specific, manufacturer-specific command handler(s) listed in
-		the attribute tree (stored in the cluster structure's context member)
-		under the appropriate manufacturer ID.
+    \par ZDO/ZDP (Zigbee Device Object/Profile) Command Processing
+    The ZDO endpoint handler (registered to endpoint 0) walks the endpoint table
+    to respond to requests.  It needs to know about all endpoints and their
+    input clusters and output clusters.  It walks the endpoint table but stops
+    at the context elements.  Therefore, all information required by the ZDO
+    layer must exist outside of the context elements of the endpoint table.
+
+    \par ZCL (Zigbee Cluster Library) Command Processing
+    Consider a theoretical cluster with manufacturer-specific attributes and
+    commands for more than one manufacturer ID.  The handler registered to that
+    cluster would check the frame type and manufacturer-specific bits and hand
+    any GENERAL/PROFILE or MANUFACTURER-SPECIFIC commands off to the
+    ZCL General Command Handler (zcl_general_command).
+
+    \par ZCL General Command Handler
+    This handler will see frames from the endpoint dispatcher for
+        -   Clusters that aren't in the cluster table for the endpoint (invalid
+            clusters).
+        -   Clusters that don't have their own handler (no cluster commands).
+
+    It also receives frames from clusters with handlers for cluster-specific
+    commands that are passing on a general or manufacturer-specific command
+    frame.
+
+    The ZCL General Command handler finds the correct attribute list from the
+    attribute tree (general vs. manufacturer-specific, server vs. client
+    cluster), and then
+    -   If the frame is marked CLUSTER & MANUFACTURER-SPECIFIC, it passes the
+        frame on to the handler for that MFG ID (stored in the attribute
+        tree).
+    -   If it is marked CLUSTER-SPECIFIC but GENERAL, it generates an error.
+    -   If it is marked PROFILE-SPECIFIC and GENERAL, it processes the frame as
+        a general command, using the attribute list it retreived from the tree.
+
+    \par Summary of ZCL handlers
+    -   ZCL General Command handler registered to the endpoint to process frames
+        for invalid clusters or clusters without cluster-specific commands (i.e.,
+        clusters with a NULL command handler).
+    -   Cluster-specific, general command handler registered to each cluster.
+    -   Cluster-specific, manufacturer-specific command handler(s) listed in
+        the attribute tree (stored in the cluster structure's context member)
+        under the appropriate manufacturer ID.
 */
 /**
-	@defgroup hal Hardware Abstraction Layer (HAL)
+    @defgroup hal Hardware Abstraction Layer (HAL)
 
-	@{
-		@defgroup hal_rabbit Rabbit/Dynamic C
-		@defgroup hal_win32 Win32/cygwin/gcc
-		@defgroup hal_freescale Freescale/Codewarrior (Programmable XBee)
-		@defgroup hal_dos DOS16/OpenWatcom
-	@}
+    @defgroup util Utility/Support Code
 
-	@defgroup util Utility/Support Code
-	@{
-		@defgroup util_cbuf Circular Buffer
-		@defgroup util_byteorder Byte-swapping functions
-		@defgroup util_xmodem XMODEM code used by the firmware update process
-	@}
+    @defgroup xbee XBee Interface
+    @{
+        @defgroup xbee_serial Serial Interface
+        @defgroup xbee_device Device Interface
 
-	@defgroup xbee XBee Interface
-	@{
-		@defgroup xbee_serial Serial Interface
-		@defgroup xbee_device Device Interface
+        This layer provides a frame-based interface to the XBee module.  It uses a
+        table of frame handlers to dispatch complete frames to higher layers of
+        the API.
 
-		This layer provides a frame-based interface to the XBee module.  It uses a
-		table of frame handlers to dispatch complete frames to higher layers of
-		the API.  If built with a dynamic
+        @defgroup xbee_atcmd AT Commands
 
-		@defgroup xbee_atcmd AT Commands
+        This layer wraps the AT request/response frames to provide an easy method
+        for querying/setting registers on, and sending AT commands to the XBee.
 
-		This layer wraps the AT request/response frames to provide an easy method
-		for querying/setting registers on, and sending AT commands to the XBee.
+        @defgroup xbee_atmode AT Mode
 
-		@defgroup xbee_atmode AT Mode
+        This network stack was designed for use with XBee modules in API mode,
+        but it is sometimes necessary to work with a module in AT mode (for
+        example, performing DigiMesh firmware updates).
 
-		This network stack was designed for use with XBee modules in API mode,
-		but it is sometimes necessary to work with a module in AT mode (for
-		example, performing DigiMesh firmware updates).
+        @defgroup xbee_firmware Firmware Updates
 
-		@defgroup xbee_commissioning XBee-specific support of ZCL Commissioning
-		Cluster
+        This layer makes use of lower layers to perform updates on XBee modules.
+        Both file formats are supported -- .ebl  (ZNet, Zigbee, Smart Energy)
+        and .oem (DigiMesh).
 
-		@defgroup xbee_discovery Node Discovery
+        @defgroup xbee_digi_data Digi Data Endpoint
+        @{
+            @defgroup xbee_transparent Transparent Serial Cluster
 
-		This layer manages ATND responses and 0x95 frames related to proprietary
-		(XBee-only) node discovery methods used in ZigBee firmware (not supported
-		in Smart Energy firmware builds).
+            Support code for Transparent Serial Cluster of Digi Data Endpoint
 
-		@defgroup xbee_firmware Firmware Updates
+            @defgroup pxbee_ota Over-The-Air Firmware Update Cluster
 
-		This layer makes use of lower layers to perform updates on XBee modules.
-		Both file formats are supported -- .ebl  (ZNet, ZigBee, Smart Energy)
-		and .oem (DigiMesh).
+            Support code for performing over-the-air firmware updates on a
+            Programmable XBee module.
+            @{
+                @defgroup pxbee_ota_server PXBee OTA Server
 
-		@defgroup xbee_digi_data Digi Data Endpoint
-		@{
-			@defgroup xbee_transparent Transparent Serial Cluster
+                Code for the Programmable XBee to receive over-the-air firmware
+                updates.
 
-			Support code for Transparent Serial Cluster of Digi Data Endpoint
+                @defgroup pxbee_ota_client PXBee OTA Client
 
-			@defgroup pxbee_ota Over-The-Air Firmware Update Cluster
+                Code for a device to send over-the-air firmware updates to a
+                Programmable XBee.
+            @}
+        @}
 
-			Support code for performing over-the-air firmware updates on a
-			Programmable XBee module.
-			@{
-				@defgroup pxbee_ota_server Server
+        @defgroup xbee_frame Handlers for specific frame types
+    @}
 
-				Code for the Programmable XBee to receive over-the-air firmware
-				updates.
+    @defgroup wpan Wireless Personal Area Networking (WPAN)
+    @{
+        @defgroup wpan_aps Cluster/Endpoint layer
+        @defgroup wpan_types Datatypes and support functions
+    @}
+    @defgroup zigbee Zigbee Networking
+    @{
+        @defgroup zdo Zigbee Data Object/Zigbee Device Profile
+        @defgroup zcl Zigbee Cluster Library
+        @{
+            @defgroup zcl_64 64-bit integer support
+            @defgroup zcl_types Datatypes
+            @defgroup zcl_client Cluster Client support code
+            @defgroup zcl_clusters Clusters
+            @{
+                @defgroup zcl_basic Basic Cluster
+                @defgroup zcl_commissioning Commissioning Cluster
+                @defgroup zcl_identify Identify Cluster
+                @defgroup zcl_onoff On/Off Cluster
+                @defgroup zcl_reporting Attribute Reporting (incomplete)
+                @defgroup zcl_time Time Cluster
+            @}
+        @}
 
-				@defgroup pxbee_ota_client Client
-
-				Code for a device to send over-the-air firmware updates to a
-				Programmable XBee.
-			@}
-		@}
-
-		@defgroup xbee_wpan Glue layer between XBee Device driver and WPAN
-		network stack.
-	@}
-
-	@defgroup wpan Wireless Personal Area Networking (WPAN)
-	@{
-		@defgroup wpan_aps Cluster/Endpoint layer
-		@defgroup wpan_types Datatypes and support functions
-	@}
-	@defgroup zigbee ZigBee Networking
-	@{
-		@defgroup zdo ZigBee Data Object/ZigBee Device Profile
-		@defgroup zcl ZigBee Cluster Library
-		@{
-			@defgroup zcl_64 64-bit integer support
-			@defgroup zcl_types Datatypes
-			@defgroup zcl_client Cluster Client support code
-			@defgroup zcl_clusters Clusters
-			@{
-				@defgroup zcl_basic Basic Cluster
-				@defgroup zcl_commissioning Commissioning Cluster
-				@defgroup zcl_identify Identify Cluster
-				@defgroup zcl_onoff On/Off Cluster
-				@defgroup zcl_reporting Attribute Reporting (incomplete)
-				@defgroup zcl_time Time Cluster
-			@}
-		@}
-
-	@}
+    @}
 */

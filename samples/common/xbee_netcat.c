@@ -236,9 +236,9 @@ int netcat_atcmd(xbee_dev_t *xbee, const char *cmd)
 }
 
 /// Bitfields for \a flags parameter to netcat_simple()
-#define NETCAT_FLAG_CRLF        (1<<0)  //< send CR/LF for EOL sequence
-#define NETCAT_FLAG_LISTEN      (1<<1)  //< listen for incoming connections
-#define NETCAT_FLAG_UDP         (1<<2)  //< use UDP instead of TCP
+#define NETCAT_FLAG_CRLF        (1<<0)  ///< send CR/LF for EOL sequence
+#define NETCAT_FLAG_LISTEN      (1<<1)  ///< listen for incoming connections
+#define NETCAT_FLAG_UDP         (1<<2)  ///< use UDP instead of TCP
 /**
     @brief
     Pass data between a socket and stdout/stdin.

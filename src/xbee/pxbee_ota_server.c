@@ -75,3 +75,5 @@ int pxbee_ota_server_cmd( const wpan_envelope_t FAR *envelope,
 
    return 0;
 }
+
+///@}

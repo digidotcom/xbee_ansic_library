@@ -1,3 +1,6 @@
+Platform Support: libdigiapix
+=============================
+
 Support of Digi International embedded hardware platforms that use
 libdigiapix to control GPIO pins.
 

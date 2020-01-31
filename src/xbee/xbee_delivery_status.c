@@ -65,3 +65,5 @@ const char *xbee_tx_delivery_str(uint8_t status,
         return buffer;
     }
 }
+
+///@}

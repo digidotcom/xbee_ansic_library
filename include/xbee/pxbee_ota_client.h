@@ -12,11 +12,11 @@
 
 /**
    @addtogroup pxbee_ota_client
-   @{
-   @file xbee/pxbee_ota_client.h
-
    Support code for over-the-air (OTA) firmware updates of application code
    on Programmable XBee target.
+   @ingroup pxbee
+   @{
+   @file xbee/pxbee_ota_client.h
 */
 
 #ifndef PXBEE_OTA_CLIENT_H
@@ -127,3 +127,5 @@ XBEE_BEGIN_DECLS
 #endif
 
 #endif      // PXBEE_OTA_CLIENT_H defined
+
+///@}

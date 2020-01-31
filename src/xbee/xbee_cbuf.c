@@ -164,3 +164,5 @@ unsigned int xbee_cbuf_get( xbee_cbuf_t *cbuf, void FAR *buffer, unsigned int le
    
    return copied;
 }
+
+///@}

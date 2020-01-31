@@ -13,7 +13,6 @@
    @addtogroup xbee_route
    @{
    @file xbee_route.c
-   Receive inbound route records, and send "Create Source Route" frames.
 */
 
 /*** BeginHeader */
@@ -32,7 +31,7 @@ int xbee_route_dump_record_indicator( xbee_dev_t *xbee,
    char buffer[ADDR64_STRING_LENGTH];
    const uint16_t FAR *addr_be;
    int i;
-   
+
    if (frame == NULL)
    {
       return -EINVAL;
@@ -68,7 +67,7 @@ int xbee_route_dump_record_indicator( xbee_dev_t *xbee,
 
       return 0;
    }
-   
+
    puts( "malformed route record indicator:");
    hex_dump( frame, length, HEX_DUMP_FLAG_TAB);
    return -EINVAL;
@@ -81,7 +80,7 @@ int xbee_route_dump_many_to_one_req( xbee_dev_t *xbee,
 {
    const xbee_frame_route_many_to_one_req_t FAR *request = frame;
    char buffer[ADDR64_STRING_LENGTH];
-   
+
    if (frame != NULL && length == sizeof *request)
    {
       printf( "many to one route request from %" PRIsFAR " (0x%04X):\n",
@@ -95,4 +94,4 @@ int xbee_route_dump_many_to_one_req( xbee_dev_t *xbee,
    return -EINVAL;
 }
 
-
+///@}

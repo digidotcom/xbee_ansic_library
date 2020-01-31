@@ -11,7 +11,7 @@
  */
 
 /**
-   @addtogroup SXA
+   @addtogroup xbee_sxa
    @{
    @file xbee_reg_descr.c
    Code related to the register descriptor table.
@@ -249,4 +249,4 @@ const FAR _xbee_reg_descr_t _xbee_reg_table[] =
 #undef ALL
 #undef GW
 
-
+///@}

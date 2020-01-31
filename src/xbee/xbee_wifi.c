@@ -36,3 +36,5 @@ const char *xbee_wifi_encryption_name( uint8_t type)
     sprintf( unknown, "0x%02X", type);
     return unknown;
 }
+
+///@}

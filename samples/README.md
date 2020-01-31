@@ -1,4 +1,4 @@
-Digi XBee ANSI C Library: Sample Programs
+Digi XBee ANSI C Library: Sample Programs             {#samples}
 =========================================
 Each port includes a subset of the following sample programs.  Find
 additional documentation in comments at the top of the source code.

@@ -11,10 +11,9 @@
  */
 
 /**
-    @addtogroup xbee_firmware
+    @addtogroup xbee_firmware 
     @{
     @file xbee/bl_gen3.h
-
     Code to interface with the "Gen3" XBee bootloader.
 
     See src/xbee/xbee_bl_gen3.c for additional documentation.
@@ -185,3 +184,5 @@ const char *xbee_bl_gen3_install_status(xbee_gen3_update_t *source,
 XBEE_END_DECLS
 
 #endif // XBEE_BL_GEN3_H
+
+///@}

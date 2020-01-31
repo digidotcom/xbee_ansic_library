@@ -58,3 +58,5 @@ typedef union {
 
 int xbee_scan_dump_response( xbee_dev_t *xbee, const void FAR *raw,
    uint16_t length, void FAR *context);
+
+///@}

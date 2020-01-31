@@ -62,7 +62,7 @@ typedef struct wpan_envelope_t {
    uint16_t             length;           ///< number of bytes in payload
 } wpan_envelope_t;
 
-/** @name ZigBee Stack Profile IDs
+/** @name ZigBee Stack Profile IDs (WPAN_STACK_PROFILE_*)
    4-bit values used in ZigBee beacons
 @{
 */
@@ -74,8 +74,9 @@ typedef struct wpan_envelope_t {
 #define WPAN_STACK_PROFILE_ZIGBEE_PRO           0x2
 ///@}
 
-///@name Profile IDs
-///@{
+/** @name Profile IDs
+   @{
+*/
 /// ZigBee Device Object (aka ZigBee Device Profile)
 #define WPAN_PROFILE_ZDO            0x0000
 
@@ -86,7 +87,7 @@ typedef struct wpan_envelope_t {
 #define WPAN_PROFILE_DIGI           0xC105
 ///@}
 
-/** @name Manufacturer IDs
+/** @name Manufacturer IDs (WPAN_MANUFACTURER_*)
    Contact the ZigBee Alliance to have a Manufacturer ID assigned to your
    company.  DO NOT use the Digi Manufacturer ID for your own
    manufacturer-specific profiles/clusters/attributes.
@@ -105,8 +106,9 @@ typedef struct wpan_envelope_t {
 #define WPAN_MANUFACTURER_TEST3     0xFFF3
 ///@}
 
-///@name List of fixed endpoints
-///@{
+/** @name List of fixed endpoints (WPAN_ENDPOINT_*)
+   @{
+*/
 /// ZigBee Device Object/Profile
 #define WPAN_ENDPOINT_ZDO           0x00
 /// Digi Smart Energy
@@ -214,36 +216,37 @@ typedef struct wpan_cluster_table_entry_t {
 
    /// flags that apply to this cluster, see WPAN_CLUST_FLAG_* macros
    uint8_t                       flags;
-      /** @name
-         @{
-         Values for \c flags field of wpan_cluster_table_entry_t.
-      */
-      /// no flags
-      #define WPAN_CLUST_FLAG_NONE              0x00
-      /// input/server cluster (typically receives requests)
-      #define WPAN_CLUST_FLAG_INPUT             0x01
-      /// output/client cluster (typically receives responses)
-      #define WPAN_CLUST_FLAG_OUTPUT            0x02
-      /// both client and server cluster
-      #define WPAN_CLUST_FLAG_INOUT             0x03
-      /// alias name for input cluster (uses ZCL terminology)
-      #define WPAN_CLUST_FLAG_SERVER            WPAN_CLUST_FLAG_INPUT
-      /// alias name for output cluster (uses ZCL terminology)
-      #define WPAN_CLUST_FLAG_CLIENT            WPAN_CLUST_FLAG_OUTPUT
-      /// Data sent or received by this cluster must be encrypted.
-      /// Do not accept unencrypted broadcast messages.
-      /// If using this flag on a non-ZCL cluster, be sure to set
-      /// WPAN_CLUST_FLAG_NOT_ZCL as well.
-      #define WPAN_CLUST_FLAG_ENCRYPT           0x10
-      /// Unicast data sent or received by this cluster must be
-      /// encrypted, but unencrypted broadcast frames are OK.
-      /// If using this flag on a non-ZCL cluster, be sure to set
-      /// WPAN_CLUST_FLAG_NOT_ZCL as well.
-      #define WPAN_CLUST_FLAG_ENCRYPT_UNICAST   0x20
-      /// this cluster is NOT using the ZigBee Cluster Library (ZCL)
-      #define WPAN_CLUST_FLAG_NOT_ZCL           0x80
-      ///@}
 } wpan_cluster_table_entry_t;
+
+/** @name WPAN_CLUST_FLAG_*
+   Values for \c flags field of wpan_cluster_table_entry_t.
+   @{
+*/
+/// no flags
+#define WPAN_CLUST_FLAG_NONE              0x00
+/// input/server cluster (typically receives requests)
+#define WPAN_CLUST_FLAG_INPUT             0x01
+/// output/client cluster (typically receives responses)
+#define WPAN_CLUST_FLAG_OUTPUT            0x02
+/// both client and server cluster
+#define WPAN_CLUST_FLAG_INOUT             0x03
+/// alias name for input cluster (uses ZCL terminology)
+#define WPAN_CLUST_FLAG_SERVER            WPAN_CLUST_FLAG_INPUT
+/// alias name for output cluster (uses ZCL terminology)
+#define WPAN_CLUST_FLAG_CLIENT            WPAN_CLUST_FLAG_OUTPUT
+/// Data sent or received by this cluster must be encrypted.
+/// Do not accept unencrypted broadcast messages.
+/// If using this flag on a non-ZCL cluster, be sure to set
+/// WPAN_CLUST_FLAG_NOT_ZCL as well.
+#define WPAN_CLUST_FLAG_ENCRYPT           0x10
+/// Unicast data sent or received by this cluster must be
+/// encrypted, but unencrypted broadcast frames are OK.
+/// If using this flag on a non-ZCL cluster, be sure to set
+/// WPAN_CLUST_FLAG_NOT_ZCL as well.
+#define WPAN_CLUST_FLAG_ENCRYPT_UNICAST   0x20
+/// this cluster is NOT using the ZigBee Cluster Library (ZCL)
+#define WPAN_CLUST_FLAG_NOT_ZCL           0x80
+///@}
 
 /// Information on each endpoint on this device.
 typedef struct wpan_endpoint_table_entry_t
@@ -315,12 +318,13 @@ typedef struct wpan_endpoint_table_entry_t
 typedef int (*wpan_endpoint_send_fn)( const wpan_envelope_t FAR *envelope,
    uint16_t flags);
 
-/** @name
+/** @name WPAN_SEND_FLAG_*
    Bitfields for \c flags parameter to a wpan_endpoint_send_fn().
    @{
 */
-#define WPAN_SEND_FLAG_NONE         0x0000
-#define WPAN_SEND_FLAG_ENCRYPTED    0x0001
+#define WPAN_SEND_FLAG_NONE         0x0000      ///< no special behavior
+
+#define WPAN_SEND_FLAG_ENCRYPTED    0x0001      ///< use APS layer encryption
 ///@}
 
 /**
@@ -490,9 +494,11 @@ typedef int (*wpan_response_fn)(
    struct wpan_conversation_t FAR   *conversation,
    const wpan_envelope_t      FAR   *envelope);
 
-// Return values for wpan_response_fn() function handlers.
+// WPAN_CONVERSATION_*: Return values for wpan_response_fn() function handlers.
 // Reserve 0 for invalid response and negative for error responses.
+/// end of conversation, no more responses expected
 #define WPAN_CONVERSATION_END       1
+/// leave conversation open, more responses are expected
 #define WPAN_CONVERSATION_CONTINUE  2
 
 /// Used to track conversations (outstanding requests) on an endpoint.
@@ -543,3 +549,5 @@ XBEE_END_DECLS
 #endif
 
 #endif      // __WPAN_APS_H
+
+///@}

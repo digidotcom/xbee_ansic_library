@@ -11,11 +11,10 @@
  */
 
 /**
-   @addtogroup xbee_sms
+   @defgroup xbee_sms Frames: Cellular SMS (0x1F, 0x9F)
+   @ingroup xbee_frame
    @{
    @file xbee/sms.h
-
-   Support code for XBee Cellular SMS frames.
 */
 
 #ifndef XBEE_SMS_H
@@ -119,3 +118,5 @@ XBEE_END_DECLS
 #endif
 
 #endif
+
+///@}

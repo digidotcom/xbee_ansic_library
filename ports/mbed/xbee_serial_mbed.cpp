@@ -12,7 +12,7 @@
 /**
     @addtogroup hal_kl25
     @{
-    @file xbee_serial_kl25.c
+    @file
     Serial Interface for Freescale KL25 using mbed compiler.
 */
 
@@ -68,7 +68,7 @@ int xbee_ser_write( xbee_serial_t *serial, const void FAR *buffer,
 {
     int wrote = length;
     const uint8_t FAR *b = (const uint8_t FAR *) buffer;
-    
+
     XBEE_SER_CHECK( serial);
 
     if (length < 0)
@@ -222,7 +222,7 @@ int xbee_ser_open( xbee_serial_t *serial, uint32_t baudrate)
     xbee_cbuf_init( &xbee_buf.cbuf, MY_BUF_SIZE);
     // need to attach a function pointer
     xbee_ser.attach( &xbee_ser_rx_isr);
-    
+
     return xbee_ser_baudrate( serial, baudrate);
 }
 
@@ -261,9 +261,9 @@ int xbee_ser_set_rts( xbee_serial_t *serial, bool_t asserted)
 int xbee_ser_get_cts( xbee_serial_t *serial)
 {
     XBEE_SER_CHECK( serial);
-    
+
     return 1;
 }
 
 
-//@}
+///@}

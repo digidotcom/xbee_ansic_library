@@ -40,8 +40,7 @@
 
 XBEE_BEGIN_DECLS
 
-/** @name
-   0x0000-0x00ff General Clusters
+/** @name 0x0000-0x00ff General Clusters
    @{
 */
 #define ZCL_CLUST_BASIC                      0x0000
@@ -68,15 +67,13 @@ XBEE_BEGIN_DECLS
 #define ZCL_CLUST_COMMISSIONING              0x0015
 ///@}
 
-/** @name
-   0x0100-0x01ff Closure Clusters
+/** @name 0x0100-0x01ff Closure Clusters
    @{
 */
 #define ZCL_CLUST_SHADE_CONFIG               0x0100
 ///@}
 
-/** @name
-   0x0200-0x02ff HVAC Clusters
+/** @name 0x0200-0x02ff HVAC Clusters
    @{
 */
 #define ZCL_CLUST_PUMP_CONFIG                0x0200
@@ -86,16 +83,14 @@ XBEE_BEGIN_DECLS
 #define ZCL_CLUST_THERMOSTAT_UI_CONFIG       0x0204
 ///@}
 
-/** @name
-   0x0300-0x03ff Lighting Clusters
+/** @name 0x0300-0x03ff Lighting Clusters
    @{
 */
 #define ZCL_CLUST_COLOR_CONTROL              0x0300
 #define ZCL_CLUST_BALLAST_CONFIG             0x0301
 ///@}
 
-/** @name
-   0x0400-0x04ff Measurement and Sensing Clusters
+/** @name 0x0400-0x04ff Measurement and Sensing Clusters
    @{
 */
 #define ZCL_CLUST_ILLUM_MEASURE              0x0400
@@ -107,8 +102,7 @@ XBEE_BEGIN_DECLS
 #define ZCL_CLUST_OCCUPANCY_SENSING          0x0406
 ///@}
 
-/** @name
-   0x0500-0x05ff Security and Safety Clusters
+/** @name 0x0500-0x05ff Security and Safety Clusters
    @{
 */
 #define ZCL_CLUST_IAS_ZONE                   0x0500
@@ -116,8 +110,7 @@ XBEE_BEGIN_DECLS
 #define ZCL_CLUST_IAS_WD                     0x0502
 ///@}
 
-/** @name
-   0x0600-0x06ff Protocol Interface Clusters
+/** @name 0x0600-0x06ff Protocol Interface Clusters
    @{
 */
 #define ZCL_CLUST_GENERIC_TUNNEL             0x0600
@@ -353,6 +346,7 @@ const char *zcl_status_text( uint_fast8_t status);
 
    @note
    Only supported commands are currently documented.
+   @{
 */
 /// Read Attributes Command, payload is 1 to n 2-byte attribute IDs.
 #define ZCL_CMD_READ_ATTRIB               0x00
@@ -746,15 +740,15 @@ typedef struct zcl_attribute_base_t
          Values for \p flags element of zcl_attribute_base_t.
          @{
       */
-      #define ZCL_ATTRIB_FLAG_NONE        0x00
-      #define ZCL_ATTRIB_FLAG_WRITEONLY   0x01
-      #define ZCL_ATTRIB_FLAG_READONLY    0x02
-      #define ZCL_ATTRIB_FLAG_HAS_MIN     0x04
-      #define ZCL_ATTRIB_FLAG_HAS_MAX     0x08
-      #define ZCL_ATTRIB_FLAG_REPORTABLE  0x10
+      #define ZCL_ATTRIB_FLAG_NONE        0x00  ///< no flags
+      #define ZCL_ATTRIB_FLAG_WRITEONLY   0x01  ///< attribute is write-only
+      #define ZCL_ATTRIB_FLAG_READONLY    0x02  ///< attribute is read-only
+      #define ZCL_ATTRIB_FLAG_HAS_MIN     0x04  ///< /c min value set
+      #define ZCL_ATTRIB_FLAG_HAS_MAX     0x08  ///< /c max value set
+      #define ZCL_ATTRIB_FLAG_REPORTABLE  0x10  ///< attribute is reportable
 
       // flags available for future use
-      #define ZCL_ATTRIB_FLAG_UNUSED1     0x20
+      #define ZCL_ATTRIB_FLAG_UNUSED1     0x20  ///< unused flag for future use
 
       /// Data is stored as sent/received in ZCL requests (little-endian,
       /// 24-bit types stored as 3 bytes instead of 4).  Not applicable
@@ -946,7 +940,4 @@ XBEE_END_DECLS
 
 #endif   // __ZIGBEE_ZCL_H
 
-
-
-
-
+///@}

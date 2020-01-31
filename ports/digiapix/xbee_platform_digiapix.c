@@ -10,12 +10,13 @@
  * =======================================================================
  */
 /**
-    @addtogroup hal_digiapix
+    @defgroup hal_digiapix HAL: libdigiapix (Digi ConnectCore)
+    Support for Digi International products using libdigiapix to control
+    GPIO pins.
+
+    @ingroup hal
     @{
     @file xbee_platform_digiapix.c
-    Platform-specific functions for use by the XBee Driver on Digi
-    International products using libdigiapix to control GPIO pins.
-
     Based on POSIX platform, with additional code to interface with
     /RESET, SLEEP_REQ, ON/nSLEEP and XBEE_IDENT pins.
 
@@ -124,4 +125,4 @@ int digiapix_xbee_is_awake(struct xbee_dev_t *xbee)
     return result == GPIO_HIGH;
 }
 
-/** @} */
+///@}

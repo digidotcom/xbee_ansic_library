@@ -69,3 +69,5 @@
 #define ZCL_SWITCH_ACTION_TOGGLE       0x02
 
 #endif         // ZIGBEE_ZCL_ONOFF_H defined
+
+///@}

@@ -89,3 +89,5 @@ void hex_dump( const void FAR *address, uint16_t length, uint16_t flags)
       #endif
    }
 }
+
+///@}

@@ -11,7 +11,7 @@
  */
 
 /**
-   @addtogroup SXA
+   @addtogroup xbee_sxa
    @{
    @file xbee_sxa.c
    Simple XBee API.
@@ -641,7 +641,7 @@ int _sxa_disc_cluster_handler( const wpan_envelope_t FAR *envelope,
    Function shared by multiple functions that process I/O sample
    messages (0x92 frames and ATIS responses).
 
-   @param[in]  xbee     device that received the message
+   @param[in]  ieee_be  address of node that sent the ATIS response
    @param[in]  raw      pointer to the message (starting at sample count field)
    @param[in]  length   length of the message
 
@@ -1301,6 +1301,4 @@ int sxa_is_digi(const sxa_node_t FAR *sxa)
    return 1;
 }
 
-
-
-
+///@}

@@ -467,3 +467,4 @@ int xbee_atmode_read_response( xbee_dev_t *xbee, char FAR *response,
 #endif /* XBEE_DEVICE_ENABLE_ATMODE */
 /*** EndHeader */
 
+///@}

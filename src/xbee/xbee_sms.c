@@ -10,6 +10,12 @@
  * =======================================================================
  */
 
+/**
+    @addtogroup xbee_sms
+    @{
+    @file
+*/
+
 #include <stdio.h>
 #include <string.h>
 #include "xbee/platform.h"
@@ -58,3 +64,5 @@ int xbee_sms_receive_dump(xbee_dev_t *xbee, const void FAR *raw,
         sms->message);
     return 0;
 }
+
+///@}

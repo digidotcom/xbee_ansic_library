@@ -12,9 +12,9 @@
 
 /**
    @addtogroup xbee_firmware
+   Driver layer for performing XBee firmware updates.
    @{
    @file xbee/firmware.h
-   Driver layer for performing XBee firmware updates.
 
    @todo Create typedefs for xbee_fw_source_t read() and seek() handlers,
          write documentation including what the return values are.  We will
@@ -101,4 +101,4 @@ XBEE_END_DECLS
 
 #endif
 
-
+///@}

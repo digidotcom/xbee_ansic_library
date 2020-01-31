@@ -462,3 +462,5 @@ int zcl_time_find_servers( wpan_dev_t *dev, uint16_t profile_id)
 
    return zcl_find_and_read_attributes( dev, clusters, &client_read);
 }
+
+///@}

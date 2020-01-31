@@ -434,3 +434,5 @@ typedef JSUint64 zcl64_t;
 #define ZCL64_TO_UDECSTR(buffer, var)  JSLL_UDECSTR(buffer, var)
 
 #endif
+
+///@}

@@ -10,7 +10,8 @@
  * =======================================================================
  */
 /**
-	@addtogroup hal_efm32
+	@defgroup hal_efm32 HAL: EFM32/Simplicity Studio
+	@ingroup hal
 	@{
 	@file xbee_platform_efm32.c
 	Platform header for efm32
@@ -71,3 +72,4 @@
 	}
 #endif
 #endif /* __XBEE_PLATFORM_EFM32 */
+///@}

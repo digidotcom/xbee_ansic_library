@@ -281,3 +281,5 @@ int xbee_disc_discover_nodes( xbee_dev_t *xbee, const char *identifier)
    // We don't have to check (xbee == NULL) since xbee_cmd_execute() does so.
    return xbee_cmd_execute( xbee, "ND", identifier, (uint8_t) ni_len);
 }
+
+///@}

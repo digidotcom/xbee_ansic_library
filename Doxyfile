@@ -32,7 +32,7 @@ DOXYFILE_ENCODING      = UTF-8
 # title of most generated pages and in a few other places.
 # The default value is: My Project.
 
-PROJECT_NAME           = "XBee/ZigBee Driver"
+PROJECT_NAME           = "XBee ANSI C Host Library"
 
 # The PROJECT_NUMBER tag can be used to enter a project or revision number. This
 # could be handy for archiving the generated documentation or if some version
@@ -244,7 +244,7 @@ SEPARATE_MEMBER_PAGES  = NO
 # uses this value to replace tabs by spaces in code fragments.
 # Minimum value: 1, maximum value: 16, default value: 4.
 
-TAB_SIZE               = 3
+TAB_SIZE               = 4
 
 # This tag can be used to specify a number of aliases that act as commands in
 # the documentation. An alias has the form:
@@ -778,7 +778,7 @@ WARNINGS               = YES
 # will automatically be disabled.
 # The default value is: YES.
 
-WARN_IF_UNDOCUMENTED   = YES
+WARN_IF_UNDOCUMENTED   = NO
 
 # If the WARN_IF_DOC_ERROR tag is set to YES, doxygen will generate warnings for
 # potential errors in the documentation, such as not documenting some parameters
@@ -795,7 +795,7 @@ WARN_IF_DOC_ERROR      = YES
 # EXTRACT_ALL is set to YES then this flag will automatically be disabled.
 # The default value is: NO.
 
-WARN_NO_PARAMDOC       = NO
+WARN_NO_PARAMDOC       = YES
 
 # If the WARN_AS_ERROR tag is set to YES then doxygen will immediately stop when
 # a warning is encountered.
@@ -829,9 +829,13 @@ WARN_LOGFILE           =
 # spaces. See also FILE_PATTERNS and EXTENSION_MAPPING
 # Note: If this tag is empty the current directory is searched.
 
-INPUT                  = src \
+INPUT                  = frame_types.md \
+                         README.md \
                          doxygen \
-                         include
+                         include \
+                         samples/README.md \
+                         src \
+                         ports
 
 # This tag can be used to specify the character encoding of the source files
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding. Doxygen uses
@@ -2199,13 +2203,14 @@ PREDEFINED             = _xbee_atcmd_debug \
                          _xbee_io_debug \
                          _xbee_serial_debug \
                          _xbee_sxa_debug \
+                         _xbee_time_debug \
                          _xmodem_debug \
                          _zcl_time_debug \
                          "XBEE_PACKED(name, decl)=struct name decl" \
                          wpan_aps_debug \
                          XBEE_BEGIN_DECLS \
                          XBEE_END_DECLS \
-                         xbee_wpam_debug \
+                         xbee_wpan_debug \
                          zcl_client_debug \
                          zcl_types_debug \
                          zigbee_zcl_debug \

@@ -117,3 +117,5 @@ void xbee_reset_radio( struct xbee_dev_t *xbee, bool_t asserted)
 #include "../util/jslong.c"
 #pragma MESSAGE DEFAULT C5909		// restore C5909 (Assignment in condition)
 #endif
+
+///@}

@@ -11,11 +11,9 @@
  */
 
 /**
-   @addtogroup xbee_commissioning
+   @addtogroup xbee_commissioning XBee-specific support of ZCL Commissioning
    @{
    @file xbee_commissioning.c
-
-   XBee-specific hardware support for ZCL Commissioning Cluster.
 */
 
 /*** BeginHeader */
@@ -589,3 +587,5 @@ void xbee_commissioning_tick( xbee_dev_t *xbee, zcl_comm_state_t *comm)
          break;
    }
 }
+
+///@}

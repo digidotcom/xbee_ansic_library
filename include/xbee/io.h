@@ -11,11 +11,12 @@
  */
 
 /**
-   @addtogroup xbee_io
+   @defgroup xbee_io Frames: Input Sample (0x92)
+   Code related to built-in I/Os on the XBee module (the ATIS command, 
+   0x92 frames).
+   @ingroup xbee_frame
    @{
    @file xbee/io.h
-   Header for code related to built-in I/Os on the XBee module
-   (the ATIS command, 0x92 frames)
 */
 
 #ifndef XBEE_IO_H
@@ -202,3 +203,5 @@ XBEE_END_DECLS
 #endif
 
 #endif
+
+///@}

@@ -62,8 +62,9 @@ for information on setting up the build environment.
 
 Documentation
 -------------
-If you don't already have HTML documentation in the `doc/html` directory, you
-can generate it with Doxygen.  Go to www.doxygen.org to download the installer.
+You can find [official documentation] on the GitHub page for the 
+project.  To generate local documentation to the `doc/html` directory,
+first download and install [Doxygen].
 
 Launch Doxywizard and open `Doxyfile` at the root directory of the driver.
 Go to the "Run" tab and click the "Run doxygen" button to build the HTML
@@ -72,6 +73,8 @@ portions of the code -- that's OK and expected.
 
 To view the documentation, open `doc/html/index.html` in a web browser.
 
+[official documentation]: http://digidotcom.github.io/xbee_ansic_library/
+[Doxygen]: http://www.doxygen.nl/
 
 XBee Firmware
 -------------

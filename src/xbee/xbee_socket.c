@@ -15,8 +15,6 @@
     @{
     @file xbee_socket.c
 
-    Support code for Extended Socket frames (0x40-0x4F and 0xC0-0xCF).
-
     See xbee/socket.h for summary of API.
 */
 
@@ -1063,3 +1061,5 @@ int xbee_sock_frame_handler(xbee_dev_t *xbee, const void FAR *rawframe,
     // this is a frame we aren't interested in.
     return 0;
 }
+
+///@}

@@ -69,7 +69,7 @@ typedef struct zcl_ota_upgrade_source_t {
     Send at OTA Upgrade Image Notify command.
 
     @param[in]  wpan_dev        Device used to send.
-    @param[n]   image_id        Image ID for Mfg. Code, Image Type and File
+    @param[in]  image_id        Image ID for Mfg. Code, Image Type and File
                                 Version.
     @param[in]  src_ep          Source endpoint structure to send from.
     @param[in]  dest_ep         Target device's endpoint.
@@ -124,3 +124,5 @@ uint32_t zcl_ota_get_upgrade_time(const addr64 *client_ieee_be,
 XBEE_END_DECLS
 
 #endif // ZCL_OTA_SERVER_H
+
+///@}

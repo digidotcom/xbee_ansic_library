@@ -70,3 +70,5 @@ int _zcl_basic_server( const wpan_envelope_t FAR *envelope,
 
    return zcl_general_command( envelope, context);
 }
+
+///@}

@@ -68,3 +68,5 @@ int _zcl_onoff_handler( const wpan_envelope_t FAR *envelope,
    // commands and send errors out for unsupported commands.
    return zcl_general_command( envelope, context);
 }
+
+///@}

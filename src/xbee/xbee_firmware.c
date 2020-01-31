@@ -1386,3 +1386,4 @@ int xbee_fw_buffer_init( xbee_fw_buffer_t *fw, uint32_t length,
    return 0;
 }
 
+///@}

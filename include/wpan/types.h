@@ -108,3 +108,5 @@ XBEE_END_DECLS
 #endif
 
 #endif // #ifdef __WPAN_TYPES_H
+
+///@}

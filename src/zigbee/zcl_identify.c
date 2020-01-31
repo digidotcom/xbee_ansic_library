@@ -241,3 +241,5 @@ int zcl_identify_command( const wpan_envelope_t FAR *envelope,
    // Command not handled by this function, pass to General Command Handler.
    return zcl_general_command( envelope, context);
 }
+
+///@}

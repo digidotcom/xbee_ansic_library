@@ -112,8 +112,11 @@ typedef struct xbee_cmd_response {
       Macros used for \c flags field of xbee_cmd_response_t
       @{
    */
+      /// \c flags mask to retrieve status from XBee response
       #define XBEE_CMD_RESP_MASK_STATUS         0x000F
+      /// RSSI from ATND response is invalid
       #define XBEE_CMD_RESP_ATND_RSSI_INVALID   XBEE_AT_RESP_ATND_RSSI_INVALID
+      /// AT command timed out
       #define XBEE_CMD_RESP_FLAG_TIMEOUT        0x8000
    ///@}
 
@@ -302,14 +305,15 @@ typedef union xbee_header_at_request {
 enum xbee_at_resp_status {
    /// Mask to ignore extra bits used in the status response.
    XBEE_AT_RESP_STATUS_MASK             = 0x0F,
-   XBEE_AT_RESP_SUCCESS                 = 0x00,
-   XBEE_AT_RESP_ERROR                   = 0x01,
-   XBEE_AT_RESP_BAD_COMMAND             = 0x02,
-   XBEE_AT_RESP_BAD_PARAMETER           = 0x03,
-   XBEE_AT_RESP_TX_FAIL                 = 0x04,
-   XBEE_AT_RESP_NO_SESSION              = 0x0B,
-   XBEE_AT_RESP_ENCRYPTION_ERR          = 0x0C,
-   XBEE_AT_RESP_TO_BIT_NOT_SET          = 0x0D,
+
+   XBEE_AT_RESP_SUCCESS                 = 0x00, ///< Success
+   XBEE_AT_RESP_ERROR                   = 0x01, ///< Error
+   XBEE_AT_RESP_BAD_COMMAND             = 0x02, ///< Bad Command
+   XBEE_AT_RESP_BAD_PARAMETER           = 0x03, ///< Bad Parameter
+   XBEE_AT_RESP_TX_FAIL                 = 0x04, ///< Transmit failed
+   XBEE_AT_RESP_NO_SESSION              = 0x0B, ///< No Session
+   XBEE_AT_RESP_ENCRYPTION_ERR          = 0x0C, ///< Encryption Error
+   XBEE_AT_RESP_TO_BIT_NOT_SET          = 0x0D, ///< ATTO bit not set
 
    /// The RSSI field of the ATND response is not valid [DigiMesh]
    XBEE_AT_RESP_ATND_RSSI_INVALID       = 0x40,
@@ -484,7 +488,7 @@ enum xbee_command_list_type {
 /**
    @brief Entry for table of XBee registers to query at startup.
 
-   Use #_XBEE_ATCMD_REG() to populate _xbee_atcmd_query_regs[].
+   Use #XBEE_ATCMD_REG() to populate _xbee_atcmd_query_regs[].
 */
 typedef struct xbee_atcmd_reg_t {
    xbee_at_cmd_t  command;          ///< command to send to XBee device
@@ -636,6 +640,10 @@ typedef struct xbee_atcmd_reg_t {
 #define XBEE_ATCMD_REG_END_CB(cb, flags) \
    { { { '\0', '\0' } }, flags, XBEE_CLT_NONE, cb, 0, 0 }
 
+/**
+   @brief Macro used in create command list tables.  Used to identify the
+   last entry in the table (inserted with XBEE_ATCMD_REG_END_CB()).
+*/
 #define XBEE_ATCMD_REG_VALID(ptr)   (ptr->command.w != 0)
 
 

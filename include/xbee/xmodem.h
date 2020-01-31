@@ -11,10 +11,11 @@
  */
 
 /**
-   @addtogroup util_xmodem
+   @defgroup util_xmodem XMODEM (send-only)
+   Xmodem API used with firmware updates.
+   @ingroup util
    @{
    @file xbee/xmodem.h
-   Xmodem API used with firmware updates.
 
    Makes use of xbee/serial.h API for sending and receiving serial data.
 */
@@ -278,4 +279,4 @@ XBEE_END_DECLS
 
 #endif
 
-
+///@}

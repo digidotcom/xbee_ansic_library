@@ -548,3 +548,5 @@ const char *xbee_bl_gen3_install_status(xbee_gen3_update_t *source,
     sprintf(buffer, "ERROR: unknown state %u.", source->state);
     return buffer;
 }
+
+///@}

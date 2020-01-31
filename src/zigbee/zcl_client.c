@@ -51,7 +51,7 @@
    function is used to populate that copy using the Read Attributes Responses.
 
    @param[in]  zcl   ZCL command to process
-   @param[in]  attr_list   start of the attribute list to use for storing
+   @param[in]  attr_table  start of the attribute list to use for storing
                            attribute responses
 
    @return  ZCL status value to send in a default response
@@ -609,7 +609,7 @@ of 3 UNSIGNED_8BIT
    @param[in]  value          pointer to ZCL-encoded array value
    @param[in]  value_length   number of bytes at value
 
-   @retval  -EINVAL  \p value is NULL or \value_length is too small
+   @retval  -EINVAL  \p value is NULL or \p value_length is too small
    @retval  >=3      number of bytes from \p value consumed by function
 
    @sa zcl_print_attribute_value, zcl_print_struct_value
@@ -670,7 +670,7 @@ with 3 elements
    @param[in]  value          pointer to ZCL-encoded structure value
    @param[in]  value_length   number of bytes at value
 
-   @retval  -EINVAL  \p value is NULL or \value_length is too small
+   @retval  -EINVAL  \p value is NULL or \p value_length is too small
    @retval  >=2      number of bytes from \p value consumed by function
 
    @sa zcl_print_attribute_value, zcl_print_array_value
@@ -723,7 +723,7 @@ int zcl_print_struct_value( const void *value, int value_length)
    @param[in]  value          pointer to the ZCL-encoded value
    @param[in]  value_length   number of bytes at value
 
-   @retval  -EINVAL  \p value is NULL or \value_length is too small
+   @retval  -EINVAL  \p value is NULL or \p value_length is too small
    @retval  >=2      number of bytes from \p value consumed by function
 
    @sa zcl_print_array_value, zcl_print_struct_value
@@ -913,4 +913,4 @@ int zcl_print_attribute_value( uint8_t type, const void *value,
    return datasize;
 }
 
-
+///@}

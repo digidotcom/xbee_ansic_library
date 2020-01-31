@@ -11,7 +11,7 @@
  */
 
 /**
-   @addtogroup SXA
+   @addtogroup xbee_sxa
    @{
    @file xbee/sxa_socket.h
    Header for Simplified XBee API TCP sockets over ZigBee

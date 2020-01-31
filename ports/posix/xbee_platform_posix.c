@@ -39,5 +39,4 @@ uint32_t xbee_millisecond_timer()
     return (uint32_t) (t.tv_sec * 1000 + t.tv_usec / 1000);
 }
 
-
-
+///@}

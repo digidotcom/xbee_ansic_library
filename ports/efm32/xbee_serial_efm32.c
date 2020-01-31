@@ -461,3 +461,5 @@ int xbee_ser_get_cts(xbee_serial_t *serial)
 	}
 	return (0 == GPIO_PinInGet(XBEE_CTSPORT, XBEE_CTSPIN));
 }
+
+///@}

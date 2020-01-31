@@ -11,11 +11,10 @@
  */
 
 /**
-    @addtogroup xbee_socket
+    @defgroup xbee_socket Frames: Extended Sockets (0x40-0x4F and 0xC0-0xCF)
+    @ingroup xbee_frame
     @{
     @file xbee/socket.h
-
-    Support code for Extended Socket frames (0x40-0x4F and 0xC0-0xCF).
 
     Because this framework dispatches received frames to frame handlers, this
     API layer for sockets makes use of callbacks to pass received data back to
@@ -185,6 +184,7 @@ typedef void (*xbee_sock_option_resp_fn)(xbee_sock_t socket,
     frame to the XBee module to allocate space in its socket table.  Socket
     is PENDING until XBee returns a Socket Create Response.
 
+    @param[in]  xbee            XBee device to create socket on
     @param[in]  protocol        one of XBEE_SOCK_PROTOCOL_UDP, _TCP or _SSL
     @param[in]  notify_handler  Callback to receive socket notifications from
                                 multiple frame types.  Must be non-NULL.
@@ -435,3 +435,5 @@ int xbee_sock_frame_handler(xbee_dev_t *xbee, const void FAR *rawframe,
 XBEE_END_DECLS
 
 #endif // XBEE_SOCKET_H
+
+///@}

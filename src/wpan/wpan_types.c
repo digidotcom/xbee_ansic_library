@@ -176,8 +176,8 @@ bool_t addr64_is_zero( const addr64 FAR *addr)
       - 01:23:45:67:89:aB:Cd:EF
       - 0123 4567 89AB cdef
 
-   @param[out] address  converted address (stored big-endian)
-   @param[in]  str      string to convert, starting with first hex character
+   @param[out] address_be  converted address (stored big-endian)
+   @param[in]  str         string to convert, starting with first hex character
 
    @retval  -EINVAL  invalid parameters passed to function; if \a address is
                      not NULL, it will be set to all zeros
@@ -228,6 +228,4 @@ int addr64_parse( addr64 *address_be, const char FAR *str)
    return -EINVAL;
 }
 
-
-
-
+///@}

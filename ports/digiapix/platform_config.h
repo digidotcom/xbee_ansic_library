@@ -13,6 +13,12 @@
 // digiapix platforms use a slightly modified version of the POSIX platform
 #include "../posix/platform_config.h"
 
+/**
+    @addtogroup hal_digiapix
+    @sa hal_posix
+    @{ @file 
+*/
+
 int digiapix_platform_init(void);
 #define XBEE_PLATFORM_INIT()    digiapix_platform_init()
 
@@ -22,3 +28,5 @@ int digiapix_xbee_is_awake(struct xbee_dev_t *xbee);
 
 #define XBEE_RESET_FN           &digiapix_xbee_reset
 #define XBEE_IS_AWAKE_FN        &digiapix_xbee_is_awake
+
+///@}

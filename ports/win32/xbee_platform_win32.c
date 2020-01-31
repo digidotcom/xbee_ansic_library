@@ -29,3 +29,5 @@ uint32_t xbee_millisecond_timer()
 {
     return GetTickCount();
 }
+
+///@}

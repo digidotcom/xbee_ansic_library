@@ -298,3 +298,5 @@ int zcl_ota_upgrade_cluster_handler(const wpan_envelope_t FAR *envelope,
     // let the ZCL General Command handler process all unhandled frames
     return zcl_general_command(envelope, context);
 }
+
+///@}
