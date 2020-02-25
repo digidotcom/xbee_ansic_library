@@ -91,28 +91,32 @@ int main( int argc, char *argv[])
    // serial number, IEEE address, etc.)
    xbee_cmd_init_device( &my_xbee);
    do {
-      xbee_dev_tick( &my_xbee);
-      status = xbee_cmd_query_status( &my_xbee);
+      status = xbee_dev_tick(&my_xbee);
+      if (status >= 0) {
+         status = xbee_cmd_query_status(&my_xbee);
+      }
    } while (status == -EBUSY);
-   if (status)
+
+   if (status == 0)
    {
-      printf( "Error %d waiting for query to complete.\n", status);
-      return -1;
+      walker_init(&my_xbee.wpan_dev, &target, WALKER_FLAGS_NONE);
+      while ((status = wpan_tick(&my_xbee.wpan_dev)) >= 0)
+      {
+         switch (walker_tick())
+         {
+            case WALKER_DONE:
+               return 0;
+            case WALKER_ERROR:
+               return -1;
+            default:
+               break;      // continue processing
+         }
+      }
    }
 
-   walker_init( &my_xbee.wpan_dev, &target, WALKER_FLAGS_NONE);
-   while (1)
-   {
-      wpan_tick( &my_xbee.wpan_dev);
-      switch (walker_tick())
-      {
-         case WALKER_DONE:
-            return 0;
-         case WALKER_ERROR:
-            return -1;
-         default:
-            break;      // continue processing
-      }
+   if (status < 0) {
+      printf("Error %d.\n", status);
+      return -1;
    }
 }
 

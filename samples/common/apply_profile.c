@@ -256,8 +256,10 @@ int main( int argc, char *argv[])
    xbee_cmd_init_device( &my_xbee);
    printf( "Waiting for driver to query the XBee device...\n");
    do {
-      xbee_dev_tick( &my_xbee);
-      status = xbee_cmd_query_status( &my_xbee);
+      status = xbee_dev_tick(&my_xbee);
+      if (status >= 0) {
+         status = xbee_cmd_query_status(&my_xbee);
+      }
    } while (status == -EBUSY);
    if (status)
    {

@@ -132,10 +132,12 @@ int main(int argc, char **argv)
     }
     for (;;) {
         do {
-            xbee_dev_tick(&xbee);
-            xbee_term_set_color(SOURCE_KEYBOARD);
-            err = xbee_readline(payload, sizeof(payload));
-            xbee_term_set_color(SOURCE_UNKNOWN);
+            err = xbee_dev_tick(&xbee);
+            if (err >= 0) {
+                xbee_term_set_color(SOURCE_KEYBOARD);
+                err = xbee_readline(payload, sizeof(payload));
+                xbee_term_set_color(SOURCE_UNKNOWN);
+            }
         } while (!termflag && err == -EAGAIN);
         if (termflag || err == -ENODATA)
             return EXIT_SUCCESS;

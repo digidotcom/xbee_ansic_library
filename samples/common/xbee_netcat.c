@@ -267,8 +267,11 @@ int netcat_sample(xbee_dev_t *xbee, unsigned flags, uint16_t source_port,
     netcat_state = NETCAT_STATE_INIT;
     fprintf(stderr, "Waiting for Internet connection...\n");
     while (netcat_state < NETCAT_STATE_DONE) {
-        xbee_dev_tick(xbee);
-
+        result = xbee_dev_tick(xbee);
+        if (result < 0) {
+            printf("Error %d calling xbee_dev_tick().\n", result);
+            return EXIT_FAILURE;
+        }
         switch (netcat_state) {
         case NETCAT_STATE_INIT:
             // fall through to sending ATAI to check for online status

@@ -110,7 +110,11 @@ int main( int argc, char *argv[])
     while (1)
     {
         while ((status = xbee_readline(term_str, sizeof term_str)) == -EAGAIN) {
-            xbee_dev_tick(&my_xbee);
+            status = xbee_dev_tick(&my_xbee);
+            if (status < 0) {
+               printf("Error %d from xbee_dev_tick().\n", status);
+               return -1;
+            }
             xbee_cmd_tick();
         }
         if (status == -ENODATA || ! strcmpi(term_str, "quit")){

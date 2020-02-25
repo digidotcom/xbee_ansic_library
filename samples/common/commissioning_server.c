@@ -140,7 +140,11 @@ int main( int argc, char *argv[])
          // change associate flash rate when Identify is active
          xbee_zcl_identify( &my_xbee);
 
-         wpan_tick( &my_xbee.wpan_dev);
+         status = wpan_tick(&my_xbee.wpan_dev);
+         if (status < 0) {
+            printf("Error %d from wpan_tick().\n", status);
+            return -1;
+         }
       } while (linelen == -EAGAIN);
 
       if (linelen == -ENODATA || ! strcmpi( cmdstr, "quit"))

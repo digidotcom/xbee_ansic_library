@@ -292,7 +292,7 @@ int main( int argc, char *argv[])
    xbee_dev_dump_settings( &my_xbee, XBEE_DEV_DUMP_FLAG_DEFAULT);
 
    xbee_gpm_envelope_local( &envelope_self, &my_xbee.wpan_dev);
-   
+
    upload_pagesize = xbee_gpm_max_write( &my_xbee.wpan_dev);
 
    // get flash info, for use by later commands
@@ -303,7 +303,11 @@ int main( int argc, char *argv[])
       int linelen;
       do {
          linelen = xbee_readline(cmdstr, sizeof cmdstr);
-         xbee_dev_tick( &my_xbee);
+         status = xbee_dev_tick(&my_xbee);
+         if (status < 0) {
+            printf("Error %d from xbee_dev_tick().\n", status);
+            return -1;
+         }
       } while (linelen == -EAGAIN);
 
       if (linelen == ENODATA || ! strcmpi( cmdstr, "quit"))

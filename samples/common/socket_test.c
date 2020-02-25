@@ -405,7 +405,11 @@ int main(int argc, char *argv[])
         int linelen;
         do {
             linelen = xbee_readline(cmdstr, sizeof cmdstr);
-            xbee_dev_tick(&my_xbee);
+            status = xbee_dev_tick(&my_xbee);
+            if (status < 0) {
+               printf("Error %d from xbee_dev_tick().\n", status);
+               return -1;
+            }
         } while (linelen == -EAGAIN);
 
         if (linelen == -ENODATA || strcmpi(cmdstr, "quit") == 0) {

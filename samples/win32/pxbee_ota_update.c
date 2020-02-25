@@ -226,7 +226,11 @@ int main( int argc, char *argv[])
       int linelen;
       do {
          linelen = xbee_readline(cmdstr, sizeof cmdstr);
-         wpan_tick( &my_xbee.wpan_dev);
+         status = wpan_tick(&my_xbee.wpan_dev);
+         if (status < 0) {
+            printf("Error %d from wpan_tick().\n", status);
+            return -1;
+         }
 
          if (fw_file != NULL)
          {
