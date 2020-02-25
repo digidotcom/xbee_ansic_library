@@ -191,6 +191,10 @@ void handle_ss_cmd(xbee_dev_t *xbee, const char *command)
     handle_verifier(xbee, &command[2], &secure_session_verifier);
 }
 
+void handle_at_cmd(xbee_dev_t *xbee, const char *command)
+{
+    process_command(xbee, command);
+}
 
 void print_menu(xbee_dev_t *xbee, const char *command)
 {
@@ -223,7 +227,7 @@ typedef struct cmd_entry_t {
 } cmd_entry_t;
 
 cmd_entry_t commands[] = {
-    { "at",             &process_command },
+    { "at",             &handle_at_cmd },
 
     { "?",              &print_menu },
     { "help",           &print_menu },

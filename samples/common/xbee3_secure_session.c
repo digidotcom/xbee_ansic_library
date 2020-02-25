@@ -251,6 +251,12 @@ void handle_logout_or_close_cmd(xbee_dev_t *xbee, const char *command)
 }
 
 
+void handle_at_cmd(xbee_dev_t *xbee, const char *command)
+{
+    process_command(xbee, command);
+}
+
+
 typedef void (*command_fn)(xbee_dev_t *xbee, const char *command);
 typedef struct cmd_entry_t {
     const char *command;
@@ -258,7 +264,7 @@ typedef struct cmd_entry_t {
 } cmd_entry_t;
 
 cmd_entry_t commands[] = {
-    { "at",             &process_command },
+    { "at",             &handle_at_cmd },
 
     { "?",              &print_menu },
     { "help",           &print_menu },
