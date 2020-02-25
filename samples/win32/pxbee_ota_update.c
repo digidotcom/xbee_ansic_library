@@ -52,8 +52,8 @@ char *get_file()
    FILE *f;
    char appname[60];
    uint32_t appname_offset;
-   
-   printf( "Select firmware image (*.abs.bin) from file dialog box.\n");         
+
+   printf( "Select firmware image (*.abs.bin) from file dialog box.\n");
    file = win32_select_file("Select Firmware Image",
       "Firmware Images (*.abs.bin)\0*.abs.bin\0All Files (*.*)\0*.*\0");
    if (file != NULL)
@@ -80,7 +80,7 @@ char *get_file()
          fclose( f);
       }
    }
-   
+
    return file;
 }
 
