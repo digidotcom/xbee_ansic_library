@@ -12,6 +12,7 @@
 
 #include <ctype.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "xbee/platform.h"
 #include "xbee/atcmd.h"
