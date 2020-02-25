@@ -422,7 +422,7 @@ int main(int argc, char *argv[])
         } while (linelen == -EAGAIN && frame_count >= 0);
 
         if (frame_count < 0) {
-            printf("Error %d calling xbee_dev_tick().\n", frame_count);
+            printf("Error %d calling wpan_tick().\n", frame_count);
             break;
         }
 
