@@ -15,6 +15,22 @@
 
     Demonstrates sending frame type 0x2D (User Data Relay) and parsing 0xAD
     (User Data Relay Output) responses.
+
+    Connect to the serial port of an XBee module in API mode (ATAP=1).
+
+    You can send a loopback test by selecting "Serial" as the target,
+    then typing a message and hitting return.
+
+    For testing with the BLE interface, first use the xbee3_srp_verifier
+    sample to set a password and enable the BLE interface (ATBT=1).  Then
+    use the Digi XBee Mobile app[1] to connect to the BLE interface and
+    use its "Relay Console" (in "Options") to send and receive data.
+
+    For testing with the MicroPython interface, you can use samples from
+    the xbee-micropython project[2].
+
+    [1]: https://www.digi.com/products/embedded-systems/digi-xbee/digi-xbee-tools/digi-xbee-mobile-app
+    [2]: https://github.com/digidotcom/xbee-micropython/
 */
 
 #include <ctype.h>
