@@ -28,6 +28,7 @@
 #include "util/srp.h"
 
 #include "_atinter.h"           // Common code for processing AT commands
+#include "sample_cli.h"         // Common code for parsing user-entered data
 #include "parse_serial_args.h"
 
 typedef struct xbee_verifier_settings_t {
@@ -181,57 +182,43 @@ void handle_verifier(xbee_dev_t *xbee, const char *param,
     }
 }
 
-void handle_ble_cmd(xbee_dev_t *xbee, const char *command)
+void handle_ble_cmd(xbee_dev_t *xbee, char *command)
 {
     handle_verifier(xbee, &command[3], &ble_verifier);
 }
 
-void handle_ss_cmd(xbee_dev_t *xbee, const char *command)
+void handle_ss_cmd(xbee_dev_t *xbee, char *command)
 {
     handle_verifier(xbee, &command[2], &secure_session_verifier);
 }
 
-void handle_at_cmd(xbee_dev_t *xbee, const char *command)
-{
-    process_command(xbee, command);
-}
-
-void print_menu(xbee_dev_t *xbee, const char *command)
+void handle_menu_cmd(xbee_dev_t *xbee, char *command)
 {
     XBEE_UNUSED_PARAMETER(xbee);
     XBEE_UNUSED_PARAMETER(command);
 
     puts("");
-    puts("--- AT Commands ---");
-    puts("Valid command formats (CC is command):");
-    puts(" ATCC 0xXXXXXX (where XXXXXX is an even number of " \
-           "hexadecimal characters)");
-    puts(" ATCC YYYY (where YYYY is an integer, up to 32 bits)");
-    puts(" ATCC \"ASCII string\" (where quotes contain string data)");
+
+    print_cli_help_atcmd();
+
     puts("--- Get/Set Salt/Verifier ---");
-    puts(" ble                     Report values for BLE verifier");
-    puts(" ble <new_password>      Generate new BLE verifier");
-    puts(" ss                      Report values for SecureSession verifier");
-    puts(" ss <new_password>       Generate new SecureSession verifier");
+    puts(" ble                             Report values for BLE verifier");
+    puts(" ble <new_password>              Generate new BLE verifier");
+    puts(" ss                              Report values for SecureSession verifier");
+    puts(" ss <new_password>               Generate new SecureSession verifier");
+
     puts("--- Other ---");
-    puts(" <menu|help|?>           Print this menu");
-    puts(" quit                    Quit");
+
+    print_cli_help_menu();
+
+    puts(" quit                            Quit");
     puts("");
 }
 
 
-typedef void (*command_fn)(xbee_dev_t *xbee, const char *command);
-typedef struct cmd_entry_t {
-    const char *command;
-    command_fn handler;
-} cmd_entry_t;
-
-cmd_entry_t commands[] = {
-    { "at",             &handle_at_cmd },
-
-    { "?",              &print_menu },
-    { "help",           &print_menu },
-    { "menu",           &print_menu },
+const cmd_entry_t commands[] = {
+    ATCMD_CLI_ENTRIES
+    MENU_CLI_ENTRIES
 
     { "ble",            &handle_ble_cmd },
     { "ss",             &handle_ss_cmd },
@@ -270,7 +257,7 @@ int main(int argc, char *argv[])
     // report on the settings
     xbee_dev_dump_settings(&my_xbee, XBEE_DEV_DUMP_FLAG_DEFAULT);
 
-    print_menu(NULL, NULL);
+    handle_menu_cmd(NULL, NULL);
 
     while (1) {
         int linelen;
@@ -289,18 +276,7 @@ int main(int argc, char *argv[])
             break;
         }
 
-        // Match command to an entry in the command table.
-        cmd_entry_t *cmd;
-        for (cmd = &commands[0]; cmd->command != NULL; ++cmd) {
-            if (strncmpi(cmdstr, cmd->command, strlen(cmd->command)) == 0) {
-                cmd->handler(&my_xbee, cmdstr);
-                break;
-            }
-        }
-
-        if (cmd->command == NULL) {
-            printf("Error: unknown command '%s'\n", cmdstr);
-        }
+        sample_cli_dispatch(&my_xbee, cmdstr, &commands[0]);
     }
 
     return frame_count < 0 ? EXIT_FAILURE : EXIT_SUCCESS;

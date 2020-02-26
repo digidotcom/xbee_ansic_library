@@ -58,6 +58,7 @@
 
 #include "_atinter.h"           // Common code for processing AT commands
 #include "_nodetable.h"         // Common code for handling remote node lists
+#include "sample_cli.h"         // Common code for parsing user-entered data
 #include "parse_serial_args.h"
 
 int dump_ext_modem_status(xbee_dev_t *xbee,
@@ -108,52 +109,30 @@ void node_discovered(xbee_dev_t *xbee, const xbee_node_id_t *rec)
 }
 
 
-void print_menu(xbee_dev_t *xbee, const char *command)
+void handle_menu_cmd(xbee_dev_t *xbee, char *command)
 {
     XBEE_UNUSED_PARAMETER(xbee);
     XBEE_UNUSED_PARAMETER(command);
 
     puts("");
-    puts("--- AT Commands ---");
-    puts("Valid command formats (CC is command):");
-    puts(" ATCC 0xXXXXXX (where XXXXXX is an even number of " \
-           "hexadecimal characters)");
-    puts(" ATCC YYYY (where YYYY is an integer, up to 32 bits)");
-    puts(" ATCC \"ASCII string\" (where quotes contain string data)");
-    puts("--- Node Discovery ---");
-    puts(" nd                      Initiate node discovery");
-    puts(" nd <node id string>     Search for a specific node ID");
-    puts(" nodes                   List entries in node table");
+
+    print_cli_help_atcmd();
+
+    print_cli_help_nodetable();
+
     puts("--- Secure Session ---");
-    puts(" login <n> <password>    Initiate client-side session to node <n>");
-    puts(" logout <n>              Logout of client-side session with node <n>");
-    puts(" logout all              Logout of all client-side sessions using broadcast");
-    puts(" close <n>               Close server-side session with node <n>");
-    puts(" close all               Close all server-side sessions using broadcast");
+    puts(" login <n> <password>            Initiate client-side session to node <n>");
+    puts(" logout <n>                      Logout client-side session with node <n>");
+    puts(" logout all                      Broadcast logout of all client-side sessions");
+    puts(" close <n>                       Close server-side session with node <n>");
+    puts(" close all                       Broadcast close of all server-side sessions");
+
     puts("--- Other ---");
-    puts(" <menu|help|?>           Print this menu");
-    puts(" quit                    Quit");
+
+    print_cli_help_menu();
+
+    puts(" quit                            Quit");
     puts("");
-}
-
-
-void handle_nd_cmd(xbee_dev_t *xbee, const char *command)
-{
-    // Initiate discovery for a specified node id (as parameter in command)
-    // or all node IDs.
-    if (command[2] == ' ') {
-        printf("Looking for node [%s]...\n", &command[3]);
-        xbee_disc_discover_nodes(xbee, &command[3]);
-    } else {
-        puts("Discovering nodes...");
-        xbee_disc_discover_nodes(xbee, NULL);
-    }
-}
-
-
-void handle_nodes_cmd(xbee_dev_t *xbee, const char *command)
-{
-    node_table_dump();
 }
 
 
@@ -175,7 +154,7 @@ const xbee_node_id_t *get_target(const char *num, char **next_param)
 }
 
 
-void handle_login_cmd(xbee_dev_t *xbee, const char *command)
+void handle_login_cmd(xbee_dev_t *xbee, char *command)
 {
     char *next_param;
     const xbee_node_id_t *target = get_target(&command[5], &next_param);
@@ -209,7 +188,7 @@ void handle_login_cmd(xbee_dev_t *xbee, const char *command)
 }
 
 
-void handle_logout_or_close_cmd(xbee_dev_t *xbee, const char *command)
+void handle_logout_or_close_cmd(xbee_dev_t *xbee, char *command)
 {
     bool_t is_logout = (strncmpi(command, "logout", 6) == 0);
     const char *cmd = is_logout ? "LOGOUT" : "CLOSE";
@@ -251,27 +230,10 @@ void handle_logout_or_close_cmd(xbee_dev_t *xbee, const char *command)
 }
 
 
-void handle_at_cmd(xbee_dev_t *xbee, const char *command)
-{
-    process_command(xbee, command);
-}
-
-
-typedef void (*command_fn)(xbee_dev_t *xbee, const char *command);
-typedef struct cmd_entry_t {
-    const char *command;
-    command_fn handler;
-} cmd_entry_t;
-
-cmd_entry_t commands[] = {
-    { "at",             &handle_at_cmd },
-
-    { "?",              &print_menu },
-    { "help",           &print_menu },
-    { "menu",           &print_menu },
-
-    { "nd",             &handle_nd_cmd },
-    { "nodes",          &handle_nodes_cmd },
+const cmd_entry_t commands[] = {
+    ATCMD_CLI_ENTRIES
+    MENU_CLI_ENTRIES
+    NODETABLE_CLI_ENTRIES
 
     { "login",          &handle_login_cmd },
     { "logout",         &handle_logout_or_close_cmd },
@@ -314,7 +276,7 @@ int main(int argc, char *argv[])
     // receive node discovery notifications
     xbee_disc_add_node_id_handler(&my_xbee, &node_discovered);
 
-    print_menu(NULL, NULL);
+    handle_menu_cmd(NULL, NULL);
 
     // automatically initiate node discovery
     handle_nd_cmd(&my_xbee, "nd");
@@ -336,18 +298,7 @@ int main(int argc, char *argv[])
             break;
         }
 
-        // Match command to an entry in the command table.
-        cmd_entry_t *cmd;
-        for (cmd = &commands[0]; cmd->command != NULL; ++cmd) {
-            if (strncmpi(cmdstr, cmd->command, strlen(cmd->command)) == 0) {
-                cmd->handler(&my_xbee, cmdstr);
-                break;
-            }
-        }
-
-        if (cmd->command == NULL) {
-            printf("Error: unknown command '%s'\n", cmdstr);
-        }
+        sample_cli_dispatch(&my_xbee, cmdstr, &commands[0]);
     }
 
     return frame_count < 0 ? EXIT_FAILURE : EXIT_SUCCESS;

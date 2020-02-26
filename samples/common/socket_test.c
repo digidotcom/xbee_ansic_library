@@ -30,6 +30,7 @@
 #include "xbee/delivery_status.h"
 
 #include "_atinter.h"
+#include "sample_cli.h"         // Common code for parsing user-entered data
 #include "parse_serial_args.h"
 
 
@@ -131,22 +132,21 @@ static void option_callback(xbee_sock_t socket, uint8_t option_id,
     }
 }
 
-void print_menu(xbee_dev_t *xbee, const char *command)
+void handle_menu_cmd(xbee_dev_t *xbee, char *command)
 {
     XBEE_UNUSED_PARAMETER(xbee);
     XBEE_UNUSED_PARAMETER(command);
 
     puts("");
-    puts("--- AT Commands ---");
-    puts("Valid command formats (CC is command):");
-    puts(" ATCC 0xXXXXXX (where XXXXXX is an even number of " \
-           "hexadecimal characters)");
-    puts(" ATCC YYYY (where YYYY is an integer, up to 32 bits)");
-    puts(" ATCC \"ASCII string\" (where quotes contain string data)");
+
+    print_cli_help_atcmd();
+
     puts("--- Create Socket ---");
     puts(" create [udp|tcp|ssl]            Create socket (returns ID for other cmds)");
+
     puts("--- Option Request ---");
     puts(" option <s> <opt_id> <data>      Get/Set option on socket (1-byte data)");
+
     puts("--- Listen/Connect/Send Socket ---");
     puts(" listen <s> <port>               Listen on <port> of TCP/SSL socket <s>");
     puts(" connect <s> <hostname> <port>   Connect socket <s> to hostname:port");
@@ -154,20 +154,25 @@ void print_menu(xbee_dev_t *xbee, const char *command)
     puts(" sendline <s> <string data>      Send <string data> + CRLF to socket <s>");
     puts(" sendcr <s>                      Send bare CR to socket <s>");
     puts(" sendcrlf <s>                    Send CR/LF sequence to socket <s>");
+
     puts("--- Bind/Sendto Socket ---");
     puts(" bind <s> <port>                 Bind UDP socket <s> to <port>");
     puts(" sendto <s> <addr> <p> <string>  Send <string> to <addr>:<p>");
+
     puts("--- Close Socket ---");
     puts(" close <s>                       Close socket id <s>");
     puts(" close all                       Close all sockets");
+
     puts("--- Other ---");
     puts(" ip <0x00000000|12.34.56.78>     Convert IP between 32-bit & dotted quad");
-    puts(" <menu|help|?>                   Print this menu");
+
+    print_cli_help_menu();
+
     puts(" quit                            Quit");
     puts("");
 }
 
-void handle_ip_cmd(xbee_dev_t *xbee, const char *command)
+void handle_ip_cmd(xbee_dev_t *xbee, char *command)
 {
     uint32_t ip_be;
     char buffer[16];
@@ -189,7 +194,7 @@ void handle_ip_cmd(xbee_dev_t *xbee, const char *command)
     printf("Error parsing command\n");
 }
 
-void handle_create_cmd(xbee_dev_t *xbee, const char *command)
+void handle_create_cmd(xbee_dev_t *xbee, char *command)
 {
     int proto;
 
@@ -212,7 +217,7 @@ void handle_create_cmd(xbee_dev_t *xbee, const char *command)
     }
 }
 
-void handle_option_cmd(xbee_dev_t *xbee, const char *command)
+void handle_option_cmd(xbee_dev_t *xbee, char *command)
 {
     xbee_sock_t s;
     int option_id, value;
@@ -228,7 +233,7 @@ void handle_option_cmd(xbee_dev_t *xbee, const char *command)
     }
 }
 
-void handle_connect_cmd(xbee_dev_t *xbee, const char *command)
+void handle_connect_cmd(xbee_dev_t *xbee, char *command)
 {
     xbee_sock_t s;
     char hostname[80];
@@ -253,7 +258,7 @@ void handle_connect_cmd(xbee_dev_t *xbee, const char *command)
     }
 }
 
-void handle_bind_cmd(xbee_dev_t *xbee, const char *command)
+void handle_bind_cmd(xbee_dev_t *xbee, char *command)
 {
     xbee_sock_t s;
     unsigned port;
@@ -270,7 +275,7 @@ void handle_bind_cmd(xbee_dev_t *xbee, const char *command)
     }
 }
 
-void handle_listen_cmd(xbee_dev_t *xbee, const char *command)
+void handle_listen_cmd(xbee_dev_t *xbee, char *command)
 {
     xbee_sock_t s;
     unsigned port;
@@ -287,7 +292,7 @@ void handle_listen_cmd(xbee_dev_t *xbee, const char *command)
     }
 }
 
-void handle_close_cmd(xbee_dev_t *xbee, const char *command)
+void handle_close_cmd(xbee_dev_t *xbee, char *command)
 {
     int err;
     if (strcmpi(&command[6], "all") == 0) {
@@ -301,7 +306,7 @@ void handle_close_cmd(xbee_dev_t *xbee, const char *command)
     }
 }
 
-void handle_send_cmd(xbee_dev_t *xbee, const char *command)
+void handle_send_cmd(xbee_dev_t *xbee, char *command)
 {
     if (strncmpi(command, "sendto ", 7) == 0) {
         xbee_sock_t s;
@@ -344,22 +349,10 @@ void handle_send_cmd(xbee_dev_t *xbee, const char *command)
     }
 }
 
-void handle_at_cmd(xbee_dev_t *xbee, const char *command)
-{
-    process_command(xbee, command);
-}
+const cmd_entry_t commands[] = {
+    ATCMD_CLI_ENTRIES
+    MENU_CLI_ENTRIES
 
-typedef void (*command_fn)(xbee_dev_t *xbee, const char *command);
-typedef struct cmd_entry_t {
-    const char *command;
-    command_fn handler;
-} cmd_entry_t;
-
-cmd_entry_t commands[] = {
-    { "at",             &handle_at_cmd },
-    { "?",              &print_menu },
-    { "help",           &print_menu },
-    { "menu",           &print_menu },
     { "ip ",            &handle_ip_cmd },
     { "create ",        &handle_create_cmd },
     { "option ",        &handle_option_cmd },
@@ -403,7 +396,7 @@ int main(int argc, char *argv[])
     // report on the settings
     xbee_dev_dump_settings(&my_xbee, XBEE_DEV_DUMP_FLAG_DEFAULT);
 
-    print_menu(NULL, NULL);
+    handle_menu_cmd(NULL, NULL);
     xbee_sock_reset(&my_xbee);          // close all open sockets
 
     while (1) {
@@ -421,18 +414,7 @@ int main(int argc, char *argv[])
             break;
         }
 
-        // Match command to an entry in the command table.
-        cmd_entry_t *cmd;
-        for (cmd = &commands[0]; cmd->command != NULL; ++cmd) {
-            if (strncmpi(cmdstr, cmd->command, strlen(cmd->command)) == 0) {
-                cmd->handler(&my_xbee, cmdstr);
-                break;
-            }
-        }
-
-        if (cmd->command == NULL) {
-            printf("Error: unknown command '%s'\n", cmdstr);
-        }
+        sample_cli_dispatch(&my_xbee, cmdstr, &commands[0]);
     }
 
     xbee_sock_close_all(NULL);

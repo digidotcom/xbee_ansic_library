@@ -119,3 +119,30 @@ void node_table_dump( void)
    }
 }
 
+void print_cli_help_nodetable(void)
+{
+    puts("--- Node Discovery ---");
+    puts(" nd                              Initiate node discovery");
+    puts(" nd <node id string>             Search for a specific node ID");
+    puts(" nodes                           List entries in node table");
+}
+
+// sample_cli: "nd" and "nd <node id string>"
+void handle_nd_cmd(xbee_dev_t *xbee, char *command)
+{
+    // Initiate discovery for a specified node id (as parameter in command
+    // or all node IDs.
+    if (command[2] == ' ') {
+        printf("Looking for node [%s]...\n", &command[3]);
+        xbee_disc_discover_nodes(xbee, &command[3]);
+    } else {
+        puts("Discovering nodes...");
+        xbee_disc_discover_nodes(xbee, NULL);
+    }
+}
+
+// sample_cli: "nodes"
+void handle_nodes_cmd(xbee_dev_t *xbee, char *command)
+{
+    node_table_dump();
+}

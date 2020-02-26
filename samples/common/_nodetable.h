@@ -29,4 +29,12 @@ xbee_node_id_t *node_by_index( int idx);
 int node_add( const xbee_node_id_t *node_id);
 void node_table_dump( void);
 
+// sample_cli handlers
+void print_cli_help_nodetable(void);
+void handle_nd_cmd(xbee_dev_t *xbee, char *command);
+void handle_nodes_cmd(xbee_dev_t *xbee, char *command);
+#define NODETABLE_CLI_ENTRIES \
+    { "nd",             &handle_nd_cmd },       \
+    { "nodes",          &handle_nodes_cmd },    \
+
 #endif

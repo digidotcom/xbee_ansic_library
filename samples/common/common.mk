@@ -107,7 +107,7 @@ user_data_relay : $(user_data_relay_OBJECTS)
 	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@
 
 remote_at_OBJECTS = $(xbee_OBJECTS) $(atinter_OBJECTS) \
-	_nodetable.o xbee_discovery.o remote_at.o
+	_nodetable.o xbee_discovery.o sample_cli.o remote_at.o
 remote_at : $(remote_at_OBJECTS)
 	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@
 
@@ -117,7 +117,7 @@ sms_client : $(sms_client_OBJECTS)
 
 socket_OBJECTS = $(xbee_OBJECTS) xbee_socket_frames.o xbee_socket.o
 socket_test_OBJECTS = $(socket_OBJECTS) socket_test.o $(atinter_OBJECTS) \
-            xbee_ipv4.o xbee_delivery_status.o
+            xbee_ipv4.o xbee_delivery_status.o sample_cli.o
 socket_test : $(socket_test_OBJECTS)
 	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@
 
@@ -151,12 +151,12 @@ install_ebl: $(install_ebl_OBJECTS)
 
 xbee3_ota_tool_OBJECTS = $(zigbee_OBJECTS) $(atinter_OBJECTS) \
             _nodetable.o xbee_discovery.o zcl_ota_upgrade.o zcl_ota_server.o \
-            xbee3_ota_tool.o
+            sample_cli.o xbee3_ota_tool.o
 xbee3_ota_tool : $(xbee3_ota_tool_OBJECTS)
 	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@
 
 xbee3_secure_session_OBJECTS = $(xbee_OBJECTS) $(atinter_OBJECTS) \
-            _nodetable.o xbee_discovery.o xbee_ext_modem_status.o \
+            _nodetable.o sample_cli.o xbee_discovery.o xbee_ext_modem_status.o \
             xbee_secure_session.o xbee3_secure_session.o
 xbee3_secure_session : $(xbee3_secure_session_OBJECTS)
 	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@
@@ -164,7 +164,7 @@ xbee3_secure_session : $(xbee3_secure_session_OBJECTS)
 mbedtls_OBJECTS = aes.o bignum.o ctr_drbg.o entropy.o entropy_poll.o sha256.o \
             mbedtls_util.o xbee_random_mbedtls.o
 xbee3_srp_verifier_OBJECTS = $(mbedtls_OBJECTS) $(xbee_OBJECTS) $(atinter_OBJECTS) \
-            srp.o xbee3_srp_verifier.o
+            srp.o xbee3_srp_verifier.o sample_cli.o
 xbee3_srp_verifier : $(xbee3_srp_verifier_OBJECTS)
 	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@
 
@@ -178,7 +178,7 @@ zigbee_ota_info : $(zigbee_ota_info_OBJECTS)
 
 zigbee_register_device_OBJECTS = $(xbee_OBJECTS) $(atinter_OBJECTS) \
             xbee_register_device.o zigbee_register_device.o \
-            _nodetable.o xbee_discovery.o
+            _nodetable.o xbee_discovery.o sample_cli.o
 zigbee_register_device : $(zigbee_register_device_OBJECTS)
 	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@
 

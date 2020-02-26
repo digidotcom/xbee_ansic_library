@@ -63,6 +63,7 @@
 
 #include "_atinter.h"           // Common code for processing AT commands
 #include "_nodetable.h"         // Common code for handling remote node lists
+#include "sample_cli.h"         // Common code for parsing user-entered data
 #include "parse_serial_args.h"
 
 
@@ -139,53 +140,31 @@ void node_discovered(xbee_dev_t *xbee, const xbee_node_id_t *rec)
 }
 
 
-void print_menu(xbee_dev_t *xbee, const char *command)
+void handle_menu_cmd(xbee_dev_t *xbee, char *command)
 {
     XBEE_UNUSED_PARAMETER(xbee);
     XBEE_UNUSED_PARAMETER(command);
 
     puts("");
-    puts("--- AT Commands ---");
-    puts("Valid command formats (CC is command):");
-    puts(" ATCC 0xXXXXXX (where XXXXXX is an even number of " \
-           "hexadecimal characters)");
-    puts(" ATCC YYYY (where YYYY is an integer, up to 32 bits)");
-    puts(" ATCC \"ASCII string\" (where quotes contain string data)");
-    puts("--- Node Discovery ---");
-    puts(" nd                              Initiate node discovery");
-    puts(" nd <node id string>             Search for a specific node ID");
-    puts(" nodes                           List entries in node table");
+
+    print_cli_help_atcmd();
+
+    print_cli_help_nodetable();
+
     puts("--- Register Joining Device ---");
     puts(" reg 0013a20012345678 <key>      Register device with link key/install code");
     puts(" dereg 0013a20012345678          Deregister device");
+
     puts("--- Other ---");
-    puts(" <menu|help|?>                   Print this menu");
+
+    print_cli_help_menu();
+
     puts(" quit                            Quit");
     puts("");
 }
 
 
-void handle_nd_cmd(xbee_dev_t *xbee, const char *command)
-{
-    // Initiate discovery for a specified node id (as parameter in command
-    // or all node IDs.
-    if (command[2] == ' ') {
-        printf("Looking for node [%s]...\n", &command[3]);
-        xbee_disc_discover_nodes(xbee, &command[3]);
-    } else {
-        puts("Discovering nodes...");
-        xbee_disc_discover_nodes(xbee, NULL);
-    }
-}
-
-
-void handle_nodes_cmd(xbee_dev_t *xbee, const char *command)
-{
-    node_table_dump();
-}
-
-
-void handle_reg_cmd(xbee_dev_t *xbee, const char *command)
+void handle_reg_cmd(xbee_dev_t *xbee, char *command)
 {
     addr64 addr_be;
     const char *p = &command[3];        // past "reg"
@@ -216,7 +195,7 @@ void handle_reg_cmd(xbee_dev_t *xbee, const char *command)
 }
 
 
-void handle_dereg_cmd(xbee_dev_t *xbee, const char *command)
+void handle_dereg_cmd(xbee_dev_t *xbee, char *command)
 {
     addr64 addr_be;
     const char *p = &command[5];        // past "dereg"
@@ -238,26 +217,10 @@ void handle_dereg_cmd(xbee_dev_t *xbee, const char *command)
 }
 
 
-void handle_at_cmd(xbee_dev_t *xbee, const char *command)
-{
-    process_command(xbee, command);
-}
-
-
-typedef void (*command_fn)(xbee_dev_t *xbee, const char *command);
-typedef struct cmd_entry_t {
-    const char *command;
-    command_fn handler;
-} cmd_entry_t;
-
-cmd_entry_t commands[] = {
-    { "at",             &handle_at_cmd },
-    { "?",              &print_menu },
-    { "help",           &print_menu },
-    { "menu",           &print_menu },
-
-    { "nd",             &handle_nd_cmd },
-    { "nodes",          &handle_nodes_cmd },
+const cmd_entry_t commands[] = {
+    ATCMD_CLI_ENTRIES
+    MENU_CLI_ENTRIES
+    NODETABLE_CLI_ENTRIES
 
     { "reg ",           &handle_reg_cmd },
     { "dereg ",         &handle_dereg_cmd },
@@ -298,7 +261,7 @@ int main(int argc, char *argv[])
     // receive node discovery notifications
     xbee_disc_add_node_id_handler( &my_xbee, &node_discovered);
 
-    print_menu(NULL, NULL);
+    handle_menu_cmd(NULL, NULL);
 
     while (1) {
         int linelen;
@@ -314,18 +277,7 @@ int main(int argc, char *argv[])
             break;
         }
 
-        // Match command to an entry in the command table.
-        cmd_entry_t *cmd;
-        for (cmd = &commands[0]; cmd->command != NULL; ++cmd) {
-            if (strncmpi(cmdstr, cmd->command, strlen(cmd->command)) == 0) {
-                cmd->handler(&my_xbee, cmdstr);
-                break;
-            }
-        }
-
-        if (cmd->command == NULL) {
-            printf("Error: unknown command '%s'\n", cmdstr);
-        }
+        sample_cli_dispatch(&my_xbee, cmdstr, &commands[0]);
     }
 
     return 0;

@@ -16,6 +16,12 @@
 #include "xbee/atcmd.h"
 #include "xbee/device.h"
 
+// sample_cli support
+void print_cli_help_atcmd(void);
+void handle_at_cmd(xbee_dev_t *xbee, char *command);
+#define ATCMD_CLI_ENTRIES \
+    { "at",             &handle_at_cmd },       \
+
 int parseParameter (const char *paramstr, int16_t request);
 int xbee_cmd_callback( const xbee_cmd_response_t FAR *response);
 int process_command_remote( xbee_dev_t *xbee, const char *cmdstr,

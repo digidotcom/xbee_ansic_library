@@ -20,6 +20,17 @@
 
 #include "_atinter.h"
 
+void print_cli_help_atcmd(void)
+{
+    puts("--- AT Commands ---");
+    puts("Valid command formats (CC is command, e.g. ATNI):");
+    puts(" ATCC                  (query CC; other formats will set CC)");
+    puts(" ATCC 0xXXXXXX         (XXXXXX is an even number of " \
+           "hexadecimal characters)");
+    puts(" ATCC YYYY             (YYYY is an integer, up to 32 bits)");
+    puts(" ATCC \"ASCII string\"   (quotes contain string data)");
+}
+
 /* ------------------------------------------------------
    parseParameter
 
@@ -100,6 +111,8 @@ int parseParameter (const char *paramstr, int16_t request)
    return xbee_cmd_set_param( request, temp);
 
 } //parseParameter()
+
+
 /*
    xbee_cmd_callback
 
@@ -234,6 +247,10 @@ int process_command( xbee_dev_t *xbee, const char *cmdstr)
 }
 
 
+void handle_at_cmd(xbee_dev_t *xbee, char *command)
+{
+    process_command(xbee, command);
+}
 
 
 // ------------------------------------------------------
