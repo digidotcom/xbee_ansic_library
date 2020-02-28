@@ -10,6 +10,18 @@ with compiling command-line programs from a shell prompt.
 [POSIX]: https://en.wikipedia.org/wiki/POSIX
 
 
+Building with Linux
+-------------------
+Install the necessary packages for gcc, gdb and make.  We have tested
+this code on an Ubuntu desktop and a Raspberry Pi Zero W V1.1.
+
+
+Building for Digi International's ConnectCore Products
+------------------------------------------------------
+Look at `ports/digiapix`, for support of Digi International's embedded
+products using libdigiapix for GPIO control.
+
+
 Building with macOS
 -------------------
 Install Xcode to get LLVM with a gcc wrapper and GNU Make.

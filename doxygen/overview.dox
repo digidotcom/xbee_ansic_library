@@ -1,17 +1,27 @@
 /**
-    @mainpage Overview of Portable, ANSI C, XBee Host Library
+    @mainpage Overview of Digi International's ANSI C XBee(R) Host Library
 
-    The driver is broken up into multiple layers, with well-defined interfaces
-    between each layer.  Layers of the driver are similar to an Ethernet NIC
-    driver and a TCP/IP networking stack.  In our case:
+    This codebase speeds development of C-based programs to interface serially
+    with Digi International's XBee modules.  It was designed for portability
+    and works on a wide range of host processors/platforms.
+
+    The code is broken up into multiple layers, with well-defined interfaces
+    between each layer.  Layers are similar to an Ethernet NIC driver and a
+    TCP/IP networking stack.  In our case:
     - the \ref hal "Hardware Abstraction Layer", unique to each port
-      (hardware/compiler), provides a consistent interface for the other layers.
+      (hardware/compiler), provides a consistent interface for the other layers
     - the \ref xbee "XBee Driver" handles all serial communication with and
       configuration of the attached XBee device
     - the \ref wpan "Wireless Personal Networking" layer provides generic
       802.15.4 networking support (endpoints and clusters)
     - the \ref zigbee "Zigbee Networking Stack" layer provides support for
-      the Zigbee networking protocols (ZDO/ZDP and ZCL).
+      the Zigbee networking protocols (ZDO/ZDP and ZCL)
+
+    The core "XBee Driver" is responsible for extracting complete frames from
+    the serial data stream and passing them to handlers via a frame dispatch
+    table.  It also provides an interface to send frames, automatically
+    wrapping them with a frame start byte (0x7E), 2-byte length, and checksum
+    byte.
 
     See the [Modules](modules.html) section for a full outline of the API
     layers, or view the more-detailed [README](README.md).  There's also a
@@ -23,20 +33,28 @@
     If you're looking to get started quickly, use your desktop PC and an XBIB
     development board to connect to an XBee module.  For the compiler
     requirements, review READMEs for the \ref platform_win32 "Windows Platform"
-    or \ref platform_posix "POSIX Platform" (for Mac and Linux).
+    (using MinGW/MSYS) or \ref platform_posix "POSIX Platform" (for macOS,
+    Linux, and Windows using Cygwin).
 
-    Start in `samples/win32` for Windows and `samples/posix` for Linux or Mac.
-    Run `make all` to build all of the sample programs.  See the \ref samples
-    "Samples README" for a description of each program.
+    If you want to cross-compile programs for Digi International's ConnectCore
+    product line, see the \ref platform_digiapix "libdigiapix Platform".  It's
+    based on the POSIX platform files, but includes support for interfacing to
+    GPIO pins connected to the /RESET and ON/SLEEP pins of the XBee module.
+
+    Start in `samples/win32` for Windows and `samples/posix` for Linux, macOS
+    or Cygwin.  Run `make all` to build all of the sample programs.  See the
+    \ref samples "Samples README" for a description of each program.
 
     Most of the samples default to communicating at 115.2kbps to a module in
     API mode (ATAP=1).  You can use the `xbee_term` sample as a simple terminal
     interface to enter command mode on the XBee module, reconfigure it, and
     then use `ATWR` to save the changes.
 
-    The "AT Inter" (short for "AT Interactive") sample is one of the simplest,
-    and uses API frames to send AT commands to the locally attached module, and
-    then parses the responses.  Most of the other interactive samples include
+    The "AT Inter" (short for "AT Interactive") sample is one of the simplest.
+    It uses API frames to send AT commands to the locally-attached module, and
+    then parses the responses.  It's a useful tool to verify correct
+    configuration of a platform's serial interface and of the XBee module's
+    baud rate and ATAP setting.  Most of the other interactive samples include
     this common functionality.
 
     Note that most of the source for these samples exists in `samples/common`,
