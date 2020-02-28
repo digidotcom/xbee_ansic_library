@@ -165,7 +165,7 @@ void handle_login_cmd(xbee_dev_t *xbee, char *command)
     }
 
     // advance <next_param> to password
-    while (isspace(*next_param)) {
+    while (isspace((uint8_t)*next_param)) {
         ++next_param;
     }
 

@@ -103,7 +103,7 @@ const xbee_node_id_t *target = NULL;
 void handle_target_cmd(xbee_dev_t *xbee, char *command)
 {
     const char *p = &command[6];        // point beyond "target"
-    while (isspace(*p)) {
+    while (isspace((uint8_t)*p)) {
         ++p;
     }
     if (*p == '\0') {

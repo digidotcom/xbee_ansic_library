@@ -95,7 +95,7 @@ int xbee_parse_hexstr(void *dest, const char *src, size_t max_bytes)
 
     // calculate number of hexadecimal digits (nibbles) in src
     int nibble = 0;
-    while (isxdigit(src[nibble])) {
+    while (isxdigit((uint8_t)src[nibble])) {
         ++nibble;
         if (nibble > max_bytes * 2) {
             return -E2BIG;

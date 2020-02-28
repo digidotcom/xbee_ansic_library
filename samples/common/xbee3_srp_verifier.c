@@ -169,7 +169,7 @@ void handle_verifier(xbee_dev_t *xbee, const char *param,
                      const xbee_verifier_settings_t *verifier)
 {
     // skip over whitespace
-    while (isspace(*param)) {
+    while (isspace((uint8_t)*param)) {
         ++param;
     }
 
