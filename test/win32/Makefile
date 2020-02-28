@@ -32,14 +32,8 @@ COVERITY_TEMP = /c/tmp/coverity
 # compiler parameters for building each file
 # -MMD generates dependency files automatically, omitting system files
 # -MP creates phony targets for each prerequisite in a .d file
-
-# use gcc 4 with MinGW (will not work with Cygwin)
-COMPILE_GCC4 = gcc -iquote$(INCDIR)
-
-# use gcc 3 in Cygwin with -mno-cygwin option to build standalone executables
-COMPILE_GCC3 = gcc-3 -mno-cygwin -I$(INCDIR)
-
-COMPILE = $(COMPILE_GCC4) -std=gnu99 -g -MMD -MP -Wall $(DEFINE)
+# use gcc (version 4 or later) with MinGW (will not work with Cygwin)
+COMPILE = gcc -iquote$(INCDIR) -std=gnu99 -g -MMD -MP -Wall $(DEFINE)
 
 EXE = zcl_write \
 		zcl_read \

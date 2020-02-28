@@ -4,8 +4,7 @@ Platform Support: Windows (Win32)                     {#platform_win32}
 Overview
 --------
 This port targets Microsoft Windows with [MinGW] and gcc.  Users of
-[Cygwin] can make use of the POSIX port or modify the `Makefile` in
-`samples/win32` to use `gcc` with the `-mno-cygwin` option.
+[Cygwin] should use the POSIX platform files.
 
 [MinGW]: http://www.mingw.org/
 [Cygwin]: http://www.cygwin.org/
@@ -28,14 +27,3 @@ and MSYS.  Remember to install them to a directory path without any
 spaces.
 
 [1]: http://www.mingw.org/wiki/Getting_Started
-
-
-Building samples with Cygwin
-----------------------------
-Follow the Cygwin installation instructions from `ports/posix/README.md`.
-
-If you want standalone executables that run without Cygwin DLLs, you need
-to use `gcc` version 3 with the `-mno-cygwin` command-line option (which
-was deprecated in version 4).  Edit `samples/win32/Makefile` and change
-the `COMPILE` variable to use `$(COMPILE_GCC3)` instead of
-`$(COMPILE_GCC4)`.

@@ -1,6 +1,6 @@
 # Makefile for sample programs on Win32
 
-# Uses MinGW or Cygwin's gcc with "-mno-cygwin" option.
+# Uses MinGW/MSYS.  For Cygwin builds, use the POSIX platform.
 
 PORT = win32
 
@@ -15,13 +15,9 @@ EXE = comports pxbee_ota_update pxbee_update
 # -MP creates phony targets for each prerequisite in a .d file
 CFLAGS += -std=gnu99 -g -MMD -MP -Wall $(DEFINE) 
 
-# use gcc 4 with MinGW (will not work with Cygwin)
+# use gcc (version 4 or later) with MinGW (will not work with Cygwin)
 CFLAGS += -iquote$(INCDIR)
 CC ?= gcc
-
-# use gcc 3 in Cygwin with -mno-cygwin option to build standalone executables
-#CFLAGS += -mno-cygwin -I$(INCDIR)
-#CC ?= gcc-3
 
 # extra objects for some samples
 install_ebl_OBJECTS = win32_select_file.o
