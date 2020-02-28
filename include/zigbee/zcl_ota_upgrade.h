@@ -12,7 +12,7 @@
 
 /**
     @addtogroup zcl_ota_upgrade ZCL Over-the-Air Upgrade Cluster
-    @ingroup zcl
+    @ingroup zcl_clusters
     @{
     @file zigbee/zcl_ota_upgrade.h
 

@@ -11,7 +11,8 @@
  */
 
 /**
-   @addtogroup zcl_basic
+   @addtogroup zcl_basic Basic Cluster
+   @ingroup zcl_clusters
    @{
    @file zigbee/zcl_basic.h
    ZigBee Cluster Library; Basic Cluster (ZCL_CLUSTER_BASIC, 0x0000)

@@ -11,7 +11,8 @@
  */
 
 /**
-   @addtogroup zcl_bacnet
+   @addtogroup zcl_bacnet BACnet Profile
+   @ingroup zcl_clusters
    @{
    @file zigbee/zcl_bacnet.h
    Macros associated with supporting BACnet under ZigBee.

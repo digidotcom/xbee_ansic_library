@@ -11,7 +11,8 @@
  */
 
 /**
-   @addtogroup zcl_time
+   @addtogroup zcl_time Time Cluster
+   @ingroup zcl_clusters
    @{
    @file zigbee/zcl_time.h
    Header for implementation of ZigBee Time Cluster

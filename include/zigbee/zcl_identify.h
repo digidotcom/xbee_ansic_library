@@ -11,7 +11,8 @@
  */
 
 /**
-   @addtogroup zcl_identify
+   @addtogroup zcl_identify Identify Cluster
+   @ingroup zcl_clusters
    @{
    @file zigbee/zcl_identify.h
    Header for implementation of the ZigBee Identify Cluster

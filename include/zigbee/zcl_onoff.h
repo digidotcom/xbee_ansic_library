@@ -11,7 +11,8 @@
  */
 
 /**
-   @addtogroup zcl_onoff
+   @addtogroup zcl_onoff On/Off Cluster
+   @ingroup zcl_clusters
    @{
    @file zcl_onoff.h
 

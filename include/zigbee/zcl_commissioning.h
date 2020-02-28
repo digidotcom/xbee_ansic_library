@@ -11,7 +11,8 @@
  */
 
 /**
-   @addtogroup zcl_commissioning
+   @addtogroup zcl_commissioning Commissioning Cluster
+   @ingroup zcl_clusters
    @{
    @file zigbee/zcl_commissioning.h
 

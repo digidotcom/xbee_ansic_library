@@ -215,14 +215,6 @@
             @defgroup zcl_types Datatypes
             @defgroup zcl_client Cluster Client support code
             @defgroup zcl_clusters Clusters
-            @{
-                @defgroup zcl_basic Basic Cluster
-                @defgroup zcl_commissioning Commissioning Cluster
-                @defgroup zcl_identify Identify Cluster
-                @defgroup zcl_onoff On/Off Cluster
-                @defgroup zcl_reporting Attribute Reporting (incomplete)
-                @defgroup zcl_time Time Cluster
-            @}
         @}
 
     @}
