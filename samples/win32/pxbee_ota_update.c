@@ -22,6 +22,7 @@
 */
 
 #include <stdio.h>
+#include <string.h>
 
 #include "xbee/platform.h"
 #include "xbee/byteorder.h"
