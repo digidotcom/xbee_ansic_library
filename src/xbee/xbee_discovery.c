@@ -63,10 +63,19 @@ int xbee_disc_nd_parse( xbee_node_id_t FAR *parsed, const void FAR *source,
    // xbee_node_id2_t structure follows null terminator of id1->node_info
    id2 = (const xbee_node_id2_t FAR *) &id1->node_info[ni_len + 1];
    parsed->ieee_addr_be = id1->ieee_addr_be;
-   parsed->network_addr = be16toh( id1->network_addr_be);
-   parsed->parent_addr = be16toh( id2->parent_addr_be);
-   parsed->device_type = id2->device_type;
-   _f_memcpy( parsed->node_info, id1->node_info, ni_len);
+   parsed->network_addr = be16toh(id1->network_addr_be);
+   if (offsetof(xbee_node_id1_t, node_info) + ni_len + 1 == source_length) {
+       // Nothing follows the ATNI value, so this is 802.15.4 firmware with a
+       // different payload format.  First byte of id1->node_info is actually
+       // the RSSI, and the ATNI value starts one character later.
+      _f_memcpy(parsed->node_info, &id1->node_info[1], --ni_len);
+      parsed->parent_addr = WPAN_NET_ADDR_UNDEFINED;
+      parsed->device_type = XBEE_ND_DEVICE_TYPE_ROUTER;
+   } else {
+      _f_memcpy(parsed->node_info, id1->node_info, ni_len);
+      parsed->parent_addr = be16toh(id2->parent_addr_be);
+      parsed->device_type = id2->device_type;
+   }
    // null terminate node_info and clear any other unused bytes
    _f_memset( parsed->node_info + ni_len, 0, sizeof parsed->node_info - ni_len);
 
@@ -234,7 +243,7 @@ int xbee_disc_atnd_response_handler( xbee_dev_t *xbee, const void FAR *raw,
       {
          // this is an unsuccessful ATND response, pass a NULL node_id to
          // indicate that the NI request timed out.
-         if (xbee != NULL && xbee->node_id_handler != NULL) 
+         if (xbee != NULL && xbee->node_id_handler != NULL)
          {
             xbee->node_id_handler( xbee, NULL);
          }
