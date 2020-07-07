@@ -111,7 +111,7 @@ unsigned int xbee_cbuf_put( xbee_cbuf_t FAR *cbuf, const void FAR *buffer,
       length = buf_free;
    }
 
-   if (length > end_space)
+   if (length >= end_space)
    {
       memcpy(cbuf->data + cbuf->tail, buffer, end_space);
       buffer = ((char FAR *) buffer) + end_space;
