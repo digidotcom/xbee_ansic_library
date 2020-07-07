@@ -13,8 +13,9 @@ through a limited QA cycle.
 
 It currently supports the following platforms:
 
-- POSIX operating systems (Windows/[Cygwin], Mac OS X, Linux, BSD) with gcc
-- Windows with [MinGW] and gcc
+- POSIX operating systems (Windows with [Cygwin] or [MSYS2], Mac OS X, Linux,
+  BSD) with gcc
+- Windows with [MinGW] or [Mingw-w64] and gcc
 - DOS using the [OpenWatcom] compiler
 - Rabbit-brand microprocessors (using [Dynamic C] 10.70 or later)
 - Freescale HCS08 with CodeWarrior 10.x (part of [Programmable XBee Dev Kit])
@@ -47,7 +48,9 @@ with the code.
 [XBee]: http://www.digi.com/xbee/
 [GitHub]: https://github.com/digidotcom/xbee_ansic_library
 [Cygwin]: http://www.cygwin.org/
+[MSYS2]: https://www.msys2.org/
 [MinGW]: http://www.mingw.org/
+[Mingw-w64]: http://mingw-w64.org/
 [OpenWatcom]: http://www.openwatcom.org/
 [Dynamic C]: http://www.digi.com/support/productdetail?pid=4978
 [Programmable XBee Dev Kit]: http://www.digi.com/programmablexbeekit
