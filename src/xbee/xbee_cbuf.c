@@ -102,16 +102,16 @@ void xbee_cbuf_flush( xbee_cbuf_t FAR *cbuf)
 unsigned int xbee_cbuf_put( xbee_cbuf_t FAR *cbuf, const void FAR *buffer,
                                                          unsigned int length)
 {
-   unsigned int copied = 0; 
+   unsigned int copied = 0;
    unsigned int buf_free = xbee_cbuf_free(cbuf);
    unsigned int end_space = cbuf->mask + 1 - cbuf->tail;
-   
-   if (length > buf_free) 
+
+   if (length > buf_free)
    {
       length = buf_free;
    }
-   
-   if (length > end_space) 
+
+   if (length > end_space)
    {
       memcpy(cbuf->data + cbuf->tail, buffer, end_space);
       buffer = ((char FAR *) buffer) + end_space;
@@ -119,15 +119,15 @@ unsigned int xbee_cbuf_put( xbee_cbuf_t FAR *cbuf, const void FAR *buffer,
       length -= end_space;
       copied += end_space;
    }
-   
+
    memcpy(cbuf->data + cbuf->tail, buffer, length);
    cbuf->tail = cbuf->tail + length;
    copied += length;
-   
+
    #ifdef XBEE_CBUF_VERBOSE
       printf( "%s: %u bytes in\n", __FUNCTION__, copied);
    #endif
-   
+
    return copied;
 }
 
@@ -138,14 +138,14 @@ unsigned int xbee_cbuf_get( xbee_cbuf_t *cbuf, void FAR *buffer, unsigned int le
    unsigned int copied = 0;
    unsigned int buf_used = xbee_cbuf_used(cbuf);
    unsigned int end_space = cbuf->mask + 1 - cbuf->head;
-   
 
-   if (length > buf_used) 
+
+   if (length > buf_used)
    {
       length = buf_used;
    }
-   
-   if (length > end_space) 
+
+   if (length > end_space)
    {
       memcpy(buffer, cbuf->data + cbuf->head, end_space);
       buffer = ((char FAR *) buffer) + end_space;
@@ -153,15 +153,15 @@ unsigned int xbee_cbuf_get( xbee_cbuf_t *cbuf, void FAR *buffer, unsigned int le
       length -= end_space;
       copied += end_space;
    }
-   
+
    memcpy(buffer, cbuf->data + cbuf->head, length);
    cbuf->head = cbuf->head + length;
    copied += length;
-   
+
    #ifdef XBEE_CBUF_VERBOSE
       printf( "%s: %u bytes out\n", __FUNCTION__, copied);
    #endif
-   
+
    return copied;
 }
 
