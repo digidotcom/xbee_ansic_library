@@ -15,9 +15,9 @@
  */
 #include <errno.h>
 #include <stdio.h>
+#include <stdint.h>
 
 #include <windows.h>
-#include <conio.h>
 
 #include "xbee/ebl_file.h"
 
@@ -83,7 +83,7 @@ int main( int argc, char *argv[])
    if (pause)
    {
       puts( "\n\tPress any key to continue...");
-      (void) getch();
+      (void) getchar();
    }
    
    return 0;
