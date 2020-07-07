@@ -27,12 +27,13 @@
     // Load platform's endian header to learn whether we're big or little.
     #ifdef __MINGW32__
         #include <sys/param.h>
-        // MinGW's length-limited case-insensitive string comparison has a
-        // slightly different name.
-        #define strncmpi strnicmp
     #else
         #include <endian.h>
     #endif
+
+    // These seem to work for both old MinGW and new MSYS2/MINGW64.
+    #define strcmpi         strcasecmp
+    #define strncmpi        strncasecmp
 
     // macros used to declare a packed structure (no alignment of elements)
     // "__gcc_struct__" added to fix problems with gcc 4.7.0 in MinGW/MSYS
