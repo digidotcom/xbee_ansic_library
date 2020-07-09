@@ -394,8 +394,22 @@ typedef struct xbee_dev_t
       #define XBEE_HARDWARE_S3B           0x2300      // XBee 900HP
       #define XBEE_HARDWARE_S8            0x2400
       #define XBEE_HARDWARE_S6B           0x2700      // XBee Wi-Fi
-      #define XBEE_HARDWARE_CELL_CAT1_VZW    0x4000
+      #define XBEE_HARDWARE_CELL_CAT1_VZW 0x4000
+      #define XBEE_HARDWARE_XB3_MICRO     0x4100
+      #define XBEE_HARDWARE_XB3_TH        0x4200
       #define XBEE_HARDWARE_CELL_3G       0x4400
+   ///@}
+
+   /// Value of XBee module's HS register.
+   uint16_t          hardware_series;
+   /** @name
+      Macros related to the \c hardware_series field of xbee_dev_t.
+      @{
+   */
+      #define XBEE_HW_SERIES_MASK         0xFF00
+      #define XBEE_HW_SERIES_WIFI_S6      0x0600
+      #define XBEE_HW_SERIES_CELLULAR     0x0B00
+      #define XBEE_HW_SERIES_XBEE3_RF     0x0C00
    ///@}
 
    /// Value of XBee module's VR register (4-bytes on some devices)
@@ -414,6 +428,10 @@ typedef struct xbee_dev_t
       // Series 4 (900 MHz) hardware
       #define XBEE_PROTOCOL_MESHLESS      0x1000
       #define XBEE_PROTOCOL_DIGIMESH      0x8000
+      // XBee 3 hardware
+      #define XBEE_PROTOCOL_XB3_ZIGBEE    0x1000
+      #define XBEE_PROTOCOL_XB3_802_15_4  0x2000
+      #define XBEE_PROTOCOL_XB3_DIGIMESH  0x3000
 
       #define XBEE_NODETYPE_MASK          0x0F00
       #define XBEE_NODETYPE_COORD         0x0100

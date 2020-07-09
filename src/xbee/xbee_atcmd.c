@@ -710,6 +710,7 @@ void _xbee_cmd_query_handle_end(
 
 const xbee_atcmd_reg_t _xbee_atcmd_query_regs[] = {
    XBEE_ATCMD_REG( 'H', 'V', XBEE_CLT_COPY_BE, xbee_dev_t, hardware_version),
+   XBEE_ATCMD_REG( 'H', 'S', XBEE_CLT_COPY_BE, xbee_dev_t, hardware_series),
    XBEE_ATCMD_REG( 'V', 'R', XBEE_CLT_COPY_BE, xbee_dev_t, firmware_version),
    XBEE_ATCMD_REG( 'S', 'H', XBEE_CLT_COPY_PAD_LEFT, xbee_dev_t, wpan_dev.address.ieee.l[0]),
    XBEE_ATCMD_REG( 'S', 'L', XBEE_CLT_COPY_PAD_LEFT, xbee_dev_t, wpan_dev.address.ieee.l[1]),
@@ -733,9 +734,9 @@ xbee_command_list_context_t _xbee_atcmd_query_regs_head;
 /// Offset into _xbee_atcmd_query_regs to use when refreshing the xbee_dev_t/
 /// wpan_dev_t structure.
 #ifdef XBEE_DEVICE_ENABLE_ATMODE
-   #define XBEE_ATCMD_REG_REFRESH_IDX  (6+3)
+   #define XBEE_ATCMD_REG_REFRESH_IDX  (7+3)
 #else
-   #define XBEE_ATCMD_REG_REFRESH_IDX  6
+   #define XBEE_ATCMD_REG_REFRESH_IDX  7
 #endif
 
 /**
