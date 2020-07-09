@@ -41,6 +41,7 @@ EXE += \
 	socket_test \
 	transparent_client \
 	user_data_relay \
+	xbee_ftp \
 	xbee_netcat \
 	xbee_term \
 	xbee3_ota_tool \
@@ -147,6 +148,12 @@ install_ebl_OBJECTS += $(xbee_OBJECTS) install_ebl.o \
 	xbee_xmodem.o xmodem_crc16.o
 
 install_ebl: $(install_ebl_OBJECTS)
+	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@
+
+xbee_ftp_OBJECTS = $(zigbee_OBJECTS) $(atinter_OBJECTS) \
+            xbee_discovery.o xbee_file_system.o \
+            _nodetable.o sample_cli.o xbee_ftp.o
+xbee_ftp : $(xbee_ftp_OBJECTS)
 	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@
 
 xbee3_ota_tool_OBJECTS = $(zigbee_OBJECTS) $(atinter_OBJECTS) \

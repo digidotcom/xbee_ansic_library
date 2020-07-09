@@ -29,6 +29,8 @@ files written to handle them.
 | 0x2C | BLE Unlock Request          | *n/a*
 | 0x2D | User Data Relay Tx          | xbee/user_data.h, xbee_user_data.c
 | 0x2E | Secure Session Control      | xbee/secure_session.h, xbee_secure_session.c
+| 0x3B | File System Request         | xbee/file_system.h, xbee_file_system.c
+| 0x3C | Remote File System Request  | xbee/file_system.h, xbee_file_system.c
 | 0x40 | Socket Create               | xbee/socket.h, xbee_socket.c
 | 0x41 | Socket Option               | xbee/socket.h, xbee_socket.c
 | 0x42 | Socket Connect              | xbee/socket.h, xbee_socket.c
@@ -74,6 +76,8 @@ files written to handle them.
 | 0xB8 | Send Data Response          | *n/a*
 | 0xB9 | Device Request              | *n/a*
 | 0xBA | Device Response Status      | *n/a*
+| 0xBB | File System Response        | xbee/file_system.h, xbee_file_system.c
+| 0xBC | Remote File System Response | xbee/file_system.h, xbee_file_system.c
 | 0xC0 | Socket Create Response      | xbee/socket.h, xbee_socket.c
 | 0xC1 | Socket Option Response      | xbee/socket.h, xbee_socket.c
 | 0xC2 | Socket Connect Response     | xbee/socket.h, xbee_socket.c
