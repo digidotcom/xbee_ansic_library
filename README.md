@@ -16,6 +16,8 @@ It currently supports the following platforms:
 - POSIX operating systems (Windows with [Cygwin] or [MSYS2], Mac OS X, Linux,
   BSD) with gcc
 - Windows with [MinGW] or [Mingw-w64] and gcc
+- Digi International embedded hardware platforms that use [libdigiapix] to
+  control GPIO pins
 - DOS using the [OpenWatcom] compiler
 - Rabbit-brand microprocessors (using [Dynamic C] 10.70 or later)
 - Freescale HCS08 with CodeWarrior 10.x (part of [Programmable XBee Dev Kit])
@@ -51,6 +53,7 @@ with the code.
 [MSYS2]: https://www.msys2.org/
 [MinGW]: http://www.mingw.org/
 [Mingw-w64]: http://mingw-w64.org/
+[libdigiapix]: https://github.com/digi-embedded/libdigiapix
 [OpenWatcom]: http://www.openwatcom.org/
 [Dynamic C]: http://www.digi.com/support/productdetail?pid=4978
 [Programmable XBee Dev Kit]: http://www.digi.com/programmablexbeekit
