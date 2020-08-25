@@ -110,11 +110,13 @@ collection of sample programs.
 
 - **Socket Test**:
   Tool used for manually/interactively exploring and testing
-  xbee/xbee_socket.c APIs.
+  xbee/xbee_socket.c APIs.  For use with XBee Cellular firmware versions
+  ending in x15 or later.
 
 - **XBee netcat**:
   A version of the netcat (nc) tool that uses the XBee sockets API to
-  open a TCP or UDP socket and pass its data to/from stdout/stdin.
+  open a TCP or UDP socket and pass its data to/from stdout/stdin.  For use
+  with XBee Cellular firmware versions ending in x15 or later.
 
 - **XBee3 SRP Verifier**:
   Tool to configure salt and verifier for BLE access.

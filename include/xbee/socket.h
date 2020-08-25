@@ -44,6 +44,8 @@
       destination.  Use xbee_sock_sendto() to send data.
 
     - A Listening socket spawns new Connected sockets from inbound connections.
+    
+    For use with XBee Cellular firmware versions ending in x15 or later.
 */
 
 #ifndef XBEE_SOCKET_H

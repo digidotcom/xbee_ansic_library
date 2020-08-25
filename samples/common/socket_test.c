@@ -14,7 +14,8 @@
     Sample: Socket Test
 
     Tool used for manually/interactively exploring and testing
-    xbee/xbee_socket.c APIs.
+    xbee/xbee_socket.c APIs.  For use with XBee Cellular firmware versions
+    ending in x15 or later.
 */
 
 #include <ctype.h>

@@ -14,7 +14,8 @@
     Sample: XBee Netcat
 
     A version of the netcat (nc) tool that uses the XBee sockets API to open a
-    TCP or UDP socket and pass its data to/from stdout/stdin.
+    TCP or UDP socket and pass its data to/from stdout/stdin.  For use with
+    XBee Cellular firmware versions ending in x15 or later.
 */
 
 #include <limits.h>

@@ -16,7 +16,8 @@
     @file xbee/socket_frames.h
 
     Frame definitions and support functions for Extended Socket frames
-    (0x40-0x4F and 0xC0-0xCF).
+    (0x40-0x4F and 0xC0-0xCF).  For use with XBee Cellular firmware versions
+    ending in x15 or later.
 */
 
 #ifndef XBEE_SOCKET_FRAMES_H
