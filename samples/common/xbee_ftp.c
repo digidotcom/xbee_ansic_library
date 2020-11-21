@@ -18,9 +18,9 @@
     and updated firmware supporting frame types 0x3B, 0x3C, 0xBB and 0xBC.
 
     Supported Firmware:
-        XBee 3 Zigbee   version 100C and later
-        XBee 3 802.15.4 version 200C and later
-        XBee 3 DigiMesh version 300C and later
+        XBee 3 Zigbee   version 100D and later
+        XBee 3 802.15.4 version 200D and later
+        XBee 3 DigiMesh version 300D and later
         XBee Cellular   version x16 and later
         XBee 3 Cellular version x16 and later
 

@@ -14,7 +14,9 @@
     @defgroup xbee_file_system Frames: File System (0x3B, 0x3C, 0xBB, 0xBC)
 
     Support of Local/Remote File System Request/Response frames on
-    XBee/XBee 3 Cellular and XBee 3 802.15.4/DigiMesh/Zigbee.
+    XBee/XBee 3 Cellular (firmware x16 and later) and XBee 3 
+    802.15.4/DigiMesh/Zigbee (firmware x00D and later).
+
     @ingroup xbee_frame
     @{
     @file xbee/file_system.h
