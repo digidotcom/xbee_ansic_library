@@ -150,7 +150,7 @@ int send_file_write(xbee_dev_t *xbee)
     req.file_id_be = htobe16(xfer_state.file_handle);
     req.offset_be = htobe32(XBEE_FS_OFFSET_CURRENT);
 
-    uint8_t buffer[1024];
+    uint8_t buffer[1491];	// match maximum read_size used below
     uint16_t read_size = 0;
     uint16_t bytes_read;
 
