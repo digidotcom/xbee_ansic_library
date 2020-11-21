@@ -81,7 +81,7 @@ collection of sample programs.
   Install firmware update to a Programmable XBee module over a wired
   serial connection.
 
-### XBee3 802.15.4, DigiMesh and Zigbee
+### XBee3 802.15.4, DigiMesh and Zigbee Samples
 
 - **Remote AT**:
   Send AT commands to remote nodes on the network.
@@ -99,6 +99,11 @@ collection of sample programs.
 - **Zigbee OTA info**:
   Dump information from the header of .ota (firmware) and .otb (file
   system) update files.
+
+### Cellular and XBee3 802.15.4, DigiMesh and Zigbee Samples
+
+- ** XBee FTP **
+  Use File System Request API frames to interact with files on module.
 
 ### Cellular Samples
 
