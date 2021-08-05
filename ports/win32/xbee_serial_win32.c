@@ -295,7 +295,7 @@ int xbee_ser_open( xbee_serial_t *serial, uint32_t baudrate)
     else
     {
         snprintf( buffer, sizeof buffer, "\\\\.\\COM%u", serial->comport);
-        hCom = CreateFile( buffer, GENERIC_READ | GENERIC_WRITE,
+        hCom = CreateFileA( buffer, GENERIC_READ | GENERIC_WRITE,
             0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
         if (hCom == INVALID_HANDLE_VALUE)
         {
