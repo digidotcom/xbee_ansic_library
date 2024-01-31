@@ -381,23 +381,32 @@ typedef struct xbee_dev_t
       Macros related to the \c hardware_version field of xbee_dev_t.
       @{
    */
-      #define XBEE_HARDWARE_MASK          0xFF00
-      #define XBEE_HARDWARE_S1            0x1700
-      #define XBEE_HARDWARE_S1_PRO        0x1800
-      #define XBEE_HARDWARE_S2            0x1900
-      #define XBEE_HARDWARE_S2_PRO        0x1A00
-      #define XBEE_HARDWARE_900_PRO       0x1B00
-      #define XBEE_HARDWARE_868_PRO       0x1D00
-      #define XBEE_HARDWARE_S2B_PRO       0x1E00
-      #define XBEE_HARDWARE_S2C_PRO       0x2100
-      #define XBEE_HARDWARE_S2C           0x2200
-      #define XBEE_HARDWARE_S3B           0x2300      // XBee 900HP
-      #define XBEE_HARDWARE_S8            0x2400
-      #define XBEE_HARDWARE_S6B           0x2700      // XBee Wi-Fi
-      #define XBEE_HARDWARE_CELL_CAT1_VZW 0x4000
-      #define XBEE_HARDWARE_XB3_MICRO     0x4100
-      #define XBEE_HARDWARE_XB3_TH        0x4200
-      #define XBEE_HARDWARE_CELL_3G       0x4400
+      #define XBEE_HARDWARE_MASK                0xFF00
+      #define XBEE_HARDWARE_S1                  0x1700
+      #define XBEE_HARDWARE_S1_PRO              0x1800
+      #define XBEE_HARDWARE_S2                  0x1900
+      #define XBEE_HARDWARE_S2_PRO              0x1A00
+      #define XBEE_HARDWARE_900_PRO             0x1B00
+      #define XBEE_HARDWARE_868_PRO             0x1D00
+      #define XBEE_HARDWARE_S2B_PRO             0x1E00
+      #define XBEE_HARDWARE_S2C_PRO             0x2100
+      #define XBEE_HARDWARE_S2C                 0x2200
+      #define XBEE_HARDWARE_S3B                 0x2300      // XBee 900HP
+      #define XBEE_HARDWARE_S8                  0x2400
+      #define XBEE_HARDWARE_S6B                 0x2700      // XBee Wi-Fi
+      #define XBEE_HARDWARE_CELL_CAT1_VZW       0x4000
+      #define XBEE_HARDWARE_XB3_MICRO           0x4100
+      #define XBEE_HARDWARE_XB3_TH              0x4200
+      #define XBEE_HARDWARE_CELL_3G             0x4400
+      #define XBEE3_HARDWARE_CELL_CAT1_ATT      0x4900
+      #define XBEE3_HARDWARE_CELL_LTEM_ATT      0x4B00
+      #define XBEE3_HARDWARE_CELL_CAT1_VZW      0x4D00
+      #define XBEE3_HARDWARE_CELL_LTEM_GLOBAL   0x4E00
+      #define XBEE3_HARDWARE_CELL_CAT1_GLOBAL   0x5400
+      #define XBEE3_HARDWARE_CELL_CAT1_NA       0x5500
+      #define XBEE3_HARDWARE_CELL_LTEM_LP       0x5600
+      #define XBEE3_HARDWARE_CELL_BLU_SMT       0x5C00
+      #define XBEE3_HARDWARE_CELL_BLU_TH        0x5D00
    ///@}
 
    /// Value of XBee module's HS register.

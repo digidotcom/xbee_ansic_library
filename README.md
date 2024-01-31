@@ -134,6 +134,8 @@ Headers:
 - `xbee/bl_gen3.h`: Support for the "Gen3 Bootloader" used by S3B, S6, S6B,
   XLR, Cellular, SX, SX868, and S8 hardware.
 
+- `xbee/ble.h`: Support for BLE feature frames on the XBee3 BLU.
+
 - `xbee/byteorder.h`: Byte-order-related functions used by multiple layers
   of the driver.
 
