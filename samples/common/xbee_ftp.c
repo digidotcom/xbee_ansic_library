@@ -206,7 +206,8 @@ int process_file_open(xbee_dev_t *xbee,
     const xbee_payload_fs_file_open_resp_t FAR *response = payload;
 
     if (length != sizeof(*response)) {
-        printf("  (data size %u != %u)\n", length, sizeof(*response));
+        printf("  (data size %u != %u)\n", length,
+               (unsigned)sizeof(*response));
         return -EINVAL;
     }
 
@@ -296,7 +297,8 @@ void print_vol_stat(const void FAR *payload, uint16_t length)
     const xbee_payload_fs_volume_resp_t FAR *response = payload;
 
     if (length != sizeof(*response)) {
-        printf("  (data size %u != %u)\n", length, sizeof(*response));
+        printf("  (data size %u != %u)\n", length, 
+               (unsigned)sizeof(*response));
     } else {
         uint32_t bytes[3];
 
