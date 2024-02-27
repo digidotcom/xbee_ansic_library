@@ -45,7 +45,7 @@ int kbhit()
     return FD_ISSET(STDIN_FILENO, &fds);
 }
 
-struct termios _ttystate_orig;
+static struct termios _ttystate_orig;
 void _restore_tty( void)
 {
     tcsetattr(STDIN_FILENO, TCSANOW, &_ttystate_orig);

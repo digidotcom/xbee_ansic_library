@@ -23,7 +23,7 @@
 
 #include "../common/_xbee_term.h"
 
-struct termios _ttystate_orig;
+static struct termios _ttystate_orig;
 void xbee_term_console_restore( void)
 {
    xbee_term_set_color(SOURCE_UNKNOWN);
