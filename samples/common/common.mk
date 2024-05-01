@@ -31,6 +31,8 @@ EXE += \
 	commissioning_client \
 	commissioning_server \
 	eblinfo \
+	gnss_locate \
+	gnss_nmea \
 	gpm \
 	install_ebin \
 	install_ebl \
@@ -83,6 +85,14 @@ zigbee_OBJECTS = $(wpan_OBJECTS) zigbee_zcl.o zigbee_zdo.o zcl_types.o
 atinter_OBJECTS = xbee_readline.o _atinter.o
 
 atinter : $(xbee_OBJECTS) $(atinter_OBJECTS) atinter.o
+	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@
+
+gnss_locate_OBJECTS = $(xbee_OBJECTS) gnss_locate.o $(atinter_OBJECTS) xbee_gnss.o
+gnss_locate : $(gnss_locate_OBJECTS)
+	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@
+
+gnss_nmea_OBJECTS = $(xbee_OBJECTS) gnss_nmea.o $(atinter_OBJECTS) xbee_gnss.o
+gnss_nmea : $(gnss_nmea_OBJECTS)
 	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@
 
 gpm : $(zigbee_OBJECTS) $(atinter_OBJECTS) xbee_gpm.o gpm.o
