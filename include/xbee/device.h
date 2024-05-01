@@ -402,11 +402,18 @@ typedef struct xbee_dev_t
       #define XBEE3_HARDWARE_CELL_LTEM_ATT      0x4B00
       #define XBEE3_HARDWARE_CELL_CAT1_VZW      0x4D00
       #define XBEE3_HARDWARE_CELL_LTEM_GLOBAL   0x4E00
+      #define XBEE_HARDWARE_XR_900              0x5000
+      #define XBEE_HARDWARE_XR_686              0x5100
+      #define XBEE_HARDWARE_RR                  0x5200
       #define XBEE3_HARDWARE_CELL_CAT1_GLOBAL   0x5400
       #define XBEE3_HARDWARE_CELL_CAT1_NA       0x5500
       #define XBEE3_HARDWARE_CELL_LTEM_LP       0x5600
-      #define XBEE3_HARDWARE_CELL_BLU_SMT       0x5C00
-      #define XBEE3_HARDWARE_CELL_BLU_TH        0x5D00
+      #define XBEE_HARDWARE_RR_TH               0x5700
+      #define XBEE_HARDWARE_XR_900_TH           0x5A00
+      #define XBEE_HARDWARE_XR_686_TH           0x5B00
+      #define XBEE3_HARDWARE_BLU_SMT            0x5C00
+      #define XBEE3_HARDWARE_BLU_TH             0x5D00
+      #define XBEE_HARWARE_LORA                 0x5E00
    ///@}
 
    /// Value of XBee module's HS register.
