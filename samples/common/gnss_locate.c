@@ -107,9 +107,10 @@ int one_shot_handler(xbee_dev_t *xbee, const void FAR *raw,
 
     switch (gnss->status) {
     case XBEE_GNSS_ONE_SHOT_STATUS_VALID:
+    {
         union {
             int32_t i;
-            int32_t u;
+            uint32_t u;
         } latitude, longitude;
 
         printf("\nReceived one shot location:\n");
@@ -120,6 +121,7 @@ int one_shot_handler(xbee_dev_t *xbee, const void FAR *raw,
         printf("altitude %u.%03u meters\n", altitude / 1000, altitude % 1000);
         printf("satellites: %u\n", gnss->satellites);
         break;
+    }
 
     case XBEE_GNSS_ONE_SHOT_STATUS_INVALID:
         printf("Received one shot status invalid\n");
