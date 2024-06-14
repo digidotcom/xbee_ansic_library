@@ -39,8 +39,8 @@ with platform-specific support code in each `samples/<target>` directory.
 
 - **Network Scan**:
   Perform an `ATAS` "active scan" and report the results.  Intended for
-  Zigbee and Wi-Fi networks, but could work for others after updating
-  `src/xbee/xbee_scan.c` for new scan types.
+  Zigbee, Wi-Fi and Cellular networks, but could work for others after
+  updating `src/xbee/xbee_scan.c` for new scan types.
 
 - **Transparent Client**:
   Demonstrate the "transparent serial" cluster used by XBee modules in

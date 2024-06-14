@@ -18,6 +18,7 @@
 */
 
 #include <stdio.h>
+#include <ctype.h>
 
 #include "xbee/platform.h"
 #include "xbee/atcmd.h"
@@ -46,6 +47,23 @@ int xbee_scan_dump_response( xbee_dev_t *xbee, const void FAR *raw,
          if (scan_length < 1)
          {
             puts( "Scan complete");
+         }
+         else if ((xbee->hardware_series & XBEE_HW_SERIES_MASK) == XBEE_HW_SERIES_CELLULAR)
+         {
+            // Response is ASCII text, with \r for line endings.
+            // Print out the response as-is, but substitute \n line endings.
+            uint16_t i = 0;
+            uint8_t c;
+            for (i = 0; i < scan_length; i++)
+            {
+               uint8_t c = resp->value[i];
+               if (!isprint(c) && !isspace(c))
+               {
+                  printf( "Unexpected nonprintable byte in Cellular AS response: index %u, ASCII 0x%02X\n", i, c);
+                  return 0;
+               }
+               putchar(c == '\r' ? '\n' : c);
+            }
          }
          else switch (atas->as_type)
          {
