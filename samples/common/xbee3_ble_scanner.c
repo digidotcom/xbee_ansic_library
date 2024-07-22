@@ -10,6 +10,13 @@
  * ===========================================================================
  */
 
+/*
+    Sample: XBee 3 BLE Scanner
+
+    Tool used for manually performing BLE GAP scans to explore the
+    xbee/xbee_ble.c APIs.  For use with XBee 3 BLU.
+*/
+
 #include <stdio.h>
 #include <limits.h>
 #include <string.h>
@@ -98,7 +105,7 @@ int ble_scanner_sample(xbee_dev_t *xbee, uint16_t scan_duration,
             fprintf(stderr, "Initiating scan\n");
             result = xbee_ble_scan_start(xbee, scan_duration, scan_window,
                         scan_interval, filter_type,
-                        (const uint8_t *)filter_local_name, filter_len);
+                        filter_local_name, filter_len);
             if (result < 0) {
                 fprintf(stderr, "scan start failed with %d\n", result);
                 return EXIT_FAILURE;

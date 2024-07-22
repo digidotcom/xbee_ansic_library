@@ -29,25 +29,20 @@ int xbee_gnss_start_one_shot(xbee_dev_t *xbee, uint16_t timeout, uint16_t option
         return -EINVAL;
     }
 
-    int retval;
-
     xbee_frame_gnss_start_stop_t header;
     
 
 	memset(&header, 0, sizeof(header));
-    header.type = XBEE_GNSS_START_ONE_SHOT;
-    header.timeout = htobe16(timeout);
+    header.request = XBEE_GNSS_REQUEST_START_ONE_SHOT;
+    header.timeout_be = htobe16(timeout);
     header.frame_type = XBEE_FRAME_GNSS_START_STOP;
 
 
-    if (options & XBEE_GNSS_START_STOP_OPT_NO_RESP) {
-        header.frame_id = 0;
-    } else {
+    if (!(options & XBEE_GNSS_START_STOP_OPT_NO_RESP)) {
         header.frame_id = xbee_next_frame_id(xbee);
     }
 
-    retval = xbee_frame_write( xbee, &header, sizeof(header), NULL, 0, 0);
-    return retval;
+    return xbee_frame_write( xbee, &header, sizeof(header), NULL, 0, 0);
 }
 
 // API documented in xbee/gnss.h
@@ -57,12 +52,10 @@ int xbee_gnss_stop_one_shot(xbee_dev_t *xbee, uint16_t options)
         return -EINVAL;
     }
 
-    int retval;
-
     xbee_frame_gnss_start_stop_t header;
     
     memset(&header, 0, sizeof(header));
-    header.type = XBEE_GNSS_STOP_ONE_SHOT;
+    header.request = XBEE_GNSS_REQUEST_STOP_ONE_SHOT;
     header.frame_type = XBEE_FRAME_GNSS_START_STOP;
 
 
@@ -72,8 +65,7 @@ int xbee_gnss_stop_one_shot(xbee_dev_t *xbee, uint16_t options)
         header.frame_id = xbee_next_frame_id(xbee);
     }
 
-    retval = xbee_frame_write( xbee, &header, sizeof(header), NULL, 0, 0);
-    return retval;
+    return xbee_frame_write( xbee, &header, sizeof(header), NULL, 0, 0);
 }
 
 // API documented in xbee/gnss.h
@@ -83,13 +75,11 @@ int xbee_gnss_start_raw_nmea(xbee_dev_t *xbee, uint16_t options)
         return -EINVAL;
     }
 
-    int retval;
-
     xbee_frame_gnss_start_stop_t header;
     
 
 	memset(&header, 0, sizeof(header));
-    header.type = XBEE_GNSS_START_RAW_NMEA;
+    header.request = XBEE_GNSS_REQUEST_START_RAW_NMEA;
     header.frame_type = XBEE_FRAME_GNSS_START_STOP;
 
 
@@ -99,8 +89,7 @@ int xbee_gnss_start_raw_nmea(xbee_dev_t *xbee, uint16_t options)
         header.frame_id = xbee_next_frame_id(xbee);
     }
 
-    retval = xbee_frame_write( xbee, &header, sizeof(header), NULL, 0, 0);
-    return retval;
+    return xbee_frame_write( xbee, &header, sizeof(header), NULL, 0, 0);
 }
 
 // API documented in xbee/gnss.h
@@ -110,12 +99,10 @@ int xbee_gnss_stop_raw_nmea(xbee_dev_t *xbee, uint16_t options)
         return -EINVAL;
     }
 
-    int retval;
-
     xbee_frame_gnss_start_stop_t header;
     
     memset(&header, 0, sizeof(header));
-    header.type = XBEE_GNSS_STOP_RAW_NMEA;
+    header.request = XBEE_GNSS_REQUEST_STOP_RAW_NMEA;
     header.frame_type = XBEE_FRAME_GNSS_START_STOP;
 
 
@@ -125,6 +112,5 @@ int xbee_gnss_stop_raw_nmea(xbee_dev_t *xbee, uint16_t options)
         header.frame_id = xbee_next_frame_id(xbee);
     }
 
-    retval = xbee_frame_write( xbee, &header, sizeof(header), NULL, 0, 0);
-    return retval;
+    return xbee_frame_write( xbee, &header, sizeof(header), NULL, 0, 0);
 }

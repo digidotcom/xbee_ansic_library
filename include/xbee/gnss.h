@@ -17,7 +17,7 @@
 
     Frame definitions and support functions for GNSS frames
     (0x3D and 0xBD-0xBF).  For use with XBee Cellular devices that support
-    GNSS.
+    GNSS (Global Navigation Satellite System).
 */
 
 #ifndef XBEE_GNSS_H
@@ -44,12 +44,12 @@ XBEE_BEGIN_DECLS
 typedef XBEE_PACKED(xbee_frame_gnss_start_stop_t, {
     uint8_t     frame_type;     ///< XBEE_FRAME_GNSS_START_STOP (0x3D)
     uint8_t     frame_id;       ///< identifier to match response frame
-    uint8_t     type;
-#define XBEE_GNSS_START_ONE_SHOT          0       ///< Start one shot
-#define XBEE_GNSS_STOP_ONE_SHOT          4       ///< Stop one shot
-#define XBEE_GNSS_START_RAW_NMEA          5       ///< Start RAW NMEA
-#define XBEE_GNSS_STOP_RAW_NMEA          6       ///< Stop RAW NMEA
-    uint16_t    timeout;       ///< timeout in seconds for one shot only, a value of 0 is return cached value
+    uint8_t     request;
+#define XBEE_GNSS_REQUEST_START_ONE_SHOT          0       ///< Start one shot
+#define XBEE_GNSS_REQUEST_STOP_ONE_SHOT           4       ///< Stop one shot
+#define XBEE_GNSS_REQUEST_START_RAW_NMEA          5       ///< Start RAW NMEA 0183 output
+#define XBEE_GNSS_REQUEST_STOP_RAW_NMEA           6       ///< Stop RAW NMEA 0183 output
+    uint16_t    timeout_be;     ///< timeout in seconds for one shot only, a value of 0 is return cached value
 }) xbee_frame_gnss_start_stop_t;
 
 
@@ -59,10 +59,10 @@ typedef XBEE_PACKED(xbee_frame_gnss_start_stop_t, {
 typedef XBEE_PACKED(xbee_frame_gnss_start_stop_resp_t, {
     uint8_t     frame_type;     ///< XBEE_FRAME_GNSS_START_STOP_RESP (0xBD)
     uint8_t     frame_id;       ///< identifier to match response frame
-    uint8_t     type;          ///< matches type of the request frame
-    uint8_t     status;        ///<
-#define GNSS_START_STOP_STATUS_SUCCESS     0
-#define GNSS_START_STOP_STATUS_UNSUCCESSFUL 1
+    uint8_t     request;        ///< matches type of the request frame
+    uint8_t     status;         ///<
+#define XBEE_GNSS_START_STOP_STATUS_SUCCESS     0
+#define XBEE_GNSS_START_STOP_STATUS_UNSUCCESSFUL 1
 }) xbee_frame_gnss_start_stop_resp_t;
 
 
@@ -85,15 +85,16 @@ typedef XBEE_PACKED(xbee_frame_gnss_one_shot_resp_t, {
 #define XBEE_GNSS_ONE_SHOT_STATUS_INVALID     1
 #define XBEE_GNSS_ONE_SHOT_STATUS_TIMEOUT     2
 #define XBEE_GNSS_ONE_SHOT_STATUS_CANCELED    3
-    uint32_t    lock_time;      ///< Lock time measured in seconds, from midnight, Jan-1-2000
-    uint32_t    latitude;       ///< Latitude in decimal degrees, multiplied by 10 million.  Positive values are north of the equator.  Negative values are south of the equator.
-    uint32_t    longitude;      ///< Longitude in decimal degrees, multiplied by 10 million.  Positive values are east of the prime meridian.  Negative values are west of the prime meridian.
-    uint32_t    altitude;       ///< Altitude in millimeters
+    uint32_t    lock_time_be;   ///< Lock time measured in seconds, from midnight, Jan-1-2000
+    uint32_t    latitude_be;    ///< Latitude in decimal degrees * 1e7 (+/-9000000000 for +/-90.0). Positive/negative values are north/south of the equator.
+    uint32_t    longitude_be;   ///< Longitude in decimal degrees * 1e7 (+/-1800000000 for +/-180.0). Positive/negative values are east/west of the prime meridian.
+    uint32_t    altitude_be;    ///< Altitude in millimeters
     uint8_t     satellites;     ///< Total number of satellites in use.
 }) xbee_frame_gnss_one_shot_resp_t;
 
 
 // XBEE_GNSS_START_STOP_OPT_xxx values.
+#define XBEE_GNSS_START_STOP_OPT_NONE       0x0000
 #define XBEE_GNSS_START_STOP_OPT_NO_RESP    0x0001   // Don't send a response frame
 
 
@@ -128,7 +129,7 @@ int xbee_gnss_start_one_shot(xbee_dev_t *xbee, uint16_t timeout, uint16_t option
 int xbee_gnss_stop_one_shot(xbee_dev_t *xbee, uint16_t options);
 
 /**
-   @brief Start a GNSS NMEA stream.
+   @brief Start a GNSS NMEA 0183 sentence output stream.
 
    @param[in]  xbee     XBee device sending the message
    @param[in]  options  Bitmask of frame options.
@@ -142,7 +143,7 @@ int xbee_gnss_stop_one_shot(xbee_dev_t *xbee, uint16_t options);
 int xbee_gnss_start_raw_nmea(xbee_dev_t *xbee, uint16_t options);
 
 /**
-   @brief Stop a GNSS NMEA stream.
+   @brief Stop a GNSS NMEA 0183 sentence output stream.
 
    @param[in]  xbee     XBee device sending the message
    @param[in]  options  Bitmask of frame options.

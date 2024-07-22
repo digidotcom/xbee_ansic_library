@@ -18,7 +18,7 @@
     Frame definitions and support functions for BLE frames
     (0x34, 0xB4, 0xB5 and 0xB7).
 
-    For use with the XBee BLU
+    For use with the XBee 3 BLU
 */
 
 #ifndef XBEE_BLE_FRAMES_H
@@ -28,12 +28,15 @@
 
 XBEE_BEGIN_DECLS
 
+#define XBEE_BLE_ADDRESS_TYPE_PUBLIC (0)
+#define XBEE_BLE_ADDRESS_TYPE_RANDOM (1)
+
 /// Flag used in advertisement responses, in the 0xB4 and 0xB7 frame types
 #define XBEE_BLE_ADVERT_FLAG_CONNECTABLE  ( 1 << 0 ) // Advertisement is connectable
 
 // Max and min values for the scan window and the scan interval in microseconds.
-#define XBEE_BLE_SCAN_VALUES_MAX_USEC       (0x270FD8F)
-#define XBEE_BLE_SCAN_VALUES_MIN_USEC       (0x9C4)
+#define XBEE_BLE_SCAN_VALUES_MAX_USEC       (0xFFFF * 625)
+#define XBEE_BLE_SCAN_VALUES_MIN_USEC       (2500)
 
 /// Frame Type: BLE Scan Request
 #define XBEE_FRAME_BLE_SCAN_REQUEST             0x34
@@ -80,9 +83,9 @@ typedef XBEE_PACKED(xbee_frame_ble_scan_status_t, {
 typedef XBEE_PACKED(xbee_frame_ble_scan_legacy_advert_resp_t, {
     uint8_t    frame_type;         ///< XBEE_FRAME_BLE_SCAN_LEGACY_ADVERT_RESP (0xB4)
     uint8_t    address[6];         ///< BLE MAC address of received advertisment
-    uint8_t    address_type;       ///< indicates the address type, public or random
-    uint8_t    advert_flags;       ///< advertisement flags
-    int8_t     rssi;               ///< receieve signal strength, in dBm
+    uint8_t    address_type;       ///< indicates the address type (XBEE_BLE_ADDRESS_TYPE_xxx)
+    uint8_t    advert_flags;       ///< advertisement flags (XBEE_BLE_ADVERT_FLAG_xxx)
+    int8_t     rssi;               ///< receive signal strength, in dBm
     uint8_t    reserved;           ///< reserved for future use
     uint8_t    payload_len;        ///< length of the advertisement payload
     uint8_t    payload[1];         ///< payload of the advertisement
@@ -106,7 +109,7 @@ typedef XBEE_PACKED(xbee_frame_ble_scan_ext_advert_resp_t, {
 #define XBEE_BLE_PHY_FLAG_125K  ( 1 << 2 )
 #define XBEE_BLE_PHY_FLAG_500K  ( 1 << 3 )
 #define XBEE_BLE_PHY_FLAG_ALL   ( 0xFF )
-    uint8_t    tx_power;                ///< transmission power of received advert
+    int8_t     tx_power;                ///< transmission power of received advert, in dBm
     uint16_t   periodic_interval_be;    ///< interval for periodic advertising
     uint8_t    data_complete;           ///< data completion flags
     uint8_t    payload_len;             ///< length of the advertisement payload

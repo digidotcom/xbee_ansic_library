@@ -108,10 +108,12 @@ collection of sample programs.
 ### Cellular Samples
 
 - **GNSS One Shot**
-  Demonstrates getting location for XBee devices that support GNSS.
+  Demonstrates getting location for XBee devices that support GNSS
+  (Global Navigation Satellite System).
 
 - **GNSS NMEA**:
-  Demonstrates streaming NMEA for XBee devices that support GNSS.
+  Demonstrates streaming NMEA 0183 messages for XBee devices that support GNSS
+  (Global Navigation Satellite System).
 
 - **IPv4 Client**:
   Demonstrates communication via TCP over IPv4 frames.

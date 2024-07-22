@@ -25,7 +25,7 @@
     can handle the frame responses. See below for the callback descriptions
     and definitions.
 
-    For use with the XBee BLU.
+    For use with the XBee 3 BLU.
 */
 
 #ifndef XBEE_BLE_H
@@ -82,7 +82,7 @@ typedef void (*xbee_ble_scan_status_fn)(uint8_t frame_type,
 */
 int xbee_ble_scan_start(xbee_dev_t *xbee, uint16_t scan_duration,
                         uint32_t scan_window, uint32_t scan_interval,
-                        uint8_t filter_type, const uint8_t *filter,
+                        uint8_t filter_type, const void *filter,
                         size_t filter_len);
 
 /**

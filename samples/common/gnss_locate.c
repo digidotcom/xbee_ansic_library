@@ -44,21 +44,21 @@ xbee_dev_t my_xbee;
 int gnss_start_stop_handler( xbee_dev_t *xbee, const void FAR *raw,
     uint16_t length, void FAR *context);
 
-#define XBEE_FRAME_GNSS_START_STOP_HANDLE     \
+#define XBEE_FRAME_HANDLE_GNSS_START_STOP     \
     { XBEE_FRAME_GNSS_START_STOP_RESP, 0, gnss_start_stop_handler, NULL }
 
 int one_shot_handler( xbee_dev_t *xbee, const void FAR *raw,
     uint16_t length, void FAR *context);
 
-#define XBEE_FRAME_GNSS_ONE_SHOT_HANDLE \
+#define XBEE_FRAME_HANDLE_GNSS_ONE_SHOT \
     { XBEE_FRAME_GNSS_ONE_SHOT_RESP, 0, one_shot_handler, NULL }
 
 
 const xbee_dispatch_table_entry_t xbee_frame_handlers[] =
 {
     XBEE_FRAME_HANDLE_LOCAL_AT,
-    XBEE_FRAME_GNSS_START_STOP_HANDLE,
-    XBEE_FRAME_GNSS_ONE_SHOT_HANDLE,
+    XBEE_FRAME_HANDLE_GNSS_START_STOP,
+    XBEE_FRAME_HANDLE_GNSS_ONE_SHOT,
     XBEE_FRAME_TABLE_END
 };
 
@@ -69,10 +69,10 @@ int gnss_start_stop_handler(xbee_dev_t *xbee, const void FAR *raw,
 {
     const xbee_frame_gnss_start_stop_resp_t FAR *gnss = raw;
 
-    switch (gnss->type) {
-    case XBEE_GNSS_START_ONE_SHOT:
+    switch (gnss->request) {
+    case XBEE_GNSS_REQUEST_START_ONE_SHOT:
 
-    	if (gnss->status != GNSS_START_STOP_STATUS_SUCCESS) {
+    	if (gnss->status != XBEE_GNSS_START_STOP_STATUS_SUCCESS) {
     		printf("Got failure response for starting GNSS one shot\n");
     	} else {
     		printf("Got success response for starting GNSS one shot\n");
@@ -80,9 +80,9 @@ int gnss_start_stop_handler(xbee_dev_t *xbee, const void FAR *raw,
 
     	break;
 
-    case XBEE_GNSS_STOP_ONE_SHOT:
+    case XBEE_GNSS_REQUEST_STOP_ONE_SHOT:
 
-    	if (gnss->status != GNSS_START_STOP_STATUS_SUCCESS) {
+    	if (gnss->status != XBEE_GNSS_START_STOP_STATUS_SUCCESS) {
     		printf("Got failure response for stopping GNSS one shot\n");
     	} else {
     		printf("Got success response for stopping GNSS one shot\n");
@@ -91,7 +91,7 @@ int gnss_start_stop_handler(xbee_dev_t *xbee, const void FAR *raw,
     	break;
 
     default:
-    	printf("Unexpected gnss start stop response type %u\n", gnss->type);
+    	printf("Unexpected gnss start stop response type %u\n", gnss->request);
     }
 
     return 0;
@@ -114,10 +114,10 @@ int one_shot_handler(xbee_dev_t *xbee, const void FAR *raw,
         } latitude, longitude;
 
         printf("\nReceived one shot location:\n");
-        latitude.u =  be32toh(gnss->latitude);
-        longitude.u = be32toh(gnss->longitude);
-        printf("latitude %i.%06u  longitude %i.%06u\n", latitude.i / 10000000, abs(latitude.i % 10000000), longitude.i / 10000000, abs(longitude.i % 10000000));
-        unsigned int altitude = be32toh(gnss->altitude);
+        latitude.u =  be32toh(gnss->latitude_be);
+        longitude.u = be32toh(gnss->longitude_be);
+        printf("latitude %i.%06u  longitude %i.%06u\n", latitude.i / 10000000, abs(latitude.i) % 10000000, longitude.i / 10000000, abs(longitude.i) % 10000000);
+        unsigned int altitude = be32toh(gnss->altitude_be);
         printf("altitude %u.%03u meters\n", altitude / 1000, altitude % 1000);
         printf("satellites: %u\n", gnss->satellites);
         break;

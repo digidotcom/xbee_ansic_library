@@ -42,21 +42,21 @@ xbee_dev_t my_xbee;
 int gnss_start_stop_handler( xbee_dev_t *xbee, const void FAR *raw,
     uint16_t length, void FAR *context);
 
-#define XBEE_FRAME_GNSS_START_STOP_HANDLE     \
+#define XBEE_FRAME_HANDLE_GNSS_START_STOP     \
     { XBEE_FRAME_GNSS_START_STOP_RESP, 0, gnss_start_stop_handler, NULL }
 
 int nmea_handler( xbee_dev_t *xbee, const void FAR *raw,
     uint16_t length, void FAR *context);
 
-#define XBEE_FRAME_GNSS_NMEA_HANDLE     \
+#define XBEE_FRAME_HANDLE_GNSS_NMEA     \
     { XBEE_FRAME_GNSS_RAW_NMEA_RESP, 0, nmea_handler, NULL }
 
 
 const xbee_dispatch_table_entry_t xbee_frame_handlers[] =
 {
     XBEE_FRAME_HANDLE_LOCAL_AT,
-    XBEE_FRAME_GNSS_START_STOP_HANDLE,
-    XBEE_FRAME_GNSS_NMEA_HANDLE,
+    XBEE_FRAME_HANDLE_GNSS_START_STOP,
+    XBEE_FRAME_HANDLE_GNSS_NMEA,
     XBEE_FRAME_TABLE_END
 };
 
@@ -67,10 +67,10 @@ int gnss_start_stop_handler(xbee_dev_t *xbee, const void FAR *raw,
 {
     const xbee_frame_gnss_start_stop_resp_t FAR *gnss = raw;
 
-    switch (gnss->type) {
-    case XBEE_GNSS_START_RAW_NMEA:
+    switch (gnss->request) {
+    case XBEE_GNSS_REQUEST_START_RAW_NMEA:
 
-        if (gnss->status != GNSS_START_STOP_STATUS_SUCCESS) {
+        if (gnss->status != XBEE_GNSS_START_STOP_STATUS_SUCCESS) {
             printf("Got failure response for starting GNSS NMEA\n");
         } else {
             printf("Got success response for starting GNSS NMEA\n");
@@ -79,9 +79,9 @@ int gnss_start_stop_handler(xbee_dev_t *xbee, const void FAR *raw,
 
         break;
 
-    case XBEE_GNSS_STOP_RAW_NMEA:
+    case XBEE_GNSS_REQUEST_STOP_RAW_NMEA:
 
-        if (gnss->status != GNSS_START_STOP_STATUS_SUCCESS) {
+        if (gnss->status != XBEE_GNSS_START_STOP_STATUS_SUCCESS) {
             printf("Got failure response for stopping GNSS NMEA\n");
         } else {
             printf("Got success response for stopping GNSS NMEA\n");
@@ -90,7 +90,7 @@ int gnss_start_stop_handler(xbee_dev_t *xbee, const void FAR *raw,
         break;
 
     default:
-        printf("Unexpected gnss start stop response type %u\n", gnss->type);
+        printf("Unexpected gnss start stop response type %u\n", gnss->request);
     }
 
     return 0;
@@ -101,20 +101,11 @@ int gnss_start_stop_handler(xbee_dev_t *xbee, const void FAR *raw,
 int nmea_handler(xbee_dev_t *xbee, const void FAR *raw,
     uint16_t length, void FAR *context)
 {
-	char nmea_str[1600];
     const xbee_frame_gnss_raw_nmea_resp_t FAR *gnss = raw;
 
     int16_t payload_len = length - offsetof(xbee_frame_gnss_raw_nmea_resp_t, payload);
 
-    if (payload_len >= sizeof(nmea_str)) {
-    	printf("PAYLOAD TOO BIG: %lu bytes dropped\n", (payload_len - sizeof(nmea_str) + 1));
-    	payload_len = sizeof(nmea_str) - 1;
-    }
-
-    memcpy(nmea_str, &gnss->payload[0], payload_len);
-    nmea_str[payload_len] = '\0';
-
-    printf("%s\n", nmea_str);
+    printf("%.*s\n", payload_len, gnss->payload);
     return 0;
 }
 

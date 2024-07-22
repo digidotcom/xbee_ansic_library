@@ -28,7 +28,7 @@
 
 int xbee_ble_scan_start(xbee_dev_t *xbee, uint16_t scan_duration,
                         uint32_t scan_window, uint32_t scan_interval,
-                        uint8_t filter_type,  const uint8_t *filter,
+                        uint8_t filter_type,  const void *filter,
                         size_t filter_len)
 {
     if (!xbee || (!filter && filter_len)) {
@@ -120,7 +120,7 @@ int xbee_ble_scan_legacy_advert_dump(xbee_dev_t *xbee, const void FAR *raw,
     xbee_ble_scan_mac_str(mac_addr_buf, advert->address);
     bool_t connectable = advert->advert_flags & XBEE_BLE_ADVERT_FLAG_CONNECTABLE;
 
-    printf("Legacy advertisement from: %s\n RSSI: %d, Connectable: %s\n",
+    printf("Legacy advertisement from: %s\n RSSI: %d dBm, Connectable: %s\n",
            mac_addr_buf, -advert->rssi, connectable ? "true" : "false");
     hex_dump(advert->payload, advert->payload_len, HEX_DUMP_FLAG_TAB);
 
