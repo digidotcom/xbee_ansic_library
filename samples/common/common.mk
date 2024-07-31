@@ -31,6 +31,8 @@ EXE += \
 	commissioning_client \
 	commissioning_server \
 	eblinfo \
+	gnss_locate \
+	gnss_nmea \
 	gpm \
 	install_ebin \
 	install_ebl \
@@ -44,6 +46,7 @@ EXE += \
 	xbee_ftp \
 	xbee_netcat \
 	xbee_term \
+	xbee3_ble_scanner \
 	xbee3_ota_tool \
 	xbee3_secure_session \
 	xbee3_srp_verifier \
@@ -82,6 +85,14 @@ zigbee_OBJECTS = $(wpan_OBJECTS) zigbee_zcl.o zigbee_zdo.o zcl_types.o
 atinter_OBJECTS = xbee_readline.o _atinter.o
 
 atinter : $(xbee_OBJECTS) $(atinter_OBJECTS) atinter.o
+	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@
+
+gnss_locate_OBJECTS = $(xbee_OBJECTS) gnss_locate.o $(atinter_OBJECTS) xbee_gnss.o
+gnss_locate : $(gnss_locate_OBJECTS)
+	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@
+
+gnss_nmea_OBJECTS = $(xbee_OBJECTS) gnss_nmea.o $(atinter_OBJECTS) xbee_gnss.o
+gnss_nmea : $(gnss_nmea_OBJECTS)
 	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@
 
 gpm : $(zigbee_OBJECTS) $(atinter_OBJECTS) xbee_gpm.o gpm.o
@@ -154,6 +165,11 @@ xbee_ftp_OBJECTS = $(zigbee_OBJECTS) $(atinter_OBJECTS) \
             xbee_discovery.o xbee_file_system.o \
             _nodetable.o sample_cli.o xbee_ftp.o
 xbee_ftp : $(xbee_ftp_OBJECTS)
+	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@
+
+xbee3_ble_scanner_OBJECTS = $(xbee_OBJECTS) xbee3_ble_scanner.o \
+            xbee_term_$(PORT).o xbee_ble.o
+xbee3_ble_scanner: $(xbee3_ble_scanner_OBJECTS)
 	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@
 
 xbee3_ota_tool_OBJECTS = $(zigbee_OBJECTS) $(atinter_OBJECTS) \

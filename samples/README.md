@@ -39,8 +39,8 @@ with platform-specific support code in each `samples/<target>` directory.
 
 - **Network Scan**:
   Perform an `ATAS` "active scan" and report the results.  Intended for
-  Zigbee and Wi-Fi networks, but could work for others after updating
-  `src/xbee/xbee_scan.c` for new scan types.
+  Zigbee, Wi-Fi and Cellular networks, but could work for others after
+  updating `src/xbee/xbee_scan.c` for new scan types.
 
 - **Transparent Client**:
   Demonstrate the "transparent serial" cluster used by XBee modules in
@@ -106,6 +106,14 @@ collection of sample programs.
   Use File System Request API frames to interact with files on module.
 
 ### Cellular Samples
+
+- **GNSS One Shot**
+  Demonstrates getting location for XBee devices that support GNSS
+  (Global Navigation Satellite System).
+
+- **GNSS NMEA**:
+  Demonstrates streaming NMEA 0183 messages for XBee devices that support GNSS
+  (Global Navigation Satellite System).
 
 - **IPv4 Client**:
   Demonstrates communication via TCP over IPv4 frames.
